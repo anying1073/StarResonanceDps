@@ -83,14 +83,14 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
                     <Grid>
-                        <!--  Use a ToggleButton as the entire clickable area -->
+                        <!-- Main clickable area that covers the entire ComboBox -->
                         <ToggleButton
                             x:Name="ToggleButton"
-                            Style="{StaticResource PlainToggleButton}"
-                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="1">
+                            BorderThickness="1"
+                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                            ClickMode="Press">
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Border
@@ -112,11 +112,13 @@
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
                                                 Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                ContentTemplate="{Binding SelectionBoxItemTemplate, RelativeSource={RelativeSource AncestorType=ComboBox}}" />
+                                                ContentTemplate="{Binding SelectionBoxItemTemplate, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                ContentTemplateSelector="{Binding ItemTemplateSelector, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                IsHitTestVisible="False" />
 
                                             <Path
                                                 Grid.Column="1"
-                                                HorizontalAlignment="Right"
+                                                HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 Data="M 0 0 L 4 4 L 8 0 Z"
                                                 Fill="Black"
