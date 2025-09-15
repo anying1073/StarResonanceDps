@@ -1,7 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using StarResonanceDpsAnalysis.WPF.Controls;
-using StarResonanceDpsAnalysis.WPF.Controls.Models;
+﻿using System.Windows;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
 
 namespace StarResonanceDpsAnalysis.WPF.Views;
@@ -11,8 +8,19 @@ namespace StarResonanceDpsAnalysis.WPF.Views;
 /// </summary>
 public partial class SettingsView : Window
 {
-    public SettingsView()
+    private readonly SettingsViewModel _vm;
+
+    public SettingsView(SettingsViewModel vm)
     {
         InitializeComponent();
+        DataContext = vm;
+
+        _vm = vm;
+        _vm.RequestClose += Vm_RequestClose;
+    }
+
+    private void Vm_RequestClose()
+    {
+        Close();
     }
 }

@@ -9,5 +9,6 @@
     <converters:HumanReadableNumberConverter x:Key="HumanReadableNumberConverter" />
     <converters:PercentOfMaxConverter x:Key="PercentOfMaxConverter" />
     <converters:ItemIndexMultiConverter x:Key="ItemIndexMultiConverter" />
+    <converters:KeyBindingToStringConverter x:Key="KeyToStringConverter" />
     <!-- <converters:StatisticTypeNScopeTimeToStringMultiConverter x:Key="StatisticTypeNScopeTimeToStringMultiConverter" /> -->
 </ResourceDictionary>

@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/CardControlStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Converters/ConveterDictionary.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/AntControls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/SwitchControl.xaml" />
 
                 <!--  Load SortedDpsControl default style  -->
                 <ResourceDictionary Source="pack://application:,,,/Styles/SortedDpsControlStyle.xaml" />

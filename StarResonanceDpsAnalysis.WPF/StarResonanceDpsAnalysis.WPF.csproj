@@ -32,6 +32,7 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="DotNetProjects.SVGImage" Version="5.2.11" />
+        <PackageReference Include="INIParser" Version="1.0.1" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
