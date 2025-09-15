@@ -25,7 +25,7 @@
         TopRight="{StaticResource AntCornerRadiusValue}" />
     <Thickness x:Key="AntControlPadding">6,4,6,4</Thickness>
 
-    <!-- Plain ToggleButton style (no hover visuals) -->
+    <!--  Plain ToggleButton style (no hover visuals)  -->
     <Style x:Key="PlainToggleButton" TargetType="ToggleButton">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
@@ -83,14 +83,14 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
                     <Grid>
-                        <!-- Main clickable area that covers the entire ComboBox -->
+                        <!--  Main clickable area that covers the entire ComboBox  -->
                         <ToggleButton
                             x:Name="ToggleButton"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="1"
-                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                            ClickMode="Press">
+                            ClickMode="Press"
+                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Border
@@ -106,8 +106,8 @@
                                             </Grid.ColumnDefinitions>
 
                                             <ContentPresenter
-                                                Grid.Column="0"
                                                 x:Name="ContentSite"
+                                                Grid.Column="0"
                                                 Margin="8,2,6,2"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
@@ -118,11 +118,11 @@
 
                                             <Path
                                                 Grid.Column="1"
+                                                Margin="6,0,6,0"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 Data="M 0 0 L 4 4 L 8 0 Z"
-                                                Fill="Black"
-                                                Margin="6,0,6,0" />
+                                                Fill="Black" />
                                         </Grid>
                                     </Border>
                                 </ControlTemplate>
@@ -183,13 +183,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBoxItem">
-                    <Border x:Name="Bd" 
-                            Background="Transparent"
-                            Padding="{TemplateBinding Padding}"
-                            MinHeight="{TemplateBinding MinHeight}">
-                        <ContentPresenter 
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    <Border
+                        x:Name="Bd"
+                        MinHeight="{TemplateBinding MinHeight}"
+                        Padding="{TemplateBinding Padding}"
+                        Background="Transparent">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="True">
@@ -214,7 +213,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Slider">
                     <Grid>
-                        <!-- Background track - changed to blue -->
+                        <!--  Background track - changed to blue  -->
                         <Border
                             Height="4"
                             VerticalAlignment="Center"
@@ -233,7 +232,7 @@
                                     Command="Slider.DecreaseLarge">
                                     <RepeatButton.Template>
                                         <ControlTemplate TargetType="RepeatButton">
-                                            <!-- Empty template to remove hover rectangle -->
+                                            <!--  Empty template to remove hover rectangle  -->
                                             <Rectangle Fill="Transparent" />
                                         </ControlTemplate>
                                     </RepeatButton.Template>
@@ -246,7 +245,7 @@
                                     Command="Slider.IncreaseLarge">
                                     <RepeatButton.Template>
                                         <ControlTemplate TargetType="RepeatButton">
-                                            <!-- Empty template to remove hover rectangle -->
+                                            <!--  Empty template to remove hover rectangle  -->
                                             <Rectangle Fill="Transparent" />
                                         </ControlTemplate>
                                     </RepeatButton.Template>

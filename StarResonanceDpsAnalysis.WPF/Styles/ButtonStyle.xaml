@@ -1,6 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!--  可被替换的资源（像 CSS 变量）  -->
     <FontFamily x:Key="IconButtonFontFamily">Segoe UI Symbol</FontFamily>
@@ -19,21 +20,23 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <ControlTemplate.Resources>
-                        <!-- DataTemplate for string content: creates a TextBlock that binds to the Button's FontFamily/FontSize -->
+                        <!--  DataTemplate for string content: creates a TextBlock that binds to the Button's FontFamily/FontSize  -->
                         <DataTemplate DataType="{x:Type sys:String}">
-                            <TextBlock Text="{Binding}"
-                                       FontFamily="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontFamily}"
-                                       FontSize="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontSize}"
-                                       TextAlignment="Center" />
+                            <TextBlock
+                                FontFamily="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontFamily}"
+                                FontSize="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontSize}"
+                                Text="{Binding}"
+                                TextAlignment="Center" />
                         </DataTemplate>
                     </ControlTemplate.Resources>
 
                     <Border Background="{TemplateBinding Background}">
-                        <!-- Let ContentPresenter use TemplateBindings; when Content is a string the DataTemplate above will be used and will apply local FontFamily/FontSize -->
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        <!--  Let ContentPresenter use TemplateBindings; when Content is a string the DataTemplate above will be used and will apply local FontFamily/FontSize  -->
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

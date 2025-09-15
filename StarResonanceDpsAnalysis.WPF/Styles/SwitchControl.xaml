@@ -1,0 +1,150 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls">
+
+    <Style TargetType="{x:Type controls:SwitchControl}">
+        <Setter Property="Width" Value="44" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:SwitchControl}">
+                    <Grid Width="44" Height="24">
+                        <!-- Track with named SolidColorBrush so we can animate its Color -->
+                        <Border x:Name="PART_Track"
+                                CornerRadius="12"
+                                Opacity="1">
+                            <Border.Background>
+                                <SolidColorBrush x:Name="TrackBrush" Color="{StaticResource AntBorderColor}" />
+                            </Border.Background>
+                        </Border>
+
+                        <!-- Thumb uses TranslateTransform for smooth animation -->
+                        <Border x:Name="PART_Thumb"
+                                Width="18"
+                                Height="18"
+                                Background="White"
+                                BorderBrush="#FFCCCCCC"
+                                BorderThickness="1"
+                                CornerRadius="9"
+                                Margin="3,3,3,3"
+                                HorizontalAlignment="Left"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="ThumbTranslate" X="0" />
+                            </Border.RenderTransform>
+                        </Border>
+
+                        <!-- Labels container (on top of thumb) -->
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" IsHitTestVisible="False">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="20" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- On label on the left -->
+                            <ContentControl x:Name="PART_OnLabel"
+                                            Grid.Column="0"
+                                            Content="{TemplateBinding OnContent}"
+                                            FontSize="10"
+                                            Foreground="White"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Opacity="0"
+                                            RenderTransformOrigin="0.5,0.5">
+                                <ContentControl.RenderTransform>
+                                    <TranslateTransform x:Name="OnLabelTranslate" X="0" />
+                                </ContentControl.RenderTransform>
+                            </ContentControl>
+
+                            <!-- Off label on the right -->
+                            <ContentControl x:Name="PART_OffLabel"
+                                            Grid.Column="2"
+                                            Content="{TemplateBinding OffContent}"
+                                            FontSize="10"
+                                            Foreground="Black"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            Opacity="1" />
+                        </Grid>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Animate when checked -->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!-- Track color animate to primary -->
+                                        <ColorAnimation Storyboard.TargetName="TrackBrush"
+                                                        Storyboard.TargetProperty="Color"
+                                                        To="{StaticResource AntPrimaryColor}"
+                                                        Duration="0:0:0.18" />
+                                        <!-- Thumb slide to right: calculate X = Width - ThumbWidth - Margin*2 => 44 - 18 - 6 = 20 -->
+                                        <DoubleAnimation Storyboard.TargetName="ThumbTranslate"
+                                                         Storyboard.TargetProperty="X"
+                                                         To="20"
+                                                         Duration="0:0:0.18"
+                                                         AccelerationRatio="0.2" DecelerationRatio="0.8" />
+                                        <!-- Fade labels: On becomes visible, Off hidden -->
+                                        <DoubleAnimation Storyboard.TargetName="PART_OnLabel"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0:0:0.12" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_OffLabel"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0"
+                                                         Duration="0:0:0.12" />
+                                        <!-- Move On label slightly to the right -->
+                                        <DoubleAnimation Storyboard.TargetName="OnLabelTranslate"
+                                                         Storyboard.TargetProperty="X"
+                                                         To="4"
+                                                         Duration="0:0:0.18" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="TrackBrush"
+                                                        Storyboard.TargetProperty="Color"
+                                                        To="{StaticResource AntBorderColor}"
+                                                        Duration="0:0:0.18" />
+                                        <DoubleAnimation Storyboard.TargetName="ThumbTranslate"
+                                                         Storyboard.TargetProperty="X"
+                                                         To="0"
+                                                         Duration="0:0:0.18"
+                                                         AccelerationRatio="0.2" DecelerationRatio="0.8" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_OnLabel"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0"
+                                                         Duration="0:0:0.12" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_OffLabel"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0:0:0.12" />
+                                        <!-- Move On label back to original position -->
+                                        <DoubleAnimation Storyboard.TargetName="OnLabelTranslate"
+                                                         Storyboard.TargetProperty="X"
+                                                         To="0"
+                                                         Duration="0:0:0.18" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_Track" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="PART_Thumb" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
