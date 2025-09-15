@@ -21,8 +21,6 @@
     -->
 
     <!--  未知职业 (Unknown)  -->
-    <Color x:Key="ClassesUnknownColor">#FF7A7A7A</Color>
-    <SolidColorBrush x:Key="ClassesUnknownBrush" Color="{StaticResource ClassesUnknownColor}" />
     <DrawingImage x:Key="ClassesUnknownIcon">
         <DrawingImage.Drawing>
             <DrawingGroup ClipGeometry="M0,0 V377 H375 V0 H0 Z">
@@ -43,53 +41,34 @@
     </DrawingImage>
 
     <!--  神盾骑士 (ShieldKnight)  -->
-    <Color x:Key="ClassesShieldKnightColor">#FF2D8CFF</Color>
-    <SolidColorBrush x:Key="ClassesShieldKnightBrush" Color="{StaticResource ClassesShieldKnightColor}" />
     <BitmapImage x:Key="ClassesShieldKnightIcon" UriSource="pack://application:,,,/Assets/Images/Classes_ShieldKnight.png" />
-    <!--  enum-keyed resource for converter lookup  -->
     <BitmapImage x:Key="{x:Static models:Classes.ShieldKnight}" UriSource="pack://application:,,,/Assets/Images/Classes_ShieldKnight.png" />
 
     <!--  巨刃守卫者 (HeavyGuardian)  -->
-    <Color x:Key="ClassesHeavyGuardianColor">#FF8B4513</Color>
-    <SolidColorBrush x:Key="ClassesHeavyGuardianBrush" Color="{StaticResource ClassesHeavyGuardianColor}" />
     <BitmapImage x:Key="ClassesHeavyGuardianIcon" UriSource="pack://application:,,,/Assets/Images/Classes_HeavyGuardian.png" />
     <BitmapImage x:Key="{x:Static models:Classes.HeavyGuardian}" UriSource="pack://application:,,,/Assets/Images/Classes_HeavyGuardian.png" />
 
     <!--  雷影剑士 (Stormblade)  -->
-    <Color x:Key="ClassesStormbladeColor">#FFFFA500</Color>
-    <SolidColorBrush x:Key="ClassesStormbladeBrush" Color="{StaticResource ClassesStormbladeColor}" />
     <BitmapImage x:Key="ClassesStormbladeIcon" UriSource="pack://application:,,,/Assets/Images/Classes_Stormblade.png" />
     <BitmapImage x:Key="{x:Static models:Classes.Stormblade}" UriSource="pack://application:,,,/Assets/Images/Classes_Stormblade.png" />
 
     <!--  青岚骑士 (WindKnight)  -->
-    <Color x:Key="ClassesWindKnightColor">#FF7FFFD4</Color>
-    <SolidColorBrush x:Key="ClassesWindKnightBrush" Color="{StaticResource ClassesWindKnightColor}" />
     <BitmapImage x:Key="ClassesWindKnightIcon" UriSource="pack://application:,,,/Assets/Images/Classes_WIndKnight.png" />
     <BitmapImage x:Key="{x:Static models:Classes.WindKnight}" UriSource="pack://application:,,,/Assets/Images/Classes_WIndKnight.png" />
 
     <!--  冰魔导师 (FrostMage)  -->
-    <Color x:Key="ClassesFrostMageColor">#FF87CEFA</Color>
-    <SolidColorBrush x:Key="ClassesFrostMageBrush" Color="{StaticResource ClassesFrostMageColor}" />
     <BitmapImage x:Key="ClassesFrostMageIcon" UriSource="pack://application:,,,/Assets/Images/Classes_FrostMage.png" />
     <BitmapImage x:Key="{x:Static models:Classes.FrostMage}" UriSource="pack://application:,,,/Assets/Images/Classes_FrostMage.png" />
 
     <!--  神射手 (Marksman)  -->
-    <Color x:Key="ClassesMarksmanColor">#FFB22222</Color>
-    <SolidColorBrush x:Key="ClassesMarksmanBrush" Color="{StaticResource ClassesMarksmanColor}" />
     <BitmapImage x:Key="ClassesMarksmanIcon" UriSource="pack://application:,,,/Assets/Images/Classes_Marksman.png" />
     <BitmapImage x:Key="{x:Static models:Classes.Marksman}" UriSource="pack://application:,,,/Assets/Images/Classes_Marksman.png" />
 
     <!--  森语者 (VerdantOracle)  -->
-    <Color x:Key="ClassesVerdantOracleColor">#FF228B22</Color>
-    <SolidColorBrush x:Key="ClassesVerdantOracleBrush" Color="{StaticResource ClassesVerdantOracleColor}" />
-    <!--  keep original key for existing references, add enum-keyed resource  -->
     <BitmapImage x:Key="ClassesIconVerdantOracleIcon" UriSource="pack://application:,,,/Assets/Images/Classes_VerdantOracle.png" />
     <BitmapImage x:Key="{x:Static models:Classes.VerdantOracle}" UriSource="pack://application:,,,/Assets/Images/Classes_VerdantOracle.png" />
 
     <!--  灵魂乐手 (SoulMusician)  -->
-    <Color x:Key="ClassesSoulMusicianColor">#FFDA70D6</Color>
-    <SolidColorBrush x:Key="ClassesSoulMusicianBrush" Color="{StaticResource ClassesSoulMusicianColor}" />
-    <!--  keep original key for existing references, add enum-keyed resource  -->
     <BitmapImage x:Key="ClassesIconShieldKnightIcon" UriSource="pack://application:,,,/Assets/Images/Classes_SoulMusician.png" />
     <BitmapImage x:Key="{x:Static models:Classes.SoulMusician}" UriSource="pack://application:,,,/Assets/Images/Classes_SoulMusician.png" />
 

@@ -1,0 +1,58 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="clr-namespace:StarResonanceDpsAnalysis.Core.Models;assembly=StarResonanceDpsAnalysis.Core">
+
+    <!--
+        说明（中文）：
+        本资源字典定义了每个职业对应的颜色与笔刷，资源键命名规则基于 ViewModel 中的枚举 StarResonanceDpsAnalysis.WPF.ViewModels：
+        - ShieldKnight       -> ClassesShieldKnightColor / ClassesShieldKnightBrush （神盾骑士）
+        - HeavyGuardian      -> ClassesHeavyGuardianColor / ClassesHeavyGuardianBrush （巨刃守卫者）
+        - Stormblade         -> ClassesStormbladeColor / ClassesStormbladeBrush （雷影剑士）
+        - WindKnight         -> ClassesWindKnightColor / ClassesWindKnightBrush （青岚骑士）
+        - FrostMage          -> ClassesFrostMageColor / ClassesFrostMageBrush （冰魔导师）
+        - Marksman           -> ClassesMarksmanColor / ClassesMarksmanBrush （神射手）
+        - VerdantOracle      -> ClassesVerdantOracleColor / ClassesVerdantOracleBrush （森语者）
+        - SoulMusician       -> ClassesSoulMusicianColor / ClassesSoulMusicianBrush （灵魂乐手）
+        
+        用途：
+        - 在界面中通过引用相应的 Brushes 或 Colors 来保证不同职业使用统一配色。
+        - 请勿随意更改资源键名，以免与代码中对资源键的引用不一致。
+    -->
+
+    <!--  未知职业 (Unknown)  -->
+    <Color x:Key="ClassesUnknownColor">#FF7A7A7A</Color>
+    <SolidColorBrush x:Key="ClassesUnknownBrush" Color="{StaticResource ClassesUnknownColor}" />
+
+    <!--  神盾骑士 (ShieldKnight)  -->
+    <Color x:Key="ClassesShieldKnightColor">#9C9B75</Color>
+    <SolidColorBrush x:Key="ClassesShieldKnightBrush" Color="{StaticResource ClassesShieldKnightColor}" />
+
+    <!--  巨刃守卫者 (HeavyGuardian)  -->
+    <Color x:Key="ClassesHeavyGuardianColor">#537758</Color>
+    <SolidColorBrush x:Key="ClassesHeavyGuardianBrush" Color="{StaticResource ClassesHeavyGuardianColor}" />
+
+    <!--  雷影剑士 (Stormblade)  -->
+    <Color x:Key="ClassesStormbladeColor">#70629C</Color>
+    <SolidColorBrush x:Key="ClassesStormbladeBrush" Color="{StaticResource ClassesStormbladeColor}" />
+
+    <!--  青岚骑士 (WindKnight)  -->
+    <Color x:Key="ClassesWindKnightColor">#799A9C</Color>
+    <SolidColorBrush x:Key="ClassesWindKnightBrush" Color="{StaticResource ClassesWindKnightColor}" />
+
+    <!--  冰魔导师 (FrostMage)  -->
+    <Color x:Key="ClassesFrostMageColor">#79779C</Color>
+    <SolidColorBrush x:Key="ClassesFrostMageBrush" Color="{StaticResource ClassesFrostMageColor}" />
+
+    <!--  神射手 (Marksman)  -->
+    <Color x:Key="ClassesMarksmanColor">#8E8B47</Color>
+    <SolidColorBrush x:Key="ClassesMarksmanBrush" Color="{StaticResource ClassesMarksmanColor}" />
+
+    <!--  森语者 (VerdantOracle)  -->
+    <Color x:Key="ClassesVerdantOracleColor">#639C70</Color>
+    <SolidColorBrush x:Key="ClassesVerdantOracleBrush" Color="{StaticResource ClassesVerdantOracleColor}" />
+
+    <!--  灵魂乐手 (SoulMusician)  -->
+    <Color x:Key="ClassesSoulMusicianColor">#9C5353</Color>
+    <SolidColorBrush x:Key="ClassesSoulMusicianBrush" Color="{StaticResource ClassesSoulMusicianColor}" />
+</ResourceDictionary>

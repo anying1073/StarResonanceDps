@@ -3,4 +3,8 @@
     <SolidColorBrush x:Key="TestTextSolidBrush" Color="{StaticResource Test.TextColor}" />
     <Color x:Key="AccentColor">#2297F4</Color>
     <SolidColorBrush x:Key="AccentSolidBrush" Color="{StaticResource AccentColor}" />
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Styles/Classes/Classes.Colors.Dark.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

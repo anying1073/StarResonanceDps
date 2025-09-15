@@ -12,7 +12,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/MenuStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/FooterStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/TestThemeStyle.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Styles/Classes.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/Classes/Classes.Images.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/SeparatorStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/CardControlStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Converters/ConveterDictionary.xaml" />
