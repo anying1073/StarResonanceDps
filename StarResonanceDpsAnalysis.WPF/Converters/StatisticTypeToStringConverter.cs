@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
-using CommunityToolkit.Mvvm.ComponentModel;
 using StarResonanceDpsAnalysis.WPF.Models;
-using StarResonanceDpsAnalysis.WPF.ViewModels;
 
 namespace StarResonanceDpsAnalysis.WPF.Converters;
 
@@ -18,6 +16,7 @@ internal class StatisticTypeToStringConverter : IValueConverter
                 StatisticType.Damage => "Damage",
                 StatisticType.Healing => "Healing",
                 StatisticType.TakenDamage => "Taken Damage",
+                StatisticType.NpcTakenDamage => "NPC Taken Damage",
                 _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unsupported StatisticType")
             };
         }
@@ -108,6 +107,7 @@ internal class StatisticTypeNScopeTimeToStringMultiConverter : IMultiValueConver
 
     public object[]? ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {
-        throw new NotSupportedException("ConvertBack is not supported for StatisticTypeNScopeTimeToStringMultiConverter");
+        throw new NotSupportedException(
+            "ConvertBack is not supported for StatisticTypeNScopeTimeToStringMultiConverter");
     }
 }

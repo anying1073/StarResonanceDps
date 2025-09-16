@@ -1,17 +1,21 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
-using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Analyze.Exceptions;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
+using StarResonanceDpsAnalysis.Core.Extends.Data;
 using StarResonanceDpsAnalysis.Core.Models;
+using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Converters;
 using StarResonanceDpsAnalysis.WPF.Data;
 using StarResonanceDpsAnalysis.WPF.Extensions;
 using StarResonanceDpsAnalysis.WPF.Models;
+using StarResonanceDpsAnalysis.WPF.Services;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -30,11 +34,14 @@ public partial class DpsStatisticsViewModel : BaseViewModel
 {
     private readonly IApplicationController _appController;
     private readonly Stopwatch _battleTimer = new();
+    private readonly IConfigManager _configManager;
+    private readonly IWindowManagementService _windowManagement;
     private readonly IDataSource _dataSource;
 
     private readonly Stopwatch _fullBattleTimer = new();
     private readonly ILogger<DpsStatisticsViewModel> _logger;
     private readonly Random _rd = new();
+    private readonly Dictionary<long, StatisticDataViewModel> _slotsDictionary = new();
     private readonly IDataStorage _storage;
     private readonly long[] _totals = new long[6]; // 6位玩家示例
 
@@ -49,54 +56,63 @@ public partial class DpsStatisticsViewModel : BaseViewModel
     [ObservableProperty] private string _sortMemberPath = "Value";
     [ObservableProperty] private StatisticType _statisticIndex;
 
-    private DispatcherTimer _timer = null!;
-
-    public DpsStatisticsViewModel(IApplicationController appController, IDataSource dataSource, IDataStorage storage,
-        ILogger<DpsStatisticsViewModel> logger)
+    /// <inheritdoc/>
+    public DpsStatisticsViewModel(IApplicationController appController,
+        IDataSource dataSource,
+        IDataStorage storage,
+        ILogger<DpsStatisticsViewModel> logger,
+        IConfigManager configManager,
+        IWindowManagementService windowManagement)
     {
         _appController = appController;
-        _dataSource = dataSource;
         _storage = storage;
         _logger = logger;
-        _logger.LogDebug("VM Loaded");
+        _dataSource = dataSource;
+        _configManager = configManager;
+        _windowManagement = windowManagement;
+        _slots.CollectionChanged += SlotsChanged;
+        return;
 
-        InitDemoProgressBars();
+        void SlotsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    Debug.Assert(e.NewItems != null, "e.NewItems != null");
+                    LocalIterate(e.NewItems, item => _slotsDictionary.Add(item.Player.Uid, item));
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    Debug.Assert(e.OldItems != null, "e.OldItems != null");
+                    LocalIterate(e.OldItems, itm => _slotsDictionary.Remove(itm.Player.Uid));
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    Debug.Assert(e.OldItems != null, "e.OldItems != null");
+                    LocalIterate(e.OldItems, item => _slotsDictionary[item.Player.Uid] = item);
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    _slotsDictionary.Clear();
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    // just ignore
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return;
+
+            void LocalIterate(IList list, Action<StatisticDataViewModel> action)
+            {
+                foreach (StatisticDataViewModel item in list)
+                {
+                    action.Invoke(item);
+                }
+            }
+        }
     }
 
     public DpsStatisticsOptions Options { get; } = new();
     private Stopwatch InUsingTimer => ScopeTime == ScopeTime.Total ? _fullBattleTimer : _battleTimer;
-
-    [Conditional("DEBUG")]
-    private void InitDemoProgressBars()
-    {
-        // 2) 造几位玩家（随便举例，图标请换成你项目里存在的）
-        var players = new[]
-        {
-            ("惊奇猫猫盒-狼弓(23207)", Classes.Marksman),
-            ("无双重剑-测试(19876)", Classes.ShieldKnight),
-            ("奥术回响-测试(20111)", Classes.FrostMage),
-            ("圣光之约-测试(18770)", Classes.VerdantOracle),
-            ("影袭-测试(20990)", Classes.Stormblade),
-            ("Jojo-未知(20990)", Classes.Unknown)
-        };
-
-        Slots.BeginUpdate();
-        for (var i = 0; i < players.Length; i++)
-        {
-            var (nick, @class) = players[i];
-            var barData = new StatisticDataViewModel
-            {
-                Index = i + 1, // 1-based index
-                // Name = nick,
-                // Classes = @class
-            };
-            Slots.Add(barData);
-        }
-
-        UpdateData();
-        Slots.EndUpdate();
-    }
-
 
     /// <summary>
     /// 读取用户缓存
@@ -121,10 +137,9 @@ public partial class DpsStatisticsViewModel : BaseViewModel
     [RelayCommand]
     private void OnLoaded()
     {
+        _logger.LogDebug("VM Loaded");
         // 开始监听DPS更新事件
         _storage.DpsDataUpdated += DataStorage_DpsDataUpdated;
-
-        StartRefreshTimer();
     }
 
 
@@ -140,7 +155,108 @@ public partial class DpsStatisticsViewModel : BaseViewModel
             _battleTimer.Restart();
         }
 
-        // UpdateSortProgressBarListData();
+        var dpsList = ScopeTime == ScopeTime.Total
+            ? DataStorage.ReadOnlyFullDpsDataList
+            : DataStorage.ReadOnlySectionedDpsDataList;
+        UpdateData(dpsList);
+    }
+
+
+    private void UpdateData(IReadOnlyList<DpsData> data)
+    {
+        _logger.LogDebug("Enter updatedata");
+        // 根据数据更新数据
+        foreach (var dpsData in data)
+        {
+            var value = GetValue(dpsData, ScopeTime, StatisticIndex);
+            if (!_slotsDictionary.TryGetValue(dpsData.UID, out var slot))
+            {
+                var ret = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out var playerInfo);
+                var @class = ret ? ((int)playerInfo!.ProfessionID!).GetClassNameById() : Classes.Unknown;
+                Slots.Add(new StatisticDataViewModel
+                {
+                    Index = 999,
+                    Value = (ulong)value, // TODO: 将 long 转为 ulong
+                    Duration = (ulong)(dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0)),
+                    Player = new PlayerInfoViewModel
+                    {
+                        Uid = dpsData.UID,
+                        Class = @class,
+                        Guild = "Unknown",
+                        Name = ret ? playerInfo?.Name ?? $"UID: {dpsData.UID}" : $"UID: {dpsData.UID}",
+                        Spec = playerInfo?.Spec ?? ClassSpec.Unknown
+                    }
+                });
+            }
+            else
+            {
+                // Simplified update of existing slot (replaces the selected block)
+                var unsignedValue = value < 0 ? 0UL : (ulong)value;
+                var durationTicks = dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0);
+                var duration = durationTicks < 0 ? 0UL : (ulong)durationTicks;
+
+                // use the out variable `slot` from TryGetValue above for in-place update
+                slot.Value = unsignedValue;
+                slot.Duration = duration;
+
+                if (_storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out var playerInfo))
+                {
+                    slot.Player.Name = playerInfo?.Name ?? $"UID: {dpsData.UID}";
+                    slot.Player.Class = playerInfo?.ProfessionID.HasValue == true
+                        ? ((int)playerInfo!.ProfessionID!).GetClassNameById()
+                        : Classes.Unknown;
+                    slot.Player.Spec = playerInfo?.Spec ?? ClassSpec.Unknown;
+                }
+                else
+                {
+                    slot.Player.Name = $"UID: {dpsData.UID}";
+                    slot.Player.Class = Classes.Unknown;
+                    slot.Player.Spec = ClassSpec.Unknown;
+                }
+            }
+        }
+
+        // Calculate percentage of max
+        if (Slots.Count > 0)
+        {
+            var maxValue = Slots.Max(d => d.Value);
+            foreach (var slot in Slots)
+            {
+                slot.PercentOfMax = maxValue > 0 ? slot.Value / (double)maxValue * 100 : 0;
+            }
+
+            // Calculate percentage of total
+            var totalValue = Slots.Sum(d => Convert.ToDouble(d.Value));
+            foreach (var slot in Slots)
+            {
+                slot.Percent = totalValue > 0 ? slot.Value / totalValue : 0;
+            }
+        }
+
+        // Sort data in place 
+        SortSlotsInPlace();
+
+        _logger.LogDebug("Exit updatedata");
+
+        return;
+
+        long GetValue(DpsData dpsData, ScopeTime scopeTime, StatisticType statisticType)
+        {
+            Debug.Assert(dpsData.IsNpcData && statisticType == StatisticType.NpcTakenDamage,
+                "dpsData.IsNpcData && statisticType == StatisticType.NpcTakenDamage"); // 保证是NPC承伤
+            return (scopeTime, statisticType) switch
+            {
+                (ScopeTime.Current, StatisticType.Damage) => dpsData.TotalAttackDamage,
+                (ScopeTime.Current, StatisticType.Healing) => dpsData.TotalHeal,
+                (ScopeTime.Current, StatisticType.TakenDamage) => dpsData.TotalTakenDamage,
+                (ScopeTime.Current, StatisticType.NpcTakenDamage) => dpsData.IsNpcData ? dpsData.TotalTakenDamage : 0,
+                (ScopeTime.Total, StatisticType.Damage) => dpsData.TotalAttackDamage,
+                (ScopeTime.Total, StatisticType.Healing) => dpsData.TotalHeal,
+                (ScopeTime.Total, StatisticType.TakenDamage) => dpsData.TotalTakenDamage,
+                (ScopeTime.Total, StatisticType.NpcTakenDamage) => dpsData.IsNpcData ? dpsData.TotalTakenDamage : 0,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
     }
 
     /// <summary>
@@ -194,17 +310,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel
         UpdateData();
     }
 
-    private void StartRefreshTimer()
-    {
-        // 3) 定时器：实时更新
-        _timer = new DispatcherTimer(DispatcherPriority.Background)
-        {
-            Interval = TimeSpan.FromMilliseconds(1000)
-        };
-        _timer.Tick += (_, __) => UpdateData();
-        // _timer.Start();
-    }
-
     [RelayCommand]
     private void NextMetricType()
     {
@@ -223,42 +328,12 @@ public partial class DpsStatisticsViewModel : BaseViewModel
         ScopeTime = ScopeTime.Next();
     }
 
-    private void UpdateData()
+    protected void UpdateData()
     {
-        _logger.LogDebug("Enter updatedata");
-
-        // Update values for each slot
-        foreach (var data in Slots)
-        {
-            data.Value += (ulong)_rd.Next(1000, 80000);
-            // _logger.LogDebug($"Updated {data.Name}'s value to {data.Value}");
-        }
-
-        // Calculate percentage of max
-        if (Slots.Count > 0)
-        {
-            var maxValue = Slots.Max(d => d.Value);
-            foreach (var data in Slots)
-            {
-                data.PercentOfMax = maxValue > 0 ? data.Value / (double)maxValue * 100 : 0;
-            }
-
-            // Calculate percentage of total
-            var totalValue = Slots.Sum(d => Convert.ToDouble(d.Value));
-            foreach (var data in Slots)
-            {
-                data.Percent = totalValue > 0 ? data.Value / totalValue : 0;
-            }
-        }
-
-        // Sort data in place 
-        SortSlotsInPlace();
-
-        _logger.LogDebug("Exit updatedata");
     }
 
     /// <summary>
-    /// Updates the Id property of items to reflect their current position in the collection
+    /// Updates the Index property of items to reflect their current position in the collection
     /// </summary>
     private void UpdateItemIndices()
     {
@@ -300,6 +375,12 @@ public partial class DpsStatisticsViewModel : BaseViewModel
     private void OpenContextMenu()
     {
         ShowContextMenu = true;
+    }
+
+    [RelayCommand]
+    private void OpenSettings()
+    {
+        _windowManagement.SettingsView.Show();
     }
 
     [RelayCommand]
@@ -423,4 +504,40 @@ public partial class DpsStatisticsViewModel : BaseViewModel
 }
 
 public sealed class DpsStatisticsDesignTimeViewModel()
-    : DpsStatisticsViewModel(null!, null!, new InstantizedDataStorage(), null!);
+    : DpsStatisticsViewModel(null!, null!, new InstantizedDataStorage(), null!, null!, null!)
+{
+    [Conditional("DEBUG")]
+    private void InitDemoProgressBars()
+    {
+        // 2) 造几位玩家（随便举例，图标请换成你项目里存在的）
+        var players = new[]
+        {
+            ("惊奇猫猫盒-狼弓(23207)", Classes.Marksman),
+            ("无双重剑-测试(19876)", Classes.ShieldKnight),
+            ("奥术回响-测试(20111)", Classes.FrostMage),
+            ("圣光之约-测试(18770)", Classes.VerdantOracle),
+            ("影袭-测试(20990)", Classes.Stormblade),
+            ("Jojo-未知(20990)", Classes.Unknown)
+        };
+
+        Slots.BeginUpdate();
+        for (var i = 0; i < players.Length; i++)
+        {
+            var (nick, @class) = players[i];
+            var barData = new StatisticDataViewModel
+            {
+                Index = i + 1, // 1-based index
+                Player = new PlayerInfoViewModel
+                {
+                    Uid = i + 1,
+                    Class = @class,
+                    Name = nick
+                }
+            };
+            Slots.Add(barData);
+        }
+
+        UpdateData();
+        Slots.EndUpdate();
+    }
+}

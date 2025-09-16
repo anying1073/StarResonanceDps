@@ -136,7 +136,7 @@
                     FontFamily="pack://application:,,,/Assets/Fonts/#SAO Welcome TT"
                     Foreground="White">
                     <TextBlock.Text>
-                        <Binding Path="Id" UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="Index" UpdateSourceTrigger="PropertyChanged" />
                     </TextBlock.Text>
                 </TextBlock>
 
@@ -144,7 +144,7 @@
                 <Image
                     Grid.Column="1"
                     Margin="4"
-                    Source="{Binding Classes, Converter={StaticResource ClassesToIconConverter}, FallbackValue={StaticResource ClassesUnknownIcon}}" />
+                    Source="{Binding Player.Class, Converter={StaticResource ClassesToIconConverter}, FallbackValue={StaticResource ClassesUnknownIcon}}" />
 
                 <!--  昵称  -->
                 <TextBlock
@@ -153,7 +153,7 @@
                     VerticalAlignment="Center"
                     FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
                     Foreground="White"
-                    Text="{Binding Name}" />
+                    Text="{Binding Player.Name}" />
 
                 <!--  数值  -->
                 <TextBlock
@@ -329,15 +329,16 @@
                                 <behaviors:OpenContextMenuBehavior />
                             </b:Interaction.Behaviors>
                             <Button.ContextMenu>
-                                <ContextMenu>
+                                <ContextMenu Style="{StaticResource ModernContextMenu}">
                                     <!--  只给 MenuItem 应用样式，Separator 不受影响  -->
                                     <ContextMenu.Resources>
                                         <Style BasedOn="{StaticResource ModernMenuItem}" TargetType="{x:Type MenuItem}" />
                                     </ContextMenu.Resources>
-
-                                    <ContextMenu.Style>
-                                        <StaticResource ResourceKey="ModernContextMenu"/>
-                                    </ContextMenu.Style>
+                                    <MenuItem
+                                        Command="{Binding OpenSettingsCommand}"
+                                        Header="设置"
+                                        IsCheckable="false" />
+                                    <Separator />
 
                                     <MenuItem
                                         Header="统计BOSS"
