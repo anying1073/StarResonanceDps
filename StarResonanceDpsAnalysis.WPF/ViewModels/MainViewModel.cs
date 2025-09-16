@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using StarResonanceDpsAnalysis.WPF.Services;
 using StarResonanceDpsAnalysis.WPF.Themes;
 using StarResonanceDpsAnalysis.WPF.Views;
 
@@ -26,16 +27,17 @@ public partial class MainViewModel(ApplicationThemeManager themeManager, DpsStat
     {
         themeManager.Apply(value);
     }
+
     [RelayCommand]
     private void CallDpsStatisticsView()
     {
-        dpsStatisticsView.Show();
+        windowManagement.DpsStatisticsView.Show();
     }
 
     [RelayCommand]
     private void CallSettingsView()
     {
-        settingsView.Show();
+        windowManagement.SettingsView.Show();
     }
 
     [RelayCommand]

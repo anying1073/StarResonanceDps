@@ -8,6 +8,7 @@ using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Data;
 using StarResonanceDpsAnalysis.WPF.Extensions;
 using StarResonanceDpsAnalysis.WPF.Models;
+using StarResonanceDpsAnalysis.WPF.Services;
 using StarResonanceDpsAnalysis.WPF.Themes;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
 using StarResonanceDpsAnalysis.WPF.Views;
@@ -75,6 +76,7 @@ public partial class App : Application
                     services.AddSingleton<DebugFunctions>();
                     services.AddSingleton<CaptureDeviceList>(CaptureDeviceList.Instance);
                     services.AddThemes();
+                    services.AddWindowManagementService();
                     services.AddSingleton<IApplicationController, ApplicationController>();
                     services.AddSingleton<IDataSource, DpsDummyDataSource>();
                     services.AddSingleton<IDeviceManager, DeviceManager>();
