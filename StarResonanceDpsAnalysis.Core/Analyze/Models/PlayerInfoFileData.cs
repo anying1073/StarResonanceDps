@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Extends.System;
+using StarResonanceDpsAnalysis.Core.Models;
 
 namespace StarResonanceDpsAnalysis.Core.Analyze.Models
 {
@@ -21,6 +22,8 @@ namespace StarResonanceDpsAnalysis.Core.Analyze.Models
         public int? ProfessionID { get; internal set; }
         [JsonProperty("s")]
         public string? SubProfessionName { get; internal set; }
+        [JsonProperty]
+        public ClassSpec? Spec { get; internal set; }
         [JsonProperty("c")]
         public int? CombatPower { get; internal set; }
         [JsonProperty("cr")]
@@ -45,6 +48,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze.Models
                 Name = p.Name,
                 ProfessionID = p.ProfessionID,
                 SubProfessionName = p.SubProfessionName,
+                Spec = p.Spec,
                 CombatPower = p.CombatPower,
                 Critical = p.Critical,
                 Lucky = p.Lucky,
