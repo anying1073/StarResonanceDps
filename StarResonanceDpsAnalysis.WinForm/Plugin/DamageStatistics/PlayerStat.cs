@@ -4,8 +4,8 @@ using System.Timers;
 using System.Xml.Linq;
 
 using StarResonanceDpsAnalysis.Core.Extends.Data;
+using StarResonanceDpsAnalysis.Core.Models;
 using StarResonanceDpsAnalysis.WinForm.Core;
-using StarResonanceDpsAnalysis.WinForm.Forms;
 
 using static StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics.PlayerDataManager;
 
@@ -64,7 +64,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
         /// </summary>
         public int CountDead { get; private set; }
 
-   
+
 
 
 
@@ -183,7 +183,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
             // —— 原有累计/计数/极值逻辑保持不变 —— 
             if (isCrit && isLucky)
             {
-                CritLucky += value; 
+                CritLucky += value;
                 LuckyAndCritical += value;
             }
             else if (isCrit) Critical += value;
@@ -208,9 +208,9 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
                 if (value > MaxSingleHit) MaxSingleHit = value;
                 if (value < MinSingleHit) MinSingleHit = value;
             }
-          
-               
-            
+
+
+
 
             if (isLucky && isCauseLucky)
             {
@@ -503,7 +503,8 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
         /// <summary>职业。</summary>
         public string Profession { get; set; } = "未知";
 
-        public string SubProfession { get; set; }=null;
+        public string SubProfession { get; set; } = null;
+        public ClassSpec Spec { get; set; } = ClassSpec.Unknown;
 
         #endregion
 
@@ -583,7 +584,9 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
             if (string.IsNullOrEmpty(SubProfession))
             {
                 var sp = skillId.GetSubProfessionBySkillId();
+                var spec = skillId.GetClassSpecBySkillId();
                 if (!string.IsNullOrEmpty(sp)) SubProfession = sp;
+                Spec = spec;
             }
 
             // 把新增字段写入全程记录（需要你同步扩展 FullRecord.RecordDamage 的签名）
@@ -618,7 +621,9 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
             if (string.IsNullOrEmpty(SubProfession))
             {
                 var sp = skillId.GetSubProfessionBySkillId();
+                var spec = skillId.GetClassSpecBySkillId();
                 if (!string.IsNullOrEmpty(sp)) SubProfession = sp;
+                Spec = spec;
             }
 
             FullRecord.RecordHealing(
@@ -628,7 +633,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
 
         }
 
-  
+
 
         /// <summary>
         /// 添加承伤记录（支持暴击/幸运标记），同时累计到聚合与分技能統計，并寫入全程記錄。
@@ -676,8 +681,8 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
             stat.AddRecord(damage, isCrit, isLucky, lessen /*, isCauseLucky 可按需传 */);
 
             // 全程记录（若你有扩展 FullRecord.RecordTakenDamage）
-             FullRecord.RecordTakenDamage(Uid, skillId, damage, isCrit, isLucky, lessen,
-                 Nickname, CombatPower, Profession, damageSource, isMiss, isDead);
+            FullRecord.RecordTakenDamage(Uid, skillId, damage, isCrit, isLucky, lessen,
+                Nickname, CombatPower, Profession, damageSource, isMiss, isDead);
         }
 
 
@@ -1021,7 +1026,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
 
         #endregion
 
-  
+
 
     }
 
@@ -1068,7 +1073,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
 
         /// <summary>整场战斗结束时间（手动结束后赋值；进行中则为 null）。</summary>
         private DateTime? _combatEnd;
-        
+
         /// <summary>是否处于战斗中。</summary>
         public bool IsInCombat => _combatStart.HasValue && !_combatEnd.HasValue;
 
@@ -1438,7 +1443,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
         /// <param name="damageSource">伤害类型</param>
         /// <param name="isMiss">是否闪避。</param>
         /// <param name="isDead">是否死亡。</param>
-        public void AddTakenDamage(long uid, long skillId, ulong damage,int damageSource, bool isMiss,bool isDead, bool isCrit, bool isLucky, ulong hpLessen = 0)
+        public void AddTakenDamage(long uid, long skillId, ulong damage, int damageSource, bool isMiss, bool isDead, bool isCrit, bool isLucky, ulong hpLessen = 0)
         {
             MarkCombatActivity();
             GetOrCreate(uid).AddTakenDamage(
@@ -1483,7 +1488,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
         // # 分类：批量与查询（玩家集/技能占比/技能详情/全队聚合）
         // ------------------------------------------------------------
         #region 批量与查询
-    
+
 
         /// <summary>
         /// 获取有战斗数据的玩家集合（过滤掉没有伤害、治疗与承伤的玩家）。
@@ -2050,7 +2055,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
 
                 // 击杀次数（可选），仅计数，不影响总量
                 if (isDead) TakenStats.RegisterKill();
-  
+
             }
 
             private StatisticData GetOrCreate(long uid)
@@ -2121,7 +2126,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
             public void SetNpcName(long npcId, string name)
             {
                 GetOrCreate(npcId).SetName(name);
-                FullRecord.SetNpcName(npcId,name);
+                FullRecord.SetNpcName(npcId, name);
             }
             // 1) 列出所有出现过的 NPCId（当前战斗）
             public IReadOnlyList<long> GetAllNpcIds()
@@ -2175,7 +2180,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
                 var npc = GetOrCreate(npcId, npcName);
                 npc.AddTakenFrom(attackerUid, damage, isCrit, isLucky, hpLessen, isMiss, isDead);
                 FullRecord.RecordNpcTakenDamage(npcId, attackerUid, damage, isCrit, isLucky, hpLessen, isMiss, isDead);
-               
+
 
             }
 
@@ -2281,7 +2286,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
                                 TotalDps: totalDps);
                     })
                     .ToList();
-                
+
                 return ordered;
             }
 
