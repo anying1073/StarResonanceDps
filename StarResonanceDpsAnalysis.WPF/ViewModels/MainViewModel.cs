@@ -16,7 +16,7 @@ public partial class DebugFunctions(DpsStatisticsViewModel dpsStatisticsViewMode
     }
 }
 
-public partial class MainViewModel(ApplicationThemeManager themeManager, DpsStatisticsView dpsStatisticsView, SettingsView settingsView, DebugFunctions debugFunctions, SkillBreakdownView skillBreakdownView) : BaseViewModel
+public partial class MainViewModel(ApplicationThemeManager themeManager, DebugFunctions debugFunctions, SkillBreakdownView skillBreakdownView, IWindowManagementService windowManagement) : BaseViewModel
 {
     public DebugFunctions Debug { get; init; } = debugFunctions;
 
@@ -41,8 +41,8 @@ public partial class MainViewModel(ApplicationThemeManager themeManager, DpsStat
     }
 
     [RelayCommand]
-    private void CallSkillBreakdownView() 
+    private void CallSkillBreakdownView()
     {
-        skillBreakdownView.Show();
+        windowManagement.SkillBreakdownView.Show();
     }
 }
