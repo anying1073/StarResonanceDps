@@ -433,15 +433,16 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
         private void button_SwitchStatisticsMode_Click(object sender, EventArgs e) // 单次/全程切换按钮事件
         {
             _isShowFullData = !_isShowFullData;
-
+            
             // 更新标题状态副文本
             UpdateHeaderText();
-
+            
             // 更新战斗时长文本
             UpdateBattleTimerText();
-
+            
             // 更新面板数据
             UpdateSortProgressBarListData();
+            // button_LoadPcap_Click(sender, e);
         }
         #endregion
 
@@ -694,6 +695,100 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
         private void timer_BattleTimeLabelUpdater_Tick(object sender, EventArgs e)
         {
             UpdateBattleTimerText();
+        }
+
+        // PCAP replay helpers (insert into the DpsStatisticsForm partial class)
+        private System.Threading.CancellationTokenSource? _replayCts;
+        private Task? _replayTask;
+
+        /// <summary>
+        /// Start replaying a pcap/pcapng file into the existing PacketAnalyzer.
+        /// Non-blocking: runs on a background task and uses a CancellationToken to stop.
+        /// </summary>
+        private void StartPcapReplay(string filePath, bool realtime = true, double speed = 1.0)
+        {
+            // stop any existing replay first
+            StopPcapReplay();
+
+            _replayCts = new System.Threading.CancellationTokenSource();
+            var token = _replayCts.Token;
+
+            // run replay in background so UI stays responsive
+            _replayTask = Task.Run(async () =>
+            {
+                try
+                {
+                    // PcapReplay.ReplayFileAsync will call PacketAnalyzer.ProcessPacket for each packet
+                    await StarResonanceDpsAnalysis.Core.Data.PcapReplay.ReplayFileAsync(filePath, PacketAnalyzer, realtime, speed, token).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
+                    // expected on stop
+                }
+                catch (Exception ex)
+                {
+                    // minimal logging; marshal to UI if needed
+                    Console.WriteLine($"Pcap replay failed: {ex.Message}");
+                }
+                finally
+                {
+                    // ensure cleanup on completion
+                    try { _replayCts?.Dispose(); } catch { }
+                    _replayCts = null;
+                    _replayTask = null;
+                }
+            }, token);
+        }
+
+        /// <summary>
+        /// Stop any running pcap replay (cancels and waits briefly).
+        /// </summary>
+        private void StopPcapReplay()
+        {
+            if (_replayCts == null) return;
+
+            try
+            {
+                _replayCts.Cancel();
+                // wait a short time for graceful shutdown; avoid blocking UI thread
+                _replayTask?.Wait(millisecondsTimeout: 3000);
+            }
+            catch (AggregateException) { }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"StopPcapReplay error: {ex.Message}");
+            }
+            finally
+            {
+                try { _replayCts.Dispose(); } catch { }
+                _replayCts = null;
+                _replayTask = null;
+            }
+        }
+
+        /// <summary>
+        /// Example button handler: pick a pcap file and start replay.
+        /// Wire this to a Button's Click event in the designer or call it from code.
+        /// </summary>
+        private void button_LoadPcap_Click(object sender, EventArgs e)
+        {
+            using var dlg = new OpenFileDialog()
+            {
+                Filter = "Capture files (*.pcap;*.pcapng)|*.pcap;*.pcapng|All files (*.*)|*.*",
+                Title = "Open pcap/pcapng file to replay"
+            };
+
+            if (dlg.ShowDialog(this) != DialogResult.OK) return;
+
+            // optional: ask user for realtime/speed settings; here we use defaults
+            StartPcapReplay(dlg.FileName, realtime: true, speed: 1.0);
+
+            // update UI state (invoke on UI thread)
+            this.Invoke(() =>
+            {
+                // show simple feedback
+                MessageBox.Show(this, $"Replaying {System.IO.Path.GetFileName(dlg.FileName)}...", "PCAP Replay", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            });
         }
     }
 }

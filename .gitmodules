@@ -1,0 +1,3 @@
+[submodule "StarResonanceData"]
+	path = StarResonanceData
+	url = https://github.com/PotRooms/StarResonanceData

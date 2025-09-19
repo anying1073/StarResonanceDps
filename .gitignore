@@ -365,3 +365,4 @@ FodyWeavers.xsd
 *.csproj.user
 
 /StarResonanceDpsAnalysis/Properties/PublishProfiles/
+/StarResonanceDpsAnalysis.Core/Protobuf/BlueProtobuf.proto

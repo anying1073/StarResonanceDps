@@ -6,19 +6,31 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Analyze\Versions\**" />
+    <EmbeddedResource Remove="Analyze\Versions\**" />
+    <None Remove="Analyze\Versions\**" />
+    <Page Remove="Analyze\Versions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.32.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.72.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.3" />
     <PackageReference Include="PacketDotNet" Version="1.4.8" />
     <PackageReference Include="SharpPcap" Version="6.3.1" />
     <PackageReference Include="ZstdNet" Version="1.4.5" />
   </ItemGroup>
-
   <ItemGroup>
-    <Folder Include="Analyze\Versions\" />
+    <!-- <Protobuf Include="..\StarResonanceData\proto\**\*.proto" GrpcServices="Both" ProtoRoot="..\StarResonanceData\proto" /> -->
+    <Protobuf Include="Protobuf\BlueProtobuf.proto" GrpcServices="Both" 
+              Condition="Exists('Protobuf\BlueProtobuf.proto')"/>
   </ItemGroup>
-
 </Project>

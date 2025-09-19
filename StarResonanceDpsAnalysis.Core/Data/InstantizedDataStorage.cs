@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Collections.ObjectModel;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
-using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
+using StarResonanceDpsAnalysis.WPF.Data;
 
-namespace StarResonanceDpsAnalysis.WPF.Models;
+namespace StarResonanceDpsAnalysis.Core.Data;
 
 /// <summary>
 /// 为了避免重复创建对象而实例化的存储类, 仅用于存储数据
@@ -375,13 +373,5 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
     public void ClearAllPlayerInfos()
     {
         DataStorage.ClearAllPlayerInfos();
-    }
-}
-
-public static class DataStorageExtensions
-{
-    public static IServiceCollection AddDataStorage(this IServiceCollection services)
-    {
-        return services.AddSingleton<IDataStorage, InstantizedDataStorage>();
     }
 }

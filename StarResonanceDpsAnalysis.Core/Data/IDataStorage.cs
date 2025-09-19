@@ -3,7 +3,7 @@ using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 
-namespace StarResonanceDpsAnalysis.WPF.Models;
+namespace StarResonanceDpsAnalysis.WPF.Data;
 
 public interface IDataStorage : IDisposable
 {

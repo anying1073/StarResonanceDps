@@ -4,12 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:behaviors="clr-namespace:StarResonanceDpsAnalysis.WPF.Behaviors"
-    xmlns:converters="clr-namespace:StarResonanceDpsAnalysis.WPF.Converters"
     xmlns:ctrl="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:StarResonanceDpsAnalysis.WPF.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
     Title="DpsStatisticsForm"
@@ -62,14 +60,6 @@
             <Setter Property="Foreground" Value="#FFF" />
             <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC" />
             <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="Text">
-                <Setter.Value>
-                    <MultiBinding Mode="OneWay" StringFormat="{}{0} ({1})">
-                        <Binding Converter="{StaticResource StatisticTypeToStringConverter}" Path="StatisticIndex" />
-                        <Binding Converter="{StaticResource ScopeTimeToStringConverter}" Path="ScopeTime" />
-                    </MultiBinding>
-                </Setter.Value>
-            </Setter>
         </Style>
         <Style BasedOn="{StaticResource IconButtonStyle}" TargetType="Button">
             <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Fonts/#iconfont" />
@@ -144,7 +134,7 @@
                     FontFamily="pack://application:,,,/Assets/Fonts/#SAO Welcome TT"
                     Foreground="White">
                     <TextBlock.Text>
-                        <Binding Path="Id" UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="Index" UpdateSourceTrigger="PropertyChanged" />
                     </TextBlock.Text>
                 </TextBlock>
 
@@ -152,7 +142,7 @@
                 <Image
                     Grid.Column="1"
                     Margin="4"
-                    Source="{Binding Classes, Converter={StaticResource ClassesToIconConverter}, FallbackValue={StaticResource ClassesUnknownIcon}}" />
+                    Source="{Binding Player.Class, Converter={StaticResource ClassesToIconConverter}, FallbackValue={StaticResource ClassesUnknownIcon}}" />
 
                 <!--  昵称  -->
                 <TextBlock
@@ -161,7 +151,7 @@
                     VerticalAlignment="Center"
                     FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
                     Foreground="White"
-                    Text="{Binding Name}" />
+                    Text="{Binding Player.Name}" />
 
                 <!--  数值  -->
                 <TextBlock
@@ -279,7 +269,14 @@
                         Command="{Binding PreviousMetricTypeCommand}"
                         Content=""
                         FontSize="15" />
-                    <TextBlock Grid.Column="1" Style="{StaticResource StatisticTypeText}" />
+                    <TextBlock Grid.Column="1" Style="{StaticResource StatisticTypeText}">
+                        <TextBlock.Text>
+                            <MultiBinding Mode="OneWay" StringFormat="{}{0} ({1})">
+                                <Binding Converter="{StaticResource StatisticTypeToStringConverter}" Path="StatisticIndex" />
+                                <Binding Converter="{StaticResource ScopeTimeToStringConverter}" Path="ScopeTime" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <!--  右侧按钮  -->
                     <Button
                         x:Name="RightButton"
@@ -305,14 +302,12 @@
                         Grid.Column="4"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
-                        <Button Command="{Binding SortByValueCommand}">[Sort]</Button>
-                        <Button Command="{Binding AddRandomDataCommand}">[AddRand]</Button>
                         <!--  设置按钮  -->
                         <Button
                             x:Name="RefreshButton"
                             Width="21"
                             Command="{Binding RefreshCommand}"
-                            Content="&#xE644;" >
+                            Content="&#xE644;">
 
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseEnter">
@@ -324,20 +319,24 @@
                             </b:Interaction.Triggers>
                         </Button>
                         <!--  设置按钮  -->
-                        <Button x:Name="SetButton" Content="&#xE600;" Width="24">
+                        <Button
+                            x:Name="SetButton"
+                            Width="24"
+                            Content="&#xE600;">
                             <b:Interaction.Behaviors>
                                 <behaviors:OpenContextMenuBehavior />
                             </b:Interaction.Behaviors>
                             <Button.ContextMenu>
-                                <ContextMenu>
+                                <ContextMenu Style="{StaticResource ModernContextMenu}">
                                     <!--  只给 MenuItem 应用样式，Separator 不受影响  -->
                                     <ContextMenu.Resources>
                                         <Style BasedOn="{StaticResource ModernMenuItem}" TargetType="{x:Type MenuItem}" />
                                     </ContextMenu.Resources>
-
-                                    <ContextMenu.Style>
-                                        <StaticResource ResourceKey="ModernContextMenu"/>
-                                    </ContextMenu.Style>
+                                    <MenuItem
+                                        Command="{Binding OpenSettingsCommand}"
+                                        Header="设置"
+                                        IsCheckable="false" />
+                                    <Separator />
 
                                     <MenuItem
                                         Header="统计BOSS"
@@ -409,7 +408,7 @@
                             Width="22"
                             Click="PullButton_Click"
                             Content="&#xE601;"
-                            RenderTransformOrigin="0.5,0.5" >
+                            RenderTransformOrigin="0.5,0.5">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform />

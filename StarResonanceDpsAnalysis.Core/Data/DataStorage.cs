@@ -542,9 +542,11 @@ namespace StarResonanceDpsAnalysis.Core.Data
             }
 
             var subProfessionName = skillId.GetSubProfessionBySkillId();
+            var spec = skillId.GetClassSpecBySkillId();
             if (!string.IsNullOrEmpty(subProfessionName))
             {
                 playerInfo.SubProfessionName = subProfessionName;
+                playerInfo.Spec = spec;
             }
         }
 
