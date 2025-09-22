@@ -242,7 +242,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel
 
         long GetValue(DpsData dpsData, ScopeTime scopeTime, StatisticType statisticType)
         {
-            Debug.Assert(dpsData.IsNpcData && statisticType == StatisticType.NpcTakenDamage,
+            Debug.Assert(dpsData.IsNpcData == (statisticType == StatisticType.NpcTakenDamage),
                 "dpsData.IsNpcData && statisticType == StatisticType.NpcTakenDamage"); // 保证是NPC承伤
             return (scopeTime, statisticType) switch
             {
