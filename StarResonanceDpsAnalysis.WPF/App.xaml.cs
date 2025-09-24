@@ -75,8 +75,8 @@ public partial class App : Application
                 services.Configure<AppConfig>(context.Configuration.GetSection("Config"));
                 services.AddTransient<MainViewModel>();
                 services.AddTransient<MainWindow>();
-                services.AddTransient<DpsStatisticsViewModel>();
-                services.AddTransient<DpsStatisticsView>();
+                services.AddSingleton<DpsStatisticsViewModel>();
+                services.AddSingleton<DpsStatisticsView>();
                 services.AddTransient<SettingsViewModel>();
                 services.AddTransient<SettingsView>();
                 services.AddTransient<SkillBreakdownViewModel>();
