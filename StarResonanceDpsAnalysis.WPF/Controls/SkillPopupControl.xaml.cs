@@ -44,7 +44,7 @@ namespace StarResonanceDpsAnalysis.WPF.Controls
             );
 
         /// <summary>
-        /// 技能列表数据源，比如 ObservableCollection&lt;SkillItem&gt;
+        /// 技能列表数据源，比如 ObservableCollection&lt;SkillItemViewModel&gt;
         /// </summary>
         public IEnumerable ItemsSource
         {

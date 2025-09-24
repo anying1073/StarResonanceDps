@@ -42,6 +42,8 @@
                     Command="{Binding LoadDebugDataSourceCommand}"
                     Content="Load PCAP" />
                 <Separator Margin="5,0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <Button Command="{Binding AddSampleDataCommand}" Content="AddSampleData" />
+                <Separator Margin="5,0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
 
                 <Button
                     Margin="5,0"

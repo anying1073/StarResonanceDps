@@ -4,6 +4,7 @@
     xmlns:ctrl="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls">
 
     <Style TargetType="ctrl:SortedDpsControl">
+        <!-- <Setter Property="IsHitTestVisible" Value="False" /> -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ctrl:SortedDpsControl">
@@ -14,25 +15,43 @@
                             HorizontalContentAlignment="Stretch"
                             AlternationCount="10000"
                             Background="Transparent"
+                            BorderBrush="Transparent"
                             BorderThickness="0"
                             ItemTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                            ItemsSource="{Binding Data, RelativeSource={RelativeSource TemplatedParent}}"
+                            ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource TemplatedParent}}"
                             ScrollViewer.CanContentScroll="True"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
 
-                            <!--  VirtualizingStackPanel.IsVirtualizing="True"  -->
-                            <!--  VirtualizingStackPanel.VirtualizationMode="Recycling"  -->
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <!-- <Setter Property="Background" Value="Transparent" /> -->
+                                    <!-- <Setter Property="BorderBrush" Value="Transparent" /> -->
+                                    <!-- <Setter Property="BorderThickness" Value="0" /> -->
+                                    <!-- <Setter Property="Padding" Value="0" /> -->
+                                    <!-- <Setter Property="Margin" Value="0" /> -->
+                                    <!-- <Setter Property="Template"> -->
+                                    <!--     <Setter.Value> -->
+                                    <!--         <ControlTemplate TargetType="ListBoxItem"> -->
+                                    <!--  <Border  -->
+                                    <!--  Background="{TemplateBinding Background}"  -->
+                                    <!--  BorderBrush="{TemplateBinding BorderBrush}"  -->
+                                    <!--  BorderThickness="{TemplateBinding BorderThickness}"  -->
+                                    <!--  Padding="{TemplateBinding Padding}">  -->
+                                    <!--  <ContentPresenter  -->
+                                    <!--  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"  -->
+                                    <!--  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />  -->
+                                    <!--             </Border> -->
+                                    <!--  ~1~ No triggers = no selection visual feedback @1@  -->
+                                    <!--         </ControlTemplate> -->
+                                    <!--     </Setter.Value> -->
+                                    <!-- </Setter> -->
                                 </Style>
                             </ListBox.ItemContainerStyle>
 
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <!-- <VirtualizingStackPanel /> -->
-                                    <!-- <StackPanel /> -->
                                     <ctrl:AnimatedStackPanel />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>

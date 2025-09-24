@@ -10,7 +10,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:DpsIndicatorControl}">
-                    <Grid x:Name="Root">
+                    <Grid x:Name="Root" Background="Transparent">
                         <!--  track  -->
                         <Border
                             x:Name="PART_Track"
@@ -43,7 +43,65 @@
                             Content="{Binding OverlayContent, RelativeSource={RelativeSource TemplatedParent}}"
                             ContentTemplate="{Binding OverlayTemplate, RelativeSource={RelativeSource TemplatedParent}}"
                             IsHitTestVisible="False" />
+
+                        <!--  Custom Popup with proper mouse handling  -->
+                        <Popup
+                            x:Name="PART_Popup"
+                            AllowsTransparency="True"
+                            IsHitTestVisible="False"
+                            Placement="MousePoint"
+                            PlacementTarget="{Binding ElementName=Root}"
+                            PopupAnimation="Fade"
+                            StaysOpen="True">
+                            <Border
+                                MaxWidth="360"
+                                Padding="6"
+                                Background="#CC202020"
+                                BorderThickness="0"
+                                CornerRadius="4"
+                                IsHitTestVisible="False">
+                                <Border.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="10"
+                                        Opacity="0.3"
+                                        ShadowDepth="2" />
+                                </Border.Effect>
+                                <StackPanel IsHitTestVisible="False">
+                                    <!--  Debug info with direct binding  -->
+                                    <TextBlock
+                                        Margin="2"
+                                        FontSize="10"
+                                        Foreground="Yellow"
+                                        IsHitTestVisible="False"
+                                        Text="{Binding PopupContent.Player.Name, RelativeSource={RelativeSource TemplatedParent}, StringFormat='DEBUG: Player={0}'}" />
+                                    <!--  Show skill count  -->
+                                    <TextBlock
+                                        Margin="2"
+                                        FontSize="10"
+                                        Foreground="Cyan"
+                                        IsHitTestVisible="False"
+                                        Text="{Binding PopupContent.SkillList.Count, RelativeSource={RelativeSource TemplatedParent}, StringFormat='Skills Count: {0}'}" />
+                                    <!--  Actual content  -->
+                                    <ContentControl
+                                        Content="{Binding PopupContent, RelativeSource={RelativeSource TemplatedParent}}"
+                                        ContentTemplate="{Binding PopupTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                        IsHitTestVisible="False" />
+                                </StackPanel>
+                            </Border>
+                        </Popup>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--  Simple triggers without animations  -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Track" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Popup" Property="IsOpen" Value="True" />
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter TargetName="PART_Track" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_Popup" Property="IsOpen" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

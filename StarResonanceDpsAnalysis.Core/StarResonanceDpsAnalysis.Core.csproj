@@ -7,7 +7,11 @@
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <LangVersion>latest</LangVersion>
+    <!-- <InternalsVisibleTo>StarResonanceDpsAnalysis.WPF</InternalsVisibleTo> -->
   </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="StarResonanceDpsAnalysis.WPF" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Analyze\Versions\**" />
@@ -30,7 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <!-- <Protobuf Include="..\StarResonanceData\proto\**\*.proto" GrpcServices="Both" ProtoRoot="..\StarResonanceData\proto" /> -->
-    <Protobuf Include="Protobuf\BlueProtobuf.proto" GrpcServices="Both" 
-              Condition="Exists('Protobuf\BlueProtobuf.proto')"/>
+    <Protobuf Include="Protobuf\BlueProtobuf.proto" GrpcServices="Both" Condition="Exists('Protobuf\BlueProtobuf.proto')" />
   </ItemGroup>
 </Project>

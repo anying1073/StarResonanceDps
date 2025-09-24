@@ -8,14 +8,10 @@ namespace StarResonanceDpsAnalysis.WPF.Controls;
 
 public class SortedDpsControl : Control
 {
-    // Backwards-compatible Data property (existing)
-    public static readonly DependencyProperty DataProperty = DependencyProperty.Register(
-        nameof(Data), typeof(IEnumerable), typeof(SortedDpsControl), new PropertyMetadata(null));
-
     // New ItemsSource property (preferred)
     public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
         nameof(ItemsSource), typeof(IEnumerable), typeof(SortedDpsControl),
-        new PropertyMetadata(null, OnItemsSourceChanged));
+        new PropertyMetadata(null));
 
     // ItemTemplate for customizing item visuals
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
@@ -37,12 +33,6 @@ public class SortedDpsControl : Control
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(SortedDpsControl),
             new FrameworkPropertyMetadata(typeof(SortedDpsControl)));
-    }
-
-    public IEnumerable? Data
-    {
-        get => (IEnumerable?)GetValue(DataProperty);
-        set => SetValue(DataProperty, value);
     }
 
     public IEnumerable? ItemsSource
@@ -75,13 +65,13 @@ public class SortedDpsControl : Control
         set => SetValue(ItemClickCommandProperty, value);
     }
 
-    private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var ctl = (SortedDpsControl)d;
-        // keep legacy Data property in sync
-        if (!Equals(ctl.Data, e.NewValue))
+        // Keep ItemsSource in sync with Data
+        if (!Equals(ctl.ItemsSource, e.NewValue))
         {
-            ctl.SetValue(DataProperty, e.NewValue);
+            ctl.SetValue(ItemsSourceProperty, e.NewValue);
         }
     }
 }

@@ -49,8 +49,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel
     [ObservableProperty] private NumberDisplayMode _numberDisplayMode = NumberDisplayMode.Wan;
     [ObservableProperty] private ScopeTime _scopeTime = ScopeTime.Current;
     [ObservableProperty] private bool _showContextMenu;
-    [ObservableProperty] private bool _showSkillListPopup;
-    [ObservableProperty] private List<SkillItem>? _skillList;
     [ObservableProperty] private BulkObservableCollection<StatisticDataViewModel> _slots = new();
     [ObservableProperty] private SortDirectionEnum _sortDirection = SortDirectionEnum.Descending;
     [ObservableProperty] private string _sortMemberPath = "Value";
@@ -158,6 +156,26 @@ public partial class DpsStatisticsViewModel : BaseViewModel
         var dpsList = ScopeTime == ScopeTime.Total
             ? DataStorage.ReadOnlyFullDpsDataList
             : DataStorage.ReadOnlySectionedDpsDataList;
+        dpsList = new List<DpsData>()
+        {
+            new DpsData() {TotalAttackDamage = Random.Shared.Next(19999), UID = 1},
+            new DpsData() {TotalAttackDamage = Random.Shared.Next(19999), UID = 2},
+            new DpsData() {TotalAttackDamage = Random.Shared.Next(19999), UID=3}
+        };
+        foreach (var item in dpsList)
+        {
+            item.SkillDic[123] = new SkillData()
+            {
+                CritTimes = 10,
+                LuckyTimes = 3,
+                SkillId = 1000,
+                TotalValue = 10000,
+                UseTimes = 100,
+            };
+            item.SkillDic[456] = new SkillData() { CritTimes = 5, LuckyTimes = 1, SkillId = 2000, TotalValue = 10000, UseTimes = 983 };
+            item.SkillDic[789] = new SkillData() { CritTimes = 8, LuckyTimes = 2, SkillId = 3000, TotalValue = 10000, UseTimes = 18 };
+            item.SkillDic[101112] = new SkillData() { CritTimes = 12, LuckyTimes = 4, SkillId = 4000, TotalValue = 1023, UseTimes = 123 };
+        }
         UpdateData(dpsList);
     }
 
@@ -169,11 +187,12 @@ public partial class DpsStatisticsViewModel : BaseViewModel
         foreach (var dpsData in data)
         {
             var value = GetValue(dpsData, ScopeTime, StatisticIndex);
+            PlayerInfo? playerInfo;
             if (!_slotsDictionary.TryGetValue(dpsData.UID, out var slot))
             {
-                var ret = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out var playerInfo);
+                var ret = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out playerInfo);
                 var @class = ret ? ((int)playerInfo!.ProfessionID!).GetClassNameById() : Classes.Unknown;
-                Slots.Add(new StatisticDataViewModel
+                slot = new StatisticDataViewModel
                 {
                     Index = 999,
                     Value = (ulong)value, // TODO: 将 long 转为 ulong
@@ -185,34 +204,61 @@ public partial class DpsStatisticsViewModel : BaseViewModel
                         Guild = "Unknown",
                         Name = ret ? playerInfo?.Name ?? $"UID: {dpsData.UID}" : $"UID: {dpsData.UID}",
                         Spec = playerInfo?.Spec ?? ClassSpec.Unknown
-                    }
-                });
+                    },
+                    GetSkillList = (player) =>
+                    {
+                        // Try to get real data first, fallback to test data
+                        if (_storage.ReadOnlyFullDpsDatas.ContainsKey(player.Uid))
+                        {
+                            return _storage.ReadOnlyFullDpsDatas[player.Uid].ReadOnlySkillDataList.Select(item =>
+                            {
+                                return new SkillItemViewModel()
+                                {
+                                    SkillName = item.SkillId.ToString(),
+                                    AvgDamage = 1000,
+                                    CritCount = item.CritTimes,
+                                    HitCount = item.UseTimes,
+                                    TotalDamage = item.TotalValue,
+                                };
+                            }).ToList();
+                        }
+                        else
+                        {
+                            // Fallback test data for debugging
+                            return new List<SkillItemViewModel>
+                            {
+                                new() { SkillName = $"Skill 1000", TotalDamage = 10000, HitCount = 100, CritCount = 10, AvgDamage = 100 },
+                                new() { SkillName = $"Skill 2000", TotalDamage = 10000, HitCount = 983, CritCount = 5, AvgDamage = 10 },
+                                new() { SkillName = $"Skill 3000", TotalDamage = 10000, HitCount = 18, CritCount = 8, AvgDamage = 555 },
+                                new() { SkillName = $"Skill 4000", TotalDamage = 1023, HitCount = 123, CritCount = 12, AvgDamage = 8 }
+                            };
+                        }
+                    },
+                };
+                Slots.Add(slot);
+            }
+            // Simplified update of existing slot (replaces the selected block)
+            var unsignedValue = value < 0 ? 0UL : (ulong)value;
+            var durationTicks = dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0);
+            var duration = durationTicks < 0 ? 0UL : (ulong)durationTicks;
+
+            // use the out variable `slot` from TryGetValue above for in-place update
+            slot.Value = unsignedValue;
+            slot.Duration = duration;
+
+            if (_storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out playerInfo))
+            {
+                slot.Player.Name = playerInfo.Name ?? $"UID: {dpsData.UID}";
+                slot.Player.Class = playerInfo.ProfessionID.HasValue == true
+                    ? ((int)playerInfo.ProfessionID!).GetClassNameById()
+                    : Classes.Unknown;
+                slot.Player.Spec = playerInfo?.Spec ?? ClassSpec.Unknown;
             }
             else
             {
-                // Simplified update of existing slot (replaces the selected block)
-                var unsignedValue = value < 0 ? 0UL : (ulong)value;
-                var durationTicks = dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0);
-                var duration = durationTicks < 0 ? 0UL : (ulong)durationTicks;
-
-                // use the out variable `slot` from TryGetValue above for in-place update
-                slot.Value = unsignedValue;
-                slot.Duration = duration;
-
-                if (_storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out var playerInfo))
-                {
-                    slot.Player.Name = playerInfo?.Name ?? $"UID: {dpsData.UID}";
-                    slot.Player.Class = playerInfo?.ProfessionID.HasValue == true
-                        ? ((int)playerInfo!.ProfessionID!).GetClassNameById()
-                        : Classes.Unknown;
-                    slot.Player.Spec = playerInfo?.Spec ?? ClassSpec.Unknown;
-                }
-                else
-                {
-                    slot.Player.Name = $"UID: {dpsData.UID}";
-                    slot.Player.Class = Classes.Unknown;
-                    slot.Player.Spec = ClassSpec.Unknown;
-                }
+                slot.Player.Name = $"UID: {dpsData.UID}";
+                slot.Player.Class = Classes.Unknown;
+                slot.Player.Spec = ClassSpec.Unknown;
             }
         }
 
@@ -305,9 +351,62 @@ public partial class DpsStatisticsViewModel : BaseViewModel
 
 
     [RelayCommand]
-    private void AddRandomData()
+    public void AddRandomData()
     {
         UpdateData();
+    }
+
+    // Test command to manually add an item
+    [RelayCommand]
+    public void AddTestItem()
+    {
+        var newItem = new StatisticDataViewModel
+        {
+            Index = Slots.Count + 1,
+            Value = (ulong)_rd.Next(100, 2000),
+            Duration = 60000,
+            Player = new PlayerInfoViewModel
+            {
+                Uid = _rd.Next(100, 999),
+                Class = Classes.Marksman,
+                Guild = "Test Guild",
+                Name = $"Test Player {Slots.Count + 1}",
+                Spec = ClassSpec.Unknown
+            },
+            // Add test skill data
+            GetSkillList = (player) => new List<SkillItemViewModel>
+            {
+                new() { SkillName = "Test Skill A", TotalDamage = 15000, HitCount = 25, CritCount = 8, AvgDamage = 600 },
+                new() { SkillName = "Test Skill B", TotalDamage = 8500, HitCount = 15, CritCount = 4, AvgDamage = 567 },
+                new() { SkillName = "Test Skill C", TotalDamage = 12300, HitCount = 30, CritCount = 12, AvgDamage = 410 }
+            }
+        };
+
+        // Calculate percentages
+        if (Slots.Count > 0)
+        {
+            var maxValue = Math.Max(Slots.Max(d => d.Value), newItem.Value);
+            var totalValue = Slots.Sum(d => Convert.ToDouble(d.Value)) + newItem.Value;
+
+            // Update all existing items
+            foreach (var slot in Slots)
+            {
+                slot.PercentOfMax = maxValue > 0 ? slot.Value / (double)maxValue * 100 : 0;
+                slot.Percent = totalValue > 0 ? slot.Value / totalValue : 0;
+            }
+
+            // Set new item percentages
+            newItem.PercentOfMax = maxValue > 0 ? newItem.Value / (double)maxValue * 100 : 0;
+            newItem.Percent = totalValue > 0 ? newItem.Value / totalValue : 0;
+        }
+        else
+        {
+            newItem.PercentOfMax = 100;
+            newItem.Percent = 1;
+        }
+
+        Slots.Add(newItem);
+        SortSlotsInPlace();
     }
 
     [RelayCommand]
@@ -330,6 +429,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel
 
     protected void UpdateData()
     {
+        DataStorage_DpsDataUpdated();
     }
 
     /// <summary>
@@ -350,26 +450,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel
         throw new NotImplementedException();
     }
 
-    [RelayCommand]
-    private void RefreshButtonMouseEntered()
-    {
-        var skills = new List<SkillItem>
-        {
-            new() { SkillName = "技能A", TotalDamage = "939.1万", HitCount = 4, CritCount = 121, AvgDamage = 121 },
-            new() { SkillName = "技能B", TotalDamage = "88.6万", HitCount = 8, CritCount = 23, AvgDamage = 11 },
-            new() { SkillName = "技能C", TotalDamage = "123.4万", HitCount = 3, CritCount = 45, AvgDamage = 233 }
-        };
-
-        SkillList = skills;
-        ShowSkillListPopup = true;
-    }
-
-    [RelayCommand]
-    private void RefreshButtonMouseLeaved()
-    {
-        SkillList = null;
-        ShowSkillListPopup = false;
-    }
 
     [RelayCommand]
     private void OpenContextMenu()
@@ -387,15 +467,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel
     private void Shutdown()
     {
         _appController.Shutdown();
-    }
-
-    public class SkillItem
-    {
-        public string SkillName { get; set; } = string.Empty;
-        public string TotalDamage { get; set; } = string.Empty;
-        public int HitCount { get; set; }
-        public int CritCount { get; set; }
-        public int AvgDamage { get; set; }
     }
 
     #region Sort

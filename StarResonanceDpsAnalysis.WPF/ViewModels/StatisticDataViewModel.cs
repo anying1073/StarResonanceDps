@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -12,6 +13,10 @@ public partial class StatisticDataViewModel : BaseViewModel, IComparable<Statist
     [ObservableProperty] private double _percentOfMax;
     [ObservableProperty] private double _percent;
     [ObservableProperty] private PlayerInfoViewModel _player = new();
+    // [ObservableProperty] private ObservableCollection<SkillItemViewModel> _skillList = new();
+    public Func<PlayerInfoViewModel, List<SkillItemViewModel>>? GetSkillList { get; set; }
+    public List<SkillItemViewModel> SkillList => GetSkillList?.Invoke(_player) ?? new List<SkillItemViewModel>();
+
 
     public int CompareTo(StatisticDataViewModel? other)
     {

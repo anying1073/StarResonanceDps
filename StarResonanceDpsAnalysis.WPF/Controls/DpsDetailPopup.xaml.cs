@@ -18,8 +18,8 @@ public partial class DpsDetailPopup : UserControl
         );
 
     public static readonly DependencyProperty SkillListProperty = DependencyProperty.Register(
-        nameof(SkillList), typeof(IEnumerable<DpsStatisticsViewModel.SkillItem>), typeof(DpsDetailPopup),
-        new PropertyMetadata(default(IEnumerable<DpsStatisticsViewModel.SkillItem>)));
+        nameof(SkillList), typeof(IEnumerable<SkillItemViewModel>), typeof(DpsDetailPopup),
+        new PropertyMetadata(default(IEnumerable<SkillItemViewModel>)));
 
     public DpsDetailPopup()
     {
@@ -35,9 +35,9 @@ public partial class DpsDetailPopup : UserControl
         set => SetValue(TitleProperty, value);
     }
 
-    public IEnumerable<DpsStatisticsViewModel.SkillItem> SkillList
+    public IEnumerable<SkillItemViewModel> SkillList
     {
-        get => (IEnumerable<DpsStatisticsViewModel.SkillItem>)GetValue(SkillListProperty);
+        get => (IEnumerable<SkillItemViewModel>)GetValue(SkillListProperty);
         set => SetValue(SkillListProperty, value);
     }
 }

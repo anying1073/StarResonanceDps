@@ -167,6 +167,14 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
         _logger.LogInformation("Test log entry {Id}", Guid.NewGuid().ToString("N")[..8]);
     }
 
+    #region AddData
+    [RelayCommand]
+    private void AddSampleData()
+    {
+        _dpsStatisticsViewModel.AddRandomData();
+    }
+    #endregion
+
     #region Replay
 
     [RelayCommand]

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -11,6 +12,13 @@ public class DpsIndicatorControl : Control
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(DpsIndicatorControl),
             new FrameworkPropertyMetadata(typeof(DpsIndicatorControl)));
+    }
+
+    public DpsIndicatorControl()
+    {
+        // Add mouse event handlers for debugging
+        this.MouseEnter += (s, e) => Debug.WriteLine($"[DpsIndicatorControl] MouseEnter - PopupContent: {PopupContent?.GetType().Name ?? "null"}");
+        this.MouseLeave += (s, e) => Debug.WriteLine($"[DpsIndicatorControl] MouseLeave");
     }
 
     // Percentage value in range 0..Maximum. Use double for proper binding with ProgressBar-like behavior.
@@ -117,5 +125,37 @@ public class DpsIndicatorControl : Control
     {
         get => GetValue(OverlayContentProperty);
         set => SetValue(OverlayContentProperty, value);
+    }
+
+    public static readonly DependencyProperty PopupTemplateProperty = DependencyProperty.Register(
+        nameof(PopupTemplate), typeof(DataTemplate), typeof(DpsIndicatorControl), 
+        new PropertyMetadata(default(DataTemplate?), OnPopupTemplateChanged));
+
+    public DataTemplate? PopupTemplate
+    {
+        get => (DataTemplate?)GetValue(PopupTemplateProperty);
+        set => SetValue(PopupTemplateProperty, value);
+    }
+
+    private static void OnPopupTemplateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        Debug.WriteLine($"[DpsIndicatorControl] PopupTemplate changed: {e.NewValue?.GetType().Name ?? "null"}");
+    }
+
+    public static readonly DependencyProperty PopupContentProperty = DependencyProperty.Register(
+        nameof(PopupContent), typeof(object), typeof(DpsIndicatorControl), 
+        new PropertyMetadata(default(object?), OnPopupContentChanged));
+
+    public object? PopupContent
+    {
+        get => (object?)GetValue(PopupContentProperty);
+        set => SetValue(PopupContentProperty, value);
+    }
+
+    private static void OnPopupContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var oldPlayerName = (e.OldValue as dynamic)?.Player?.Name ?? "null";
+        var newPlayerName = (e.NewValue as dynamic)?.Player?.Name ?? "null";
+        Debug.WriteLine($"[DpsIndicatorControl] PopupContent changed: {oldPlayerName} -> {newPlayerName}");
     }
 }
