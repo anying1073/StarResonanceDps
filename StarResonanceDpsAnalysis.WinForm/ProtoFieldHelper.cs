@@ -1,4 +1,4 @@
-﻿namespace StarResonanceDpsAnalysis.WinForm
+namespace StarResonanceDpsAnalysis.WinForm
 {
     public static class ProtoFieldHelper
     {

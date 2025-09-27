@@ -15,12 +15,12 @@ namespace StarResonanceDpsAnalysis.WinForm
         {
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
             {
-                // 记录日志
+                // 璁板綍鏃ュ織
                 Log("UnhandledException", (Exception)e.ExceptionObject);
             };
             Application.ThreadException += (sender, e) =>
             {
-                // 记录日志
+                // 璁板綍鏃ュ織
                 Log("ThreadException", e.Exception);
             };
 
