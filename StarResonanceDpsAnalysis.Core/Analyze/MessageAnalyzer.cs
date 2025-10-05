@@ -30,13 +30,11 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// Key = 消息类型ID (低15位)
         /// Value = 对应的解析方法
         /// </summary>
-        private static readonly List<Action<ByteReader, bool>?> MessageHandlers =
-        [
-            null, null,
-            ProcessNotifyMsg, // 2: 通知消息
-            null, null, null,
-            ProcessFrameDown  // 6: 帧下行消息
-        ];
+        private static readonly Dictionary<MessageType, Action<ByteReader, bool>> MessageHandlerMap = new()
+        {
+            { MessageType.Notify, ProcessNotifyMsg },
+            { MessageType.FrameDown, ProcessFrameDown }
+        };
 
         /// <summary>
         /// 主入口：处理一批TCP数据包
@@ -63,8 +61,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 var msgTypeId = packetType & 0x7FFF;                // 低15位是真实类型
 
                 // 分发到对应处理方法
-                if (msgTypeId < 0 || msgTypeId >= MessageHandlers.Count) continue;
-                var handler = MessageHandlers[msgTypeId];
+                if (!MessageHandlerMap.TryGetValue((MessageType)msgTypeId, out var handler)) continue;
                 handler?.Invoke(packetReader, isZstdCompressed);
             }
 

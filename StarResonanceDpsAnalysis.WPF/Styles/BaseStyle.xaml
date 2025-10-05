@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    
+
     <!--  引入 System.Double 类型（用于定义数值资源）  -->
     <sys:Double x:Key="MainCornerRadiusDouble">6</sys:Double>
 
@@ -13,7 +13,7 @@
     <sys:Double x:Key="CardHeaderHeight">25</sys:Double>
 
     <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">10</sys:Double>
-    
+
     <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">10</sys:Double>
 
 
@@ -102,16 +102,16 @@
 
 
     <!--  设置默认字体  -->
-    <Style TargetType="TextBlock" BasedOn="{StaticResource NormalTextBlockBaseStyle}" />
+    <Style BasedOn="{StaticResource NormalTextBlockBaseStyle}" TargetType="TextBlock" />
 
     <!--  设置默认滚动条样式  -->
     <Style TargetType="ScrollBar">
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollBar">
-                    <Grid Background="Transparent" Width="8">
-                        <!-- 轨道 -->
+                    <Grid Width="8" Background="Transparent">
+                        <!--  轨道  -->
                         <Track Name="PART_Track" IsDirectionReversed="true">
                             <Track.Resources>
                                 <Style TargetType="RepeatButton">
@@ -121,12 +121,12 @@
                                 </Style>
                             </Track.Resources>
                             <Track.DecreaseRepeatButton>
-                                <RepeatButton Command="ScrollBar.LineUpCommand"/>
+                                <RepeatButton Command="ScrollBar.LineUpCommand" />
                             </Track.DecreaseRepeatButton>
                             <Track.IncreaseRepeatButton>
-                                <RepeatButton Command="ScrollBar.LineDownCommand"/>
+                                <RepeatButton Command="ScrollBar.LineDownCommand" />
                             </Track.IncreaseRepeatButton>
-                            <!-- 滑块 -->
+                            <!--  滑块  -->
                             <Track.Thumb>
                                 <Thumb Background="#888">
                                     <Thumb.Template>
