@@ -68,7 +68,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             foreach (var wrapper in _serverConnMap.Values)
             {
                 DataStorage.ServerConnectionStateChanged -=
-                    (DataStorage.ServerConnectionStateChangedEventHandler)wrapper!;
+                    (ServerConnectionStateChangedEventHandler)wrapper!;
             }
 
             _serverConnMap.Clear();
@@ -79,7 +79,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         {
             foreach (var wrapper in _playerInfoUpdatedMap.Values)
             {
-                DataStorage.PlayerInfoUpdated -= (DataStorage.PlayerInfoUpdatedEventHandler)wrapper!;
+                DataStorage.PlayerInfoUpdated -= (PlayerInfoUpdatedEventHandler)wrapper!;
             }
 
             _playerInfoUpdatedMap.Clear();
@@ -90,7 +90,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         {
             foreach (var wrapper in _newSectionCreatedMap.Values)
             {
-                DataStorage.NewSectionCreated -= (DataStorage.NewSectionCreatedEventHandler)wrapper!;
+                DataStorage.NewSectionCreated -= (NewSectionCreatedEventHandler)wrapper!;
             }
 
             _newSectionCreatedMap.Clear();
@@ -101,7 +101,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         {
             foreach (var wrapper in _battleLogCreatedMap.Values)
             {
-                DataStorage.BattleLogCreated -= (DataStorage.BattleLogCreatedEventHandler)wrapper!;
+                DataStorage.BattleLogCreated -= (BattleLogCreatedEventHandler)wrapper!;
             }
 
             _battleLogCreatedMap.Clear();
@@ -112,7 +112,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         {
             foreach (var wrapper in _dpsDataUpdatedMap.Values)
             {
-                DataStorage.DpsDataUpdated -= (DataStorage.DpsDataUpdatedEventHandler)wrapper!;
+                DataStorage.DpsDataUpdated -= (DpsDataUpdatedEventHandler)wrapper!;
             }
 
             _dpsDataUpdatedMap.Clear();
@@ -123,7 +123,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         {
             foreach (var wrapper in _dataUpdatedMap.Values)
             {
-                DataStorage.DataUpdated -= (DataStorage.DataUpdatedEventHandler)wrapper!;
+                DataStorage.DataUpdated -= (DataUpdatedEventHandler)wrapper!;
             }
 
             _dataUpdatedMap.Clear();
@@ -134,7 +134,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         {
             foreach (var wrapper in _serverChangedMap.Values)
             {
-                DataStorage.ServerChanged -= (DataStorage.ServerChangedEventHandler)wrapper!;
+                DataStorage.ServerChanged -= (ServerChangedEventHandler)wrapper!;
             }
 
             _serverChangedMap.Clear();
@@ -144,7 +144,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
     }
 
     // Events: add/remove will subscribe/unsubscribe corresponding static events.
-    public event DataStorage.ServerConnectionStateChangedEventHandler? ServerConnectionStateChanged
+    public event ServerConnectionStateChangedEventHandler? ServerConnectionStateChanged
     {
         add
         {
@@ -152,7 +152,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             lock (_serverConnLock)
             {
                 if (_serverConnMap.ContainsKey(value)) return;
-                DataStorage.ServerConnectionStateChangedEventHandler wrapper = s => value(s);
+                ServerConnectionStateChangedEventHandler wrapper = s => value(s);
                 _serverConnMap.Add(value, wrapper);
                 DataStorage.ServerConnectionStateChanged += wrapper;
             }
@@ -165,14 +165,14 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
                 if (_serverConnMap.TryGetValue(value, out var wrapper))
                 {
                     DataStorage.ServerConnectionStateChanged -=
-                        (DataStorage.ServerConnectionStateChangedEventHandler)wrapper!;
+                        (ServerConnectionStateChangedEventHandler)wrapper!;
                     _serverConnMap.Remove(value);
                 }
             }
         }
     }
 
-    public event DataStorage.PlayerInfoUpdatedEventHandler? PlayerInfoUpdated
+    public event PlayerInfoUpdatedEventHandler? PlayerInfoUpdated
     {
         add
         {
@@ -180,7 +180,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             lock (_playerInfoUpdatedLock)
             {
                 if (_playerInfoUpdatedMap.ContainsKey(value)) return;
-                DataStorage.PlayerInfoUpdatedEventHandler wrapper = p => value(p);
+                PlayerInfoUpdatedEventHandler wrapper = p => value(p);
                 _playerInfoUpdatedMap.Add(value, wrapper);
                 DataStorage.PlayerInfoUpdated += wrapper;
             }
@@ -192,14 +192,14 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             {
                 if (_playerInfoUpdatedMap.TryGetValue(value, out var wrapper))
                 {
-                    DataStorage.PlayerInfoUpdated -= (DataStorage.PlayerInfoUpdatedEventHandler)wrapper!;
+                    DataStorage.PlayerInfoUpdated -= (PlayerInfoUpdatedEventHandler)wrapper!;
                     _playerInfoUpdatedMap.Remove(value);
                 }
             }
         }
     }
 
-    public event DataStorage.NewSectionCreatedEventHandler? NewSectionCreated
+    public event NewSectionCreatedEventHandler? NewSectionCreated
     {
         add
         {
@@ -207,7 +207,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             lock (_newSectionCreatedLock)
             {
                 if (_newSectionCreatedMap.ContainsKey(value)) return;
-                DataStorage.NewSectionCreatedEventHandler wrapper = () => value();
+                NewSectionCreatedEventHandler wrapper = () => value();
                 _newSectionCreatedMap.Add(value, wrapper);
                 DataStorage.NewSectionCreated += wrapper;
             }
@@ -219,14 +219,14 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             {
                 if (_newSectionCreatedMap.TryGetValue(value, out var wrapper))
                 {
-                    DataStorage.NewSectionCreated -= (DataStorage.NewSectionCreatedEventHandler)wrapper!;
+                    DataStorage.NewSectionCreated -= (NewSectionCreatedEventHandler)wrapper!;
                     _newSectionCreatedMap.Remove(value);
                 }
             }
         }
     }
 
-    public event DataStorage.BattleLogCreatedEventHandler? BattleLogCreated
+    public event BattleLogCreatedEventHandler? BattleLogCreated
     {
         add
         {
@@ -234,7 +234,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             lock (_battleLogCreatedLock)
             {
                 if (_battleLogCreatedMap.ContainsKey(value)) return;
-                DataStorage.BattleLogCreatedEventHandler wrapper = b => value(b);
+                BattleLogCreatedEventHandler wrapper = b => value(b);
                 _battleLogCreatedMap.Add(value, wrapper);
                 DataStorage.BattleLogCreated += wrapper;
             }
@@ -246,14 +246,14 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             {
                 if (_battleLogCreatedMap.TryGetValue(value, out var wrapper))
                 {
-                    DataStorage.BattleLogCreated -= (DataStorage.BattleLogCreatedEventHandler)wrapper!;
+                    DataStorage.BattleLogCreated -= (BattleLogCreatedEventHandler)wrapper!;
                     _battleLogCreatedMap.Remove(value);
                 }
             }
         }
     }
 
-    public event DataStorage.DpsDataUpdatedEventHandler? DpsDataUpdated
+    public event DpsDataUpdatedEventHandler? DpsDataUpdated
     {
         add
         {
@@ -261,7 +261,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             lock (_dpsDataUpdatedLock)
             {
                 if (_dpsDataUpdatedMap.ContainsKey(value)) return;
-                DataStorage.DpsDataUpdatedEventHandler wrapper = () => value();
+                DpsDataUpdatedEventHandler wrapper = () => value();
                 _dpsDataUpdatedMap.Add(value, wrapper);
                 DataStorage.DpsDataUpdated += wrapper;
             }
@@ -273,14 +273,14 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             {
                 if (_dpsDataUpdatedMap.TryGetValue(value, out var wrapper))
                 {
-                    DataStorage.DpsDataUpdated -= (DataStorage.DpsDataUpdatedEventHandler)wrapper!;
+                    DataStorage.DpsDataUpdated -= (DpsDataUpdatedEventHandler)wrapper!;
                     _dpsDataUpdatedMap.Remove(value);
                 }
             }
         }
     }
 
-    public event DataStorage.DataUpdatedEventHandler? DataUpdated
+    public event DataUpdatedEventHandler? DataUpdated
     {
         add
         {
@@ -288,7 +288,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             lock (_dataUpdatedLock)
             {
                 if (_dataUpdatedMap.ContainsKey(value)) return;
-                DataStorage.DataUpdatedEventHandler wrapper = () => value();
+                DataUpdatedEventHandler wrapper = () => value();
                 _dataUpdatedMap.Add(value, wrapper);
                 DataStorage.DataUpdated += wrapper;
             }
@@ -300,14 +300,14 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             {
                 if (_dataUpdatedMap.TryGetValue(value, out var wrapper))
                 {
-                    DataStorage.DataUpdated -= (DataStorage.DataUpdatedEventHandler)wrapper!;
+                    DataStorage.DataUpdated -= (DataUpdatedEventHandler)wrapper!;
                     _dataUpdatedMap.Remove(value);
                 }
             }
         }
     }
 
-    public event DataStorage.ServerChangedEventHandler? ServerChanged
+    public event ServerChangedEventHandler? ServerChanged
     {
         add
         {
@@ -315,7 +315,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             lock (_serverChangedLock)
             {
                 if (_serverChangedMap.ContainsKey(value)) return;
-                DataStorage.ServerChangedEventHandler wrapper = (cur, prev) => value(cur, prev);
+                ServerChangedEventHandler wrapper = (cur, prev) => value(cur, prev);
                 _serverChangedMap.Add(value, wrapper);
                 DataStorage.ServerChanged += wrapper;
             }
@@ -327,7 +327,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
             {
                 if (_serverChangedMap.TryGetValue(value, out var wrapper))
                 {
-                    DataStorage.ServerChanged -= (DataStorage.ServerChangedEventHandler)wrapper!;
+                    DataStorage.ServerChanged -= (ServerChangedEventHandler)wrapper!;
                     _serverChangedMap.Remove(value);
                 }
             }

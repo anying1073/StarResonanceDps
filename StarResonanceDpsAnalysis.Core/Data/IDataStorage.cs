@@ -23,13 +23,13 @@ public interface IDataStorage : IDisposable
 
     bool IsServerConnected { get; }
 
-    event DataStorage.ServerConnectionStateChangedEventHandler? ServerConnectionStateChanged;
-    event DataStorage.PlayerInfoUpdatedEventHandler? PlayerInfoUpdated;
-    event DataStorage.NewSectionCreatedEventHandler? NewSectionCreated;
-    event DataStorage.BattleLogCreatedEventHandler? BattleLogCreated;
-    event DataStorage.DpsDataUpdatedEventHandler? DpsDataUpdated;
-    event DataStorage.DataUpdatedEventHandler? DataUpdated;
-    event DataStorage.ServerChangedEventHandler? ServerChanged;
+    event ServerConnectionStateChangedEventHandler? ServerConnectionStateChanged;
+    event PlayerInfoUpdatedEventHandler? PlayerInfoUpdated;
+    event NewSectionCreatedEventHandler? NewSectionCreated;
+    event BattleLogCreatedEventHandler? BattleLogCreated;
+    event DpsDataUpdatedEventHandler? DpsDataUpdated;
+    event DataUpdatedEventHandler? DataUpdated;
+    event ServerChangedEventHandler? ServerChanged;
 
     void LoadPlayerInfoFromFile();
     void SavePlayerInfoToFile();
@@ -40,3 +40,11 @@ public interface IDataStorage : IDisposable
     void ClearPlayerInfos();
     void ClearAllPlayerInfos();
 }
+
+public delegate void ServerConnectionStateChangedEventHandler(bool serverConnectionState);
+public delegate void PlayerInfoUpdatedEventHandler(PlayerInfo info);
+public delegate void NewSectionCreatedEventHandler();
+public delegate void BattleLogCreatedEventHandler(BattleLog battleLog);
+public delegate void DpsDataUpdatedEventHandler();
+public delegate void DataUpdatedEventHandler();
+public delegate void ServerChangedEventHandler(string currentServer, string prevServer);
