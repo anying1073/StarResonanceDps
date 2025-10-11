@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <Platforms>AnyCPU;x64;x86</Platforms>
+    <Platforms>AnyCPU</Platforms>
     <LangVersion>latest</LangVersion>
     <!-- <InternalsVisibleTo>StarResonanceDpsAnalysis.WPF</InternalsVisibleTo> -->
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="StarResonanceDpsAnalysis.WPF" />
+    <InternalsVisibleTo Include="StarResonanceDpsAnalysis.Core.Tests" />
+    <InternalsVisibleTo Include="StarResonanceDpsAnalysis.Core.Benchmarks" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,10 +27,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.3" />
     <PackageReference Include="PacketDotNet" Version="1.4.8" />
     <PackageReference Include="SharpPcap" Version="6.3.1" />
+    <PackageReference Include="System.Threading.Channels" Version="9.0.9" />
     <PackageReference Include="ZstdNet" Version="1.4.5" />
   </ItemGroup>
   <ItemGroup>
