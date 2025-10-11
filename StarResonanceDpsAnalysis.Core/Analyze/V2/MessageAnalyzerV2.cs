@@ -28,15 +28,11 @@ public sealed class MessageAnalyzerV2
         };
     }
 
-    private static uint _packetCount = 0;
     /// <summary>
     /// Main entry point for processing a batch of TCP packets.
     /// </summary>
     public void Process(byte[] packets)
     {
-        File.WriteAllBytesAsync($"bin\\v2\\packets_{_packetCount}.bin", packets);
-        Interlocked.Increment(ref _packetCount);
-
         if (packets is not { Length: > 0 }) return;
 
         var packetsReader = new ByteReader(packets);
@@ -74,6 +70,61 @@ public sealed class MessageAnalyzerV2
     }
 
     /// <summary>
+    /// Zero-copy entry that parses messages directly from a span.
+    /// Avoids allocating an exact-sized array for each frame.
+    /// </summary>
+    public void Process(ReadOnlySpan<byte> packets)
+    {
+        if (packets.Length == 0) return;
+
+        var reader = new SpanReader(packets);
+        while (reader.Remaining > 0)
+        {
+            if (!reader.TryPeekUInt32BE(out var packetSize)) break;
+            if (packetSize < 6) break;
+            if (packetSize > reader.Remaining) break;
+
+            var frameStartOffset = reader.Offset;
+            var sizeAgain = reader.ReadUInt32BE();
+            if (sizeAgain != packetSize)
+            {
+                // skip malformed
+                reader.Offset = frameStartOffset + (int)packetSize;
+                continue;
+            }
+
+            var packetType = reader.ReadUInt16BE();
+            var isZstdCompressed = (packetType & 0x8000) != 0;
+            var msgTypeId = (MessageType)(packetType & 0x7FFF);
+
+            var frameConsumed = 6; // 4 length + 2 type already consumed within this frame
+            var frameRemaining = (int)packetSize - frameConsumed;
+            if (frameRemaining < 0 || frameRemaining > reader.Remaining)
+            {
+                // Not enough data
+                reader.Offset = frameStartOffset; // rewind to start of frame for next attempt
+                break;
+            }
+
+            // Slice the rest of the frame for inner parsing
+            var inner = reader.ReadBytesSpan(frameRemaining);
+
+            switch (msgTypeId)
+            {
+                case MessageType.Notify:
+                    ProcessNotifyMsg(inner, isZstdCompressed);
+                    break;
+                case MessageType.FrameDown:
+                    ProcessFrameDown(inner, isZstdCompressed);
+                    break;
+                default:
+                    // Unknown, skip
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
     /// Processes Notify messages by dispatching them to the appropriate registered processor.
     /// </summary>
     private void ProcessNotifyMsg(ByteReader packet, bool isZstdCompressed)
@@ -88,6 +139,36 @@ public sealed class MessageAnalyzerV2
         if (isZstdCompressed)
         {
             msgPayload = DecompressZstdIfNeeded(msgPayload);
+        }
+
+        _logger?.LogTrace("MessageTypeId:{id}", methodId);
+        if (_registry.TryGetProcessor(methodId, out var processor))
+        {
+            processor.Process(msgPayload);
+        }
+    }
+
+    /// <summary>
+    /// Span-based Notify parser to avoid frame array allocation.
+    /// </summary>
+    private void ProcessNotifyMsg(ReadOnlySpan<byte> packet, bool isZstdCompressed)
+    {
+        var r = new SpanReader(packet);
+        var serviceUuid = r.ReadUInt64BE();
+        _ = r.ReadUInt32BE(); // stubId
+        var methodId = r.ReadUInt32BE();
+
+        if (serviceUuid != 0x0000000063335342UL) return;
+
+        var msgPayloadSpan = r.ReadRemainingSpan();
+        byte[] msgPayload;
+        if (isZstdCompressed)
+        {
+            msgPayload = DecompressZstdIfNeeded(msgPayloadSpan.ToArray());
+        }
+        else
+        {
+            msgPayload = msgPayloadSpan.ToArray();
         }
 
         _logger?.LogTrace("MessageTypeId:{id}", methodId);
@@ -113,6 +194,27 @@ public sealed class MessageAnalyzerV2
 
         _logger?.LogTrace("ProcessFrameDown");
         Process(nestedPacket); // Recursively process the inner packet
+    }
+
+    /// <summary>
+    /// Span-based FrameDown parser to avoid frame array allocation.
+    /// </summary>
+    private void ProcessFrameDown(ReadOnlySpan<byte> packet, bool isZstdCompressed)
+    {
+        var r = new SpanReader(packet);
+        _ = r.ReadUInt32BE(); // serverSequenceId
+        var nestedSpan = r.ReadRemainingSpan();
+        if (nestedSpan.Length == 0) return;
+
+        if (isZstdCompressed)
+        {
+            var nested = DecompressZstdIfNeeded(nestedSpan.ToArray());
+            Process(nested);
+        }
+        else
+        {
+            Process(nestedSpan);
+        }
     }
 
     #region Zstd Decompression
@@ -159,4 +261,72 @@ public sealed class MessageAnalyzerV2
     }
 
     #endregion
+
+    private ref struct SpanReader
+    {
+        private ReadOnlySpan<byte> _buffer;
+        public int Offset;
+
+        public SpanReader(ReadOnlySpan<byte> buffer)
+        {
+            _buffer = buffer;
+            Offset = 0;
+        }
+
+        public int Remaining => _buffer.Length - Offset;
+
+        public bool TryPeekUInt32BE(out uint value)
+        {
+            if (Remaining < 4)
+            {
+                value = 0; return false;
+            }
+            var span = _buffer.Slice(Offset, 4);
+            value = (uint)(span[0] << 24 | span[1] << 16 | span[2] << 8 | span[3]);
+            return true;
+        }
+
+        public uint ReadUInt32BE()
+        {
+            var span = _buffer.Slice(Offset, 4);
+            Offset += 4;
+            return (uint)(span[0] << 24 | span[1] << 16 | span[2] << 8 | span[3]);
+        }
+
+        public ushort ReadUInt16BE()
+        {
+            var span = _buffer.Slice(Offset, 2);
+            Offset += 2;
+            return (ushort)(span[0] << 8 | span[1]);
+        }
+
+        public ulong ReadUInt64BE()
+        {
+            var span = _buffer.Slice(Offset, 8);
+            Offset += 8;
+            return
+                ((ulong)span[0] << 56) |
+                ((ulong)span[1] << 48) |
+                ((ulong)span[2] << 40) |
+                ((ulong)span[3] << 32) |
+                ((ulong)span[4] << 24) |
+                ((ulong)span[5] << 16) |
+                ((ulong)span[6] << 8) |
+                span[7];
+        }
+
+        public ReadOnlySpan<byte> ReadBytesSpan(int length)
+        {
+            var span = _buffer.Slice(Offset, length);
+            Offset += length;
+            return span;
+        }
+
+        public ReadOnlySpan<byte> ReadRemainingSpan()
+        {
+            var span = _buffer.Slice(Offset);
+            Offset = _buffer.Length;
+            return span;
+        }
+    }
 }

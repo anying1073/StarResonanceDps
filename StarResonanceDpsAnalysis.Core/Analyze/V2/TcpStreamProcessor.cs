@@ -7,6 +7,7 @@ using PacketDotNet;
 using SharpPcap;
 using StarResonanceDpsAnalysis.Core.Collections;
 using StarResonanceDpsAnalysis.WPF.Data;
+using System.IO.Pipelines;
 
 namespace StarResonanceDpsAnalysis.Core.Analyze;
 
@@ -36,7 +37,9 @@ internal sealed class TcpStreamProcessor : IDisposable
     private uint? _tcpNextSeq;
     private readonly BoundedConcurrentCache<uint, byte[]> _tcpCache = new(1000, TimeSpan.FromSeconds(30));
     private DateTime _tcpLastTime = DateTime.MinValue;
-    private MemoryStream _tcpStream = new();
+
+    // Pipe replaces the previous MemoryStream staging buffer
+    private Pipe _pipe;
 
     public string CurrentServer => CurrentServerEndpoint.ToString();
     public ServerEndpoint CurrentServerEndpoint { get; private set; }
@@ -46,67 +49,61 @@ internal sealed class TcpStreamProcessor : IDisposable
         _storage = storage;
         _messageAnalyzer = messageAnalyzer;
         _logger = logger;
+        _pipe = new Pipe(new PipeOptions(useSynchronizationContext: false));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public void Process(RawCapture raw)
     {
-        // try
-        // {
-            _storage.IsServerConnected = true;
+        _storage.IsServerConnected = true;
 
-            var packet = Packet.ParsePacket(raw.LinkLayerType, raw.Data);
-            var tcpPacket = packet.Extract<TcpPacket>();
-            if (tcpPacket == null) return;
+        var packet = Packet.ParsePacket(raw.LinkLayerType, raw.Data);
+        var tcpPacket = packet.Extract<TcpPacket>();
+        if (tcpPacket == null) return;
 
-            var ipv4Packet = packet.Extract<IPv4Packet>();
-            if (ipv4Packet == null) return;
+        var ipv4Packet = packet.Extract<IPv4Packet>();
+        if (ipv4Packet == null) return;
 
-            var payload = tcpPacket.PayloadData;
-            if (payload == null || payload.Length == 0) return;
+        var payload = tcpPacket.PayloadData;
+        if (payload == null || payload.Length == 0) return;
 
-            var now = DateTime.Now;
-            var seq = tcpPacket.SequenceNumber;
-            _logger?.LogInformation("TcpSeq:{seq}", seq);
-            var endpoint = ServerEndpoint.FromPacket(ipv4Packet, tcpPacket);
+        var now = DateTime.Now;
+        var seq = tcpPacket.SequenceNumber;
+        // hot path: disable per-packet info log
+        // _logger?.LogInformation("TcpSeq:{seq}", seq);
+        var endpoint = ServerEndpoint.FromPacket(ipv4Packet, tcpPacket);
 
-            // --- State-based processing ---
-            if (!CurrentServerEndpoint.IsEmpty())
+        // --- State-based processing ---
+        if (!CurrentServerEndpoint.IsEmpty())
+        {
+            var isMatch = CurrentServerEndpoint == endpoint || CurrentServerEndpoint == endpoint.Reverse();
+
+            if (isMatch)
             {
-                var isMatch = CurrentServerEndpoint == endpoint || CurrentServerEndpoint == endpoint.Reverse();
-
-                if (isMatch)
+                // Traffic belongs to current server
+                if (now - _lastAnyPacketAt > _idleTimeout)
                 {
-                    // Traffic belongs to current server
-                    if (now - _lastAnyPacketAt > _idleTimeout)
-                    {
-                        ForceReconnect("idle timeout");
-                        // After reconnect, we might be able to detect a new server with the current packet
-                        TryDetectServer(endpoint, payload, seq);
-                    }
-                    else
-                    {
-                        ProcessServerTraffic(now, seq, payload);
-                    }
+                    ForceReconnect("idle timeout");
+                    // After reconnect, we might be able to detect a new server with the current packet
+                    TryDetectServer(endpoint, payload, seq);
                 }
                 else
                 {
-                    // New server traffic detected
-                    TryDetectServer(endpoint, payload, seq);
+                    ProcessServerTraffic(now, seq, payload);
                 }
             }
             else
             {
-                // No current server, try to detect one
-                _logger?.LogTrace("TryDetect Server");
+                // New server traffic detected
                 TryDetectServer(endpoint, payload, seq);
             }
-        // }
-        // catch (Exception ex)
-        // {
-        //     _logger?.LogError(ex, "Error during packet processing");
-        //     Console.WriteLine($"Packet processing error: {ex.Message}\r\n{ex.StackTrace}");
-        // }
+        }
+        else
+        {
+            // No current server, try to detect one
+            _logger?.LogTrace("TryDetect Server");
+            TryDetectServer(endpoint, payload, seq);
+        }
     }
 
     private void ProcessServerTraffic(DateTime now, uint seq, byte[] payload)
@@ -149,7 +146,7 @@ internal sealed class TcpStreamProcessor : IDisposable
             _tcpCache.TryAdd(seq, payloadCopy);
         }
 
-        // Reassemble packets from cache
+        // Reassemble packets from cache and feed to the pipe
         ReassembleAndParse(now);
 
         // Periodic cache eviction
@@ -188,7 +185,9 @@ internal sealed class TcpStreamProcessor : IDisposable
 
             if (hasData)
             {
-                AppendToStream(messageBuffer, messageLength);
+                // Write reassembled bytes into the pipe and flush
+                _pipe.Writer.Write(messageBuffer.AsSpan(0, messageLength));
+                _ = _pipe.Writer.FlushAsync().GetAwaiter().GetResult();
             }
         }
         finally
@@ -196,110 +195,58 @@ internal sealed class TcpStreamProcessor : IDisposable
             ArrayPool<byte>.Shared.Return(messageBuffer);
         }
 
-        ParseMessagesFromStream();
+        // Parse as many complete messages as possible from the pipe
+        ParseFromPipe();
     }
 
-    private void AppendToStream(byte[] buffer, int length)
+    private void ParseFromPipe()
     {
-        if (_tcpStream.Capacity > 2 * 1024 * 1024)
+        var reader = _pipe.Reader;
+        while (reader.TryRead(out var result))
         {
-            var remaining = _tcpStream.Length - _tcpStream.Position;
-            var newCapacity = (int)Math.Min(remaining + length, 1024 * 1024);
-            var newStream = new MemoryStream(newCapacity);
+            var buffer = result.Buffer;
+            long consumedBytes = 0;
 
-            if (remaining > 0)
+            while (true)
             {
-                var tempBuffer = ArrayPool<byte>.Shared.Rent((int)remaining);
-                try
+                if (buffer.Length < 4) break;
+
+                // Peek 4-byte big-endian length
+                Span<byte> lenBuf = stackalloc byte[4];
+                buffer.Slice(0, 4).CopyTo(lenBuf);
+                var packetSize = BinaryPrimitives.ReadInt32BigEndian(lenBuf);
+                if (packetSize <= 4 || packetSize > 0x0FFFFF) break;
+
+                if (buffer.Length < packetSize) break; // not enough data yet
+
+                var packetSeq = buffer.Slice(0, packetSize);
+
+                // Zero-copy: pass span directly
+                if (packetSeq.IsSingleSegment)
                 {
-                    _tcpStream.Position = Math.Max(0, _tcpStream.Position);
-                    _tcpStream.ReadExactly(tempBuffer, 0, (int)remaining);
-                    newStream.Write(tempBuffer, 0, (int)remaining);
+                    _messageAnalyzer.Process(packetSeq.FirstSpan);
                 }
-                finally
+                else
                 {
-                    ArrayPool<byte>.Shared.Return(tempBuffer);
-                }
-            }
-
-            _tcpStream.Dispose();
-            _tcpStream = newStream;
-        }
-
-        _tcpStream.Position = _tcpStream.Length;
-        _tcpStream.Write(buffer, 0, length);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void ParseMessagesFromStream()
-    {
-        _tcpStream.Position = 0;
-        Span<byte> lenBuf = stackalloc byte[4];
-
-        while (true)
-        {
-            var start = _tcpStream.Position;
-            if (_tcpStream.Length - start < 4) break;
-
-            if (_tcpStream.Read(lenBuf) < 4)
-            {
-                _tcpStream.Position = start;
-                break;
-            }
-
-            var packetSize = BinaryPrimitives.ReadInt32BigEndian(lenBuf);
-            if (packetSize <= 4 || packetSize > 0x0FFFFF)
-            {
-                _tcpStream.Position = start;
-                break;
-            }
-
-            if (_tcpStream.Length - start < packetSize)
-            {
-                _tcpStream.Position = start;
-                break;
-            }
-
-            _tcpStream.Position = start;
-            var messagePacket = ArrayPool<byte>.Shared.Rent(packetSize);
-            try
-            {
-                if (_tcpStream.Read(messagePacket, 0, packetSize) != packetSize)
-                {
-                    _tcpStream.Position = start;
-                    break;
+                    // Multi-segment: coalesce minimally into a pooled buffer
+                    var exactPacket = new byte[packetSize];
+                    packetSeq.CopyTo(exactPacket);
+                    _messageAnalyzer.Process(exactPacket);
                 }
 
-                var exactPacket = new byte[packetSize];
-                Buffer.BlockCopy(messagePacket, 0, exactPacket, 0, packetSize);
-                // MessageAnalyzer.Process(exactPacket);
-                _messageAnalyzer.Process(exactPacket);
+                // Advance the buffer
+                buffer = buffer.Slice(packetSize);
+                consumedBytes += packetSize;
             }
-            finally
-            {
-                ArrayPool<byte>.Shared.Return(messagePacket);
-            }
-        }
 
-        CompactStream();
-    }
+            var consumed = result.Buffer.GetPosition(consumedBytes);
+            var examined = buffer.End; // leave remaining unconsumed
+            reader.AdvanceTo(consumed, examined);
 
-    private void CompactStream()
-    {
-        if (_tcpStream.Position > 0)
-        {
-            var remain = _tcpStream.Length - _tcpStream.Position;
-            if (remain > 0)
+            if (result.IsCompleted && buffer.Length == 0)
             {
-                var buffer = _tcpStream.GetBuffer();
-                Buffer.BlockCopy(buffer, (int)_tcpStream.Position, buffer, 0, (int)remain);
-                _tcpStream.SetLength(remain);
+                break;
             }
-            else
-            {
-                _tcpStream.SetLength(0);
-            }
-            _tcpStream.Position = 0;
         }
     }
 
@@ -399,16 +346,9 @@ internal sealed class TcpStreamProcessor : IDisposable
         _waitingGapSince = null;
         _tcpCache.Clear();
 
-        if (_tcpStream.Capacity > 1 << 20)
-        {
-            _tcpStream.Dispose();
-            _tcpStream = new MemoryStream();
-        }
-        else
-        {
-            _tcpStream.Position = 0;
-            _tcpStream.SetLength(0);
-        }
+        try { _pipe.Writer.Complete(); } catch { }
+        try { _pipe.Reader.Complete(); } catch { }
+        _pipe = new Pipe(new PipeOptions(useSynchronizationContext: false));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -426,8 +366,6 @@ internal sealed class TcpStreamProcessor : IDisposable
         _logger?.LogWarning("Resyncing TCP stream to seq={Seq}", seq);
         Console.WriteLine($"[PacketAnalyzer] Resync to seq={seq}");
         _tcpCache.Clear();
-        _tcpStream.Position = 0;
-        _tcpStream.SetLength(0);
         _tcpNextSeq = seq;
         _waitingGapSince = null;
         _tcpLastTime = DateTime.Now;
@@ -449,6 +387,7 @@ internal sealed class TcpStreamProcessor : IDisposable
 
     public void Dispose()
     {
-        _tcpStream?.Dispose();
+        try { _pipe.Writer.Complete(); } catch { }
+        try { _pipe.Reader.Complete(); } catch { }
     }
 }

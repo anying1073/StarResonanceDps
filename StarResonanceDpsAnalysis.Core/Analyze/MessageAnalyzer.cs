@@ -37,15 +37,11 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             { MessageType.FrameDown, ProcessFrameDown }
         };
 
-        private static uint _packetCount;
         /// <summary>
         /// 主入口：处理一批TCP数据包
         /// </summary>
         public static void Process(byte[] packets, ILogger? logger = null)
         {
-            File.WriteAllBytesAsync($"bin\\v1\\packets_{_packetCount}.bin", packets);
-            Interlocked.Increment(ref _packetCount);
-
             var packetsReader = new ByteReader(packets);
             while (packetsReader.Remaining > 0)
             {

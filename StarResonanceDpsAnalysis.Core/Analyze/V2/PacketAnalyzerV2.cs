@@ -47,7 +47,8 @@ public sealed class PacketAnalyzerV2(
             _channel = Channel.CreateUnbounded<RawCapture>(new UnboundedChannelOptions
             {
                 SingleReader = true,
-                SingleWriter = false
+                SingleWriter = true,
+                AllowSynchronousContinuations = true
             });
 
             // _channel = Channel.CreateBounded<RawCapture>(new BoundedChannelOptions(10_000)
@@ -77,8 +78,8 @@ public sealed class PacketAnalyzerV2(
         {
             if (!_isRunning) return;
 
-            _cts?.Cancel();
             _channel?.Writer.TryComplete();
+            _cts?.Cancel();
 
             try
             {
@@ -107,6 +108,35 @@ public sealed class PacketAnalyzerV2(
         {
             _stateLock.Release();
         }
+    }
+
+    /// <summary>
+    /// Synchronous inline processing on the calling thread (benchmark/helper).
+    /// </summary>
+    internal void ProcessInline(RawCapture raw)
+    {
+        _streamProcessor.Process(raw);
+    }
+
+    public bool TryEnlistDataAsync(RawCapture data)
+    {
+        if (!_isRunning || _channel == null)
+        {
+            logger?.LogWarning("Analyzer is not running. Packet dropped.");
+            return false;
+        }
+
+        var writer = _channel.Writer;
+        try
+        {
+            return writer.TryWrite(data);
+        }
+        catch (ChannelClosedException)
+        {
+            // Channel was closed while waiting, which is a normal part of shutdown.
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -141,17 +171,32 @@ public sealed class PacketAnalyzerV2(
     {
         if (_channel == null) return;
 
-        await foreach (var raw in _channel.Reader.ReadAllAsync(token))
+        var reader = _channel.Reader;
+        while (await reader.WaitToReadAsync(token))
         {
-            try
+            while (reader.TryRead(out var raw))
             {
-                _streamProcessor.Process(raw);
-            }
-            catch (Exception ex)
-            {
-                logger?.LogError(ex, "Error processing packet from channel.");
+                try
+                {
+                    _streamProcessor.Process(raw);
+                }
+                catch (Exception ex)
+                {
+                    logger?.LogError(ex, "Error processing packet from channel.");
+                }
             }
         }
+        // await foreach (var raw in _channel.Reader.ReadAllAsync(token))
+        // {
+        //     try
+        //     {
+        //         _streamProcessor.Process(raw);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         logger?.LogError(ex, "Error processing packet from channel.");
+        //     }
+        // }
     }
 
     public void ResetCaptureState()

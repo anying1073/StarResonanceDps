@@ -52,6 +52,14 @@ public class PacketAnalyzer(ILogger<PacketAnalyzer>? logger = null) : IPacketAna
         });
     }
 
+    /// <summary>
+    /// Synchronously process a single packet on the calling thread (benchmark/helper).
+    /// </summary>
+    internal void ProcessInline(RawCapture raw)
+    {
+        HandleRaw(device: null, raw);
+    }
+
     #endregion
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -182,7 +190,7 @@ public class PacketAnalyzer(ILogger<PacketAnalyzer>? logger = null) : IPacketAna
             var tcpPacket = packet.Extract<TcpPacket>();
             if (tcpPacket == null) return;
 
-            logger?.LogInformation("TcpSeq:{seq}", tcpPacket.SequenceNumber);
+            //logger?.LogInformation("TcpSeq:{seq}", tcpPacket.SequenceNumber);
             // 提取 IPv4 数据包（如果不是 IPv4，也会返回 null）
             var ipv4Packet = packet.Extract<IPv4Packet>();
             if (ipv4Packet == null) return;
