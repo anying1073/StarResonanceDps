@@ -21,7 +21,8 @@ public interface IDataStorage : IDisposable
 
     TimeSpan SectionTimeout { get; set; }
 
-    bool IsServerConnected { get; }
+    bool IsServerConnected { get; set; }
+    long CurrentPlayerUUID { get; set; }
 
     event ServerConnectionStateChangedEventHandler? ServerConnectionStateChanged;
     event PlayerInfoUpdatedEventHandler? PlayerInfoUpdated;
@@ -39,6 +40,25 @@ public interface IDataStorage : IDisposable
     void ClearCurrentPlayerInfo();
     void ClearPlayerInfos();
     void ClearAllPlayerInfos();
+    void NotifyServerChanged(string currentServerStr, string prevServer);
+    void SetPlayerLevel(long playerUid, int tmpLevel);
+    bool EnsurePlayer(long playerUid);
+    void SetPlayerHP(long playerUid, long hp);
+    void SetPlayerMaxHP(long playerUid, long maxHp);
+    void SetPlayerName(long playerUid, string playerName);
+    void SetPlayerCombatPower(long playerUid, int combatPower);
+    void SetPlayerProfessionID(long playerUid, int professionId);
+
+    /// <summary>
+    /// 添加战斗日志 (会自动创建日志分段)
+    /// Public method for backwards compatibility - fires events immediately
+    /// </summary>
+    /// <param name="log">战斗日志</param>
+    void AddBattleLog(BattleLog log);
+
+    void SetPlayerRankLevel(long playerUid, int readInt32);
+    void SetPlayerCritical(long playerUid, int readInt32);
+    void SetPlayerLucky(long playerUid, int readInt32);
 }
 
 public delegate void ServerConnectionStateChangedEventHandler(bool serverConnectionState);

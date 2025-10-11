@@ -25,7 +25,8 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
     private readonly Dispatcher _dispatcher;
     private readonly ILogger<DebugFunctions> _logger;
     private readonly IDisposable? _logSubscription;
-    private readonly PacketAnalyzer _packetAnalyzer = new();
+    // private readonly PacketAnalyzer _packetAnalyzer = new();
+    private readonly IPacketAnalyzer _packetAnalyzer;
     private readonly Queue<LogEntry> _pendingLogs = new();
     [ObservableProperty] private bool _autoScrollEnabled = true;
     [ObservableProperty] private bool _enabled;
@@ -45,7 +46,8 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
     public DebugFunctions(Dispatcher dispatcher,
         ILogger<DebugFunctions> logger,
         IObservable<LogEvent> observer,
-        IOptionsMonitor<AppConfig> options)
+        IOptionsMonitor<AppConfig> options,
+        IPacketAnalyzer packetAnalyzer)
     {
         _dispatcher = dispatcher;
         _logger = logger;
@@ -57,6 +59,7 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
         PropertyChanged += OnPropertyChanged;
         SetProperty(options.CurrentValue, null);
         options.OnChange(SetProperty);
+        _packetAnalyzer = packetAnalyzer;
 
         _logger.LogInformation("DebugFunctions initialized with Serilog observable sink");
     }

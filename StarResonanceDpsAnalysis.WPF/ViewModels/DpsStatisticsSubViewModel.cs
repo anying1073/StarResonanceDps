@@ -253,7 +253,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
     /// </summary>
     internal void UpdateDataOptimized(Dictionary<long, DpsDataProcessed> processedData, long currentPlayerUid)
     {
-        _logger.LogDebug("Enter updatedata (optimized)");
+        // _logger.LogDebug("Enter updatedata (optimized)");
         
         var hasCurrentPlayer = currentPlayerUid != 0;
 
@@ -304,7 +304,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
         // Sort data in place 
         SortSlotsInPlace();
 
-        _logger.LogDebug("Exit updatedata (optimized)");
+        // _logger.LogDebug("Exit updatedata (optimized)");
     }
 
     private ulong GetValueForType(DpsData dpsData)

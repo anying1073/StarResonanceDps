@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Xml;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.WPF.Data;
@@ -54,7 +55,13 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
     }
 
     // DataStorage.IsServerConnected has public getter and internal setter; expose getter only.
-    public bool IsServerConnected => DataStorage.IsServerConnected;
+    public bool IsServerConnected
+    {
+        get => DataStorage.IsServerConnected;
+        set => DataStorage.IsServerConnected = value;
+    }
+
+    public long CurrentPlayerUUID { get; set; }
 
     // Dispose: detach all wrappers from DataStorage static events
     public void Dispose()
@@ -373,5 +380,74 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
     public void ClearAllPlayerInfos()
     {
         DataStorage.ClearAllPlayerInfos();
+    }
+
+    public void NotifyServerChanged(string currentServerStr, string prevServer)
+    {
+        DataStorage.InvokeServerChangedEvent(currentServerStr, prevServer);
+    }
+
+    public void SetPlayerLevel(long playerUid, int tmpLevel)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.ReadOnlyPlayerInfoDatas[playerUid].Level = tmpLevel;
+    }
+
+    public bool EnsurePlayer(long playerUid)
+    {
+        return DataStorage.TestCreatePlayerInfoByUID(playerUid);
+    }
+
+    public void SetPlayerHP(long playerUid, long hp)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.ReadOnlyPlayerInfoDatas[playerUid].HP = hp;
+    }
+
+    public void SetPlayerMaxHP(long playerUid, long maxHp)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.ReadOnlyPlayerInfoDatas[playerUid].MaxHP = maxHp;
+    }
+
+    public void SetPlayerName(long playerUid, string playerName)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.ReadOnlyPlayerInfoDatas[playerUid].Name = playerName;
+    }
+
+    public void SetPlayerCombatPower(long playerUid, int combatPower)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.ReadOnlyPlayerInfoDatas[playerUid].CombatPower = combatPower;
+    }
+
+    public void SetPlayerProfessionID(long playerUid, int professionId)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.ReadOnlyPlayerInfoDatas[playerUid].ProfessionID = professionId;
+    }
+
+    public void AddBattleLog(BattleLog log)
+    {
+        DataStorage.AddBattleLog(log);
+    }
+
+    public void SetPlayerRankLevel(long playerUid, int readInt32)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.ReadOnlyPlayerInfoDatas[playerUid].RankLevel = readInt32;
+    }
+
+    public void SetPlayerCritical(long playerUid, int readInt32)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.ReadOnlyPlayerInfoDatas[playerUid].Critical = readInt32;
+    }
+
+    public void SetPlayerLucky(long playerUid, int readInt32)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.ReadOnlyPlayerInfoDatas[playerUid].Lucky = readInt32;
     }
 }

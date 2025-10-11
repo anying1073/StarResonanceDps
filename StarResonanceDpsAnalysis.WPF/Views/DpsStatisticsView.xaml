@@ -41,6 +41,9 @@
         <b:EventTrigger EventName="Loaded">
             <b:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </b:EventTrigger>
+        <b:EventTrigger EventName="Unloaded">
+            <b:InvokeCommandAction Command="{Binding UnloadedCommand}" />
+        </b:EventTrigger>
     </b:Interaction.Triggers>
 
     <Window.Resources>

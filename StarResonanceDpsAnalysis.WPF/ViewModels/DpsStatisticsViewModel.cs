@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core;
+using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.Core.Analyze.Exceptions;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Extends.Data;
@@ -188,11 +189,15 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     [RelayCommand]
+    private void OnUnloaded()
+    {
+    }
+
+    [RelayCommand]
     private void OnResize()
     {
         _logger.LogDebug("Window Resized");
     }
-
 
     private void DataStorage_DpsDataUpdated()
     {
@@ -212,10 +217,9 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         UpdateData(dpsList);
     }
 
-
     private void UpdateData(IReadOnlyList<DpsData> data)
     {
-        _logger.LogDebug("Vm entered");
+        _logger.LogInformation("Update data");
 
         var currentPlayerUid = _storage.CurrentPlayerInfo.UID;
 
@@ -233,7 +237,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }
 
         UpdateBattleDuration();
-        _logger.LogDebug("Vm stopped");
     }
 
     /// <summary>
@@ -313,7 +316,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     /// <summary>
-    /// Builds skill list snapshot - extracted to avoid duplication
+    /// Builds skill list snapshot
     /// </summary>
     private List<SkillItemViewModel> BuildSkillListSnapshot(DpsData dpsData)
     {

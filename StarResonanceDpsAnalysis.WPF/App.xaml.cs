@@ -7,6 +7,8 @@ using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
 using SharpPcap;
+using StarResonanceDpsAnalysis.Core.Analyze;
+using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Data;
 using StarResonanceDpsAnalysis.WPF.Extensions;
@@ -42,6 +44,7 @@ public partial class App : Application
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .WriteTo.Observers(obs => streamRef = obs) // capture observable
+            // .WriteTo.File()
             .CreateLogger();
         _logStream = streamRef;
 
@@ -54,9 +57,12 @@ public partial class App : Application
         app.InitializeComponent();
         var appOptions = Host.Services.GetRequiredService<IOptions<AppConfig>>();
         LocalizationManager.Initialize(appOptions.Value.Language);
+        var analyzer = Host.Services.GetRequiredService<IPacketAnalyzer>();
         app.MainWindow = Host.Services.GetRequiredService<MainWindow>();
         app.MainWindow.Visibility = Visibility.Visible;
+        analyzer.Start();
         app.Run();
+        analyzer.Stop();
 
         _logger.LogInformation("Application exiting");
         Log.CloseAndFlush();
@@ -89,7 +95,7 @@ public partial class App : Application
                 services.AddSingleton<IApplicationControlService, ApplicationControlService>();
                 services.AddSingleton<IDataSource, DpsDummyDataSource>();
                 services.AddSingleton<IDeviceManagementService, DeviceManagementService>();
-                services.AddDataStorage();
+                services.AddPacketAnalyzer();
                 services.AddSingleton<IConfigManager, ConfigManger>();
                 if (_logStream != null) services.AddSingleton<IObservable<LogEvent>>(_logStream);
                 services.AddSingleton(_ => Current.Dispatcher);
