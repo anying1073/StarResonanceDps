@@ -3,21 +3,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
 using SharpPcap;
-using StarResonanceDpsAnalysis.Core.Analyze;
-using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Data;
 using StarResonanceDpsAnalysis.WPF.Extensions;
-using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Services;
 using StarResonanceDpsAnalysis.WPF.Themes;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
 using StarResonanceDpsAnalysis.WPF.Views;
-using AppConfig = StarResonanceDpsAnalysis.WPF.Config.AppConfig;
 
 namespace StarResonanceDpsAnalysis.WPF;
 
@@ -31,41 +26,59 @@ public partial class App : Application
     [STAThread]
     private static void Main(string[] args)
     {
-        var configRoot = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", false, true)
-            .AddJsonFile("appsettings.Development.json", true, true)
-            .Build();
-
-        IObservable<LogEvent>? streamRef = null;
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(configRoot)
-            .MinimumLevel.Verbose()
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.Observers(obs => streamRef = obs) // capture observable
-            // .WriteTo.File()
-            .CreateLogger();
-        _logStream = streamRef;
+        var configRoot = BuildConfiguration();
+        _logStream = ConfigureLogging(configRoot);
 
         Host = CreateHostBuilder(args, configRoot).Build();
         _logger = Host.Services.GetRequiredService<ILogger<App>>();
 
         _logger.LogInformation("Application starting");
 
-        App app = new();
+        var app = new App();
         app.InitializeComponent();
-        var appOptions = Host.Services.GetRequiredService<IOptions<AppConfig>>();
-        LocalizationManager.Initialize(appOptions.Value.Language);
-        var analyzer = Host.Services.GetRequiredService<IPacketAnalyzer>();
+
+        // Centralized application startup (localization, adapter, analyzer)
+        var appStartup = Host.Services.GetRequiredService<IApplicationStartup>();
+        appStartup.Initialize();
+
         app.MainWindow = Host.Services.GetRequiredService<MainWindow>();
         app.MainWindow.Visibility = Visibility.Visible;
-        analyzer.Start();
         app.Run();
-        analyzer.Stop();
+
+        // Centralized shutdown
+        try
+        {
+            appStartup.Shutdown();
+        }
+        catch
+        {
+            // ignored
+        }
 
         _logger.LogInformation("Application exiting");
         Log.CloseAndFlush();
+    }
+
+    private static IConfiguration BuildConfiguration()
+    {
+        return new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile("appsettings.Development.json", true, true)
+            .Build();
+    }
+
+    private static IObservable<LogEvent>? ConfigureLogging(IConfiguration configRoot)
+    {
+        IObservable<LogEvent>? streamRef = null;
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configRoot)
+            .MinimumLevel.Verbose()
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.Observers(obs => streamRef = obs)
+            .CreateLogger();
+        return streamRef;
     }
 
     private static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configRoot)
@@ -95,6 +108,7 @@ public partial class App : Application
                 services.AddSingleton<IApplicationControlService, ApplicationControlService>();
                 services.AddSingleton<IDataSource, DpsDummyDataSource>();
                 services.AddSingleton<IDeviceManagementService, DeviceManagementService>();
+                services.AddSingleton<IApplicationStartup, ApplicationStartup>();
                 services.AddPacketAnalyzer();
                 services.AddSingleton<IConfigManager, ConfigManger>();
                 if (_logStream != null) services.AddSingleton<IObservable<LogEvent>>(_logStream);
