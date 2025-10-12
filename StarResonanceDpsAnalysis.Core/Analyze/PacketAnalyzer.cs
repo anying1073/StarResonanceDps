@@ -21,13 +21,25 @@ public class PacketAnalyzer(ILogger<PacketAnalyzer>? logger = null) : IPacketAna
 
     #region ========== 启用新分析 ==========
 
-    public void StartNewAnalyzer(ICaptureDevice device, RawCapture raw)
+    public bool TryEnlistData(RawCapture data)
     {
-        Task.Run(() =>
+        var ret = StartNewAnalyzer(null!, data);
+        return ret.Result;
+    }
+
+    public Task EnlistDataAsync(RawCapture data, CancellationToken token = default)
+    {
+        return StartNewAnalyzer(null!, data);
+    }
+
+    public Task<bool> StartNewAnalyzer(ICaptureDevice device, RawCapture raw)
+    {
+        return Task.Run(() =>
         {
             try
             {
                 HandleRaw(device, raw);
+                return true;
             }
             catch (Exception ex)
             {
@@ -48,6 +60,7 @@ public class PacketAnalyzer(ILogger<PacketAnalyzer>? logger = null) : IPacketAna
                                    =======================
 
                                    """);
+                return false;
             }
         });
     }

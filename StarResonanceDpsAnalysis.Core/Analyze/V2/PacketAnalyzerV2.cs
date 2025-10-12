@@ -118,7 +118,7 @@ public sealed class PacketAnalyzerV2(
         _streamProcessor.Process(raw);
     }
 
-    public bool TryEnlistDataAsync(RawCapture data)
+    public bool TryEnlistData(RawCapture data)
     {
         if (!_isRunning || _channel == null)
         {

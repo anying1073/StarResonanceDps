@@ -91,7 +91,7 @@ public class PacketAnalyzerBenchmarks
         {
             foreach (var raw in _traffic)
             {
-                if (!_v2.TryEnlistDataAsync(raw))
+                if (!_v2.TryEnlistData(raw))
                 {
                     await _v2.EnlistDataAsync(raw);
                 }

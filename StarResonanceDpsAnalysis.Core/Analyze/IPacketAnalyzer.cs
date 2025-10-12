@@ -1,3 +1,5 @@
+using SharpPcap;
+
 namespace StarResonanceDpsAnalysis.Core.Analyze;
 
 public interface IPacketAnalyzer
@@ -15,4 +17,11 @@ public interface IPacketAnalyzer
     void Stop();
 
     void ResetCaptureState();
+
+    bool TryEnlistData(RawCapture data);
+
+    /// <summary>
+    /// Public-facing method to enqueue a raw packet for analysis.
+    /// </summary>
+    Task EnlistDataAsync(RawCapture data, CancellationToken token = default);
 }
