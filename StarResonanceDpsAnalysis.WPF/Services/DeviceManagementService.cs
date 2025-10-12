@@ -167,13 +167,10 @@ public class DeviceManagementService(
         try
         {
             var raw = e.GetPacket();
-            if (packetAnalyzer is PacketAnalyzerV2 v2)
+            var ret = packetAnalyzer.TryEnlistData(raw);
+            if (!ret)
             {
-                _ = v2.EnlistDataAsync(raw);
-            }
-            else if (packetAnalyzer is PacketAnalyzer v1)
-            {
-                v1.StartNewAnalyzer((ICaptureDevice)sender, raw);
+                logger.LogWarning("Packet enlist failed from device {Device} with Packet {p}", sender, raw.ToString());
             }
         }
         catch (Exception ex)

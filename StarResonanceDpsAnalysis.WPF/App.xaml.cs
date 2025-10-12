@@ -39,7 +39,7 @@ public partial class App : Application
 
         // Centralized application startup (localization, adapter, analyzer)
         var appStartup = Host.Services.GetRequiredService<IApplicationStartup>();
-        appStartup.Initialize();
+        appStartup.InitializeAsync().Wait();
 
         app.MainWindow = Host.Services.GetRequiredService<MainWindow>();
         app.MainWindow.Visibility = Visibility.Visible;

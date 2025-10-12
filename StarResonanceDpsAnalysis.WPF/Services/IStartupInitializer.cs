@@ -2,6 +2,6 @@ namespace StarResonanceDpsAnalysis.WPF.Services;
 
 public interface IApplicationStartup
 {
-    void Initialize();
+    Task InitializeAsync();
     void Shutdown();
 }

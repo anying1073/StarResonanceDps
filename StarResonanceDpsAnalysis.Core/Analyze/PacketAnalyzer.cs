@@ -23,16 +23,17 @@ public class PacketAnalyzer(ILogger<PacketAnalyzer>? logger = null) : IPacketAna
 
     public bool TryEnlistData(RawCapture data)
     {
-        var ret = StartNewAnalyzer(null!, data);
+        var ret = StartNewAnalyzer(null, data);
+        ret.ConfigureAwait(false);
         return ret.Result;
     }
 
     public Task EnlistDataAsync(RawCapture data, CancellationToken token = default)
     {
-        return StartNewAnalyzer(null!, data);
+        return StartNewAnalyzer(null, data);
     }
 
-    public Task<bool> StartNewAnalyzer(ICaptureDevice device, RawCapture raw)
+    public Task<bool> StartNewAnalyzer(ICaptureDevice? device, RawCapture raw)
     {
         return Task.Run(() =>
         {

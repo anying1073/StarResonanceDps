@@ -20,7 +20,7 @@ public partial class SettingsViewModel(
     IDeviceManagementService deviceManagementService)
     : BaseViewModel
 {
-    [ObservableProperty] private AppConfig _appConfig = configManager.CurrentConfig.Clone(); // will be set in LoadedAsync
+    [ObservableProperty] private AppConfig _appConfig = configManager.CurrentConfig.Clone(); // Initialized here with a cloned config; may be overwritten in LoadedAsync
 
     [ObservableProperty]
     private List<Option<Language>> _availableLanguages =
@@ -55,10 +55,6 @@ public partial class SettingsViewModel(
 
     partial void OnAppConfigChanged(AppConfig value)
     {
-        // if (value is null)
-        // {
-        //     return;
-        // }
         // Subscribe to the new instance
         value.PropertyChanged += OnAppConfigPropertyChanged;
 

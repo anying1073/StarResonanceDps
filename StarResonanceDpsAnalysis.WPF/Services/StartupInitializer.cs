@@ -13,7 +13,7 @@ public sealed class ApplicationStartup(
     IDeviceManagementService deviceManagementService,
     IPacketAnalyzer packetAnalyzer) : IApplicationStartup
 {
-    public void Initialize()
+    public async Task InitializeAsync()
     {
         try
         {
@@ -21,7 +21,7 @@ public sealed class ApplicationStartup(
             LocalizationManager.Initialize(options.Value.Language);
 
             // Activate preferred/first network adapter
-            var adapters = deviceManagementService.GetNetworkAdaptersAsync().GetAwaiter().GetResult();
+            var adapters = await deviceManagementService.GetNetworkAdaptersAsync();
             NetworkAdapterInfo? target = null;
             var pref = options.Value.PreferredNetworkAdapter;
             if (pref != null)
