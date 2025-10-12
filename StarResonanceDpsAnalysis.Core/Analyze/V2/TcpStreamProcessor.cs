@@ -329,6 +329,7 @@ internal sealed class TcpStreamProcessor : IDisposable
             _tcpNextSeq = sequenceNumber + (uint)payloadLength;
         }
 
+        _lastAnyPacketAt = DateTime.Now;
         var currentServerStr = endpoint.ToString();
         _logger?.LogInformation("Got Scene Server: {Server}", currentServerStr);
         Console.WriteLine($"Got Scene Server Address: {currentServerStr}");
@@ -346,8 +347,22 @@ internal sealed class TcpStreamProcessor : IDisposable
         _waitingGapSince = null;
         _tcpCache.Clear();
 
-        try { _pipe.Writer.Complete(); } catch { }
-        try { _pipe.Reader.Complete(); } catch { }
+        try { _pipe.Writer.Complete(); }
+        catch
+        {
+#if DEBUG
+            throw;
+#endif
+        }
+
+        try { _pipe.Reader.Complete(); }
+        catch
+        {
+#if DEBUG
+            throw;
+#endif
+        }
+
         _pipe = new Pipe(new PipeOptions(useSynchronizationContext: false));
     }
 

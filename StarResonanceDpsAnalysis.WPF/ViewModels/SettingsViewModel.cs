@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net.NetworkInformation;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -15,28 +16,32 @@ using KeyBinding = StarResonanceDpsAnalysis.WPF.Models.KeyBinding;
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
 public partial class SettingsViewModel(
-    IConfigManager configManger,
+    IConfigManager configManager,
     IDeviceManagementService deviceManagementService)
     : BaseViewModel
 {
-    [ObservableProperty] private AppConfig _appConfig = null!;
+    [ObservableProperty] private AppConfig _appConfig = configManager.CurrentConfig.Clone(); // will be set in LoadedAsync
+
     [ObservableProperty]
-    private List<Option<Language>> _availableLanguages = [
-            new(Language.Auto, Language.Auto.GetLocalizedDescription()),
-            new(Language.ZhCn, Language.ZhCn.GetLocalizedDescription()),
-            new(Language.EnUs, Language.EnUs.GetLocalizedDescription())
+    private List<Option<Language>> _availableLanguages =
+    [
+        new(Language.Auto, Language.Auto.GetLocalizedDescription()),
+        new(Language.ZhCn, Language.ZhCn.GetLocalizedDescription()),
+        new(Language.EnUs, Language.EnUs.GetLocalizedDescription())
     ];
+
+    [ObservableProperty] private List<NetworkAdapterInfo> _availableNetworkAdapters = [];
+
     [ObservableProperty]
-    private List<NetworkAdapterInfo> _availableNetworkAdapters = [];
-    [ObservableProperty]
-    private List<Option<NumberDisplayMode>> _availableNumberDisplayModes = [
-            new(NumberDisplayMode.Wan, NumberDisplayMode.Wan.GetLocalizedDescription()),
-            new(NumberDisplayMode.KMB, NumberDisplayMode.KMB.GetLocalizedDescription())
+    private List<Option<NumberDisplayMode>> _availableNumberDisplayModes =
+    [
+        new(NumberDisplayMode.Wan, NumberDisplayMode.Wan.GetLocalizedDescription()),
+        new(NumberDisplayMode.KMB, NumberDisplayMode.KMB.GetLocalizedDescription())
     ];
 
     private bool _cultureHandlerSubscribed;
+    private bool _networkHandlerSubscribed;
 
-    // [ObservableProperty] private Option<Language> _selectedLanguage;
     [ObservableProperty] private Option<Language>? _selectedLanguage;
     [ObservableProperty] private Option<NumberDisplayMode>? _selectedNumberDisplayMode;
 
@@ -44,21 +49,17 @@ public partial class SettingsViewModel(
 
     partial void OnAppConfigChanging(AppConfig value)
     {
-        if (value is null)
-        {
-            return;
-        }
-
-        value.PropertyChanged -= OnAppConfigPropertyChanged;
+        // Unsubscribe from the old instance before changing
+        _appConfig.PropertyChanged -= OnAppConfigPropertyChanged;
     }
 
     partial void OnAppConfigChanged(AppConfig value)
     {
-        if (value is null)
-        {
-            return;
-        }
-
+        // if (value is null)
+        // {
+        //     return;
+        // }
+        // Subscribe to the new instance
         value.PropertyChanged += OnAppConfigPropertyChanged;
 
         LocalizationManager.ApplyLanguage(value.Language);
@@ -82,17 +83,29 @@ public partial class SettingsViewModel(
     [RelayCommand(AllowConcurrentExecutions = false)]
     private async Task LoadedAsync()
     {
-        AppConfig = configManger.CurrentConfig.Clone();
+        AppConfig = configManager.CurrentConfig.Clone();
+
+        SubscribeHandlers();
+
+        UpdateLanguageDependentCollections();
+        LocalizationManager.ApplyLanguage(AppConfig.Language);
+        await LoadNetworkAdaptersAsync();
+    }
+
+    private void SubscribeHandlers()
+    {
         if (!_cultureHandlerSubscribed)
         {
             LocalizationManager.CultureChanged += OnCultureChanged;
             _cultureHandlerSubscribed = true;
         }
 
-        UpdateLanguageDependentCollections();
-        // SyncSelectedLanguage();
-        LocalizationManager.ApplyLanguage(AppConfig.Language);
-        await LoadNetworkAdaptersAsync();
+        if (!_networkHandlerSubscribed)
+        {
+            NetworkChange.NetworkAvailabilityChanged += OnSystemNetworkChanged;
+            NetworkChange.NetworkAddressChanged += OnSystemNetworkChanged;
+            _networkHandlerSubscribed = true;
+        }
     }
 
     private async Task LoadNetworkAdaptersAsync()
@@ -101,6 +114,18 @@ public partial class SettingsViewModel(
         AvailableNetworkAdapters = adapters.Select(a => new NetworkAdapterInfo(a.name, a.description)).ToList();
         AppConfig.PreferredNetworkAdapter =
             AvailableNetworkAdapters.FirstOrDefault(a => a.Name == AppConfig.PreferredNetworkAdapter?.Name);
+    }
+
+    private async void OnSystemNetworkChanged(object? sender, EventArgs e)
+    {
+        try
+        {
+            await LoadNetworkAdaptersAsync();
+        }
+        catch
+        {
+            // ignore
+        }
     }
 
     /// <summary>
@@ -140,6 +165,14 @@ public partial class SettingsViewModel(
             LocalizationManager.ApplyLanguage(config.Language);
             UpdateLanguageDependentCollections();
         }
+        else if (e.PropertyName == nameof(AppConfig.PreferredNetworkAdapter))
+        {
+            var adapter = AppConfig.PreferredNetworkAdapter;
+            if (adapter != null)
+            {
+                deviceManagementService.SetActiveNetworkAdapter(adapter);
+            }
+        }
     }
 
     /// <summary>
@@ -152,24 +185,20 @@ public partial class SettingsViewModel(
         var modifiers = Keyboard.Modifiers;
         var key = e.Key == Key.System ? e.SystemKey : e.Key;
 
-        // Allow Delete to clear - same logic as WinForms
+        // Allow Delete to clear
         if (key == Key.Delete)
         {
             ClearShortcut(shortcutType);
             return;
         }
 
-        // Ignore modifier-only presses - same logic as WinForms
+        // Ignore modifier-only presses
         if (key.IsControlKey() || key.IsAltKey() || key.IsShiftKey())
         {
             return;
         }
 
-        // Exclude physical modifier keys from being shown as main key
-        if (!key.IsControlKey() && !key.IsAltKey() && !key.IsShiftKey())
-        {
-            UpdateShortcut(shortcutType, key, modifiers);
-        }
+        UpdateShortcut(shortcutType, key, modifiers);
     }
 
     /// <summary>
@@ -211,21 +240,21 @@ public partial class SettingsViewModel(
 
     public Task ApplySettingsAsync()
     {
-        return configManger.SaveAsync(AppConfig);
+        return configManager.SaveAsync(AppConfig);
     }
 
     [RelayCommand]
     private async Task Confirm()
     {
         await ApplySettingsAsync();
-        DetachCultureHandler();
+        UnsubscribeHandlers();
         RequestClose?.Invoke();
     }
 
     [RelayCommand]
     private void Cancel()
     {
-        DetachCultureHandler();
+        UnsubscribeHandlers();
         RequestClose?.Invoke();
     }
 
@@ -234,11 +263,20 @@ public partial class SettingsViewModel(
         UpdateLanguageDependentCollections();
     }
 
-    private void DetachCultureHandler()
+    private void UnsubscribeHandlers()
     {
-        if (!_cultureHandlerSubscribed) return;
-        LocalizationManager.CultureChanged -= OnCultureChanged;
-        _cultureHandlerSubscribed = false;
+        if (_cultureHandlerSubscribed)
+        {
+            LocalizationManager.CultureChanged -= OnCultureChanged;
+            _cultureHandlerSubscribed = false;
+        }
+
+        if (_networkHandlerSubscribed)
+        {
+            NetworkChange.NetworkAvailabilityChanged -= OnSystemNetworkChanged;
+            NetworkChange.NetworkAddressChanged -= OnSystemNetworkChanged;
+            _networkHandlerSubscribed = false;
+        }
     }
 }
 
@@ -278,7 +316,7 @@ public partial class SettingsViewModel
     }
 
     private static (bool result, Option<T>? opt) SyncOption<T>(Option<T>? option, List<Option<T>> availableList,
-    T origin)
+        T origin)
     {
         if (Equal(option, origin)) return (false, null);
 
@@ -295,8 +333,8 @@ public partial class SettingsViewModel
 
 public partial class Option<T>(T value, string display) : BaseViewModel
 {
-    [ObservableProperty] private T _value = value;
     [ObservableProperty] private string _display = display;
+    [ObservableProperty] private T _value = value;
 
     public void Deconstruct(out T value, out string display)
     {
