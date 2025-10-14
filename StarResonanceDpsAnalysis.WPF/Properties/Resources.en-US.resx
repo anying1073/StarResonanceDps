@@ -208,7 +208,7 @@
     <value>Press [Delete] to clear the selected shortcut</value>
   </data>
   <data name="Settings_Shortcut_MouseThrough" xml:space="preserve">
-    <value>Mouse Through</value>
+    <value>Mouse Click-Through</value>
   </data>
   <data name="Settings_Shortcut_ClearData" xml:space="preserve">
     <value>Clear Data</value>
@@ -757,6 +757,6 @@
     <value>Total</value>
   </data>
   <data name="DpsStatistics_Indicator_ClickThrough_Tooltip" xml:space="preserve">
-    <value>Mouse click through enabled</value>
+    <value>Mouse click-through enabled</value>
   </data>
 </root>
