@@ -66,6 +66,12 @@ public partial class AppConfig : ObservableObject
     private double _opacity = 100;
 
     /// <summary>
+    /// 鼠标穿透开关（WPF）
+    /// </summary>
+    [ObservableProperty]
+    private bool _mouseThroughEnabled;
+
+    /// <summary>
     /// 是否使用浅色模式
     /// </summary>
     [ObservableProperty]

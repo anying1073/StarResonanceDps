@@ -756,4 +756,8 @@
   <data name="ScopeTime_Total" xml:space="preserve">
     <value>全程</value>
   </data>
+  <data name="DpsStatistics_Indicator_ClickThrough_Tooltip" xml:space="preserve">
+    <value>鼠标穿透已启用</value>
+    <comment>鼠标穿透已启用</comment>
+  </data>
 </root>

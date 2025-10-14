@@ -11,6 +11,7 @@ public sealed class ApplicationStartup(
     ILogger<ApplicationStartup> logger,
     IOptions<AppConfig> options,
     IDeviceManagementService deviceManagementService,
+    IGlobalHotkeyService hotkeyService,
     IPacketAnalyzer packetAnalyzer) : IApplicationStartup
 {
     public async Task InitializeAsync()
@@ -44,10 +45,12 @@ public sealed class ApplicationStartup(
 
             // Start analyzer
             packetAnalyzer.Start();
+            hotkeyService.Start();
         }
         catch (Exception ex)
         {
             logger.LogWarning(ex, "Startup initialization encountered an issue");
+            throw;
         }
     }
 
@@ -57,6 +60,7 @@ public sealed class ApplicationStartup(
         {
             deviceManagementService.StopActiveCapture();
             packetAnalyzer.Stop();
+            hotkeyService.Stop();
         }
         catch (Exception)
         {

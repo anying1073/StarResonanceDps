@@ -111,6 +111,8 @@ public partial class App : Application
                 services.AddSingleton<IApplicationStartup, ApplicationStartup>();
                 services.AddPacketAnalyzer();
                 services.AddSingleton<IConfigManager, ConfigManger>();
+                services.AddSingleton<IGlobalHotkeyService, GlobalHotkeyService>();
+                services.AddSingleton<IMousePenetrationService, MousePenetrationService>();
                 if (_logStream != null) services.AddSingleton<IObservable<LogEvent>>(_logStream);
                 services.AddSingleton(_ => Current.Dispatcher);
             })

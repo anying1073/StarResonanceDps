@@ -357,7 +357,7 @@
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Command="{Binding PreviousMetricTypeCommand}"
-                        Content=""
+                        Content="&#xe689;"
                         FontSize="15" />
                     <!--  当前统计状态文字  -->
                     <TextBlock Grid.Column="1" Style="{StaticResource StatisticTypeText}">
@@ -374,7 +374,7 @@
                         Grid.Column="2"
                         VerticalAlignment="Center"
                         Command="{Binding NextMetricTypeCommand}"
-                        Content=""
+                        Content="&#xe688;"
                         FontSize="15" />
                     <!--  切换按钮  -->
                     <Button
@@ -393,24 +393,33 @@
                         Grid.Column="4"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
+
                         <!--  Test button  -->
                         <Button
-                            x:Name="TestButton"
                             Width="21"
                             Command="{Binding AddTestItemCommand}"
                             Content="{lex:Loc Key={x:Static loc:LocalizationKeys.DpsStatistics_TestButton_Content}}"
                             ToolTip="{lex:Loc Key={x:Static loc:LocalizationKeys.DpsStatistics_TestButton_Tooltip}}" />
+
+                        <!--  Mouse-through indicator (visible when click-through is enabled)  -->
+                        <TextBlock
+                            Width="21"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="pack://application:,,,/Assets/Fonts/#IconFont"
+                            FontSize="15"
+                            Foreground="White"
+                            Text="&#xe83a;"
+                            TextAlignment="Center"
+                            ToolTip="{lex:Loc Key={x:Static loc:Resources.DpsStatistics_Indicator_ClickThrough_Tooltip}}"
+                            Visibility="{Binding DataContext.AppConfig.MouseThroughEnabled, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <!--  设置按钮  -->
                         <Button
-                            x:Name="RefreshButton"
                             Width="21"
                             Command="{Binding RefreshCommand}"
                             Content="&#xE644;" />
                         <!--  设置按钮  -->
-                        <Button
-                            x:Name="SetButton"
-                            Width="24"
-                            Content="&#xE600;">
+                        <Button Width="24" Content="&#xE600;">
                             <b:Interaction.Behaviors>
                                 <behaviors:OpenContextMenuBehavior />
                             </b:Interaction.Behaviors>
