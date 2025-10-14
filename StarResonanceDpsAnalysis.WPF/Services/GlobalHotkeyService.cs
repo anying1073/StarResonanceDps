@@ -1,6 +1,4 @@
-using System;
 using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using Microsoft.Extensions.Logging;
@@ -17,9 +15,9 @@ public sealed class GlobalHotkeyService(
 {
     private const int WM_HOTKEY = 0x0312;
     private const int HOTKEY_ID_MOUSETHROUGH = 0x1001;
+    private AppConfig _config = configManager.CurrentConfig;
 
     private HwndSource? _source;
-    private AppConfig _config = configManager.CurrentConfig;
 
     public void Start()
     {
@@ -61,7 +59,17 @@ public sealed class GlobalHotkeyService(
         var helper = new WindowInteropHelper(window);
         var handle = helper.EnsureHandle();
         _source = HwndSource.FromHwnd(handle);
-        _source.AddHook(WndProc);
+        if (_source == null)
+        {
+            logger.LogWarning(
+                "Failed to obtain HwndSource from handle {Handle} for window {WindowType}. Global hotkeys will be unavailable.",
+                handle,
+                window.GetType().Name);
+        }
+        else
+        {
+            _source.AddHook(WndProc);
+        }
     }
 
     private void DetachMessageHook()
@@ -120,9 +128,9 @@ public sealed class GlobalHotkeyService(
     {
         var vk = (uint)KeyInterop.VirtualKeyFromKey(key);
         uint fs = 0;
-        if (mods.HasFlag(ModifierKeys.Alt)) fs |= 0x0001;     // MOD_ALT
+        if (mods.HasFlag(ModifierKeys.Alt)) fs |= 0x0001; // MOD_ALT
         if (mods.HasFlag(ModifierKeys.Control)) fs |= 0x0002; // MOD_CONTROL
-        if (mods.HasFlag(ModifierKeys.Shift)) fs |= 0x0004;   // MOD_SHIFT
+        if (mods.HasFlag(ModifierKeys.Shift)) fs |= 0x0004; // MOD_SHIFT
         // ignore windows key by design
         return (vk, fs);
     }
@@ -138,6 +146,7 @@ public sealed class GlobalHotkeyService(
                 handled = true;
             }
         }
+
         return IntPtr.Zero;
     }
 
