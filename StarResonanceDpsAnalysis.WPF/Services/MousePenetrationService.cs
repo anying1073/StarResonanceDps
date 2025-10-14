@@ -4,11 +4,6 @@ using System.Windows.Interop;
 
 namespace StarResonanceDpsAnalysis.WPF.Services;
 
-public interface IMousePenetrationService
-{
-    void SetMousePenetrate(Window window, bool enable);
-}
-
 public sealed class MousePenetrationService : IMousePenetrationService
 {
     private const int GWL_EXSTYLE = -20;
