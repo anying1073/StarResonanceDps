@@ -10,7 +10,7 @@ namespace StarResonanceDpsAnalysis.WPF.Services;
 
 public sealed class ApplicationStartup(
     ILogger<ApplicationStartup> logger,
-    IOptions<AppConfig> options,
+    IConfigManager configManager,
     IDeviceManagementService deviceManagementService,
     IGlobalHotkeyService hotkeyService,
     IPacketAnalyzer packetAnalyzer,
@@ -21,29 +21,9 @@ public sealed class ApplicationStartup(
         try
         {
             // Apply localization
-            LocalizationManager.Initialize(options.Value.Language);
+            LocalizationManager.Initialize(configManager.CurrentConfig.Language);
 
-            // Activate preferred/first network adapter
-            var adapters = await deviceManagementService.GetNetworkAdaptersAsync();
-            NetworkAdapterInfo? target = null;
-            var pref = options.Value.PreferredNetworkAdapter;
-            if (pref != null)
-            {
-                var match = adapters.FirstOrDefault(a => a.name == pref.Name);
-                if (!match.Equals(default((string name, string description))))
-                {
-                    target = new NetworkAdapterInfo(match.name, match.description);
-                }
-            }
-
-            target ??= adapters.Count > 0
-                ? new NetworkAdapterInfo(adapters[0].name, adapters[0].description)
-                : null;
-
-            if (target != null)
-            {
-                deviceManagementService.SetActiveNetworkAdapter(target);
-            }
+            await TryFindBestNetworkAdapter().ConfigureAwait(false);
 
             dataStorage.LoadPlayerInfoFromFile();
             // Start analyzer
@@ -54,6 +34,43 @@ public sealed class ApplicationStartup(
         {
             logger.LogWarning(ex, "Startup initialization encountered an issue");
             throw;
+        }
+    }
+
+    private async Task TryFindBestNetworkAdapter()
+    {
+        // Activate preferred/first network adapter
+        var adapters = await deviceManagementService.GetNetworkAdaptersAsync();
+        NetworkAdapterInfo? target = null;
+        var pref = configManager.CurrentConfig.PreferredNetworkAdapter;
+        if (pref != null)
+        {
+            var match = adapters.FirstOrDefault(a => a.name == pref.Name);
+            if (!match.Equals(default((string name, string description))))
+            {
+                target = new NetworkAdapterInfo(match.name, match.description);
+            }
+        }
+
+        // If preferred not found, try automatic selection via routing
+        if (target == null)
+        {
+            var auto = await deviceManagementService.GetAutoSelectedNetworkAdapterAsync();
+            if (auto != null)
+            {
+                target = auto;
+            }
+        }
+
+        target ??= adapters.Count > 0
+            ? new NetworkAdapterInfo(adapters[0].name, adapters[0].description)
+            : null;
+
+        if (target != null)
+        {
+            deviceManagementService.SetActiveNetworkAdapter(target);
+            configManager.CurrentConfig.PreferredNetworkAdapter = target;
+            _ = configManager.SaveAsync();
         }
     }
 

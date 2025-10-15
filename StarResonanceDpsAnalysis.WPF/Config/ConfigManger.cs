@@ -8,15 +8,13 @@ namespace StarResonanceDpsAnalysis.WPF.Config;
 public class ConfigManger : IConfigManager
 {
     private readonly string _configFilePath;
-    private readonly IConfiguration _configuration;
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly IOptionsMonitor<AppConfig> _optionsMonitor;
 
-    public ConfigManger(IOptionsMonitor<AppConfig> optionsMonitor, IConfiguration configuration,
+    public ConfigManger(IOptionsMonitor<AppConfig> optionsMonitor,
         IOptions<JsonSerializerOptions> jsonOptions)
     {
         _optionsMonitor = optionsMonitor;
-        _configuration = configuration;
         _jsonOptions = jsonOptions.Value;
         _configFilePath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
 
@@ -24,7 +22,7 @@ public class ConfigManger : IConfigManager
         _optionsMonitor.OnChange(OnConfigurationChanged);
     }
 
-    public async Task SaveAsync(AppConfig newConfig)
+    public async Task SaveAsync(AppConfig? newConfig = null)
     {
         try
         {
@@ -35,6 +33,7 @@ public class ConfigManger : IConfigManager
                            new Dictionary<string, object>();
 
             // Update the Config section
+            newConfig ??= CurrentConfig;
             rootDict["Config"] = newConfig;
 
             // Write back to file using the configured options

@@ -4,6 +4,10 @@ using PacketDotNet;
 using SharpPcap;
 using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.WPF.Models;
+using System.Runtime.InteropServices;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace StarResonanceDpsAnalysis.WPF.Services;
 
@@ -19,6 +23,60 @@ public class DeviceManagementService(
     public async Task<List<(string name, string description)>> GetNetworkAdaptersAsync()
     {
         return await Task.FromResult(captureDeviceList.Select(device => (device.Name, device.Description)).ToList());
+    }
+
+    /// <summary>
+    /// Attempts to auto-select the best network adapter by consulting the routing table (GetBestInterface)
+    /// and mapping the resulting interface index to a SharpPcap device. Returns null if no match.
+    /// </summary>
+    public Task<NetworkAdapterInfo?> GetAutoSelectedNetworkAdapterAsync()
+    {
+        try
+        {
+            var routeIndex = GetBestInterfaceForExternalDestination();
+            if (routeIndex == null) return Task.FromResult<NetworkAdapterInfo?>(null);
+
+            var ni = NetworkInterface.GetAllNetworkInterfaces()
+                .FirstOrDefault(n =>
+                {
+                    try
+                    {
+                        var props = n.GetIPProperties();
+                        var ipv4 = props.GetIPv4Properties();
+                        return ipv4 != null && ipv4.Index == routeIndex.Value;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                });
+
+            if (ni == null) return Task.FromResult<NetworkAdapterInfo?>(null);
+
+            // Find best matching capture device by description/name
+            int bestIndex = -1, bestScore = -1;
+            for (var i = 0; i < captureDeviceList.Count; i++)
+            {
+                var score = 0;
+                if (captureDeviceList[i].Description.Contains(ni.Name, StringComparison.OrdinalIgnoreCase)) score += 2;
+                if (captureDeviceList[i].Description.Contains(ni.Description, StringComparison.OrdinalIgnoreCase)) score += 3;
+                if (score <= bestScore) continue;
+                bestScore = score;
+                bestIndex = i;
+            }
+
+            if (bestIndex >= 0)
+            {
+                var d = captureDeviceList[bestIndex];
+                return Task.FromResult<NetworkAdapterInfo?>(new NetworkAdapterInfo(d.Name, d.Description));
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogDebug(ex, "Auto select network adapter failed");
+        }
+
+        return Task.FromResult<NetworkAdapterInfo?>(null);
     }
 
     public void SetActiveNetworkAdapter(NetworkAdapterInfo adapter)
@@ -180,5 +238,31 @@ public class DeviceManagementService(
             throw;
 #endif
         }
+    }
+
+    // PInvoke to call GetBestInterface from iphlpapi.dll
+    [DllImport("iphlpapi.dll", SetLastError = true)]
+    private static extern int GetBestInterface(uint destAddr, out uint bestIfIndex);
+
+    private int? GetBestInterfaceForExternalDestination()
+    {
+        try
+        {
+            var dest = IPAddress.Parse("8.8.8.8");
+            // Convert to uint (network order -> host order)
+            var bytes = dest.GetAddressBytes();
+            var addr = BitConverter.ToUInt32(bytes, 0);
+
+            if (GetBestInterface(addr, out var index) == 0)
+            {
+                return (int)index;
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogDebug(ex, "GetBestInterfaceForExternalDestination failed");
+        }
+
+        return null;
     }
 }

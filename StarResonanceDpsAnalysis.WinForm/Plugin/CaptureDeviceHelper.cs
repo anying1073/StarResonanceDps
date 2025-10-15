@@ -7,24 +7,57 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using SharpPcap;
+using System.Runtime.InteropServices;
 
 namespace StarResonanceDpsAnalysis.WinForm.Plugin
 {
     public static class CaptureDeviceHelper
     {
         /// <summary>
-        /// 通过创建 UDP 连接获取本地出站 IP，然后匹配拥有该 IP 的网络接口，最后匹配 SharpPcap 设备列表。
-        /// 步骤：
-        /// 1. 创建一个 UDP 套接字并 "连接" 到一个公共 IP（不会发送数据包），让操作系统选择出站地址。
-        /// 2. 从该套接字获取本地 IP 地址。
-        /// 3. 如果找不到本地 IP，使用旧方法选择最佳网络接口。
-        /// 4. 遍历所有网络接口，找到包含该本地 IP 的接口。如果找不到，尝试找同一子网的接口。
-        /// 如果找不到任何接口，使用旧方法选择最佳网络接口。
+        /// Tries to determine the best network card index by scanning the routing table using GetBestInterface.
+        /// Falls back to the previous methods if route table lookup fails.
         /// </summary>
         public static int GetBestNetworkCardIndex(CaptureDeviceList devices)
         {
             try
             {
+                // First try route table based approach
+                var routeIndex = GetBestInterfaceForExternalDestination();
+                if (routeIndex != null)
+                {
+                    var ni = NetworkInterface.GetAllNetworkInterfaces()
+                        .FirstOrDefault(n =>
+                        {
+                            try
+                            {
+                                var props = n.GetIPProperties();
+                                var ipv4 = props.GetIPv4Properties();
+                                return ipv4 != null && ipv4.Index == routeIndex.Value;
+                            }
+                            catch
+                            {
+                                return false;
+                            }
+                        });
+
+                    if (ni != null)
+                    {
+                        int bestIndex = -1, bestScore = -1;
+                        for (var i = 0; i < devices.Count; i++)
+                        {
+                            var score = 0;
+                            if (devices[i].Description.Contains(ni.Name, StringComparison.OrdinalIgnoreCase)) score += 2;
+                            if (devices[i].Description.Contains(ni.Description, StringComparison.OrdinalIgnoreCase)) score += 3;
+                            if (score <= bestScore) continue;
+                            bestScore = score;
+                            bestIndex = i;
+                        }
+
+                        if (bestIndex >= 0) return bestIndex;
+                    }
+                }
+
+                // If route table approach failed, fall back to outbound local IP method
                 var localIp = GetOutboundLocalIp();
                 if (localIp == null) return GetBestNetworkCardIndexFallback(devices);
 
@@ -47,22 +80,22 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin
                     return GetBestNetworkCardIndexFallback(devices);
                 }
 
-                // 匹配分数最高的设备
-                int bestIndex = -1, bestScore = -1;
+                // Match highest scoring SharpPcap device
+                int best = -1, bestSc = -1;
                 for (var i = 0; i < devices.Count; i++)
                 {
                     var score = 0;
                     if (devices[i].Description.Contains(activeNi.Name, StringComparison.OrdinalIgnoreCase)) score += 2;
                     if (devices[i].Description.Contains(activeNi.Description, StringComparison.OrdinalIgnoreCase)) score += 3;
-                    if (score <= bestScore) continue;
-                    bestScore = score;
-                    bestIndex = i;
+                    if (score <= bestSc) continue;
+                    bestSc = score;
+                    best = i;
                 }
-                return bestIndex;
+                return best;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"DetermineInterfaceByOutboundLocalIp: failed to determine outbound interface: {ex.Message}");
+                Console.WriteLine($"DetermineInterfaceByRouteTable: failed to determine outbound interface: {ex.Message}");
 
                 return devices.Count > 0 ? 0 : -1;
             }
@@ -104,12 +137,12 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin
                 .GetAllNetworkInterfaces()
                 .Where(ni => ni.OperationalStatus == OperationalStatus.Up &&
                              ni.GetIPProperties().UnicastAddresses.Any(ua => ua.Address.AddressFamily == AddressFamily.InterNetwork))
-                .OrderByDescending(ni => ni.GetIPProperties().GatewayAddresses.Count != 0) // 网关优先
+                .OrderByDescending(ni => ni.GetIPProperties().GatewayAddresses.Count != 0) // gateway preferred
                 .FirstOrDefault();
 
             if (active == null) return devices.Count > 0 ? 0 : -1;
 
-            // 匹配分数最高的设备
+            // Match highest scoring device
             int bestIndex = -1, bestScore = -1;
             for (int i = 0; i < devices.Count; i++)
             {
@@ -119,6 +152,32 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin
                 if (score > bestScore) { bestScore = score; bestIndex = i; }
             }
             return bestIndex;
+        }
+
+        // PInvoke to call GetBestInterface from iphlpapi.dll
+        [DllImport("iphlpapi.dll", SetLastError = true)]
+        private static extern int GetBestInterface(uint destAddr, out uint bestIfIndex);
+
+        private static int? GetBestInterfaceForExternalDestination()
+        {
+            try
+            {
+                var dest = IPAddress.Parse("8.8.8.8");
+                // Convert to uint (little-endian on little-endian systems)
+                var bytes = dest.GetAddressBytes();
+                var addr = BitConverter.ToUInt32(bytes, 0);
+
+                if (GetBestInterface(addr, out var index) == 0)
+                {
+                    return (int)index;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetBestInterfaceForExternalDestination failed: {ex.Message}");
+            }
+
+            return null;
         }
     }
 }
