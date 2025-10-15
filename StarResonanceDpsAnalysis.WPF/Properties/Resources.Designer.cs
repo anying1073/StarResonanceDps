@@ -1492,6 +1492,24 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto.
+        /// </summary>
+        public static string Settings_NetworkAdapterAutoSelect_Button {
+            get {
+                return ResourceManager.GetString("Settings_NetworkAdapterAutoSelect_Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network adapter auto select failed, please check you have proper network connections.
+        /// </summary>
+        public static string Settings_NetworkAdapterAutoSelect_Failed {
+            get {
+                return ResourceManager.GetString("Settings_NetworkAdapterAutoSelect_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adjust manually when auto detection fails.
         /// </summary>
         public static string Settings_Section_Basic_Sub {

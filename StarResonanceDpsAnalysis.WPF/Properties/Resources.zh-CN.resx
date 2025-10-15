@@ -822,4 +822,10 @@
   <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
     <value>协奏</value>
   </data>
+  <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
+    <value>网卡自动选择失败，请检查您的网络连接是否正常</value>
+  </data>
+  <data name="Settings_NetworkAdapterAutoSelect_Button" xml:space="preserve">
+    <value>自动</value>
+  </data>
 </root>

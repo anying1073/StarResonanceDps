@@ -841,4 +841,10 @@
     <value>Concerto</value>
     <comment>SoulMusicianConcerto</comment>
   </data>
+  <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
+    <value>Network adapter auto select failed, please check you have proper network connections</value>
+  </data>
+  <data name="Settings_NetworkAdapterAutoSelect_Button" xml:space="preserve">
+    <value>Auto</value>
+  </data>
 </root>

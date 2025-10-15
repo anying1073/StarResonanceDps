@@ -281,4 +281,68 @@
         </Setter>
     </Style>
 
+    <!-- Ant Design Button styles -->
+    <Style x:Key="AntButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource AntBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource AntBorderBrush}" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Padding" Value="{StaticResource AntControlPadding}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{StaticResource AntCornerRadius}">
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="{TemplateBinding Padding}"
+                            RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AntHoverBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.9" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AntPrimaryBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource AntDisabledBrush}" />
+                            <Setter Property="Foreground" Value="#FFAAAAAA" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AntBorderBrush}" />
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.8" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AntPrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource AntButtonStyle}">
+        <Setter Property="Background" Value="{StaticResource AntPrimaryBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource AntPrimaryBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource AntHoverBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource AntHoverBrush}" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Opacity" Value="0.95" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource AntDisabledBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource AntBorderBrush}" />
+                <Setter Property="Foreground" Value="#FFAAAAAA" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

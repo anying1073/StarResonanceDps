@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.NetworkInformation;
+using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,6 +10,7 @@ using StarResonanceDpsAnalysis.Core.Extends.System;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
+using StarResonanceDpsAnalysis.WPF.Properties;
 using StarResonanceDpsAnalysis.WPF.Services;
 using AppConfig = StarResonanceDpsAnalysis.WPF.Config.AppConfig;
 using KeyBinding = StarResonanceDpsAnalysis.WPF.Models.KeyBinding;
@@ -116,6 +118,19 @@ public partial class SettingsViewModel(
         AvailableNetworkAdapters = adapters.Select(a => new NetworkAdapterInfo(a.name, a.description)).ToList();
         AppConfig.PreferredNetworkAdapter =
             AvailableNetworkAdapters.FirstOrDefault(a => a.Name == AppConfig.PreferredNetworkAdapter?.Name);
+    }
+
+    [RelayCommand(AllowConcurrentExecutions = false)]
+    private async Task NetworkAdapterAutoSelect()
+    {
+        var ret = await deviceManagementService.GetAutoSelectedNetworkAdapterAsync();
+        if (ret != null)
+        {
+            AppConfig.PreferredNetworkAdapter = ret;
+            deviceManagementService.SetActiveNetworkAdapter(ret);
+            return;
+        }
+        MessageBox.Show(LocalizationManager.GetString(ResourcesKeys.Settings_NetworkAdapterAutoSelect_Failed)); // Temporary message dialog
     }
 
     private async void OnSystemNetworkChanged(object? sender, EventArgs e)

@@ -155,17 +155,28 @@
                             <Grid Height="30">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="10" />
                                     <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_NetworkAdapter_Label}}" />
+                                <TextBlock
+                                    Margin="10"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_NetworkAdapter_Label}}"
+                                    TextAlignment="Center" />
                                 <ComboBox
-                                    Grid.Column="2"
+                                    Grid.Column="1"
                                     DisplayMemberPath="Description"
                                     ItemsSource="{Binding AvailableNetworkAdapters, UpdateSourceTrigger=PropertyChanged}"
                                     SelectedItem="{Binding AppConfig.PreferredNetworkAdapter, Mode=TwoWay}"
                                     SelectedValuePath="Description"
                                     Style="{StaticResource AntComboBoxStyle}" />
+                                <Button
+                                    Grid.Column="2"
+                                    Margin="10,0,0,0"
+                                    Command="{Binding NetworkAdapterAutoSelectCommand}"
+                                    Content="{lex:Loc {x:Static loc:ResourcesKeys.Settings_NetworkAdapterAutoSelect_Button}}"
+                                    Style="{StaticResource AntPrimaryButtonStyle}" />
                             </Grid>
                         </ctrl:CardControl.Content>
                     </ctrl:CardControl>
@@ -242,7 +253,7 @@
                                     IsReadOnly="True"
                                     Style="{StaticResource AntTextBoxStyle}"
                                     Text="{Binding AppConfig.TopmostShortcut, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource KeyToStringConverter}}"
-                                    ToolTip="{lex:Loc {x:Static loc:Resources.Settings_Shortcut_TopMost_Tooltip}}">
+                                    ToolTip="{lex:Loc loc:ResourcesKeys.Settings_Shortcut_TopMost_Tooltip}">
                                     <b:Interaction.Behaviors>
                                         <behaviors:KeyDownCommandBehavior Command="{Binding HandleTopMostShortcutCommand}" />
                                     </b:Interaction.Behaviors>
@@ -277,7 +288,6 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <!--  临时占位  -->
                                 <Grid Grid.Row="0" Style="{StaticResource FieldLine}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="140" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,678 +59,684 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-        <xsd:element name="root" msdata:IsDataSet="true">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
             <xsd:complexType>
-                <xsd:choice maxOccurs="unbounded">
-                    <xsd:element name="metadata">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-                            </xsd:sequence>
-                            <xsd:attribute name="name" use="required" type="xsd:string" />
-                            <xsd:attribute name="type" type="xsd:string" />
-                            <xsd:attribute name="mimetype" type="xsd:string" />
-                            <xsd:attribute ref="xml:space" />
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="assembly">
-                        <xsd:complexType>
-                            <xsd:attribute name="alias" type="xsd:string" />
-                            <xsd:attribute name="name" type="xsd:string" />
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="data">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-                            </xsd:sequence>
-                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-                            <xsd:attribute ref="xml:space" />
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="resheader">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                            </xsd:sequence>
-                            <xsd:attribute name="name" type="xsd:string" use="required" />
-                        </xsd:complexType>
-                    </xsd:element>
-                </xsd:choice>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
-        </xsd:element>
-    </xsd:schema>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>2.0</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <data name="App_Name" xml:space="preserve">
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="App_Name" xml:space="preserve">
     <value>Analisador DPS SR</value>
   </data>
-    <data name="Menu_Settings" xml:space="preserve">
+  <data name="Menu_Settings" xml:space="preserve">
     <value>Configurações</value>
   </data>
-    <data name="Menu_StatisticBoss" xml:space="preserve">
+  <data name="Menu_StatisticBoss" xml:space="preserve">
     <value>Rastrear Apenas Boss</value>
   </data>
-    <data name="Menu_ShowTotal" xml:space="preserve">
+  <data name="Menu_ShowTotal" xml:space="preserve">
     <value>Mostrar Dano Total</value>
   </data>
-    <data name="Menu_PersonalMode" xml:space="preserve">
+  <data name="Menu_PersonalMode" xml:space="preserve">
     <value>Modo Solo</value>
   </data>
-    <data name="Menu_RecordSettings" xml:space="preserve">
+  <data name="Menu_RecordSettings" xml:space="preserve">
     <value>Opções de Gravação</value>
   </data>
-    <data name="Menu_Record_Always" xml:space="preserve">
+  <data name="Menu_Record_Always" xml:space="preserve">
     <value>Gravar Toda Luta</value>
   </data>
-    <data name="Menu_Record_Skip1Min" xml:space="preserve">
+  <data name="Menu_Record_Skip1Min" xml:space="preserve">
     <value>Ignorar lutas &lt; 1 min</value>
   </data>
-    <data name="Menu_Record_Skip2Min" xml:space="preserve">
+  <data name="Menu_Record_Skip2Min" xml:space="preserve">
     <value>Ignorar lutas &lt; 2 min</value>
   </data>
-    <data name="Menu_SkillDisplay" xml:space="preserve">
+  <data name="Menu_SkillDisplay" xml:space="preserve">
     <value>Exibição de Habilidades</value>
   </data>
-    <data name="Menu_SkillDisplay_Top5" xml:space="preserve">
+  <data name="Menu_SkillDisplay_Top5" xml:space="preserve">
     <value>Top 5</value>
   </data>
-    <data name="Menu_SkillDisplay_Top8" xml:space="preserve">
+  <data name="Menu_SkillDisplay_Top8" xml:space="preserve">
     <value>Top 8</value>
   </data>
-    <data name="Menu_SkillDisplay_Top10" xml:space="preserve">
+  <data name="Menu_SkillDisplay_Top10" xml:space="preserve">
     <value>Top 10</value>
   </data>
-    <data name="Menu_SkillDisplay_Top15" xml:space="preserve">
+  <data name="Menu_SkillDisplay_Top15" xml:space="preserve">
     <value>Top 15</value>
   </data>
-    <data name="Menu_SkillDisplay_All" xml:space="preserve">
+  <data name="Menu_SkillDisplay_All" xml:space="preserve">
     <value>Mostrar Tudo</value>
   </data>
-    <data name="Menu_History" xml:space="preserve">
+  <data name="Menu_History" xml:space="preserve">
     <value>Histórico</value>
   </data>
-    <data name="Menu_Training" xml:space="preserve">
+  <data name="Menu_Training" xml:space="preserve">
     <value>Modo Treino</value>
   </data>
-    <data name="Menu_Training_Personal" xml:space="preserve">
+  <data name="Menu_Training_Personal" xml:space="preserve">
     <value>Treino Solo</value>
   </data>
-    <data name="Menu_Training_Faction" xml:space="preserve">
+  <data name="Menu_Training_Faction" xml:space="preserve">
     <value>Treino de Facção</value>
   </data>
-    <data name="Menu_Training_Extreme" xml:space="preserve">
+  <data name="Menu_Training_Extreme" xml:space="preserve">
     <value>Treino Extremo</value>
   </data>
-    <data name="Menu_SkillDiary" xml:space="preserve">
+  <data name="Menu_SkillDiary" xml:space="preserve">
     <value>Diário de Habilidades</value>
   </data>
-    <data name="Menu_Exit" xml:space="preserve">
+  <data name="Menu_Exit" xml:space="preserve">
     <value>Sair</value>
   </data>
-    <data name="Tooltip_ToggleScope" xml:space="preserve">
+  <data name="Tooltip_ToggleScope" xml:space="preserve">
     <value>Alternar: Total / Atual</value>
   </data>
-    <data name="Window_Settings_Title" xml:space="preserve">
+  <data name="Window_Settings_Title" xml:space="preserve">
     <value>Configurações</value>
   </data>
-    <data name="Window_DpsStatistics_Title" xml:space="preserve">
+  <data name="Window_DpsStatistics_Title" xml:space="preserve">
     <value>Estatísticas de DPS</value>
   </data>
-    <data name="Settings_Heading" xml:space="preserve">
+  <data name="Settings_Heading" xml:space="preserve">
     <value>Configurações</value>
   </data>
-    <data name="Settings_Section_Basic_Title" xml:space="preserve">
+  <data name="Settings_Section_Basic_Title" xml:space="preserve">
     <value>Configurações Básicas</value>
   </data>
-    <data name="Settings_Section_Basic_Sub" xml:space="preserve">
+  <data name="Settings_Section_Basic_Sub" xml:space="preserve">
     <value>Ajuste manualmente quando a detecção automática falhar</value>
   </data>
-    <data name="Settings_Section_Shortcut_Title" xml:space="preserve">
+  <data name="Settings_Section_Shortcut_Title" xml:space="preserve">
     <value>Atalhos</value>
   </data>
-    <data name="Settings_Section_Shortcut_Sub" xml:space="preserve">
+  <data name="Settings_Section_Shortcut_Sub" xml:space="preserve">
     <value>Pressione [Delete] para limpar o atalho selecionado</value>
   </data>
-    <data name="Settings_Shortcut_MouseThrough" xml:space="preserve">
+  <data name="Settings_Shortcut_MouseThrough" xml:space="preserve">
     <value>Mouse Transparente</value>
   </data>
-    <data name="Settings_Shortcut_ClearData" xml:space="preserve">
+  <data name="Settings_Shortcut_ClearData" xml:space="preserve">
     <value>Limpar Dados</value>
   </data>
-    <data name="Settings_Shortcut_MouseThrough_Tooltip" xml:space="preserve">
+  <data name="Settings_Shortcut_MouseThrough_Tooltip" xml:space="preserve">
     <value>Foque nesta caixa e pressione um atalho (ex: Ctrl+F6). Pressione Delete para limpar.</value>
   </data>
-    <data name="Settings_Shortcut_ClearData_Tooltip" xml:space="preserve">
+  <data name="Settings_Shortcut_ClearData_Tooltip" xml:space="preserve">
     <value>Foque nesta caixa e pressione um atalho (ex: F9). Pressione Delete para limpar.</value>
   </data>
-    <data name="Settings_Section_Display_Title" xml:space="preserve">
+  <data name="Settings_Section_Display_Title" xml:space="preserve">
     <value>Exibição</value>
   </data>
-    <data name="Settings_Section_Combat_Title" xml:space="preserve">
+  <data name="Settings_Section_Combat_Title" xml:space="preserve">
     <value>Configurações de Combate</value>
   </data>
-    <data name="Settings_Section_Combat_Sub" xml:space="preserve">
+  <data name="Settings_Section_Combat_Sub" xml:space="preserve">
     <value>[Limpar dados após combate] reseta apenas os dados atuais, não o total.</value>
   </data>
-    <data name="Settings_NetworkAdapter_Label" xml:space="preserve">
+  <data name="Settings_NetworkAdapter_Label" xml:space="preserve">
     <value>Adaptador de Captura</value>
   </data>
-    <data name="Settings_Combat_ClearAfterBattle" xml:space="preserve">
+  <data name="Settings_Combat_ClearAfterBattle" xml:space="preserve">
     <value>Limpar dados após combate</value>
   </data>
-    <data name="Settings_Common_Seconds" xml:space="preserve">
+  <data name="Settings_Common_Seconds" xml:space="preserve">
     <value>seg</value>
   </data>
-    <data name="Settings_Combat_ClearAfterTeleport" xml:space="preserve">
+  <data name="Settings_Combat_ClearAfterTeleport" xml:space="preserve">
     <value>Resetar ao mudar de mapa</value>
   </data>
-    <data name="Settings_Switch_On" xml:space="preserve">
+  <data name="Settings_Switch_On" xml:space="preserve">
     <value>Ligado</value>
   </data>
-    <data name="Settings_Switch_Off" xml:space="preserve">
+  <data name="Settings_Switch_Off" xml:space="preserve">
     <value>Desligado</value>
   </data>
-    <data name="Settings_Display_NumberMode" xml:space="preserve">
+  <data name="Settings_Display_NumberMode" xml:space="preserve">
     <value>Modo de exibição de números</value>
   </data>
-    <data name="Settings_Display_Opacity" xml:space="preserve">
+  <data name="Settings_Display_Opacity" xml:space="preserve">
     <value>Opacidade da sobreposição</value>
   </data>
-    <data name="Settings_Section_Language_Title" xml:space="preserve">
+  <data name="Settings_Section_Language_Title" xml:space="preserve">
     <value>Idioma</value>
   </data>
-    <data name="Settings_Section_Language_Description" xml:space="preserve">
+  <data name="Settings_Section_Language_Description" xml:space="preserve">
     <value>Escolha o idioma da interface</value>
   </data>
-    <data name="Settings_Language_Auto" xml:space="preserve">
+  <data name="Settings_Language_Auto" xml:space="preserve">
     <value>Do Sistema</value>
   </data>
-    <data name="Settings_Language_Chinese" xml:space="preserve">
+  <data name="Settings_Language_Chinese" xml:space="preserve">
     <value>简体中文</value>
   </data>
-    <data name="Settings_Language_English" xml:space="preserve">
+  <data name="Settings_Language_English" xml:space="preserve">
     <value>Inglês</value>
   </data>
-    <data name="Settings_Language_Portuguese" xml:space="preserve">
+  <data name="Settings_Language_Portuguese" xml:space="preserve">
     <value>Português (Brasil)</value>
   </data>
-    <data name="NumberDisplay_Wan" xml:space="preserve">
+  <data name="NumberDisplay_Wan" xml:space="preserve">
     <value>Wan (Asiático Oriental)</value>
   </data>
-    <data name="NumberDisplay_KMB" xml:space="preserve">
+  <data name="NumberDisplay_KMB" xml:space="preserve">
     <value>KMBT (Ocidental)</value>
   </data>
-    <data name="Window_About_Title" xml:space="preserve">
+  <data name="Window_About_Title" xml:space="preserve">
     <value>Sobre</value>
   </data>
-    <data name="About_Intro_Primary" xml:space="preserve">
+  <data name="About_Intro_Primary" xml:space="preserve">
     <value>Uma ferramenta de análise de dados de combate construída para jogadores de Star Resonance.</value>
   </data>
-    <data name="About_Intro_Details" xml:space="preserve">
+  <data name="About_Intro_Details" xml:space="preserve">
     <value>Esta ferramenta não requer modificações no cliente e permanece dentro dos termos de serviço do jogo. Ela ajuda os jogadores a entender dados de combate, reduzir esforços desnecessários e melhorar a experiência de jogo. Por favor, não use os resultados para discriminação de poder ou qualquer comportamento que prejudique a comunidade.</value>
   </data>
-    <data name="About_Version_Label" xml:space="preserve">
+  <data name="About_Version_Label" xml:space="preserve">
     <value>Versão atual:</value>
   </data>
-    <data name="About_Developers_Label" xml:space="preserve">
+  <data name="About_Developers_Label" xml:space="preserve">
     <value>Contribuidores para esta versão (sem ordem específica):</value>
   </data>
-    <data name="About_Developer_Lead" xml:space="preserve">
+  <data name="About_Developer_Lead" xml:space="preserve">
     <value>惊奇猫猫盒 (anying1073: fundador do projeto)</value>
   </data>
-    <data name="About_Developer_RocyJune" xml:space="preserve">
+  <data name="About_Developer_RocyJune" xml:space="preserve">
     <value>露詩（Rocy-June）</value>
   </data>
-    <data name="About_Developer_QingLan" xml:space="preserve">
+  <data name="About_Developer_QingLan" xml:space="preserve">
     <value>青岚宗王腾</value>
   </data>
-    <data name="About_Developer_Ihonliu" xml:space="preserve">
+  <data name="About_Developer_Ihonliu" xml:space="preserve">
     <value>尻鸭（ihonliu）</value>
   </data>
-    <data name="About_OpenSource_Prefix" xml:space="preserve">
+  <data name="About_OpenSource_Prefix" xml:space="preserve">
     <value>Este projeto é código aberto em</value>
   </data>
-    <data name="About_OpenSource_RepositoryUrl" xml:space="preserve">
+  <data name="About_OpenSource_RepositoryUrl" xml:space="preserve">
     <value>https://github.com/anying1073/StarResonanceDps</value>
   </data>
-    <data name="About_OpenSource_Suffix" xml:space="preserve">
+  <data name="About_OpenSource_Suffix" xml:space="preserve">
     <value>, Se você encontrar algum problema, por favor abra uma issue lá.</value>
   </data>
-    <data name="About_Contribution" xml:space="preserve">
+  <data name="About_Contribution" xml:space="preserve">
     <value>Para contribuir, por favor faça um fork do repositório e envie um pull request.</value>
   </data>
-    <data name="About_Community_Invite" xml:space="preserve">
+  <data name="About_Community_Invite" xml:space="preserve">
     <value>Se você não consegue acessar o GitHub ou quer encontrar companheiros de equipe, junte-se aos grupos do Tencent QQ:</value>
   </data>
-    <data name="About_Community_GroupOne" xml:space="preserve">
+  <data name="About_Community_GroupOne" xml:space="preserve">
     <value>678150498 (Grupo 1)</value>
   </data>
-    <data name="About_Community_GroupTwo" xml:space="preserve">
+  <data name="About_Community_GroupTwo" xml:space="preserve">
     <value>1022797551 (Grupo 2)</value>
   </data>
-    <data name="About_Thanks_Prefix" xml:space="preserve">
+  <data name="About_Thanks_Prefix" xml:space="preserve">
     <value>Agradecimentos especiais a</value>
   </data>
-    <data name="About_Thanks_RepositoryUrl" xml:space="preserve">
+  <data name="About_Thanks_RepositoryUrl" xml:space="preserve">
     <value>https://github.com/dmlgzs/StarResonanceDamageCounter</value>
   </data>
-    <data name="About_Thanks_Suffix" xml:space="preserve">
+  <data name="About_Thanks_Suffix" xml:space="preserve">
     <value>por apoiar e inspirar este projeto.</value>
   </data>
-    <data name="About_Copyright" xml:space="preserve">
+  <data name="About_Copyright" xml:space="preserve">
     <value>Copyright (C) 2025 anying1073/StarResonanceDps Team.</value>
   </data>
-    <data name="About_PoweredBy" xml:space="preserve">
+  <data name="About_PoweredBy" xml:space="preserve">
     <value>Powered by .NET 8, Licenciado sob GNU AGPL v3.</value>
   </data>
-    <data name="Window_DamageReference_Title" xml:space="preserve">
+  <data name="Window_DamageReference_Title" xml:space="preserve">
     <value>Referência de Dano</value>
   </data>
-    <data name="DamageReference_Header_Title" xml:space="preserve">
+  <data name="DamageReference_Header_Title" xml:space="preserve">
     <value>Detalhamento de Habilidades</value>
   </data>
-    <data name="DamageReference_Ribbon_Title" xml:space="preserve">
+  <data name="DamageReference_Ribbon_Title" xml:space="preserve">
     <value>Referência de Dano</value>
   </data>
-    <data name="DamageReference_Classes_All" xml:space="preserve">
+  <data name="DamageReference_Classes_All" xml:space="preserve">
     <value>Todas as Classes</value>
   </data>
-    <data name="Classes_Stormblade" xml:space="preserve">
+  <data name="Classes_Stormblade" xml:space="preserve">
     <value>Stormblade</value>
   </data>
-    <data name="Classes_FrostMage" xml:space="preserve">
+  <data name="Classes_FrostMage" xml:space="preserve">
     <value>Frost Mage</value>
   </data>
-    <data name="Classes_WindKnight" xml:space="preserve">
+  <data name="Classes_WindKnight" xml:space="preserve">
     <value>Wind Knight</value>
   </data>
-    <data name="Classes_VerdantOracle" xml:space="preserve">
+  <data name="Classes_VerdantOracle" xml:space="preserve">
     <value>Verdant Oracle</value>
   </data>
-    <data name="Classes_HeavyGuardian" xml:space="preserve">
+  <data name="Classes_HeavyGuardian" xml:space="preserve">
     <value>Heavy Guardian</value>
   </data>
-    <data name="Classes_Marksman" xml:space="preserve">
+  <data name="Classes_Marksman" xml:space="preserve">
     <value>Marksman</value>
   </data>
-    <data name="Classes_ShieldKnight" xml:space="preserve">
+  <data name="Classes_ShieldKnight" xml:space="preserve">
     <value>Shield Knight</value>
   </data>
-    <data name="Classes_SoulMusician" xml:space="preserve">
+  <data name="Classes_SoulMusician" xml:space="preserve">
     <value>Beat Performer</value>
   </data>
-    <data name="DamageReference_Table_Title" xml:space="preserve">
+  <data name="DamageReference_Table_Title" xml:space="preserve">
     <value>Referência de Dano</value>
   </data>
-    <data name="DamageReference_NoData" xml:space="preserve">
+  <data name="DamageReference_NoData" xml:space="preserve">
     <value>Ainda não há dados</value>
   </data>
-    <data name="DamageReference_Disclaimer" xml:space="preserve">
+  <data name="DamageReference_Disclaimer" xml:space="preserve">
     <value>Os dados são apenas para entretenimento e referência. Não os use para discriminação de poder ou qualquer comportamento que prejudique a comunidade; violações resultarão em revogação permanente.</value>
   </data>
-    <data name="Window_Debug_Title" xml:space="preserve">
+  <data name="Window_Debug_Title" xml:space="preserve">
     <value>Visualização de Debug</value>
   </data>
-    <data name="Debug_LoadPcap" xml:space="preserve">
+  <data name="Debug_LoadPcap" xml:space="preserve">
     <value>Carregar PCAP</value>
   </data>
-    <data name="Debug_AddSampleData" xml:space="preserve">
+  <data name="Debug_AddSampleData" xml:space="preserve">
     <value>Adicionar Dados de Exemplo</value>
   </data>
-    <data name="Debug_ClearLogs" xml:space="preserve">
+  <data name="Debug_ClearLogs" xml:space="preserve">
     <value>Limpar Logs</value>
   </data>
-    <data name="Debug_AddTestLog" xml:space="preserve">
+  <data name="Debug_AddTestLog" xml:space="preserve">
     <value>Adicionar Log de Teste</value>
   </data>
-    <data name="Debug_SaveLogs" xml:space="preserve">
+  <data name="Debug_SaveLogs" xml:space="preserve">
     <value>Salvar Logs</value>
   </data>
-    <data name="Debug_AutoScroll" xml:space="preserve">
+  <data name="Debug_AutoScroll" xml:space="preserve">
     <value>Rolagem Automática</value>
   </data>
-    <data name="Debug_Filter_Level" xml:space="preserve">
+  <data name="Debug_Filter_Level" xml:space="preserve">
     <value>Nível:</value>
   </data>
-    <data name="Debug_Filter_Label" xml:space="preserve">
+  <data name="Debug_Filter_Label" xml:space="preserve">
     <value>Filtro:</value>
   </data>
-    <data name="Debug_Filter_Tooltip" xml:space="preserve">
+  <data name="Debug_Filter_Tooltip" xml:space="preserve">
     <value>Filtrar logs por conteúdo de mensagem ou categoria</value>
   </data>
-    <data name="Debug_Header_Time" xml:space="preserve">
+  <data name="Debug_Header_Time" xml:space="preserve">
     <value>Tempo</value>
   </data>
-    <data name="Debug_Header_Level" xml:space="preserve">
+  <data name="Debug_Header_Level" xml:space="preserve">
     <value>Nível</value>
   </data>
-    <data name="Debug_Header_Category" xml:space="preserve">
+  <data name="Debug_Header_Category" xml:space="preserve">
     <value>Categoria</value>
   </data>
-    <data name="Debug_Header_Message" xml:space="preserve">
+  <data name="Debug_Header_Message" xml:space="preserve">
     <value>Mensagem</value>
   </data>
-    <data name="Debug_Status_TotalPrefix" xml:space="preserve">
+  <data name="Debug_Status_TotalPrefix" xml:space="preserve">
     <value>Total: </value>
   </data>
-    <data name="Debug_Status_TotalSuffix" xml:space="preserve">
+  <data name="Debug_Status_TotalSuffix" xml:space="preserve">
     <value> logs</value>
   </data>
-    <data name="Debug_Status_FilteredPrefix" xml:space="preserve">
+  <data name="Debug_Status_FilteredPrefix" xml:space="preserve">
     <value>Filtrados: </value>
   </data>
-    <data name="Debug_Status_FilteredSuffix" xml:space="preserve">
+  <data name="Debug_Status_FilteredSuffix" xml:space="preserve">
     <value> logs</value>
   </data>
-    <data name="Debug_Status_LastPrefix" xml:space="preserve">
+  <data name="Debug_Status_LastPrefix" xml:space="preserve">
     <value>Último: </value>
   </data>
-    <data name="Debug_ThemeTestText" xml:space="preserve">
+  <data name="Debug_ThemeTestText" xml:space="preserve">
     <value>Texto de teste de mudança de tema</value>
   </data>
-    <data name="Debug_Button_PcapTest" xml:space="preserve">
+  <data name="Debug_Button_PcapTest" xml:space="preserve">
     <value>Teste Pcap</value>
   </data>
-    <data name="Debug_Button_SkillBreakdown" xml:space="preserve">
+  <data name="Debug_Button_SkillBreakdown" xml:space="preserve">
     <value>Visualização de Detalhamento de Habilidades</value>
   </data>
-    <data name="Debug_Button_DamageReference" xml:space="preserve">
+  <data name="Debug_Button_DamageReference" xml:space="preserve">
     <value>Visualização de Referência de Dano</value>
   </data>
-    <data name="Debug_Button_Settings" xml:space="preserve">
+  <data name="Debug_Button_Settings" xml:space="preserve">
     <value>Visualização de Configurações</value>
   </data>
-    <data name="Debug_Button_About" xml:space="preserve">
+  <data name="Debug_Button_About" xml:space="preserve">
     <value>Visualização Sobre</value>
   </data>
-    <data name="Debug_Group_Title" xml:space="preserve">
+  <data name="Debug_Group_Title" xml:space="preserve">
     <value>Utilitários de debug</value>
   </data>
-    <data name="MainWindow_Header_Title" xml:space="preserve">
+  <data name="MainWindow_Header_Title" xml:space="preserve">
     <value>Analisador DPS SR</value>
   </data>
-    <data name="MainWindow_PluginList_Title" xml:space="preserve">
+  <data name="MainWindow_PluginList_Title" xml:space="preserve">
     <value>Lista de Plugins</value>
   </data>
-    <data name="MainWindow_Plugin_Label_Intro" xml:space="preserve">
+  <data name="MainWindow_Plugin_Label_Intro" xml:space="preserve">
     <value>Introdução:</value>
   </data>
-    <data name="MainWindow_Plugin_DpsTool_Title" xml:space="preserve">
+  <data name="MainWindow_Plugin_DpsTool_Title" xml:space="preserve">
     <value>Kit de Ferramentas DPS</value>
   </data>
-    <data name="MainWindow_Plugin_DpsTool_Description" xml:space="preserve">
+  <data name="MainWindow_Plugin_DpsTool_Description" xml:space="preserve">
     <value>Fornece estatísticas de DPS e ferramentas de detalhamento de habilidades</value>
   </data>
-    <data name="MainWindow_Plugin_Label_Author" xml:space="preserve">
+  <data name="MainWindow_Plugin_Label_Author" xml:space="preserve">
     <value>Autor:</value>
   </data>
-    <data name="MainWindow_Plugin_Author_OfficialTeam" xml:space="preserve">
+  <data name="MainWindow_Plugin_Author_OfficialTeam" xml:space="preserve">
     <value>[Oficial] SR DPS Analyzer Team</value>
   </data>
-    <data name="MainWindow_Plugin_AutoStart" xml:space="preserve">
+  <data name="MainWindow_Plugin_AutoStart" xml:space="preserve">
     <value>Início automático</value>
   </data>
-    <data name="Common_Action_Open" xml:space="preserve">
+  <data name="Common_Action_Open" xml:space="preserve">
     <value>Iniciar</value>
   </data>
-    <data name="MainWindow_Plugin_ModuleSolver_Title" xml:space="preserve">
+  <data name="MainWindow_Plugin_ModuleSolver_Title" xml:space="preserve">
     <value>Solucionador de Módulos</value>
   </data>
-    <data name="MainWindow_Plugin_ModuleSolver_Description" xml:space="preserve">
+  <data name="MainWindow_Plugin_ModuleSolver_Description" xml:space="preserve">
     <value>Calcula rapidamente combinações ótimas de módulos</value>
   </data>
-    <data name="MainWindow_Plugin_WorldBoss_Title" xml:space="preserve">
+  <data name="MainWindow_Plugin_WorldBoss_Title" xml:space="preserve">
     <value>Rastreador de Status de Boss Mundial</value>
   </data>
-    <data name="MainWindow_Plugin_WorldBoss_Description" xml:space="preserve">
+  <data name="MainWindow_Plugin_WorldBoss_Description" xml:space="preserve">
     <value>Dados ao vivo colaborativos para o status do boss mundial de cada canal</value>
   </data>
-    <data name="MainWindow_Plugin_PigTracker_Title" xml:space="preserve">
+  <data name="MainWindow_Plugin_PigTracker_Title" xml:space="preserve">
     <value>Rastreador de Status do Pig Nabo</value>
   </data>
-    <data name="MainWindow_Plugin_PigTracker_Description" xml:space="preserve">
+  <data name="MainWindow_Plugin_PigTracker_Description" xml:space="preserve">
     <value>Rastreador comunitário para rotas e localizações do Pig Nabo</value>
   </data>
-    <data name="MainWindow_Debug_Group_Title" xml:space="preserve">
+  <data name="MainWindow_Debug_Group_Title" xml:space="preserve">
     <value>Utilitários de debug</value>
   </data>
-    <data name="MainWindow_Debug_ThemeTest" xml:space="preserve">
+  <data name="MainWindow_Debug_ThemeTest" xml:space="preserve">
     <value>Texto de teste de mudança de tema</value>
   </data>
-    <data name="MainWindow_Debug_Button_PcapTest" xml:space="preserve">
+  <data name="MainWindow_Debug_Button_PcapTest" xml:space="preserve">
     <value>Teste Pcap</value>
   </data>
-    <data name="MainWindow_Debug_Button_SkillBreakdown" xml:space="preserve">
+  <data name="MainWindow_Debug_Button_SkillBreakdown" xml:space="preserve">
     <value>Visualização de Detalhamento de Habilidades</value>
   </data>
-    <data name="MainWindow_Debug_Button_DamageReference" xml:space="preserve">
+  <data name="MainWindow_Debug_Button_DamageReference" xml:space="preserve">
     <value>Visualização de Referência de Dano</value>
   </data>
-    <data name="MainWindow_Debug_Button_Settings" xml:space="preserve">
+  <data name="MainWindow_Debug_Button_Settings" xml:space="preserve">
     <value>Visualização de Configurações</value>
   </data>
-    <data name="MainWindow_Debug_Button_About" xml:space="preserve">
+  <data name="MainWindow_Debug_Button_About" xml:space="preserve">
     <value>Visualização Sobre</value>
   </data>
-    <data name="Window_ModuleSolve_Title" xml:space="preserve">
+  <data name="Window_ModuleSolve_Title" xml:space="preserve">
     <value>Solucionador de Módulos</value>
   </data>
-    <data name="ModuleSolve_Header_Title" xml:space="preserve">
+  <data name="ModuleSolve_Header_Title" xml:space="preserve">
     <value>Solucionador de Módulos</value>
   </data>
-    <data name="ModuleSolve_TargetProperties_Title" xml:space="preserve">
+  <data name="ModuleSolve_TargetProperties_Title" xml:space="preserve">
     <value>Estatísticas e níveis alvo (0 = padrão) [digite para pesquisar]</value>
   </data>
-    <data name="ModuleSolve_Property1_Label" xml:space="preserve">
+  <data name="ModuleSolve_Property1_Label" xml:space="preserve">
     <value>Estatística 1:</value>
   </data>
-    <data name="ModuleSolve_Property2_Label" xml:space="preserve">
+  <data name="ModuleSolve_Property2_Label" xml:space="preserve">
     <value>Estatística 2:</value>
   </data>
-    <data name="ModuleSolve_Property3_Label" xml:space="preserve">
+  <data name="ModuleSolve_Property3_Label" xml:space="preserve">
     <value>Estatística 3:</value>
   </data>
-    <data name="ModuleSolve_Property4_Label" xml:space="preserve">
+  <data name="ModuleSolve_Property4_Label" xml:space="preserve">
     <value>Estatística 4:</value>
   </data>
-    <data name="ModuleSolve_Property5_Label" xml:space="preserve">
+  <data name="ModuleSolve_Property5_Label" xml:space="preserve">
     <value>Estatística 5:</value>
   </data>
-    <data name="ModuleSolve_ExpectedLevel_Label" xml:space="preserve">
+  <data name="ModuleSolve_ExpectedLevel_Label" xml:space="preserve">
     <value>Nível desejado:</value>
   </data>
-    <data name="ModuleSolve_ExcludeProperties_Title" xml:space="preserve">
+  <data name="ModuleSolve_ExcludeProperties_Title" xml:space="preserve">
     <value>Excluir estatísticas (conflitos com alvos) [digite para pesquisar]</value>
   </data>
-    <data name="ModuleSolve_ModuleType_Label" xml:space="preserve">
+  <data name="ModuleSolve_ModuleType_Label" xml:space="preserve">
     <value>Tipo de módulo:</value>
   </data>
-    <data name="ModuleSolve_ModuleType_All" xml:space="preserve">
+  <data name="ModuleSolve_ModuleType_All" xml:space="preserve">
     <value>Todos</value>
   </data>
-    <data name="ModuleSolve_ModuleType_Offense" xml:space="preserve">
+  <data name="ModuleSolve_ModuleType_Offense" xml:space="preserve">
     <value>Ofensivo</value>
   </data>
-    <data name="ModuleSolve_ModuleType_Defense" xml:space="preserve">
+  <data name="ModuleSolve_ModuleType_Defense" xml:space="preserve">
     <value>Defensivo</value>
   </data>
-    <data name="ModuleSolve_ModuleType_Support" xml:space="preserve">
+  <data name="ModuleSolve_ModuleType_Support" xml:space="preserve">
     <value>Suporte</value>
   </data>
-    <data name="ModuleSolve_Sort_Label" xml:space="preserve">
+  <data name="ModuleSolve_Sort_Label" xml:space="preserve">
     <value>Ordenar por:</value>
   </data>
-    <data name="ModuleSolve_Sort_Attribute" xml:space="preserve">
+  <data name="ModuleSolve_Sort_Attribute" xml:space="preserve">
     <value>Prioridade de estatística</value>
   </data>
-    <data name="ModuleSolve_Sort_Level" xml:space="preserve">
+  <data name="ModuleSolve_Sort_Level" xml:space="preserve">
     <value>Prioridade de nível</value>
   </data>
-    <data name="ModuleSolve_Analyze_Button" xml:space="preserve">
+  <data name="ModuleSolve_Analyze_Button" xml:space="preserve">
     <value>Analisar módulos</value>
   </data>
-    <data name="ModuleSolve_UsingTip" xml:space="preserve">
+  <data name="ModuleSolve_UsingTip" xml:space="preserve">
     <value>Após abrir esta janela, mude de zona ou relogue antes de analisar. Clique com o botão direito em uma opção de estatística para limpá-la.</value>
   </data>
-    <data name="Window_SkillBreakdown_Title" xml:space="preserve">
+  <data name="Window_SkillBreakdown_Title" xml:space="preserve">
     <value>Detalhes da Habilidade</value>
   </data>
-    <data name="SkillBreakdown_Header_Title" xml:space="preserve">
+  <data name="SkillBreakdown_Header_Title" xml:space="preserve">
     <value>Detalhamento de Habilidades</value>
   </data>
-    <data name="SkillBreakdown_Card_RealtimeChart" xml:space="preserve">
+  <data name="SkillBreakdown_Card_RealtimeChart" xml:space="preserve">
     <value>Gráficos de DPS/HPS/DTPS em tempo real</value>
   </data>
-    <data name="SkillBreakdown_Placeholder_LineChart" xml:space="preserve">
+  <data name="SkillBreakdown_Placeholder_LineChart" xml:space="preserve">
     <value>Imagine um gráfico de linha aqui</value>
   </data>
-    <data name="SkillBreakdown_Card_ShareChart" xml:space="preserve">
+  <data name="SkillBreakdown_Card_ShareChart" xml:space="preserve">
     <value>Gráfico de contribuição de habilidades</value>
   </data>
-    <data name="SkillBreakdown_Placeholder_PieChart" xml:space="preserve">
+  <data name="SkillBreakdown_Placeholder_PieChart" xml:space="preserve">
     <value>Imagine um gráfico de pizza aqui</value>
   </data>
-    <data name="SkillBreakdown_Card_DamageDistribution" xml:space="preserve">
+  <data name="SkillBreakdown_Card_DamageDistribution" xml:space="preserve">
     <value>Distribuição de dano</value>
   </data>
-    <data name="SkillBreakdown_Placeholder_BarChart" xml:space="preserve">
+  <data name="SkillBreakdown_Placeholder_BarChart" xml:space="preserve">
     <value>Imagine um gráfico de barras aqui</value>
   </data>
-    <data name="SkillBreakdown_Section_DamageInfo" xml:space="preserve">
+  <data name="SkillBreakdown_Section_DamageInfo" xml:space="preserve">
     <value>Informações de dano</value>
   </data>
-    <data name="SkillBreakdown_Label_TotalDamage" xml:space="preserve">
+  <data name="SkillBreakdown_Label_TotalDamage" xml:space="preserve">
     <value>Dano total</value>
   </data>
-    <data name="SkillBreakdown_Value_TotalDamage" xml:space="preserve">
+  <data name="SkillBreakdown_Value_TotalDamage" xml:space="preserve">
     <value>42.64K</value>
   </data>
-    <data name="SkillBreakdown_Label_Dps" xml:space="preserve">
+  <data name="SkillBreakdown_Label_Dps" xml:space="preserve">
     <value>DPS</value>
   </data>
-    <data name="SkillBreakdown_Value_Dps" xml:space="preserve">
+  <data name="SkillBreakdown_Value_Dps" xml:space="preserve">
     <value>29.01K</value>
   </data>
-    <data name="SkillBreakdown_Label_HitCount" xml:space="preserve">
+  <data name="SkillBreakdown_Label_HitCount" xml:space="preserve">
     <value>Acertos</value>
   </data>
-    <data name="SkillBreakdown_Value_HitCount" xml:space="preserve">
+  <data name="SkillBreakdown_Value_HitCount" xml:space="preserve">
     <value>6</value>
   </data>
-    <data name="SkillBreakdown_Label_CritRate" xml:space="preserve">
+  <data name="SkillBreakdown_Label_CritRate" xml:space="preserve">
     <value>Taxa de crítico</value>
   </data>
-    <data name="SkillBreakdown_Value_CritRate" xml:space="preserve">
+  <data name="SkillBreakdown_Value_CritRate" xml:space="preserve">
     <value>16.67%</value>
   </data>
-    <data name="SkillBreakdown_Label_LuckRate" xml:space="preserve">
+  <data name="SkillBreakdown_Label_LuckRate" xml:space="preserve">
     <value>Taxa de sorte</value>
   </data>
-    <data name="DpsStatistics_TestButton_Content" xml:space="preserve">
+  <data name="DpsStatistics_TestButton_Content" xml:space="preserve">
     <value>T</value>
   </data>
-    <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-    <data name="DpsStatistics_TestButton_Tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
-        <value />
-    </data>
-    <data name="Common_Dash" xml:space="preserve">
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DpsStatistics_TestButton_Tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Common_Dash" xml:space="preserve">
     <value>-</value>
   </data>
-    <data name="StatisticType_Damage" xml:space="preserve">
+  <data name="StatisticType_Damage" xml:space="preserve">
     <value>Dano</value>
   </data>
-    <data name="StatisticType_Healing" xml:space="preserve">
+  <data name="StatisticType_Healing" xml:space="preserve">
     <value>Cura</value>
   </data>
-    <data name="StatisticType_TakenDamage" xml:space="preserve">
+  <data name="StatisticType_TakenDamage" xml:space="preserve">
     <value>Dano Recebido</value>
   </data>
-    <data name="StatisticType_NpcTakenDamage" xml:space="preserve">
+  <data name="StatisticType_NpcTakenDamage" xml:space="preserve">
     <value>Dano Recebido de NPC</value>
   </data>
-    <data name="ScopeTime_Current" xml:space="preserve">
+  <data name="ScopeTime_Current" xml:space="preserve">
     <value>Atual</value>
   </data>
-    <data name="ScopeTime_Total" xml:space="preserve">
+  <data name="ScopeTime_Total" xml:space="preserve">
     <value>Total</value>
   </data>
-    <data name="DpsStatistics_Indicator_ClickThrough_Tooltip" xml:space="preserve">
+  <data name="DpsStatistics_Indicator_ClickThrough_Tooltip" xml:space="preserve">
     <value>Cliques do mouse permitidos</value>
   </data>
-    <data name="Settings_Shortcut_TopMost" xml:space="preserve">
+  <data name="Settings_Shortcut_TopMost" xml:space="preserve">
     <value>Sempre no topo</value>
   </data>
-    <data name="DpsStatistics_Indicator_WindowTopMost_Tooltip" xml:space="preserve">
+  <data name="DpsStatistics_Indicator_WindowTopMost_Tooltip" xml:space="preserve">
     <value>Alternar sempre no topo</value>
   </data>
-    <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
+  <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
     <value>Foque nesta caixa e pressione um atalho (ex: Ctrl+F9). Pressione Delete para limpar.</value>
   </data>
-    <data name="ClassSpec_Unknown" xml:space="preserve">
+  <data name="ClassSpec_Unknown" xml:space="preserve">
     <value>Unknown</value>
   </data>
-    <data name="ClassSpec_ShieldKnightRecovery" xml:space="preserve">
+  <data name="ClassSpec_ShieldKnightRecovery" xml:space="preserve">
     <value>Recovery</value>
   </data>
-    <data name="ClassSpec_ShieldKnightShield" xml:space="preserve">
+  <data name="ClassSpec_ShieldKnightShield" xml:space="preserve">
     <value>Shield</value>
   </data>
-    <data name="ClassSpec_HeavyGuardianEarthfort" xml:space="preserve">
+  <data name="ClassSpec_HeavyGuardianEarthfort" xml:space="preserve">
     <value>Earthfort</value>
   </data>
-    <data name="ClassSpec_HeavyGuardianBlock" xml:space="preserve">
+  <data name="ClassSpec_HeavyGuardianBlock" xml:space="preserve">
     <value>Block</value>
   </data>
-    <data name="ClassSpec_StormbladeIaidoSlash" xml:space="preserve">
+  <data name="ClassSpec_StormbladeIaidoSlash" xml:space="preserve">
     <value>IaidoSlash</value>
   </data>
-    <data name="ClassSpec_StormbladeMoonStrike" xml:space="preserve">
+  <data name="ClassSpec_StormbladeMoonStrike" xml:space="preserve">
     <value>MoonStrike</value>
   </data>
-    <data name="ClassSpec_WindKnightVanGuard" xml:space="preserve">
+  <data name="ClassSpec_WindKnightVanGuard" xml:space="preserve">
     <value>VanGuard</value>
   </data>
-    <data name="ClassSpec_WindKnightSkyward" xml:space="preserve">
+  <data name="ClassSpec_WindKnightSkyward" xml:space="preserve">
     <value>Skyward</value>
   </data>
-    <data name="ClassSpec_FrostMageIcicle" xml:space="preserve">
+  <data name="ClassSpec_FrostMageIcicle" xml:space="preserve">
     <value>Icicle</value>
   </data>
-    <data name="ClassSpec_FrostMageFrostBeam" xml:space="preserve">
+  <data name="ClassSpec_FrostMageFrostBeam" xml:space="preserve">
     <value>FrostBeam</value>
   </data>
-    <data name="ClassSpec_MarksmanWildpack" xml:space="preserve">
+  <data name="ClassSpec_MarksmanWildpack" xml:space="preserve">
     <value>Wildpack</value>
   </data>
-    <data name="ClassSpec_MarksmanFalconry" xml:space="preserve">
+  <data name="ClassSpec_MarksmanFalconry" xml:space="preserve">
     <value>Falconry</value>
   </data>
-    <data name="ClassSpec_VerdantOracleSmite" xml:space="preserve">
+  <data name="ClassSpec_VerdantOracleSmite" xml:space="preserve">
     <value>Smite</value>
   </data>
-    <data name="ClassSpec_VerdantOracleLifeBind" xml:space="preserve">
+  <data name="ClassSpec_VerdantOracleLifeBind" xml:space="preserve">
     <value>LifeBind</value>
   </data>
-    <data name="ClassSpec_SoulMusicianDissonance" xml:space="preserve">
+  <data name="ClassSpec_SoulMusicianDissonance" xml:space="preserve">
     <value>Dissonance</value>
   </data>
-    <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
+  <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
     <value>Concerto</value>
+  </data>
+  <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
+    <value>Falha na seleção automática do adaptador de rede, verifique se você tem conexões de rede adequadas</value>
+  </data>
+  <data name="Settings_NetworkAdapterAutoSelect_Button" xml:space="preserve">
+    <value>Automático</value>
   </data>
 </root>
