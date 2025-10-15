@@ -249,7 +249,7 @@ public class DeviceManagementService(
         try
         {
             var dest = IPAddress.Parse("8.8.8.8");
-            // Convert to uint (network order -> host order)
+            // Convert IP address from host byte order to the format expected by GetBestInterface (network byte order)
             var bytes = dest.GetAddressBytes();
             var addr = BitConverter.ToUInt32(bytes, 0);
 
