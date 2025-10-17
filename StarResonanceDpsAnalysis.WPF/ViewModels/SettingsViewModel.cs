@@ -385,7 +385,7 @@ public enum ShortcutType
 
 public sealed class SettingsDesignTimeViewModel : SettingsViewModel
 {
-    public SettingsDesignTimeViewModel() : base(new DesignConfigManager(), null!)
+    public SettingsDesignTimeViewModel() : base(new DesignConfigManager(), new DesignTimeDeviceManagementService())
     {
         AppConfig = new AppConfig
         {
