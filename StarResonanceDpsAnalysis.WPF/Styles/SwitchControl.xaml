@@ -11,7 +11,7 @@
                 <MultiBinding Converter="{StaticResource SwitchTrackWidthConverter}">
                     <Binding ElementName="PART_OnLabel" Path="ActualWidth" />
                     <Binding ElementName="PART_OffLabel" Path="ActualWidth" />
-                    <Binding RelativeSource="{RelativeSource Self}" Path="ActualHeight" />
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
                 </MultiBinding>
             </Setter.Value>
         </Setter>
@@ -29,15 +29,18 @@
         <Setter Property="Width">
             <Setter.Value>
                 <MultiBinding Converter="{StaticResource MinusConverter}">
-                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type Border}}" Path="ActualWidth" />
-                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type Border}}" Path="ActualHeight" />
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType={x:Type Border}}" />
                     <Binding Source="-3" />
                 </MultiBinding>
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="OnContentBorder" TargetType="Border" BasedOn="{StaticResource ContentBorderBase}">
+
+    <Style
+        x:Key="OnContentBorder"
+        BasedOn="{StaticResource ContentBorderBase}"
+        TargetType="Border">
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="RenderTransform">
             <Setter.Value>
@@ -45,8 +48,11 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="OffContentBorder" TargetType="Border" BasedOn="{StaticResource ContentBorderBase}">
+
+    <Style
+        x:Key="OffContentBorder"
+        BasedOn="{StaticResource ContentBorderBase}"
+        TargetType="Border">
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="RenderTransform">
             <Setter.Value>
@@ -63,12 +69,18 @@
         <Setter Property="FontSize" Value="10" />
     </Style>
 
-    <Style x:Key="OnContent" TargetType="ContentControl" BasedOn="{StaticResource ContentBase}">
+    <Style
+        x:Key="OnContent"
+        BasedOn="{StaticResource ContentBase}"
+        TargetType="ContentControl">
         <Setter Property="Foreground" Value="#FFF" />
         <Setter Property="Opacity" Value="0" />
     </Style>
 
-    <Style x:Key="OffContent" TargetType="ContentControl" BasedOn="{StaticResource ContentBase}">
+    <Style
+        x:Key="OffContent"
+        BasedOn="{StaticResource ContentBase}"
+        TargetType="ContentControl">
         <Setter Property="Foreground" Value="#000" />
         <Setter Property="Opacity" Value="1" />
     </Style>
@@ -86,34 +98,30 @@
                             <SolidColorBrush x:Name="TrackBrush" Color="{StaticResource AntBorderColor}" />
                         </Border.Background>
                         <Grid>
-                            <Border 
-                                x:Name="PART_OnBorder" 
-                                Style="{StaticResource OnContentBorder}">
+                            <Border x:Name="PART_OnBorder" Style="{StaticResource OnContentBorder}">
                                 <ContentControl
                                     x:Name="PART_OnLabel"
-                                    Style="{StaticResource OnContent}"
                                     Content="{TemplateBinding OnContent}"
-                                    FontSize="{TemplateBinding FontSize}" />
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Style="{StaticResource OnContent}" />
                             </Border>
 
-                            <Border 
-                                x:Name="PART_OffBorder"
-                                Style="{StaticResource OffContentBorder}">
+                            <Border x:Name="PART_OffBorder" Style="{StaticResource OffContentBorder}">
                                 <ContentControl
                                     x:Name="PART_OffLabel"
-                                    Style="{StaticResource OffContent}"
                                     Content="{TemplateBinding OffContent}"
-                                    FontSize="{TemplateBinding FontSize}" />
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Style="{StaticResource OffContent}" />
                             </Border>
 
                             <Border
                                 x:Name="PART_Thumb"
-                                Style="{StaticResource ThumbBorder}"
-                                VerticalAlignment="Stretch"
-                                MinHeight="12"
                                 Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                MinHeight="12"
+                                VerticalAlignment="Stretch"
                                 CornerRadius="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HalfValueConverter}}"
-                                RenderTransformOrigin="0.5,0.5">
+                                RenderTransformOrigin="0.5,0.5"
+                                Style="{StaticResource ThumbBorder}">
                                 <Border.RenderTransform>
                                     <TranslateTransform x:Name="ThumbTranslate" X="0" />
                                 </Border.RenderTransform>

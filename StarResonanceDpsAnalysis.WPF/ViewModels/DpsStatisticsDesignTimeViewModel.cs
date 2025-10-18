@@ -9,6 +9,7 @@ using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Data;
+using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Services;
 using StarResonanceDpsAnalysis.WPF.Views;
 
@@ -28,7 +29,8 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
             NullLogger<DebugFunctions>.Instance,
             new DesignLogObservable(),
             new DesignOptionsMonitor(),
-            null!),
+            null!,
+            LocalizationManager.Instance),
         Dispatcher.CurrentDispatcher)
     {
         // Populate with a few sample entries so designer shows something.

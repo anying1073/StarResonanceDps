@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,8 +8,8 @@ using Serilog;
 using Serilog.Events;
 using SharpPcap;
 using StarResonanceDpsAnalysis.WPF.Config;
-using StarResonanceDpsAnalysis.WPF.Data;
 using StarResonanceDpsAnalysis.WPF.Extensions;
+using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Services;
 using StarResonanceDpsAnalysis.WPF.Themes;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -107,7 +108,6 @@ public partial class App : Application
                 services.AddThemes();
                 services.AddWindowManagementService();
                 services.AddSingleton<IApplicationControlService, ApplicationControlService>();
-                services.AddSingleton<IDataSource, DpsDummyDataSource>();
                 services.AddSingleton<IDeviceManagementService, DeviceManagementService>();
                 services.AddSingleton<IApplicationStartup, ApplicationStartup>();
                 services.AddPacketAnalyzer();
@@ -117,6 +117,12 @@ public partial class App : Application
                 services.AddSingleton<ITopmostService, TopmostService>();
                 if (_logStream != null) services.AddSingleton<IObservable<LogEvent>>(_logStream);
                 services.AddSingleton(_ => Current.Dispatcher);
+
+                // Localization manager singleton
+                services.AddSingleton<LocalizationManager>(_ => new LocalizationManager(new LocalizationConfiguration
+                {
+                    LocalizationDirectory = Path.Combine(AppContext.BaseDirectory, "Data")
+                }));
             })
             .ConfigureLogging(lb => lb.ClearProviders());
     }

@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -12,6 +13,8 @@ using Serilog.Events;
 using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.WPF.Config;
+using StarResonanceDpsAnalysis.WPF.Localization;
+using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.Views;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -27,6 +30,7 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
     private readonly IDisposable? _logSubscription;
     // private readonly PacketAnalyzer _packetAnalyzer = new();
     private readonly IPacketAnalyzer _packetAnalyzer;
+    private readonly LocalizationManager _localizationManager;
     private readonly Queue<LogEntry> _pendingLogs = new();
     [ObservableProperty] private bool _autoScrollEnabled = true;
     [ObservableProperty] private bool _enabled;
@@ -43,11 +47,22 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
     private Task? _replayTask;
     [ObservableProperty] private LogLevel _selectedLogLevel = LogLevel.Trace;
 
+    [ObservableProperty]
+    private List<Option<Language>> _availableLanguages =
+    [
+        new(Language.Auto, Language.Auto.GetLocalizedDescription()),
+        new(Language.ZhCn, Language.ZhCn.GetLocalizedDescription()),
+        new(Language.EnUs, Language.EnUs.GetLocalizedDescription()),
+        new(Language.PtBr, Language.PtBr.GetLocalizedDescription()),
+    ];
+    [ObservableProperty] private Option<Language>? _selectedLanguage;
+
     public DebugFunctions(Dispatcher dispatcher,
         ILogger<DebugFunctions> logger,
         IObservable<LogEvent> observer,
         IOptionsMonitor<AppConfig> options,
-        IPacketAnalyzer packetAnalyzer)
+        IPacketAnalyzer packetAnalyzer,
+        LocalizationManager localizationManager)
     {
         _dispatcher = dispatcher;
         _logger = logger;
@@ -60,6 +75,7 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
         SetProperty(options.CurrentValue, null);
         options.OnChange(SetProperty);
         _packetAnalyzer = packetAnalyzer;
+        _localizationManager = localizationManager;
 
         _logger.LogInformation("DebugFunctions initialized with Serilog observable sink");
     }
@@ -86,6 +102,11 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
 
     // Event to request sample data addition - removes direct dependency on DpsStatisticsViewModel
     public event EventHandler? SampleDataRequested;
+    partial void OnSelectedLanguageChanged(Option<Language>? value)
+    {
+        if (value == null) return;
+        _localizationManager.ApplyLanguage(value.Value);
+    }
 
     private void SetProperty(AppConfig arg1, string? arg2)
     {

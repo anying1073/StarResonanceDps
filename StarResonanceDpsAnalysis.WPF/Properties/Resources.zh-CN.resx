@@ -388,7 +388,7 @@
     <value>Debug View</value>
   </data>
   <data name="Debug_LoadPcap" xml:space="preserve">
-    <value>Load PCAP</value>
+    <value>加载 PCAP</value>
   </data>
   <data name="Debug_AddSampleData" xml:space="preserve">
     <value>AddSampleData</value>
@@ -415,16 +415,16 @@
     <value>Filter logs by message or category content</value>
   </data>
   <data name="Debug_Header_Time" xml:space="preserve">
-    <value>Time</value>
+    <value>时间</value>
   </data>
   <data name="Debug_Header_Level" xml:space="preserve">
-    <value>Level</value>
+    <value>等级</value>
   </data>
   <data name="Debug_Header_Category" xml:space="preserve">
-    <value>Category</value>
+    <value>分类</value>
   </data>
   <data name="Debug_Header_Message" xml:space="preserve">
-    <value>Message</value>
+    <value>信息</value>
   </data>
   <data name="Debug_Status_TotalPrefix" xml:space="preserve">
     <value>总计：</value>
@@ -830,6 +830,10 @@
   </data>
   <data name="Window_BossTracker_Title" xml:space="preserve">
     <value>Boss Status Tracker</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Debug_Localization_Apply" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="MainWindow_Plugin_Search_PlaceHolder" xml:space="preserve">
     <value>搜索...</value>

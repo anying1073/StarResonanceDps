@@ -850,6 +850,10 @@
   <data name="Window_BossTracker_Title" xml:space="preserve">
     <value>野外Boss状态查看器</value>
   </data>
+  <data name="Debug_Localization_Language" xml:space="preserve"><value>Language:</value></data>
+  <data name="Debug_Localization_Apply" xml:space="preserve"><value>Apply</value></data>
+  <data name="Debug_Localization_TestKey" xml:space="preserve"><value>Test Key:</value></data>
+  <data name="Debug_Localization_Test" xml:space="preserve"><value>Test</value></data>
   <data name="MainWindow_Plugin_Search_PlaceHolder" xml:space="preserve">
     <value>Search...</value>
   </data>

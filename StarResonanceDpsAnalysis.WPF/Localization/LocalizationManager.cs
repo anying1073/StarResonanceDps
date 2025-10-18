@@ -1,46 +1,123 @@
 using System.Diagnostics;
 using System.Globalization;
-using System.Reflection;
+using System.IO;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.Properties;
 using WPFLocalizeExtension.Engine;
+using WPFLocalizeExtension.Providers;
 
 namespace StarResonanceDpsAnalysis.WPF.Localization;
 
-public static class LocalizationManager
+/// <summary>
+/// Configuration class for localization settings.
+/// </summary>
+public sealed class LocalizationConfiguration
 {
-    private static bool _initialized;
-    private static readonly CultureInfo _systemDefaultCultureInfo;
-    private static readonly string DefaultAssemblyName;
-    private const string DefaultDictionaryName = "Properties.Resources";
+    /// <summary>
+    /// The default directory for localization files.
+    /// </summary>
+    public const string DEFAULT_DIRECTORY = "Data";
 
-    static LocalizationManager()
+    /// <summary>
+    /// Gets or sets the directory where localization files are stored.
+    /// </summary>
+    public string LocalizationDirectory { get; set; } = DEFAULT_DIRECTORY;
+}
+
+/// <summary>
+/// Manages localization for the WPF application, supporting both ResX and JSON providers.
+/// </summary>
+public sealed class LocalizationManager
+{
+    private readonly LocalizationConfiguration _config;
+
+    // private readonly string _defaultAssemblyName;
+    private readonly CultureInfo _systemDefaultCultureInfo;
+    private AggregatedLocalizationProvider _aggregatedProvider;
+    private bool _initialized;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LocalizationManager"/> class.
+    /// </summary>
+    /// <param name="config">The localization configuration.</param>
+    public LocalizationManager(LocalizationConfiguration config)
     {
+        _config = config;
         _systemDefaultCultureInfo = CultureInfo.CurrentUICulture;
-        var assemblyName = typeof(App).Assembly.GetName().Name;
-        DefaultAssemblyName = string.IsNullOrWhiteSpace(assemblyName)
-            ? Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty
-            : assemblyName;
-        ConfigureLocalizationExtension();
+        // var assemblyName = typeof(App).Assembly.GetName().Name;
+        // _defaultAssemblyName = string.IsNullOrWhiteSpace(assemblyName)
+        //     ? Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty
+        //     : assemblyName;
+
+        _aggregatedProvider = null!; // Will be initialized in ConfigureProviders
+        ConfigureProviders();
+        LocalizeDictionary.Instance.IncludeInvariantCulture = false;
+        LocalizeDictionary.Instance.SetCurrentThreadCulture = false;
+        Instance = this;
     }
 
-    public static event EventHandler<CultureInfo>? CultureChanged;
+    /// <summary>
+    /// Occurs when the culture is changed.
+    /// </summary>
+    public event EventHandler<CultureInfo>? CultureChanged;
 
-    public static void Initialize(Language language)
-    {
-        if (_initialized) return;
+    /// <summary>
+    /// Gets the singleton instance of the <see cref="LocalizationManager"/>.
+    /// </summary>
+    public static LocalizationManager Instance { get; private set; } = new(new LocalizationConfiguration()); // this instance will be used in design time viewmodel
 
-        ApplyLanguage(language);
-        _initialized = true;
-    }
-
-    public static void ApplyLanguage(Language language)
+    /// <summary>
+    /// Applies the specified language to the application.
+    /// </summary>
+    /// <param name="language">The language to apply.</param>
+    public void ApplyLanguage(Language language)
     {
         var targetCulture = ResolveCulture(language);
         ApplyCulture(targetCulture);
     }
 
-    public static CultureInfo ResolveCulture(Language language)
+    /// <summary>
+    /// Gets the current language based on the active culture.
+    /// </summary>
+    /// <returns>The current <see cref="Language"/>.</returns>
+    public Language GetCurrentLanguage()
+    {
+        return CultureAttributeExtensions.FromCultureInfo(LocalizeDictionary.Instance.Culture ??
+                                                          CultureInfo.CurrentUICulture);
+    }
+
+    /// <summary>
+    /// Retrieves the localized string for the given key.
+    /// </summary>
+    /// <param name="key">The localization key.</param>
+    /// <returns>The localized string, or the key if not found.</returns>
+    public string GetString(string key)
+    {
+        var culture = LocalizeDictionary.Instance.Culture ?? CultureInfo.CurrentUICulture;
+        var localized = _aggregatedProvider.GetLocalizedObject(key, null, culture) as string;
+
+        return !string.IsNullOrEmpty(localized)
+            ? localized
+            : key;
+    }
+
+    /// <summary>
+    /// Initializes the localization manager with the specified language.
+    /// </summary>
+    /// <param name="language">The initial language.</param>
+    public void Initialize(Language language)
+    {
+        if (_initialized) return;
+        ApplyLanguage(language);
+        _initialized = true;
+    }
+
+    /// <summary>
+    /// Resolves the <see cref="CultureInfo"/> for the given language.
+    /// </summary>
+    /// <param name="language">The language to resolve.</param>
+    /// <returns>The corresponding <see cref="CultureInfo"/>.</returns>
+    public CultureInfo ResolveCulture(Language language)
     {
         if (language == Language.Auto)
         {
@@ -59,22 +136,6 @@ public static class LocalizationManager
         }
     }
 
-    private static void ConfigureLocalizationExtension()
-    {
-        // LocalizeDictionary.Instance.DefaultAssembly = DefaultAssemblyName;
-        // LocalizeDictionary.Instance.DefaultDictionary = DefaultDictionaryName;
-        LocalizeDictionary.Instance.IncludeInvariantCulture = false;
-        LocalizeDictionary.Instance.SetCurrentThreadCulture = false;
-    }
-
-    private static void ApplyCulture(CultureInfo culture)
-    {
-        LocalizeDictionary.Instance.Culture = culture;
-        Resources.Culture = culture;
-        SetThreadCulture(culture);
-        OnCultureChanged(culture);
-    }
-
     private static void SetThreadCulture(CultureInfo culture)
     {
         CultureInfo.CurrentCulture = culture;
@@ -83,17 +144,29 @@ public static class LocalizationManager
         CultureInfo.DefaultThreadCurrentUICulture = culture;
     }
 
-    private static void OnCultureChanged(CultureInfo e)
+    private void ApplyCulture(CultureInfo culture)
     {
-        CultureChanged?.Invoke(null, e);
+        LocalizeDictionary.Instance.Culture = culture;
+        Resources.Culture = culture;
+        SetThreadCulture(culture);
+        OnCultureChanged(culture);
     }
 
-    public static string GetString(string key)
+    private void ConfigureProviders()
     {
-        var culture = LocalizeDictionary.Instance.Culture ?? CultureInfo.CurrentUICulture;
-        var localized = Resources.ResourceManager.GetString(key, culture);
-        return !string.IsNullOrEmpty(localized)
-            ? localized!
-            : key;
+        var baseDir = AppContext.BaseDirectory;
+        var locDir = string.IsNullOrWhiteSpace(_config.LocalizationDirectory)
+            ? "Localization"
+            : _config.LocalizationDirectory;
+        var path = Path.IsPathRooted(locDir) ? locDir : Path.Combine(baseDir, locDir);
+
+        var jsonProvider = new JsonLocalizationProvider(path);
+        _aggregatedProvider = new AggregatedLocalizationProvider(ResxLocalizationProvider.Instance, jsonProvider);
+        LocalizeDictionary.Instance.DefaultProvider = _aggregatedProvider;
+    }
+
+    private void OnCultureChanged(CultureInfo e)
+    {
+        CultureChanged?.Invoke(this, e);
     }
 }

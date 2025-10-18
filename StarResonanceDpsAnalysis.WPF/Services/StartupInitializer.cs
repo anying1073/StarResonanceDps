@@ -14,14 +14,15 @@ public sealed class ApplicationStartup(
     IDeviceManagementService deviceManagementService,
     IGlobalHotkeyService hotkeyService,
     IPacketAnalyzer packetAnalyzer,
-    IDataStorage dataStorage) : IApplicationStartup
+    IDataStorage dataStorage,
+    LocalizationManager localization) : IApplicationStartup
 {
     public async Task InitializeAsync()
     {
         try
         {
             // Apply localization
-            LocalizationManager.Initialize(configManager.CurrentConfig.Language);
+            localization.Initialize(configManager.CurrentConfig.Language);
 
             await TryFindBestNetworkAdapter().ConfigureAwait(false);
 
