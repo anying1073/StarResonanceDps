@@ -381,11 +381,11 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         {
             _timer.Start();
         }
-        else if (_timer.IsRunning && !HasDamageData(dpsList))
-        {
-            // Stop recording if timer was running but no more damage data
-            // (IsRecordingActive removed - not part of interface)
-}
+        // else if (_timer.IsRunning && !HasDamageData(dpsList))
+        // {
+        //     // Stop recording if timer was running but no more damage data
+        //     // (IsRecordingActive removed - not part of interface)
+        // }
 
         // If a new section was created, wait until first datapoint to reset UI and mark section start
         var hasSectionDamage = HasDamageData(_storage.ReadOnlySectionedDpsDataList);
