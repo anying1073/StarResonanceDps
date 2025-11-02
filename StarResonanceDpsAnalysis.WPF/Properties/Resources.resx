@@ -910,4 +910,25 @@
   <data name="App_Exit_Confirm_Content" xml:space="preserve">
     <value>Close application?</value>
   </data>
+  <data name="Settings_Combat_DpsUpdateMode" xml:space="preserve">
+  <value>DPS Update Mode</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateMode_Tooltip" xml:space="preserve">
+    <value>Passive: Event-driven updates (low CPU usage)&#x0a;Active: Timer-based periodic updates (configurable refresh interval)</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateMode_Passive" xml:space="preserve">
+    <value>Passive</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateMode_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateInterval" xml:space="preserve">
+    <value>DPS Update Interval</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateInterval_Tooltip" xml:space="preserve">
+    <value>Only effective in Active mode&#x0a;Recommended: 500-2000 milliseconds</value>
+  </data>
+  <data name="Settings_Common_Milliseconds" xml:space="preserve">
+    <value>ms</value>
+  </data>
 </root>

@@ -1546,6 +1546,71 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DPS Update Interval.
+        /// </summary>
+        public static string Settings_Combat_DpsUpdateInterval {
+            get {
+                return ResourceManager.GetString("Settings_Combat_DpsUpdateInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only effective in Active mode
+        ///Recommended: 500-2000 milliseconds.
+        /// </summary>
+        public static string Settings_Combat_DpsUpdateInterval_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_Combat_DpsUpdateInterval_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DPS Update Mode.
+        /// </summary>
+        public static string Settings_Combat_DpsUpdateMode {
+            get {
+                return ResourceManager.GetString("Settings_Combat_DpsUpdateMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string Settings_Combat_DpsUpdateMode_Active {
+            get {
+                return ResourceManager.GetString("Settings_Combat_DpsUpdateMode_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passive.
+        /// </summary>
+        public static string Settings_Combat_DpsUpdateMode_Passive {
+            get {
+                return ResourceManager.GetString("Settings_Combat_DpsUpdateMode_Passive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passive: Event-driven updates (low CPU usage)
+        ///Active: Timer-based periodic updates (configurable refresh interval).
+        /// </summary>
+        public static string Settings_Combat_DpsUpdateMode_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_Combat_DpsUpdateMode_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ms.
+        /// </summary>
+        public static string Settings_Common_Milliseconds {
+            get {
+                return ResourceManager.GetString("Settings_Common_Milliseconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to sec.
         /// </summary>
         public static string Settings_Common_Seconds {

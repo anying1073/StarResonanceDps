@@ -9,6 +9,22 @@ using KeyBinding = StarResonanceDpsAnalysis.WPF.Models.KeyBinding;
 namespace StarResonanceDpsAnalysis.WPF.Config;
 
 /// <summary>
+/// DPS数据更新模式
+/// </summary>
+public enum DpsUpdateMode
+{
+    /// <summary>
+    /// 被动模式：基于事件触发更新
+    /// </summary>
+    Passive = 0,
+    
+    /// <summary>
+    /// 主动模式：基于定时器定期更新
+    /// </summary>
+    Active = 1
+}
+
+/// <summary>
 /// 应用配置类
 /// 集成了配置管理器功能，支持INI文件持久化和属性变更通知
 /// </summary>
@@ -121,6 +137,20 @@ public partial class AppConfig : ObservableObject
 
     [ObservableProperty]
     private bool _debugEnabled = false;
+
+    /// <summary>
+    /// DPS数据更新模式（被动/主动）
+    /// </summary>
+    [ObservableProperty]
+    private DpsUpdateMode _dpsUpdateMode = DpsUpdateMode.Passive;
+
+    /// <summary>
+    /// DPS数据主动更新间隔（毫秒），仅在主动模式下生效
+    /// 默认值：1000ms (1秒)
+    /// 范围：100ms - 5000ms
+    /// </summary>
+    [ObservableProperty]
+    private int _dpsUpdateInterval = 1000;
 
     public AppConfig Clone()
     {

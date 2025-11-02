@@ -883,4 +883,25 @@
   <data name="App_Exit_Confirm_Content" xml:space="preserve">
     <value>确定退出？</value>
   </data>
+  <data name="Settings_Combat_DpsUpdateMode" xml:space="preserve">
+    <value>DPS更新模式</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateMode_Tooltip" xml:space="preserve">
+    <value>被动模式：基于事件触发更新&#x0a;主动模式：基于定时器定期更新（可配置刷新间隔）</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateMode_Passive" xml:space="preserve">
+    <value>被动</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateMode_Active" xml:space="preserve">
+    <value>主动</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateInterval" xml:space="preserve">
+    <value>DPS更新间隔</value>
+  </data>
+  <data name="Settings_Combat_DpsUpdateInterval_Tooltip" xml:space="preserve">
+    <value>仅在主动模式下生效&#x0a;推荐值：500-2000毫秒</value>
+  </data>
+  <data name="Settings_Common_Milliseconds" xml:space="preserve">
+    <value>毫秒</value>
+  </data>
 </root>

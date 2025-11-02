@@ -610,6 +610,72 @@
                                             <TextBlock
                                                 Grid.Column="0"
                                                 Style="{StaticResource FieldName}"
+                                                Text="DPS更新模式"
+                                                ToolTip="被动模式：基于事件触发更新（低CPU占用）&#x0a;主动模式：基于定时器定期更新（可配置刷新间隔）" />
+                                            <Border Grid.Column="2" HorizontalAlignment="Right">
+                                                <ctrl:SwitchControl
+                                                    IsChecked="{Binding AppConfig.DpsUpdateMode, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Active}"
+                                                    OffContent="被动"
+                                                    OnContent="主动"
+                                                    ToolTip="被动模式：基于事件触发更新（低CPU占用）&#x0a;主动模式：基于定时器定期更新（可配置刷新间隔）" />
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource SectionFieldBorder}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="39*" />
+                                                <ColumnDefinition Width="*" MinWidth="10" />
+                                                <ColumnDefinition Width="60*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Style="{StaticResource FieldName}"
+                                                Text="DPS更新间隔"
+                                                ToolTip="仅在主动模式下生效&#x0a;推荐值：500-2000毫秒" />
+                                            <Grid Grid.Column="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="35" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Slider
+                                                    Grid.Column="0"
+                                                    IsEnabled="{Binding AppConfig.DpsUpdateMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Active}"
+                                                    IsSnapToTickEnabled="True"
+                                                    Maximum="5000"
+                                                    Minimum="100"
+                                                    Style="{StaticResource AntSliderStyle}"
+                                                    TickFrequency="100"
+                                                    Value="{Binding AppConfig.DpsUpdateInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock
+                                                    Grid.Column="2"
+                                                    Style="{StaticResource SuffixText}"
+                                                    Text="{Binding AppConfig.DpsUpdateInterval, Mode=OneWay}" />
+                                                <TextBlock
+                                                    Grid.Column="4"
+                                                    Style="{StaticResource SuffixText}"
+                                                    Text="ms" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource SectionFieldBorder}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="39*" />
+                                                <ColumnDefinition Width="*" MinWidth="10" />
+                                                <ColumnDefinition Width="60*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Style="{StaticResource FieldName}"
                                                 Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Display_NumberMode}}" />
                                             <ComboBox
                                                 Grid.Column="2"
