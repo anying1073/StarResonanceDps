@@ -1,0 +1,80 @@
+<UserControl
+    x:Class="StarResonanceDpsAnalysis.WPF.Controls.RingProgressBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    d:DesignHeight="140"
+    d:DesignWidth="140"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="RingInnerGridStyle" TargetType="Grid">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="RingTrackStyle" TargetType="Ellipse">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Fill" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="RingPathStyle" TargetType="Path">
+            <Setter Property="StrokeStartLineCap" Value="Round" />
+            <Setter Property="StrokeEndLineCap" Value="Round" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Fill" Value="Transparent" />
+        </Style>
+
+        <Style x:Key="RingInnerViewboxStyle" TargetType="Viewbox">
+            <Setter Property="Stretch" Value="Uniform" />
+            <Setter Property="StretchDirection" Value="Both" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="RingInnerContentBorderStyle" TargetType="Border">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="RingInnerContentPresenterStyle" TargetType="ContentPresenter">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid
+            Width="{Binding RingDiameter, ElementName=Root}"
+            Height="{Binding RingDiameter, ElementName=Root}"
+            Style="{StaticResource RingInnerGridStyle}">
+            <Ellipse
+                Stroke="{Binding TrackBrush, ElementName=Root}"
+                StrokeThickness="{Binding RingThickness, ElementName=Root}"
+                Style="{StaticResource RingTrackStyle}" />
+
+            <Path
+                x:Name="ProgressPath"
+                Stroke="{Binding ProgressBrush, ElementName=Root}"
+                StrokeThickness="{Binding RingThickness, ElementName=Root}"
+                Style="{StaticResource RingPathStyle}" />
+
+            <Viewbox
+                Style="{StaticResource RingInnerViewboxStyle}">
+                <Border
+                    Width="{Binding InnerDiameter, ElementName=Root}"
+                    Height="{Binding InnerDiameter, ElementName=Root}"
+                    Style="{StaticResource RingInnerContentBorderStyle}">
+                    <ContentPresenter
+                        Content="{Binding InnerContent, ElementName=Root}"
+                        ContentTemplate="{Binding InnerContentTemplate, ElementName=Root}"
+                        Style="{StaticResource RingInnerContentPresenterStyle}" />
+                </Border>
+            </Viewbox>
+        </Grid>
+    </Grid>
+</UserControl>
