@@ -27,5 +27,6 @@
     <converters:MinusConverter x:Key="MinusConverter" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converters:BoolToInvertedVisibilityConverter x:Key="BoolToInvertedVisibilityConverter" />
+    <converters:StringFirstCharConverter x:Key="StringFirstCharConverter" />
     <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
 </ResourceDictionary>
