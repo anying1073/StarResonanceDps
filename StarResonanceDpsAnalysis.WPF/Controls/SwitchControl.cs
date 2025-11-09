@@ -15,6 +15,9 @@ public class SwitchControl : ToggleButton
     public static readonly DependencyProperty OffContentProperty = DependencyProperty.Register(
         nameof(OffContent), typeof(object), typeof(SwitchControl), new PropertyMetadata("Off"));
 
+    public static readonly DependencyProperty ContentPaddingProperty = DependencyProperty.Register(
+        nameof(ContentPadding), typeof(Thickness), typeof(SwitchControl), new PropertyMetadata(new Thickness(0d)));
+
     private Border? _track;
     private Border? _thumb;
     private Border? _onBorder;
@@ -40,6 +43,12 @@ public class SwitchControl : ToggleButton
     {
         get => GetValue(OffContentProperty);
         set => SetValue(OffContentProperty, value);
+    }
+
+    public Thickness ContentPadding
+    {
+        get => (Thickness)GetValue(ContentPaddingProperty);
+        set => SetValue(ContentPaddingProperty, value);
     }
 
     public override void OnApplyTemplate()

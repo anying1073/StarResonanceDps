@@ -603,6 +603,7 @@
                                         <StackPanel>
                                             <TextBlock Style="{StaticResource TestTextBlockStyle}" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_ThemeTest}}" />
                                             <Button Command="{Binding Debug.CallDebugWindowCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_PcapTest}}" />
+                                            <Button Command="{Binding CallPersonalDpsViewCommand}" Content="Personal DPS View" />
                                             <Button Command="{Binding CallSkillBreakdownViewCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_SkillBreakdown}}" />
                                             <Button Command="{Binding CallDamageReferenceViewCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_DamageReference}}" />
                                             <Button Command="{Binding CallSettingsViewCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_Settings}}" />

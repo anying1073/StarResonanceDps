@@ -143,6 +143,12 @@ public partial class MainViewModel : BaseViewModel
     }
 
     [RelayCommand]
+    private void CallPersonalDpsView() 
+    {
+        _windowManagement.PersonalDpsView.Show();
+    }
+
+    [RelayCommand]
     private void CallSettingsView()
     {
         _windowManagement.SettingsView.Show();

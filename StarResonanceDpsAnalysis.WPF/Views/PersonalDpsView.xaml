@@ -19,7 +19,7 @@
             <Setter Property="CornerRadius" Value="20" />
             <Setter Property="BorderBrush" Value="#FFF" />
             <Setter Property="BorderThickness" Value="3" />
-            <Setter Property="Padding" Value="25,0,25,0" />
+            <EventSetter Event="MouseDown" Handler="ViewBorder_MouseDown"/>
         </Style>
 
         <Style x:Key="DragMoveBar" TargetType="Border">
@@ -28,12 +28,12 @@
             <Setter Property="Background" Value="#D6D7DB" />
             <Setter Property="CornerRadius" Value="2" />
             <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="Margin" Value="0,8,0,0" />
         </Style>
 
         <Style x:Key="RingProgressBar" TargetType="ctrl:RingProgressBar">
-            <Setter Property="Margin" Value="0,5,0,5" />
-            <Setter Property="RingThickness" Value="5" />
+            <Setter Property="Margin" Value="20,7,0,7" />
+            <Setter Property="RingThickness" Value="4" />
             <Setter Property="ProgressBrush" Value="#6BA5FC" />
             <Setter Property="TrackBrush" Value="#FFF" />
         </Style>
@@ -48,7 +48,7 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="CornerRadius" Value="999" />
-            <Setter Property="Margin" Value="8" />
+            <Setter Property="Margin" Value="7" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
         </Style>
@@ -75,9 +75,91 @@
             <Setter Property="Foreground" Value="#6BA5FC" />
         </Style>
 
+        <Style x:Key="SpliterBorder" TargetType="Border">
+            <Setter Property="Height" Value="60" />
+            <Setter Property="Background" Value="#D6D7DB" />
+        </Style>
+
+        <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource IconButtonStyle}">
+            <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Fonts/#IconFont" />
+            <Setter Property="FontSize" Value="42" />
+            <Setter Property="Foreground" Value="#181919" />
+            <Setter Property="Width" Value="45" />
+            <Setter Property="Height" Value="45" />
+            <Setter Property="Margin" Value="15,0,15,0" />
+        </Style>
+
+        <Style x:Key="FunctionSwitchButton" TargetType="ctrl:SwitchControl" BasedOn="{StaticResource {x:Type ctrl:SwitchControl}}">
+            <Setter Property="Height" Value="60" />
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="Padding" Value="6" />
+        </Style>
+
+        <Style x:Key="SwitchSelectBorder" TargetType="Border">
+            <Setter Property="Height" Value="60" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Padding" Value="0,0,4,0" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Background" Value="#EEE" />
+            <Setter Property="CornerRadius" Value="30" />
+        </Style>
+
+        <Style x:Key="SwitchSelectStackPanel" TargetType="StackPanel">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+
+        <Style x:Key="SelectorToggleButton" TargetType="ToggleButton">
+            <Setter Property="Width" Value="86" />
+            <Setter Property="Height" Value="46" />
+            <Setter Property="Margin" Value="4,4,0,4" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#777" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border
+                            x:Name="bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="23">
+
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#FFF" />
+                                <!--<Setter TargetName="bd" Property="BorderBrush" Value="#FFF" />-->
+                                <Setter Property="Foreground" Value="#000" />
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect
+                                            BlurRadius="10"
+                                            Opacity="0.1"
+                                            ShadowDepth="0"
+                                            Color="#000" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F8F8F8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
 
-    <Border Background="#ECEBE9" Style="{StaticResource CustomShadowWindowBorder}">
+    <Border Background="#FBFBFB" Style="{StaticResource CustomShadowWindowBorder}">
         <Grid>
 
             <Border Style="{StaticResource DragMoveBar}"/>
@@ -91,11 +173,10 @@
 
                 <Grid Grid.Column="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto" MinWidth="90" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    
+
                     <ctrl:RingProgressBar
                         Style="{StaticResource RingProgressBar}"
                         Maximum="100"
@@ -115,11 +196,63 @@
                         </ctrl:RingProgressBar.InnerContent>
                     </ctrl:RingProgressBar>
 
-                    <StackPanel Style="{StaticResource DpsStackPanel}" Grid.Column="2">
+                    <StackPanel Style="{StaticResource DpsStackPanel}" Grid.Column="1">
                         <TextBlock Style="{StaticResource DpsTextBase}" Text="当前伤害"/>
                         <TextBlock Style="{StaticResource DpsText}" Text="22.4K (4603.4)"/>
                     </StackPanel>
                 </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border 
+                        Style="{StaticResource SpliterBorder}"
+                        Grid.Column="0" />
+
+                    <Button
+                        Style="{StaticResource IconButton}"
+                        Content="&#xe612;"
+                        Grid.Column="2"/>
+
+                    <Button
+                        Style="{StaticResource IconButton}"
+                        Content="&#xeb95;"
+                        Grid.Column="3"/>
+
+                    <Button
+                        Style="{StaticResource IconButton}"
+                        Content="&#xe6ad;"
+                        Grid.Column="4"/>
+
+                    <Border 
+                        Style="{StaticResource SpliterBorder}"
+                        Grid.Column="6" />
+                </Grid>
+
+                <Border Grid.Column="2" Style="{StaticResource SwitchSelectBorder}">
+                    <StackPanel x:Name="TabControlIndexChanger" Style="{StaticResource SwitchSelectStackPanel}">
+
+                        <ToggleButton
+                            Click="TabSelector_Click"
+                            Content="关闭"
+                            Style="{StaticResource SelectorToggleButton}"
+                            Tag="0" />
+                        <ToggleButton
+                            Click="TabSelector_Click"
+                            Content="开启"
+                            Style="{StaticResource SelectorToggleButton}"
+                            Tag="1" />
+
+                    </StackPanel>
+                </Border>
 
             </Grid>
 

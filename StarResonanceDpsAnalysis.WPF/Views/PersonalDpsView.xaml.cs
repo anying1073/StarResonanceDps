@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -22,6 +23,19 @@ namespace StarResonanceDpsAnalysis.WPF.Views
         public PersonalDpsView()
         {
             InitializeComponent();
+        }
+
+        private void TabSelector_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not ToggleButton tb || !int.TryParse(tb.Tag?.ToString(), out var index)) return;
+
+            //TODO: index == 0 ? Close() : Open();
+        }
+
+        private void ViewBorder_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+                Window.GetWindow(this)?.DragMove();
         }
     }
 }

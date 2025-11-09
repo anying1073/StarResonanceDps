@@ -72,14 +72,15 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
 
     private sealed class DesignWindowManagementService : IWindowManagementService
     {
+        public AboutView AboutView => throw new NotSupportedException();
+        public BossTrackerView BossTrackerView => throw new NotSupportedException();
+        public DamageReferenceView DamageReferenceView => throw new NotSupportedException();
         public DpsStatisticsView DpsStatisticsView => throw new NotSupportedException();
+        public MainView MainView => throw new NotSupportedException();
+        public ModuleSolveView ModuleSolveView => throw new NotSupportedException();
+        public PersonalDpsView PersonalDpsView => throw new NotSupportedException();
         public SettingsView SettingsView => throw new NotSupportedException();
         public SkillBreakdownView SkillBreakdownView => throw new NotSupportedException();
-        public AboutView AboutView => throw new NotSupportedException();
-        public DamageReferenceView DamageReferenceView => throw new NotSupportedException();
-        public ModuleSolveView ModuleSolveView => throw new NotSupportedException();
-        public BossTrackerView BossTrackerView => throw new NotSupportedException();
-        public MainView MainView => throw new NotSupportedException();
     }
 
     private sealed class DesignDataStorage : IDataStorage
