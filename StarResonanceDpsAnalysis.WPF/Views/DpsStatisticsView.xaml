@@ -19,6 +19,7 @@
     Height="360"
     MinWidth="300"
     MinHeight="35"
+    d:DesignHeight="650"
     behaviors:WindowSnapBehavior.PreventSnapMaximize="True"
     d:DataContext="{d:DesignInstance Type=viewModels:DpsStatisticsDesignTimeViewModel,
                                      IsDesignTimeCreatable=True}"
@@ -124,20 +125,42 @@
         </Style>
 
         <DataTemplate x:Key="StatisticDetailDataTemplate" DataType="{x:Type viewModels:StatisticDataViewModel}">
-            <Grid HorizontalAlignment="Stretch">
-                <!--  名次  -->
+            <Grid HorizontalAlignment="Stretch" ClipToBounds="True">
+                <Grid.Effect>
+                    <DropShadowEffect
+                        Color="#000"
+                        Opacity="0.5"
+                        ShadowDepth="0"
+                        BlurRadius="5" />
+                </Grid.Effect>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="B" />
-                    <ColumnDefinition Width="*" SharedSizeGroup="C" />
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="D" />
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="E" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" MinWidth="42" />
                 </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource NormalTextBlockBaseStyle}">
+                        <Setter Property="FontSize" Value="12" />
+                    </Style>
+
+                    <Style x:Key="ProfessionImage" TargetType="Image">
+                        <Setter Property="Width" Value="26" />
+                        <Setter Property="Height" Value="26" />
+                        <Setter Property="Margin" Value="5,0,5,0" />
+                        <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                    </Style>
+                </Grid.Resources>
+                
+                <!--  名次  -->
                 <TextBlock
                     Grid.Column="0"
-                    Margin="4,0,4,0"
+                    Margin="8,0,0,0"
                     VerticalAlignment="Center"
                     FontFamily="pack://application:,,,/Assets/Fonts/#SAO Welcome TT"
+                    FontSize="16"
                     Foreground="White">
                     <TextBlock.Text>
                         <Binding
@@ -151,15 +174,10 @@
                 <!--  Width="{Binding ActualHeight, ElementName=PlayerName}"  -->
                 <!--  Height="{Binding ActualHeight, ElementName=PlayerName}"  -->
                 <Image
-                    Grid.Column="1"
-                    Width="22"
-                    Height="22"
-                    Margin="2"
-                    RenderOptions.BitmapScalingMode="HighQuality"
-                    SnapsToDevicePixels="True"
+                    Style="{StaticResource ProfessionImage}"
                     Source="{Binding Player.Class, Converter={StaticResource ClassesToIconConverter}, FallbackValue={StaticResource ClassesUnknownIcon}}"
-                    Stretch="Uniform"
-                    UseLayoutRounding="True" />
+                    Grid.Column="1" />
+
                 <!--  昵称  -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <StackPanel.Resources>
@@ -182,9 +200,9 @@
                         Visibility="{Binding Player.IsNpc, Converter={StaticResource BoolToVisibilityConverter}}" />
                     <TextBlock Style="{StaticResource PlayerInfoTextStyle}" Visibility="{Binding Player.IsNpc, Converter={StaticResource BoolToInvertedVisibilityConverter}}">
                         <!--  Player name (visible when not NPC)  -->
-                        <Run Text=" -" />
-                        <Run Text="{lex:Loc {Binding Player.Spec, StringFormat=ClassSpec_{0}}}" />
-                        <Run Text="{Binding Player.PowerLevel, StringFormat={}({0})}" />
+                        <!--<Run Text=" -" />
+                        <Run Text="{lex:Loc {Binding Player.Spec, StringFormat=ClassSpec_{0}}}" />-->
+                        <Run Text="{Binding Player.PowerLevel, StringFormat={} ({0})}" />
                     </TextBlock>
                 </StackPanel>
 
@@ -206,7 +224,7 @@
                     </Run>
                     <Run>
                         <Run.Text>
-                            <MultiBinding Converter="{StaticResource DpsConverter}" StringFormat="{}[{0}]">
+                            <MultiBinding Converter="{StaticResource DpsConverter}" StringFormat="{}({0})">
                                 <Binding Path="Value" />
                                 <Binding Path="DataContext.BattleDuration" RelativeSource="{RelativeSource AncestorType=Window}" />
                                 <Binding Path="DataContext.AppConfig.DamageDisplayType" RelativeSource="{RelativeSource AncestorType=Window}" />
@@ -221,7 +239,8 @@
                     FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
                     FontWeight="Bold"
                     Foreground="White"
-                    Text="{Binding Percent, StringFormat={}({0:P1})}" />
+                    Margin="0,0,4,0"
+                    Text="{Binding Percent, StringFormat={}{0:P1}}" />
 
             </Grid>
         </DataTemplate>
@@ -608,6 +627,7 @@
                     </SolidColorBrush>
                 </Border.Background>
                 <ctrl:SortedDpsControl
+                    Padding="0,5,0,5"
                     ItemClickCommand="{Binding OpenSkillBreakdownCommand}"
                     ItemTemplate="{StaticResource ProgressBarDataTemplate}"
                     ItemsSource="{Binding CurrentStatisticData.Data}"

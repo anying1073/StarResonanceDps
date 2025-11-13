@@ -36,7 +36,7 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
         // Populate with a few sample entries so designer shows something.
         try
         {
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 15; i++)
             {
                 AddTestItem();
             }

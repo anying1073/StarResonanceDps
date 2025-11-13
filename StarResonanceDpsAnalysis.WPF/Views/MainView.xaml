@@ -9,6 +9,7 @@
     xmlns:loc="clr-namespace:StarResonanceDpsAnalysis.WPF.Properties"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vms="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
+    xmlns:models="clr-namespace:StarResonanceDpsAnalysis.Core.Models;assembly=StarResonanceDpsAnalysis.Core"
     Title="{lex:Loc Key={x:Static loc:ResourcesKeys.App_Name}}"
     Width="1000"
     Height="650"
@@ -327,8 +328,9 @@
                                     ItemsSource="{Binding Plugins}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                    SelectedItem="{Binding SelectedPlugin, Mode=TwoWay}"
-                                    Style="{StaticResource PluginListBox}">
+                                    SelectedItem="{Binding SelectedPlugin}"
+                                    Style="{StaticResource PluginListBox}" 
+                                    d:ItemsSource="{d:SampleData ItemCount=5}">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem">
                                             <Setter Property="Padding" Value="0" />
@@ -599,8 +601,6 @@
                                                 ItemsSource="{Binding AvailableThemes}"
                                                 SelectedIndex="0"
                                                 SelectedItem="{Binding Theme}" />
-                                        </StackPanel>
-                                        <StackPanel>
                                             <TextBlock Style="{StaticResource TestTextBlockStyle}" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_ThemeTest}}" />
                                             <Button Command="{Binding Debug.CallDebugWindowCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_PcapTest}}" />
                                             <Button Command="{Binding CallPersonalDpsViewCommand}" Content="Personal DPS View" />
