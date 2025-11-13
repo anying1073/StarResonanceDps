@@ -18,38 +18,38 @@
     -->
 
     <!--  未知职业 (Unknown)  -->
-    <Color x:Key="ClassesUnknownColor">#FF7A7A7A</Color>
+    <Color x:Key="ClassesUnknownColor">#ABABAB</Color>
     <SolidColorBrush x:Key="ClassesUnknownBrush" Color="{StaticResource ClassesUnknownColor}" />
 
     <!--  神盾骑士 (ShieldKnight)  -->
-    <Color x:Key="ClassesShieldKnightColor">#9C9B75</Color>
+    <Color x:Key="ClassesShieldKnightColor">#809AAB</Color>
     <SolidColorBrush x:Key="ClassesShieldKnightBrush" Color="{StaticResource ClassesShieldKnightColor}" />
 
     <!--  巨刃守卫者 (HeavyGuardian)  -->
-    <Color x:Key="ClassesHeavyGuardianColor">#537758</Color>
+    <Color x:Key="ClassesHeavyGuardianColor">#6CAB6F</Color>
     <SolidColorBrush x:Key="ClassesHeavyGuardianBrush" Color="{StaticResource ClassesHeavyGuardianColor}" />
 
     <!--  雷影剑士 (Stormblade)  -->
-    <Color x:Key="ClassesStormbladeColor">#70629C</Color>
+    <Color x:Key="ClassesStormbladeColor">#7C6DAB</Color>
     <SolidColorBrush x:Key="ClassesStormbladeBrush" Color="{StaticResource ClassesStormbladeColor}" />
 
     <!--  青岚骑士 (WindKnight)  -->
-    <Color x:Key="ClassesWindKnightColor">#799A9C</Color>
+    <Color x:Key="ClassesWindKnightColor">#72A7AB</Color>
     <SolidColorBrush x:Key="ClassesWindKnightBrush" Color="{StaticResource ClassesWindKnightColor}" />
 
     <!--  冰魔导师 (FrostMage)  -->
-    <Color x:Key="ClassesFrostMageColor">#79779C</Color>
+    <Color x:Key="ClassesFrostMageColor">#726FAB</Color>
     <SolidColorBrush x:Key="ClassesFrostMageBrush" Color="{StaticResource ClassesFrostMageColor}" />
 
     <!--  神射手 (Marksman)  -->
-    <Color x:Key="ClassesMarksmanColor">#8E8B47</Color>
+    <Color x:Key="ClassesMarksmanColor">#ABA96D</Color>
     <SolidColorBrush x:Key="ClassesMarksmanBrush" Color="{StaticResource ClassesMarksmanColor}" />
 
     <!--  森语者 (VerdantOracle)  -->
-    <Color x:Key="ClassesVerdantOracleColor">#639C70</Color>
+    <Color x:Key="ClassesVerdantOracleColor">#50AB64</Color>
     <SolidColorBrush x:Key="ClassesVerdantOracleBrush" Color="{StaticResource ClassesVerdantOracleColor}" />
 
     <!--  灵魂乐手 (SoulMusician)  -->
-    <Color x:Key="ClassesSoulMusicianColor">#9C5353</Color>
+    <Color x:Key="ClassesSoulMusicianColor">#AB3838</Color>
     <SolidColorBrush x:Key="ClassesSoulMusicianBrush" Color="{StaticResource ClassesSoulMusicianColor}" />
 </ResourceDictionary>
