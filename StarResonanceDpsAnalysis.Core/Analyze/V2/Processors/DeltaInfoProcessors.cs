@@ -68,6 +68,11 @@ public abstract class BaseDeltaInfoProcessor(IDataStorage storage, ILogger? logg
                     case AttrType.AttrHp:
                         _storage.SetPlayerHP(targetUuid, reader.ReadInt32());
                         break;
+
+                    case (AttrType)0x2CB0: // AttrDreamIntensity
+                        _logger?.LogWarning("[BaseDeltaInfoProcessor] Test for get AttrDreamIntensity: targetUuid[{targetUuid}], intensity[{value}]", targetUuid, reader.ReadInt32());
+                        break;
+
                     case AttrType.AttrMaxHp:
                     case AttrType.AttrId:
                     case AttrType.AttrElementFlag:

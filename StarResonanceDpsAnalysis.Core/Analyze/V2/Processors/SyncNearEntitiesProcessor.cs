@@ -101,6 +101,11 @@ internal sealed class SyncNearEntitiesProcessor : IMessageProcessor
                 case AttrType.AttrMaxHp:
                     _storage.SetPlayerMaxHP(playerUid, reader.ReadInt32());
                     break;
+
+                case (AttrType)0x2CB0: // AttrDreamIntensity
+                    _logger?.LogWarning("[SyncNearEntitiesProcessor] Test for get AttrDreamIntensity: targetUuid[{playerUid}], intensity[{value}]", playerUid, reader.ReadInt32());
+                    break;
+
                 case AttrType.AttrId:
                 case AttrType.AttrElementFlag:
                 case AttrType.AttrReductionLevel:
