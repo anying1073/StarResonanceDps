@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Media.Imaging;
+using System.Windows.Media;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.WPF.Logging;
 
@@ -30,15 +32,7 @@ public sealed class TrayService : ITrayService, IDisposable
             Visibility = Visibility.Visible
         };
 
-        try
-        {
-            var iconUri = new Uri("pack://application:,,,/Assets/Images/ApplicationIcon.ico");
-            _tray.IconSource = new BitmapImage(iconUri);
-        }
-        catch
-        {
-            // Ignore
-        }
+        _tray.IconSource = LoadTrayIcon();
 
         var menu = new ContextMenu();
         var miShow = new MenuItem { Header = "Show" };
@@ -87,5 +81,60 @@ public sealed class TrayService : ITrayService, IDisposable
             // Ignore
         }
         _tray = null;
+    }
+
+    private static ImageSource? LoadTrayIcon()
+    {
+        try
+        {
+            var iconUri = new Uri("pack://application:,,,/Assets/Images/ApplicationIcon.ico");
+            var streamInfo = Application.GetResourceStream(iconUri);
+            if (streamInfo == null)
+            {
+                return null;
+            }
+
+            using var iconStream = streamInfo.Stream;
+            var decoder = new IconBitmapDecoder(
+                iconStream,
+                BitmapCreateOptions.PreservePixelFormat,
+                BitmapCacheOption.OnLoad);
+
+            if (decoder.Frames.Count == 0)
+            {
+                return null;
+            }
+
+            var desiredSize = GetTrayIconSize();
+            return decoder.Frames
+                .OrderBy(f => Math.Abs(f.PixelWidth - desiredSize))
+                .ThenByDescending(f => f.Format.BitsPerPixel)
+                .ThenByDescending(f => f.PixelWidth)
+                .FirstOrDefault();
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static int GetTrayIconSize()
+    {
+        const int defaultSize = 16;
+        var window = Application.Current?.MainWindow;
+        if (window == null)
+        {
+            return defaultSize;
+        }
+
+        try
+        {
+            var dpi = VisualTreeHelper.GetDpi(window);
+            return Math.Max(defaultSize, (int)Math.Round(defaultSize * dpi.DpiScaleX));
+        }
+        catch
+        {
+            return defaultSize;
+        }
     }
 }
