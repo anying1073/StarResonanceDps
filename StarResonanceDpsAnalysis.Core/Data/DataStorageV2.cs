@@ -19,6 +19,8 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     private readonly List<BattleLog> _pendingBattleLogs = new(100);
     private readonly HashSet<long> _pendingPlayerUpdates = new();
     private readonly object _sectionTimeoutLock = new();
+    // ===== Thread Safety Support =====
+    private readonly object _battleLogProcessLock = new();
     private bool _disposed;
     private bool _hasPendingBattleLogEvents;
     private bool _hasPendingDataEvents;
@@ -480,67 +482,229 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     /// Core battle log processing logic (extracted to avoid duplication)
     /// Processes data without firing events
     /// </summary>
+    /// <param name="log">The battle log to process</param>
+    /// <param name="sectionFlag">Output parameter indicating if a new section was created due to timeout</param>
+    /// <remarks>
+    /// This method handles the core business logic for processing battle logs:
+    /// <list type="bullet">
+    /// <item><description>Checks if a timeout occurred since the last log and creates a new section if needed</description></item>
+    /// <item><description>Routes the log to the appropriate processor based on log type (player target, player attack, or NPC)</description></item>
+    /// <item><description>Updates internal state tracking for section timeout monitoring</description></item>
+    /// </list>
+    /// Thread-safe: This method uses internal locking to ensure concurrent calls are properly synchronized.
+    /// </remarks>
     private void ProcessBattleLogCore(BattleLog log, out bool sectionFlag)
     {
-        var tt = new TimeSpan(log.TimeTicks);
-        sectionFlag = false;
-
-        if (LastBattleLog != null)
+        // Thread-safety: Lock to prevent concurrent modification of shared state
+        lock (_battleLogProcessLock)
         {
-            var prevTt = new TimeSpan(LastBattleLog.Value.TimeTicks);
-            if (tt - prevTt > SectionTimeout || ForceNewBattleSection)
-            {
-                PrivateClearDpsDataNoEvents();
-                sectionFlag = true;
-                ForceNewBattleSection = false;
-            }
+            sectionFlag = CheckAndHandleSectionTimeout(log);
+
+            ProcessLogByType(log);
+
+            UpdateLastLogState(log);
+        }
+    }
+
+    /// <summary>
+    /// Checks if the time since the last battle log exceeds the section timeout threshold
+ /// and creates a new section if necessary
+    /// </summary>
+    /// <param name="log">The current battle log being processed</param>
+    /// <returns>True if a new section was created; otherwise, false</returns>
+    /// <remarks>
+    /// A new section is created when:
+    /// <list type="bullet">
+    /// <item><description>The time difference between logs exceeds <see cref="SectionTimeout"/></description></item>
+    /// <item><description>The <see cref="ForceNewBattleSection"/> flag is set</description></item>
+    /// </list>
+    /// When a new section is created, the sectioned DPS data is cleared without firing events.
+    /// </remarks>
+    private bool CheckAndHandleSectionTimeout(BattleLog log)
+    {
+        if (LastBattleLog == null)
+            return false;
+
+        // Compare ticks directly instead of creating TimeSpan objects for better performance
+        var timeSinceLastLog = log.TimeTicks - LastBattleLog.Value.TimeTicks;
+
+        if (timeSinceLastLog > SectionTimeout.Ticks || ForceNewBattleSection)
+        {
+            PrivateClearDpsDataNoEvents();
+            ForceNewBattleSection = false;
+            return true;
         }
 
+        return false;
+    }
+
+    /// <summary>
+    /// Routes the battle log to the appropriate processing method based on log characteristics
+    /// </summary>
+    /// <param name="log">The battle log to process</param>
+    /// <remarks>
+    /// Processing logic:
+    /// <list type="bullet">
+    /// <item><description>If target is a player: Processes as player target (heal or damage taken)</description></item>
+    /// <item><description>If attacker is a player and not healing: Processes as player attack (damage dealt)</description></item>
+    /// <item><description>Otherwise: Processes as NPC damage taken</description></item>
+    /// </list>
+    /// </remarks>
+    private void ProcessLogByType(BattleLog log)
+    {
         if (log.IsTargetPlayer)
         {
-            if (log.IsHeal)
-            {
-                var (fullData, sectionedData) = SetLogInfos(log.AttackerUuid, log);
-                TrySetSubProfessionBySkillId(log.AttackerUuid, log.SkillID);
-                fullData.TotalHeal += log.Value;
-                sectionedData.TotalHeal += log.Value;
-            }
-            else
-            {
-                var (fullData, sectionedData) = SetLogInfos(log.TargetUuid, log);
-                fullData.TotalTakenDamage += log.Value;
-                sectionedData.TotalTakenDamage += log.Value;
-            }
+            ProcessPlayerTargetLog(log);
+        }
+        else if (log.IsAttackerPlayer && !log.IsHeal)
+        {
+            ProcessPlayerAttackLog(log);
         }
         else
         {
-            if (!log.IsHeal && log.IsAttackerPlayer)
-            {
-                var (fullData, sectionedData) = SetLogInfos(log.AttackerUuid, log);
-                TrySetSubProfessionBySkillId(log.AttackerUuid, log.SkillID);
-                fullData.TotalAttackDamage += log.Value;
-                sectionedData.TotalAttackDamage += log.Value;
-            }
+            ProcessNpcLog(log);
+        }
+    }
 
-            {
-                var (fullData, sectionedData) = SetLogInfos(log.TargetUuid, log);
-                fullData.TotalTakenDamage += log.Value;
-                sectionedData.TotalTakenDamage += log.Value;
-                fullData.IsNpcData = true;
-                sectionedData.IsNpcData = true;
-            }
+    /// <summary>
+    /// Processes battle logs where the target is a player
+    /// </summary>
+    /// <param name="log">The battle log to process</param>
+    /// <remarks>
+    /// Handles two scenarios:
+    /// <list type="bullet">
+    /// <item><description>Healing: Updates heal statistics for the attacker (healer)</description></item>
+    /// <item><description>Damage: Updates damage taken statistics for the target</description></item>
+    /// </list>
+    /// For healing, also attempts to determine the healer's sub-profession based on skill ID.
+    /// </remarks>
+    private void ProcessPlayerTargetLog(BattleLog log)
+    {
+        if (log.IsHeal)
+        {
+            var (fullData, sectionedData) = SetLogInfos(log.AttackerUuid, log);
+            TrySetSubProfessionBySkillId(log.AttackerUuid, log.SkillID);
+            UpdateDpsData(fullData, sectionedData, log, DpsType.Heal);
+        }
+        else
+        {
+            var (fullData, sectionedData) = SetLogInfos(log.TargetUuid, log);
+            UpdateDpsData(fullData, sectionedData, log, DpsType.TakenDamage);
+        }
+    }
+
+    /// <summary>
+    /// Processes battle logs where the attacker is a player dealing damage
+    /// </summary>
+    /// <param name="log">The battle log to process</param>
+    /// <remarks>
+    /// Updates the attacker's damage dealt statistics and attempts to determine
+    /// their sub-profession based on the skill ID used.
+    /// </remarks>
+    private void ProcessPlayerAttackLog(BattleLog log)
+    {
+        var (fullData, sectionedData) = SetLogInfos(log.AttackerUuid, log);
+        TrySetSubProfessionBySkillId(log.AttackerUuid, log.SkillID);
+        UpdateDpsData(fullData, sectionedData, log, DpsType.AttackDamage);
+    }
+
+    /// <summary>
+    /// Processes battle logs for NPC-related damage
+    /// </summary>
+    /// <param name="log">The battle log to process</param>
+    /// <remarks>
+    /// Marks the data as NPC-related and updates damage taken statistics.
+    /// This typically handles cases where damage is dealt to NPCs.
+    /// </remarks>
+    private void ProcessNpcLog(BattleLog log)
+    {
+        var (fullData, sectionedData) = SetLogInfos(log.TargetUuid, log);
+        fullData.IsNpcData = true;
+        sectionedData.IsNpcData = true;
+        UpdateDpsData(fullData, sectionedData, log, DpsType.TakenDamage);
+    }
+
+    /// <summary>
+    /// Specifies the type of DPS statistic to update
+    /// </summary>
+    private enum DpsType
+    {
+        /// <summary>
+        /// Damage dealt by attacking
+        /// </summary>
+        AttackDamage,
+
+        /// <summary>
+        /// Damage taken from attacks
+        /// </summary>
+        TakenDamage,
+
+        /// <summary>
+        /// Healing provided
+        /// </summary>
+        Heal
+    }
+
+    /// <summary>
+    /// Updates DPS statistics for both full-session and sectioned data
+    /// </summary>
+    /// <param name="fullData">Full-session DPS data to update</param>
+    /// <param name="sectionedData">Sectioned DPS data to update</param>
+    /// <param name="log">The battle log containing the values to add</param>
+    /// <param name="type">The type of statistic to update</param>
+    /// <remarks>
+    /// Updates the appropriate totals based on the DPS type and adds the log
+    /// to both the full-session and sectioned battle log collections.
+    /// </remarks>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if an invalid DpsType is provided</exception>
+    private void UpdateDpsData(DpsData fullData, DpsData sectionedData, BattleLog log, DpsType type)
+    {
+        switch (type)
+        {
+            case DpsType.AttackDamage:
+                fullData.AddTotalAttackDamage(log.Value);
+                sectionedData.AddTotalAttackDamage(log.Value);
+                break;
+            case DpsType.TakenDamage:
+                fullData.AddTotalTakenDamage(log.Value);
+                sectionedData.AddTotalTakenDamage(log.Value);
+                break;
+            case DpsType.Heal:
+                fullData.AddTotalHeal(log.Value);
+                sectionedData.AddTotalHeal(log.Value);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
 
+        fullData.BattleLogs.Add(log);
+        sectionedData.BattleLogs.Add(log);
+    }
+
+    /// <summary>
+    /// Updates internal state tracking after processing a battle log
+    /// </summary>
+    /// <param name="log">The battle log that was processed</param>
+    /// <remarks>
+    /// This method:
+    /// <list type="bullet">
+    /// <item><description>Updates the last processed battle log reference</description></item>
+    /// <item><description>Resets the section timeout monitoring state</description></item>
+    /// <item><description>Ensures the timeout monitor timer is running</description></item>
+    /// </list>
+    /// The wall clock timestamp is used for timeout detection rather than the log's game timestamp,
+    /// allowing the system to detect when no new logs are arriving in real-time.
+    /// </remarks>
+    private void UpdateLastLogState(BattleLog log)
+    {
         LastBattleLog = log;
 
-        // Update wall clock timestamp and unlock next section timeout clear
         lock (_sectionTimeoutLock)
         {
             _lastLogWallClockAtUtc = DateTime.UtcNow;
             _timeoutSectionClearedOnce = false;
         }
 
-        // Ensure monitor is running once we have activity
         EnsureSectionMonitorStarted();
     }
 
@@ -564,29 +728,24 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         // 检查或创建玩家战斗日志列表
         var (fullData, sectionedData) = GetOrCreateDpsDataByUid(uid);
 
-        fullData.StartLoggedTick ??= log.TimeTicks;
-        fullData.LastLoggedTick = log.TimeTicks;
-
-        fullData.UpdateSkillData(log.SkillID, skillData =>
-        {
-            skillData.TotalValue += log.Value;
-            skillData.UseTimes += 1;
-            skillData.CritTimes += log.IsCritical ? 1 : 0;
-            skillData.LuckyTimes += log.IsLucky ? 1 : 0;
-        });
-
-        sectionedData.StartLoggedTick ??= log.TimeTicks;
-        sectionedData.LastLoggedTick = log.TimeTicks;
-
-        sectionedData.UpdateSkillData(log.SkillID, skillData =>
-        {
-            skillData.TotalValue += log.Value;
-            skillData.UseTimes += 1;
-            skillData.CritTimes += log.IsCritical ? 1 : 0;
-            skillData.LuckyTimes += log.IsLucky ? 1 : 0;
-        });
+        Update(log, fullData);
+        Update(log, sectionedData);
 
         return (fullData, sectionedData);
+
+        static void Update(BattleLog battleLog, DpsData dpsData)
+        {
+            dpsData.StartLoggedTick ??= battleLog.TimeTicks;
+            dpsData.LastLoggedTick = battleLog.TimeTicks;
+
+            dpsData.UpdateSkillData(battleLog.SkillID, skillData =>
+            {
+                skillData.TotalValue += battleLog.Value;
+                skillData.IncrementUseTimes();
+                if (battleLog.IsCritical) skillData.IncrementCritTimes();
+                if (battleLog.IsLucky) skillData.IncrementLuckyTimes();
+            });
+        }
     }
 
     private void PrivateClearDpsData()

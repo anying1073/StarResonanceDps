@@ -3,36 +3,78 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StarResonanceDpsAnalysis.Core.Data.Models
 {
     public class DpsData
     {
+        private long _uid;
+        private long _startLoggedTick; // 使用0表示null
+        private long _lastLoggedTick;
+        private long _totalAttackDamage;
+        private long _totalTakenDamage;
+        private long _totalHeal;
+
         /// <summary>
         /// 玩家UID
         /// </summary>
-        public long UID { get; internal set; }
+        public long UID
+        {
+            get => Interlocked.Read(ref _uid);
+            internal set => Interlocked.Exchange(ref _uid, value);
+        }
+
         /// <summary>
         /// 统计开始的时间戳 (Ticks)
         /// </summary>
-        public long? StartLoggedTick { get; internal set; }
+        public long? StartLoggedTick
+        {
+            get
+            {
+                var value = Interlocked.Read(ref _startLoggedTick);
+                return value == 0 ? null : value;
+            }
+            internal set => Interlocked.Exchange(ref _startLoggedTick, value ?? 0);
+        }
+
         /// <summary>
         /// 最后一次统计的时间戳 (Ticks)
         /// </summary>
-        public long LastLoggedTick { get; internal set; } // TODO: 改成ulong
+        public long LastLoggedTick
+        {
+            get => Interlocked.Read(ref _lastLoggedTick);
+            internal set => Interlocked.Exchange(ref _lastLoggedTick, value);
+        }
+
         /// <summary>
         /// 统计的总伤害
         /// </summary>
-        public long TotalAttackDamage { get; internal set; }// TODO: 改成ulong
+        public long TotalAttackDamage
+        {
+            get => Interlocked.Read(ref _totalAttackDamage);
+            internal set => Interlocked.Exchange(ref _totalAttackDamage, value);
+        }
+
         /// <summary>
         /// 统计的总承受伤害
         /// </summary>
-        public long TotalTakenDamage { get; internal set; }// TODO: 改成ulong
+        public long TotalTakenDamage
+        {
+            get => Interlocked.Read(ref _totalTakenDamage);
+            internal set => Interlocked.Exchange(ref _totalTakenDamage, value);
+        }
+
         /// <summary>
         /// 统计的总治疗量
         /// </summary>
-        public long TotalHeal { get; internal set; }// TODO: 改成ulong
+        public long TotalHeal
+        {
+            get => Interlocked.Read(ref _totalHeal);
+            internal set => Interlocked.Exchange(ref _totalHeal, value);
+        }
+
         /// <summary>
         /// 是否为NPC数据
         /// </summary>
@@ -40,11 +82,12 @@ namespace StarResonanceDpsAnalysis.Core.Data.Models
         /// <summary>
         /// 战斗日志列表
         /// </summary>
-        //internal List<BattleLog> BattleLogs { get; } = new(16384);
+        public List<BattleLog> BattleLogs { get; } = new(16384);
         /// <summary>
         /// 只读战斗日志列表
         /// </summary>
-        //public IReadOnlyList<BattleLog> ReadOnlyBattleLogs { get => BattleLogs.AsReadOnly(); }
+        public IReadOnlyList<BattleLog> ReadOnlyBattleLogs => BattleLogs.AsReadOnly();
+
         /// <summary>
         /// 技能统计数据字典
         /// </summary>
@@ -80,12 +123,13 @@ namespace StarResonanceDpsAnalysis.Core.Data.Models
                 }
             }
         }
+
         /// <summary>
         /// 获取或创建技能统计数据
         /// </summary>
         /// <param name="skillId">技能UID</param>
+        /// <param name="updater"></param>
         /// <returns></returns>
-
         public void UpdateSkillData(long skillId, Action<SkillData> updater)
         {
             if (updater is null) throw new ArgumentNullException(nameof(updater));
@@ -94,10 +138,7 @@ namespace StarResonanceDpsAnalysis.Core.Data.Models
             {
                 if (!SkillDic.TryGetValue(skillId, out var skillData))
                 {
-                    skillData = new SkillData
-                    {
-                        SkillId = skillId
-                    };
+                    skillData = new SkillData(skillId);
                     SkillDic[skillId] = skillData;
                 }
 
@@ -105,11 +146,26 @@ namespace StarResonanceDpsAnalysis.Core.Data.Models
             }
         }
 
+        // Thread-safe increment methods
+        internal long AddTotalAttackDamage(long value)
+        {
+            return Interlocked.Add(ref _totalAttackDamage, value);
+        }
+
+        internal long AddTotalTakenDamage(long value)
+        {
+            return Interlocked.Add(ref _totalTakenDamage, value);
+        }
+
+        internal long AddTotalHeal(long value)
+        {
+            return Interlocked.Add(ref _totalHeal, value);
+        }
+
         private static SkillData CloneSkillData(SkillData source)
         {
-            return new SkillData
+            return new SkillData(source.SkillId)
             {
-                SkillId = source.SkillId,
                 TotalValue = source.TotalValue,
                 UseTimes = source.UseTimes,
                 CritTimes = source.CritTimes,

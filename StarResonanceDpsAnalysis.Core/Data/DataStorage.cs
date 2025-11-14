@@ -320,8 +320,8 @@ public static class DataStorage
                 TrySetSubProfessionBySkillId(log.AttackerUuid, log.SkillID);
 
                 // 叠加治疗量
-                fullData.TotalHeal += log.Value;
-                sectionedData.TotalHeal += log.Value;
+                fullData.AddTotalHeal(log.Value);
+                sectionedData.AddTotalHeal(log.Value);
             }
             else
             {
@@ -329,8 +329,8 @@ public static class DataStorage
                 var (fullData, sectionedData) = SetLogInfos(log.TargetUuid, log);
 
                 // 叠加受击伤害
-                fullData.TotalTakenDamage += log.Value;
-                sectionedData.TotalTakenDamage += log.Value;
+                fullData.AddTotalTakenDamage(log.Value);
+                sectionedData.AddTotalTakenDamage(log.Value);
             }
         }
         // 如果目标不是玩家
@@ -346,8 +346,8 @@ public static class DataStorage
                 TrySetSubProfessionBySkillId(log.AttackerUuid, log.SkillID);
 
                 // 叠加输出伤害
-                fullData.TotalAttackDamage += log.Value;
-                sectionedData.TotalAttackDamage += log.Value;
+                fullData.AddTotalAttackDamage(log.Value);
+                sectionedData.AddTotalAttackDamage(log.Value);
             }
 
             // 提升局部, 统一局部变量名
@@ -356,8 +356,8 @@ public static class DataStorage
                 var (fullData, sectionedData) = SetLogInfos(log.TargetUuid, log);
 
                 // 叠加受击伤害
-                fullData.TotalTakenDamage += log.Value;
-                sectionedData.TotalTakenDamage += log.Value;
+                fullData.AddTotalTakenDamage(log.Value);
+                sectionedData.AddTotalTakenDamage(log.Value);
 
                 // 将Dps数据记录为NPC数据
                 fullData.IsNpcData = true;
