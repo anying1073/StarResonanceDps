@@ -639,6 +639,42 @@
                 Grid.Row="2"
                 Height="5"
                 ClipToBounds="True">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsServerConnected}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0"
+                                                Duration="0:0:0.2" />
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Height"
+                                                To="0"
+                                                Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1"
+                                                Duration="0:0:0.2" />
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Height"
+                                                To="5"
+                                                Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <Border.Background>
                     <SolidColorBrush>
                         <SolidColorBrush.Color>
@@ -650,7 +686,6 @@
                     </SolidColorBrush>
                 </Border.Background>
 
-                <!--  TODO: 当 DataStorage 触发 ServerConnectionStateChanged 时, 隐藏该 Grid  -->
                 <Rectangle x:Name="LoadingStripe" Style="{StaticResource LoadingBlockRectangle}">
                     <Rectangle.Triggers>
                         <EventTrigger RoutedEvent="Loaded">

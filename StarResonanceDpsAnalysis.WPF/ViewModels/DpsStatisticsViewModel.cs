@@ -68,6 +68,9 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     [ObservableProperty] private SortDirectionEnum _sortDirection = SortDirectionEnum.Descending;
     [ObservableProperty] private string _sortMemberPath = "Value";
     [ObservableProperty] private StatisticType _statisticIndex;
+    [ObservableProperty] private AppConfig _appConfig;
+    [ObservableProperty] private TimeSpan _battleDuration;
+    [ObservableProperty] private bool _isServerConnected;
 
     // One-shot handler to resume active timer when first datapoint of a new section arrives
     private DpsDataUpdatedEventHandler? _resumeActiveTimerHandler;
@@ -112,10 +115,12 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         _windowManagement = windowManagement;
         _topmostService = topmostService;
         _dispatcher = dispatcher;
+        IsServerConnected = _storage.IsServerConnected;
 
         // Subscribe to DebugFunctions events to handle sample data requests
         DebugFunctions.SampleDataRequested += OnSampleDataRequested;
         _storage.PlayerInfoUpdated += StorageOnPlayerInfoUpdated;
+        _storage.ServerConnectionStateChanged += StorageOnServerConnectionStateChanged;
 
         // set config
     }
@@ -151,6 +156,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
         _storage.DpsDataUpdated -= DataStorage_DpsDataUpdated;
         _storage.NewSectionCreated -= StorageOnNewSectionCreated;
+        _storage.ServerConnectionStateChanged -= StorageOnServerConnectionStateChanged;
         _storage.PlayerInfoUpdated -= StorageOnPlayerInfoUpdated;
         _storage.Dispose();
 
@@ -207,6 +213,18 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     {
         // Handle the event from DebugFunctions
         AddRandomData();
+    }
+
+    private void StorageOnServerConnectionStateChanged(bool serverConnectionState)
+    {
+        if (_dispatcher.CheckAccess())
+        {
+            IsServerConnected = serverConnectionState;
+        }
+        else
+        {
+            _dispatcher.Invoke(() => IsServerConnected = serverConnectionState);
+        }
     }
 
     /// <summary>
