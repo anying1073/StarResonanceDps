@@ -1,4 +1,6 @@
+using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -10,30 +12,46 @@ namespace StarResonanceDpsAnalysis.WPF.Views;
 /// </summary>
 public partial class SkillBreakdownView : Window
 {
+    private readonly SkillBreakdownViewModel _viewModel;
+
     public SkillBreakdownView(SkillBreakdownViewModel vm)
     {
         InitializeComponent();
+        _viewModel = vm;
         DataContext = vm;
-        // Ensure selector reflects initial SelectedIndex
-        Loaded += (_, _) => SyncSelectorWithTab();
-        MainTabControl.SelectionChanged += (_, _) => SyncSelectorWithTab();
+
+        Loaded += OnLoaded;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        SyncSelectorWithTab();
+    }
+
+    private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // Sync the custom selector buttons with the TabControl
+        SyncSelectorWithTab();
     }
 
     private void TabSelector_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not ToggleButton tb || !int.TryParse(tb.Tag?.ToString(), out var index)) return;
+
+        // Update TabControl selection
         MainTabControl.SelectedIndex = index;
-        SyncSelectorWithTab();
     }
 
     private void SyncSelectorWithTab()
     {
-        if (TabControlIndexChanger == null) return;
+        if (TabControlIndexChanger == null || MainTabControl == null) return;
+
+        var selectedIndex = MainTabControl.SelectedIndex;
 
         foreach (var child in LogicalTreeHelper.GetChildren(TabControlIndexChanger))
         {
             if (child is not ToggleButton t || !int.TryParse(t.Tag?.ToString(), out var tagIndex)) continue;
-            t.IsChecked = tagIndex == MainTabControl.SelectedIndex;
+            t.IsChecked = tagIndex == selectedIndex;
         }
     }
 

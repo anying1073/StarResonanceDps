@@ -7,13 +7,15 @@
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:loc="clr-namespace:StarResonanceDpsAnalysis.WPF.Properties"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:oxy="http://oxyplot.org/wpf"
     xmlns:viewModels="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
     Title="{lex:Loc Key={x:Static loc:ResourcesKeys.Window_SkillBreakdown_Title}}"
-    Width="800"
-    Height="450"
+    Width="1200"
+    Height="800"
     MinWidth="800"
     MinHeight="450"
     d:DataContext="{d:DesignInstance viewModels:SkillBreakdownViewModel}"
+    d:DesignHeight="1000"
     lex:ResxLocalizationProvider.DefaultAssembly="StarResonanceDpsAnalysis.WPF"
     lex:ResxLocalizationProvider.DefaultDictionary="Resources"
     PreviewKeyDown="Window_PreviewKeyDown"
@@ -34,7 +36,6 @@
             <Setter Property="Height" Value="60" />
             <Setter Property="Background" Value="#FFF" />
         </Style>
-
         <Style
             x:Key="InfoText"
             BasedOn="{StaticResource NormalTextBlockBaseStyle}"
@@ -42,7 +43,6 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="20,0,0,0" />
         </Style>
-
         <Style
             x:Key="InfoNameText"
             BasedOn="{StaticResource InfoText}"
@@ -51,27 +51,21 @@
             <Setter Property="FontSize" Value="16" />
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
-
-        <Style x:Key="StatisticCard" TargetType="ctrl:CollapsibleCard">
-            <Setter Property="Margin" Value="10,10,10,0" />
-        </Style>
-
         <Style x:Key="BlueCardBorder" TargetType="Border">
             <Setter Property="Background" Value="#2297F4" />
             <Setter Property="Margin" Value="10" />
-            <Setter Property="Padding" Value="10" />
-            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Padding" Value="20,16" />
+            <Setter Property="CornerRadius" Value="12" />
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect
-                        BlurRadius="5"
-                        Opacity="0.5"
-                        ShadowDepth="0"
-                        Color="#000" />
+                        BlurRadius="10"
+                        Opacity="0.3"
+                        ShadowDepth="4"
+                        Color="#2297F4" />
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style
             x:Key="CardTitle"
             BasedOn="{StaticResource NormalTextBlockBaseStyle}"
@@ -81,43 +75,189 @@
             <Setter Property="Margin" Value="0,0,0,10" />
         </Style>
 
-        <Style x:Key="InfoSpliter" TargetType="Grid">
-            <Setter Property="Width" Value="1" />
-            <Setter Property="Background" Value="#FFF" />
-            <Setter Property="Margin" Value="10,0,10,0" />
-        </Style>
-
-        <Style x:Key="FieldLineMB" TargetType="Grid">
-            <Setter Property="Margin" Value="0,0,0,10" />
-        </Style>
-
-        <Style
-            x:Key="CardInfoTitle"
-            BasedOn="{StaticResource NormalTextBlockBaseStyle}"
-            TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#FFF" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-        </Style>
-
-        <Style
-            x:Key="CardInfoValue"
-            BasedOn="{StaticResource CardInfoTitle}"
-            TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Right" />
-        </Style>
-
-        <!--  Custom TabControl style: we remove built-in header area because we drive tabs from external selector  -->
-        <Style x:Key="CustomTabControlStyle" TargetType="TabControl">
-            <Setter Property="Template">
+        <!--  NEW: Elegant Skill Card Style  -->
+        <Style x:Key="SkillCardBorder" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Margin" Value="8,4" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Effect">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TabControl">
-                        <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
-                            <ContentPresenter Margin="8" ContentSource="SelectedContent" />
-                        </Border>
-                    </ControlTemplate>
+                    <DropShadowEffect
+                        BlurRadius="8"
+                        Opacity="0.1"
+                        ShadowDepth="2"
+                        Color="#000000" />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#2297F4" />
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect
+                                BlurRadius="12"
+                                Opacity="0.15"
+                                ShadowDepth="3"
+                                Color="#2297F4" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  NEW: Skill Name Style  -->
+        <Style x:Key="SkillNameText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#212121" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!--  NEW: Stat Label Style  -->
+        <Style x:Key="StatLabelText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="#757575" />
+            <Setter Property="Margin" Value="0,0,0,2" />
+        </Style>
+
+        <!--  NEW: Stat Value Style  -->
+        <Style x:Key="StatValueText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#2297F4" />
+        </Style>
+
+        <!--  NEW: Section Header Style  -->
+        <Style x:Key="SectionHeaderText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#212121" />
+            <Setter Property="Margin" Value="16,12,16,8" />
+        </Style>
+
+        <!--  NEW: Summary Stats Card  -->
+        <Style x:Key="SummaryCardBorder" TargetType="Border">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#2297F4" />
+                        <GradientStop Offset="1" Color="#1976D2" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Padding" Value="20,16" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect
+                        BlurRadius="10"
+                        Opacity="0.3"
+                        ShadowDepth="4"
+                        Color="#2297F4" />
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!--  NEW: Summary Stat Style  -->
+        <Style x:Key="SummaryStatText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="SummaryLabelText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Opacity" Value="0.9" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+
+        <!--  Custom TabControl style: we remove built-in header area because we drive tabs from external selector  -->
+
+        <!--  Chart Card Border Style  -->
+        <Style
+            x:Key="ChartCardBorder"
+            BasedOn="{StaticResource BlueCardBorder}"
+            TargetType="Border" />
+
+        <!--  Skill List Item Template - reusable across all tabs  -->
+        <DataTemplate x:Key="SkillListItemTemplate" DataType="{x:Type viewModels:SkillItemViewModel}">
+            <Border Style="{StaticResource SkillCardBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" MinWidth="120" />
+                        <ColumnDefinition Width="*" MinWidth="90" />
+                        <ColumnDefinition Width="*" MinWidth="90" />
+                        <ColumnDefinition Width="*" MinWidth="90" />
+                        <ColumnDefinition Width="*" MinWidth="90" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Skill Name with Icon  -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Border
+                            Width="36"
+                            Height="36"
+                            Margin="0,0,12,0"
+                            Background="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            CornerRadius="18">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="{Binding SkillName, Converter={StaticResource StringFirstCharConverter}}" />
+                        </Border>
+                        <TextBlock Style="{StaticResource SkillNameText}" Text="{Binding SkillName}" />
+                    </StackPanel>
+
+                    <!--  Total Value  -->
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Style="{StaticResource StatLabelText}" Text="Total" />
+                        <TextBlock Style="{StaticResource StatValueText}" Text="{Binding TotalDamage, StringFormat={}{0:N0}}" />
+                    </StackPanel>
+
+                    <!--  Hit Count  -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Style="{StaticResource StatLabelText}" Text="Hits" />
+                        <TextBlock Style="{StaticResource StatValueText}">
+                            <Run Text="{Binding HitCount, Mode=OneWay}" />
+                            <Run
+                                FontSize="11"
+                                FontWeight="Normal"
+                                Foreground="#757575"
+                                Text="hits" />
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!--  Crit Rate  -->
+                    <StackPanel Grid.Column="3">
+                        <TextBlock Style="{StaticResource StatLabelText}" Text="Crit Rate" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource StatValueText}" Text="{Binding CritRate, StringFormat={}{0:P1}}" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Bottom"
+                                FontSize="11"
+                                Foreground="#757575"
+                                Text="{Binding CritCount, StringFormat={}({0})}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!--  Average  -->
+                    <StackPanel Grid.Column="4">
+                        <TextBlock Style="{StaticResource StatLabelText}" Text="Avg Hit" />
+                        <TextBlock Style="{StaticResource StatValueText}" Text="{Binding AvgDamage, StringFormat={}{0:N0}}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
 
         <!--  Simple segmented ToggleButton style used for selector  -->
         <Style x:Key="TabSelectorToggleStyle" TargetType="ToggleButton">
@@ -146,7 +286,7 @@
                                 <Setter TargetName="bd" Property="Background" Value="#FFF" />
                                 <Setter TargetName="bd" Property="BorderBrush" Value="#FFF" />
                                 <Setter Property="Foreground" Value="#000" />
-                                <Setter Property="Effect">
+                                <Setter TargetName="bd" Property="Effect">
                                     <Setter.Value>
                                         <DropShadowEffect
                                             BlurRadius="4"
@@ -164,326 +304,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <DataTemplate x:Key="Template1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <ctrl:CollapsibleCard
-                        Title="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Card_RealtimeChart}}"
-                        Grid.Row="0"
-                        IsExpanded="True"
-                        Style="{StaticResource StatisticCard}">
-                        <TextBlock HorizontalAlignment="Center" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Placeholder_LineChart}}" />
-                    </ctrl:CollapsibleCard>
-
-                    <ctrl:CollapsibleCard
-                        Title="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Card_ShareChart}}"
-                        Grid.Row="1"
-                        IsExpanded="True"
-                        Style="{StaticResource StatisticCard}">
-                        <TextBlock HorizontalAlignment="Center" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Placeholder_PieChart}}" />
-                    </ctrl:CollapsibleCard>
-
-                    <ctrl:CollapsibleCard
-                        Title="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Card_DamageDistribution}}"
-                        Grid.Row="2"
-                        IsExpanded="True"
-                        Style="{StaticResource StatisticCard}">
-                        <TextBlock HorizontalAlignment="Center" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Placeholder_BarChart}}" />
-                    </ctrl:CollapsibleCard>
-                </Grid>
-
-                <GridSplitter Grid.Column="1" />
-
-                <Grid Grid.Column="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Border Grid.Column="0" Style="{StaticResource BlueCardBorder}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Style="{StaticResource CardTitle}"
-                                    Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Section_DamageInfo}}" />
-
-                                <Grid Grid.Row="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid Grid.Column="0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <Grid Grid.Row="0" Style="{StaticResource FieldLineMB}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_TotalDamage}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_TotalDamage}}" />
-                                        </Grid>
-                                        <Grid Grid.Row="1" Style="{StaticResource FieldLineMB}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_Dps}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_Dps}}" />
-                                        </Grid>
-                                        <Grid Grid.Row="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_HitCount}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_HitCount}}" />
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid Grid.Column="1" Style="{StaticResource InfoSpliter}" />
-
-                                    <Grid Grid.Column="2">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <Grid Grid.Row="0" Style="{StaticResource FieldLineMB}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_CritRate}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_CritRate}}" />
-                                        </Grid>
-                                        <Grid Grid.Row="1" Style="{StaticResource FieldLineMB}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_LuckRate}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_LuckRate}}" />
-                                        </Grid>
-                                        <Grid Grid.Row="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_CritCount}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_CritCount}}" />
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Border>
-
-                        <Border Grid.Column="1" Style="{StaticResource BlueCardBorder}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Style="{StaticResource CardTitle}"
-                                    Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Section_DamageDistribution}}" />
-
-                                <Grid Grid.Row="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid Grid.Column="0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <Grid Grid.Row="0" Style="{StaticResource FieldLineMB}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_NormalDamage}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_NormalDamage}}" />
-                                        </Grid>
-                                        <Grid Grid.Row="1" Style="{StaticResource FieldLineMB}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_CritDamage}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_CritDamage}}" />
-                                        </Grid>
-                                        <Grid Grid.Row="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_LuckCount}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_LuckCount}}" />
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid Grid.Column="1" Style="{StaticResource InfoSpliter}" />
-
-                                    <Grid Grid.Column="2">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <Grid Grid.Row="0" Style="{StaticResource FieldLineMB}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_LuckDamage}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_LuckDamage}}" />
-                                        </Grid>
-                                        <Grid Grid.Row="1" Style="{StaticResource FieldLineMB}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_AverageDamage}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_AverageDamage}}" />
-                                        </Grid>
-                                        <Grid Grid.Row="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource CardInfoTitle}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_DamageTakenCount}}" />
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Style="{StaticResource CardInfoValue}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Value_DamageTakenCount}}" />
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Border>
-                    </Grid>
-
-                    <Grid Grid.Row="1">
-                        <TextBlock
-                            Height="120"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Placeholder_Form}}" />
-                    </Grid>
-                </Grid>
-            </Grid>
-        </DataTemplate>
     </Window.Resources>
 
-    <Border Background="#ECEBE9" Style="{StaticResource ShadowWindowBorder}">
+    <Border Background="#FEFEFE" Style="{StaticResource ShadowWindowBorder}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -494,10 +317,9 @@
 
             <ctrl:Header Title="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Header_Title}}" Grid.Row="0" />
 
+            <!--  header info bound to VM (unchanged)  -->
             <Grid Grid.Row="1" Style="{StaticResource InfoAndTypeGrid}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
@@ -508,32 +330,22 @@
                 <TextBlock
                     Grid.Column="0"
                     Style="{StaticResource InfoNameText}"
-                    Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Info_Name}}" />
+                    Text="{Binding PlayerName}" />
                 <TextBlock
                     Grid.Column="1"
                     Style="{StaticResource InfoText}"
-                    Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Info_Uid}}" />
+                    Text="{Binding Uid, StringFormat=UID: {0}}" />
                 <TextBlock
                     Grid.Column="2"
                     Style="{StaticResource InfoText}"
-                    Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Info_Power}}" />
-                <TextBlock
-                    Grid.Column="3"
-                    Style="{StaticResource InfoText}"
-                    Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Info_Level}}" />
-                <TextBlock
-                    Grid.Column="4"
-                    Style="{StaticResource InfoText}"
-                    Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Info_Badge}}" />
-
+                    Text="{Binding PowerLevel, StringFormat=Power: {0}}" />
 
                 <Border
-                    Grid.Column="6"
+                    Grid.Column="4"
                     Margin="10"
                     Padding="0,0,4,0"
                     Background="#EEE"
                     CornerRadius="20">
-                    <!--  segmented selector: each ToggleButton sets the TabControl.SelectedIndex in code-behind  -->
                     <StackPanel
                         x:Name="TabControlIndexChanger"
                         HorizontalAlignment="Center"
@@ -558,37 +370,359 @@
                 </Border>
             </Grid>
 
-            <!--  Note: TabPanel was incorrect; use TabItem. Added x:Name and style to remove built-in headers.  -->
+            <!--  Content Grid with visibility-based tab switching (prevents chart disposal issues)  -->
             <TabControl
                 x:Name="MainTabControl"
                 Grid.Row="2"
                 SelectedIndex="0"
-                Style="{StaticResource CustomTabControlStyle}">
-
+                SelectionChanged="MainTabControl_SelectionChanged">
                 <TabControl.Resources>
-                    <Style x:Key="TextBlockExampleStyle" TargetType="TextBlock">
-                        <Setter Property="Margin" Value="8" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="Foreground" Value="White" />
-                        <Setter Property="FontSize" Value="100" />
-                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    <!--  Hide default tab headers since we use custom selector  -->
+                    <Style TargetType="TabControl">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabControl">
+                                    <ContentPresenter ContentSource="SelectedContent" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </TabControl.Resources>
 
-                <TabItem x:Name="TabItem_Summary" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Tab_Summary}}">
-                    <ScrollViewer>
-                        <ContentPresenter ContentTemplate="{StaticResource Template1}" />
+                <!--  DPS Tab  -->
+                <TabItem Header="DPS">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="7*" />
+                            </Grid.ColumnDefinitions>
+
+                            <GridSplitter Grid.Column="1" />
+
+                            <!--  Right Panel: Stats and Skills  -->
+                            <StackPanel Grid.Column="2" Margin="4,8,8,8">
+                                <Border Style="{StaticResource SummaryCardBorder}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding DamageStats.Total, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Total Damage" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding DamageStats.Average, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Average DPS" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding DamageStats.Hits, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Total Hits" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="3">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding DamageStats.CritRate, StringFormat={}{0:P1}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Crit Rate" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <TextBlock Style="{StaticResource SectionHeaderText}" Text="Damage Skills Analysis" />
+
+                                <ItemsControl
+                                    Margin="0,0,0,16"
+                                    ItemsSource="{Binding ObservedSlot.Damage.TotalSkillList}"
+                                    Tag="#2297F4">
+                                    <ItemsControl.ItemTemplate>
+                                        <StaticResource ResourceKey="SkillListItemTemplate" />
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <!--  Left Panel: Charts  -->
+                            <StackPanel Grid.Column="0" Margin="8,8,4,8">
+                                <!--  Time Series Chart  -->
+                                <Border Style="{StaticResource ChartCardBorder}">
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="14"
+                                            Style="{StaticResource CardTitle}"
+                                            Text="Real-time DPS" />
+                                        <oxy:PlotView Height="300" Model="{Binding DpsPlot.SeriesPlotModel}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <Button
+                                                    Width="32"
+                                                    Margin="4"
+                                                    Command="{Binding ResetZoomCommand}"
+                                                    Content="↺"
+                                                    Style="{StaticResource AntButtonStyle}"
+                                                    ToolTip="Reset Zoom" />
+                                                <Button
+                                                    Width="32"
+                                                    Margin="4"
+                                                    Command="{Binding ZoomOutCommand}"
+                                                    Content="-"
+                                                    Style="{StaticResource AntButtonStyle}" />
+                                                <Button
+                                                    Width="32"
+                                                    Margin="4"
+                                                    Command="{Binding ZoomInCommand}"
+                                                    Content="+"
+                                                    Style="{StaticResource AntButtonStyle}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <!--  Pie Chart  -->
+                                <Border Style="{StaticResource ChartCardBorder}">
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="14"
+                                            Style="{StaticResource CardTitle}"
+                                            Text="Skill Damage Distribution" />
+                                        <oxy:PlotView Height="400" Model="{Binding DpsPlot.PiePlotModel}" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem x:Name="TabItem_Details" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Tab_Details}}">
-                    <Grid Background="IndianRed">
-                        <TextBlock Style="{StaticResource TextBlockExampleStyle}" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Placeholder_Details}}" />
-                    </Grid>
+
+                <!--  Healing Tab  -->
+                <TabItem Header="Healing">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="7*" />
+                            </Grid.ColumnDefinitions>
+
+                            <GridSplitter Grid.Column="1" />
+
+                            <!--  Right Panel: Stats and Skills  -->
+                            <StackPanel Grid.Column="2" Margin="4,8,8,8">
+                                <Border Style="{StaticResource SummaryCardBorder}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding HealingStats.Total, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Total Healing" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding HealingStats.Average, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Average HPS" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding HealingStats.Hits, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Total Heals" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="3">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding HealingStats.CritRate, StringFormat={}{0:F1}%}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Crit Rate" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <TextBlock Style="{StaticResource SectionHeaderText}" Text="Healing Skills Analysis" />
+
+                                <ItemsControl
+                                    Margin="0,0,0,16"
+                                    ItemsSource="{Binding ObservedSlot.Heal.TotalSkillList}"
+                                    Tag="#3CB371">
+                                    <ItemsControl.ItemTemplate>
+                                        <StaticResource ResourceKey="SkillListItemTemplate" />
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <!--  Left Panel: Charts  -->
+                            <StackPanel Grid.Column="0" Margin="8,8,4,8">
+                                <!--  Time Series Chart  -->
+                                <Border Style="{StaticResource ChartCardBorder}">
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="14"
+                                            Style="{StaticResource CardTitle}"
+                                            Text="Real-time HPS" />
+                                        <oxy:PlotView Height="300" Model="{Binding HpsPlot.LineSeriesData}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <Button
+                                                    Width="32"
+                                                    Margin="4"
+                                                    Command="{Binding ResetZoomCommand}"
+                                                    Content="↺"
+                                                    Style="{StaticResource AntButtonStyle}"
+                                                    ToolTip="Reset Zoom" />
+                                                <Button
+                                                    Width="32"
+                                                    Margin="4"
+                                                    Command="{Binding ZoomOutCommand}"
+                                                    Content="-"
+                                                    Style="{StaticResource AntButtonStyle}" />
+                                                <Button
+                                                    Width="32"
+                                                    Margin="4"
+                                                    Command="{Binding ZoomInCommand}"
+                                                    Content="+"
+                                                    Style="{StaticResource AntButtonStyle}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource ChartCardBorder}">
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="14"
+                                            Style="{StaticResource CardTitle}"
+                                            Text="Healing Distribution" />
+                                        <oxy:PlotView Height="400" Model="{Binding HpsPlot.PiePlotModel}" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
                 </TabItem>
-                <TabItem x:Name="TabItem_Graph" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Tab_Graph}}">
-                    <Grid Background="DarkOliveGreen">
-                        <TextBlock Style="{StaticResource TextBlockExampleStyle}" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Placeholder_Graph}}" />
-                    </Grid>
+
+                <!--  Damage Taken Tab  -->
+                <TabItem Header="Damage Taken">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="7*" />
+                            </Grid.ColumnDefinitions>
+
+                            <GridSplitter Grid.Column="1" />
+
+                            <!--  Right Panel: Stats and Skills  -->
+                            <StackPanel Grid.Column="2" Margin="4,8,8,8">
+                                <Border Style="{StaticResource SummaryCardBorder}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamage.Total, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Total Damage Taken" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamage.Average, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Average DTPS" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamage.Hits, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Total Hits Taken" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="3">
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamage.CritRate, StringFormat={}{0:F1}%}" />
+                                            <TextBlock Style="{StaticResource SummaryLabelText}" Text="Crit Rate" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <TextBlock Style="{StaticResource SectionHeaderText}" Text="Damage Taken Analysis" />
+
+                                <ItemsControl
+                                    Margin="0,0,0,16"
+                                    ItemsSource="{Binding ObservedSlot.TakenDamage.TotalSkillList}"
+                                    Tag="#E64A19">
+                                    <ItemsControl.ItemTemplate>
+                                        <StaticResource ResourceKey="SkillListItemTemplate" />
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <!--  Left Panel: Charts  -->
+                            <StackPanel Grid.Column="0" Margin="8,8,4,8">
+                                <!--  Time Series Chart  -->
+                                <Border Style="{StaticResource ChartCardBorder}">
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="14"
+                                            Style="{StaticResource CardTitle}"
+                                            Text="Real-time DTPS" />
+                                        <oxy:PlotView Height="300" Model="{Binding DtpsPlot.SeriesPlotModel}" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <Button
+                                                    Width="32"
+                                                    Margin="4"
+                                                    Command="{Binding ResetZoomCommand}"
+                                                    Content="↺"
+                                                    Style="{StaticResource AntButtonStyle}"
+                                                    ToolTip="Reset Zoom" />
+                                                <Button
+                                                    Width="32"
+                                                    Margin="4"
+                                                    Command="{Binding ZoomOutCommand}"
+                                                    Content="-"
+                                                    Style="{StaticResource AntButtonStyle}" />
+                                                <Button
+                                                    Width="32"
+                                                    Margin="4"
+                                                    Command="{Binding ZoomInCommand}"
+                                                    Content="+"
+                                                    Style="{StaticResource AntButtonStyle}" />
+                                            </StackPanel>
+                                        </Grid>
+
+                                    </StackPanel>
+                                </Border>
+
+                                <!--  Pie Chart  -->
+                                <Border Style="{StaticResource ChartCardBorder}">
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="14"
+                                            Style="{StaticResource CardTitle}"
+                                            Text="Damage Sources Distribution" />
+                                        <oxy:PlotView Height="400" Model="{Binding DtpsPlot.PiePlotModel}" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
                 </TabItem>
             </TabControl>
 

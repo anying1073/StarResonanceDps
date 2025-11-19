@@ -1,13 +1,11 @@
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core;
-using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.Core.Analyze.Exceptions;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Extends.Data;
@@ -15,9 +13,10 @@ using StarResonanceDpsAnalysis.Core.Models;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Data;
 using StarResonanceDpsAnalysis.WPF.Extensions;
+using StarResonanceDpsAnalysis.WPF.Logging;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.Services;
-using StarResonanceDpsAnalysis.WPF.Logging;
+using System.Linq;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -37,31 +36,41 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     private readonly IApplicationControlService _appControlService;
     private readonly IConfigManager _configManager;
     private readonly Dispatcher _dispatcher;
+    private readonly ILogger<DpsStatisticsViewModel> _logger;
+
+    private readonly IDataStorage _storage;
+
     // Use a single stopwatch for both total and section durations
     private readonly Stopwatch _timer = new();
-    // Snapshot of elapsed time at the moment a new section starts
-    private TimeSpan _sectionStartElapsed = TimeSpan.Zero;
+    private readonly ITopmostService _topmostService;
+    private readonly IWindowManagementService _windowManagement;
+
+    [ObservableProperty] private AppConfig _appConfig;
+
     // Whether we are waiting for the first datapoint of a new section
     private bool _awaitingSectionStart;
-    // Captured elapsed of the last section to freeze UI until new data arrives
-    private TimeSpan _lastSectionElapsed = TimeSpan.Zero;
-    private readonly ILogger<DpsStatisticsViewModel> _logger;
-    private readonly IDataStorage _storage;
-    private readonly IWindowManagementService _windowManagement;
-    private readonly ITopmostService _topmostService;
-    private DispatcherTimer? _durationTimer;
+    [ObservableProperty] private TimeSpan _battleDuration;
 
     // Timer for active update mode
     private DispatcherTimer? _dpsUpdateTimer;
+    private DispatcherTimer? _durationTimer;
 
     private bool _isInitialized;
+
+    // Captured elapsed of the last section to freeze UI until new data arrives
+    private TimeSpan _lastSectionElapsed = TimeSpan.Zero;
+
     [ObservableProperty] private ScopeTime _scopeTime = ScopeTime.Current;
+
+    // Snapshot of elapsed time at the moment a new section starts
+    private TimeSpan _sectionStartElapsed = TimeSpan.Zero;
     [ObservableProperty] private bool _showContextMenu;
     [ObservableProperty] private SortDirectionEnum _sortDirection = SortDirectionEnum.Descending;
     [ObservableProperty] private string _sortMemberPath = "Value";
     [ObservableProperty] private StatisticType _statisticIndex;
-    [ObservableProperty] private AppConfig _appConfig;
-    [ObservableProperty] private TimeSpan _battleDuration;
+
+    // One-shot handler to resume active timer when first datapoint of a new section arrives
+    private DpsDataUpdatedEventHandler? _resumeActiveTimerHandler;
 
     /// <inheritdoc/>
     public DpsStatisticsViewModel(IApplicationControlService appControlService,
@@ -85,11 +94,11 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             },
             {
                 StatisticType.Healing,
-                new DpsStatisticsSubViewModel(logger, dispatcher,StatisticType.Healing, storage, debugFunctions)
+                new DpsStatisticsSubViewModel(logger, dispatcher, StatisticType.Healing, storage, debugFunctions)
             },
             {
                 StatisticType.NpcTakenDamage,
-                new DpsStatisticsSubViewModel(logger, dispatcher,StatisticType.TakenDamage, storage, debugFunctions)
+                new DpsStatisticsSubViewModel(logger, dispatcher, StatisticType.TakenDamage, storage, debugFunctions)
             }
         };
         _configManager = configManager;
@@ -119,6 +128,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
     public DpsStatisticsOptions Options { get; } = new();
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         // Unsubscribe from DebugFunctions events
@@ -129,6 +139,14 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         {
             _durationTimer.Stop();
             _durationTimer.Tick -= DurationTimerOnTick;
+        }
+
+        // Stop and dispose DPS update timer
+        if (_dpsUpdateTimer != null)
+        {
+            _dpsUpdateTimer.Stop();
+            _dpsUpdateTimer.Tick -= DpsUpdateTimerOnTick;
+            _dpsUpdateTimer = null;
         }
 
         _storage.DpsDataUpdated -= DataStorage_DpsDataUpdated;
@@ -142,38 +160,47 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }
 
         _isInitialized = false;
+
+        // Detach one-shot resume handler if any
+        if (_resumeActiveTimerHandler != null)
+        {
+            _storage.DpsDataUpdated -= _resumeActiveTimerHandler;
+            _resumeActiveTimerHandler = null;
+        }
+    }
+
+    [RelayCommand]
+    private void OpenSkillBreakdown(StatisticDataViewModel? slot)
+    {
+        // allow command binding from item click
+        var target = slot ?? CurrentStatisticData.SelectedSlot;
+        if (target is null) return;
+
+        var vm = _windowManagement.SkillBreakdownView.DataContext as SkillBreakdownViewModel;
+        Debug.Assert(vm != null, "vm!=null");
+        vm.InitializeFrom(target);
+        _windowManagement.SkillBreakdownView.Show();
+        _windowManagement.SkillBreakdownView.Activate();
     }
 
     private void ConfigManagerOnConfigurationUpdated(object? sender, AppConfig newConfig)
     {
-        if (_dispatcher.CheckAccess())
+        if (!_dispatcher.CheckAccess())
         {
-            var oldMode = AppConfig.DpsUpdateMode;
-            var oldInterval = AppConfig.DpsUpdateInterval;
-
-            AppConfig = newConfig;
-
-            // If update mode or interval changed, reconfigure update mechanism
-            if (oldMode != newConfig.DpsUpdateMode || oldInterval != newConfig.DpsUpdateInterval)
-            {
-                ConfigureDpsUpdateMode();
+            _dispatcher.Invoke(ConfigManagerOnConfigurationUpdated, sender, newConfig);
+            return;
         }
-        }
-        else
+
+        var oldMode = AppConfig.DpsUpdateMode;
+        var oldInterval = AppConfig.DpsUpdateInterval;
+
+        AppConfig = newConfig;
+
+        // If update mode or interval changed, reconfigure update mechanism
+        if (oldMode != newConfig.DpsUpdateMode || oldInterval != newConfig.DpsUpdateInterval)
         {
-            _dispatcher.Invoke(() =>
-            {
-                var oldMode = AppConfig.DpsUpdateMode;
-                var oldInterval = AppConfig.DpsUpdateInterval;
-
-                AppConfig = newConfig;
-
-                if (oldMode != newConfig.DpsUpdateMode || oldInterval != newConfig.DpsUpdateInterval)
-                {
-                    ConfigureDpsUpdateMode();
+            ConfigureDpsUpdateMode();
         }
-            });
-    }
     }
 
     private void OnSampleDataRequested(object? sender, EventArgs e)
@@ -194,7 +221,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         {
             await _configManager.SaveAsync(AppConfig);
         }
-        catch(InvalidOperationException ex)
+        catch (InvalidOperationException ex)
         {
             // Ignore
             _logger.LogError(ex, "Failed to save AppConfig");
@@ -268,6 +295,14 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private void OnUnloaded()
     {
+        // Pause periodic timers when view is not visible
+        StopDpsUpdateTimer();
+        if (_durationTimer != null)
+        {
+            _durationTimer.Stop();
+        }
+
+        _logger.LogDebug("DpsStatisticsViewModel unloaded - timers paused");
     }
 
     [RelayCommand]
@@ -286,11 +321,19 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         _logger.LogInformation("Configuring DPS update mode: {Mode}, Interval: {Interval}ms",
             AppConfig.DpsUpdateMode, AppConfig.DpsUpdateInterval);
 
+        // Ensure any one-shot handler from previous mode is removed
+        if (_resumeActiveTimerHandler != null)
+        {
+            _storage.DpsDataUpdated -= _resumeActiveTimerHandler;
+            _resumeActiveTimerHandler = null;
+        }
+
         switch (AppConfig.DpsUpdateMode)
         {
             case DpsUpdateMode.Passive:
                 // Passive mode: subscribe to event
                 StopDpsUpdateTimer();
+                _dpsUpdateTimer = null; // ensure timer is released
                 _storage.DpsDataUpdated -= DataStorage_DpsDataUpdated; // Unsubscribe first to avoid duplicate
                 _storage.DpsDataUpdated += DataStorage_DpsDataUpdated;
                 _storage.NewSectionCreated -= StorageOnNewSectionCreated;
@@ -299,9 +342,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 break;
 
             case DpsUpdateMode.Active:
-                // Active mode: use timer, unsubscribe from event
+                // Active mode: use timer, but still listen for section events to pause/resume
                 _storage.DpsDataUpdated -= DataStorage_DpsDataUpdated;
                 _storage.NewSectionCreated -= StorageOnNewSectionCreated;
+                _storage.NewSectionCreated += StorageOnNewSectionCreated;
                 StartDpsUpdateTimer(AppConfig.DpsUpdateInterval);
                 _logger.LogDebug("Active mode enabled: timer interval {Interval}ms", AppConfig.DpsUpdateInterval);
                 break;
@@ -351,6 +395,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         if (_dpsUpdateTimer != null)
         {
             _dpsUpdateTimer.Stop();
+            _dpsUpdateTimer.Tick -= DpsUpdateTimerOnTick;
             _logger.LogDebug("DPS update timer stopped");
         }
     }
@@ -389,12 +434,14 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
         // If a new section was created, wait until first datapoint to reset UI and mark section start
         var hasSectionDamage = HasDamageData(_storage.ReadOnlySectionedDpsDataList);
-        if (_awaitingSectionStart && hasSectionDamage)
+        if (!hasSectionDamage) return;
+        if (_awaitingSectionStart)
         {
             foreach (var subVm in StatisticData.Values)
             {
                 subVm.Reset();
             }
+
             _sectionStartElapsed = _timer.Elapsed;
             _lastSectionElapsed = TimeSpan.Zero;
             _awaitingSectionStart = false;
@@ -425,6 +472,90 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             subViewModel.ScopeTime = ScopeTime;
             subViewModel.UpdateDataOptimized(processedData, currentPlayerUid);
         }
+
+        // Append per-player DPS samples after sub VMs updated
+        AppendDpsSamples(data);
+    }
+
+    /// <summary>
+    /// Appends per-player DPS/HPS/DTPS samples (section and total) into each player's StatisticDataViewModel series.
+    /// Keeps only the latest N points to avoid unbounded growth.
+    /// Adds duration since the last section start to each sample.
+    /// </summary>
+    private void AppendDpsSamples(IReadOnlyList<DpsData> data)
+    {
+        // Cap size to roughly what the chart needs
+        const int maxSamples = 300;
+
+        // Calculate section duration once per tick (independent of scope)
+        var sectionDuration = ComputeSectionDuration();
+
+        foreach (var dpsData in data)
+        {
+            // Skip empty players
+            var totalElapsedTicks = dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0);
+            if (totalElapsedTicks <= 0) continue;
+            var totalElapsedSeconds = TimeSpan.FromTicks(totalElapsedTicks).TotalSeconds;
+            if (totalElapsedSeconds <= 0.01) continue;
+
+            // Compute total values
+            var totalDps = Math.Max(0, dpsData.TotalAttackDamage) / totalElapsedSeconds;
+            var totalHps = Math.Max(0, dpsData.TotalHeal) / totalElapsedSeconds;
+            var totalDtps = Math.Max(0, dpsData.TotalTakenDamage) / totalElapsedSeconds;
+
+            // Section values use current scope
+            double sectionDps = totalDps, sectionHps = totalHps, sectionDtps = totalDtps;
+            if (_storage.ReadOnlySectionedDpsDatas.TryGetValue(dpsData.UID, out var section))
+            {
+                var sectionElapsedTicks = section.LastLoggedTick - (section.StartLoggedTick ?? 0);
+                var sectionElapsedSeconds = sectionElapsedTicks > 0 ? TimeSpan.FromTicks(sectionElapsedTicks).TotalSeconds : 0.0;
+                if (sectionElapsedSeconds > 0.01)
+                {
+                    sectionDps = Math.Max(0, section.TotalAttackDamage) / sectionElapsedSeconds;
+                    sectionHps = Math.Max(0, section.TotalHeal) / sectionElapsedSeconds;
+                    sectionDtps = Math.Max(0, section.TotalTakenDamage) / sectionElapsedSeconds;
+                }
+            }
+
+            // Locate the corresponding slot in the damage view (primary)
+            var damageVm = StatisticData.TryGetValue(StatisticType.Damage, out var sub) ? sub : null;
+            if (damageVm == null) continue;
+
+            if (!damageVm.DataDictionary.TryGetValue(dpsData.UID, out var slot)) continue;
+
+            // Push samples with duration
+            var dpsSeries = slot.Damage.Dps;
+            dpsSeries.Add((sectionDuration, sectionDps, totalDps));
+            if (dpsSeries.Count > maxSamples)
+            {
+                while (dpsSeries.Count > maxSamples) dpsSeries.RemoveAt(0);
+            }
+
+            var hpsSeries = slot.Heal.Dps;
+            hpsSeries.Add((sectionDuration, sectionHps, totalHps));
+            if (hpsSeries.Count > maxSamples)
+            {
+                while (hpsSeries.Count > maxSamples) hpsSeries.RemoveAt(0);
+            }
+
+            var dtpsSeries = slot.TakenDamage.Dps;
+            dtpsSeries.Add((sectionDuration, sectionDtps, totalDtps));
+            if (dtpsSeries.Count > maxSamples)
+            {
+                while (dtpsSeries.Count > maxSamples) dtpsSeries.RemoveAt(0);
+            }
+        }
+    }
+
+    private TimeSpan ComputeSectionDuration()
+    {
+        // Duration after the new section is created
+        var elapsed = _timer.Elapsed - _sectionStartElapsed;
+        if (_awaitingSectionStart || elapsed < TimeSpan.Zero)
+        {
+            return TimeSpan.Zero;
+        }
+        return elapsed;
     }
 
     /// <summary>
@@ -445,14 +576,16 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         foreach (var dpsData in data)
         {
             // Calculate common values once
-            var duration = (dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0)).ConvertToUnsigned();
-            var skillList = BuildSkillListSnapshot(dpsData);
+            var duration = (dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0)).ConvertToUnsigned() / TimeSpan.TicksPerMillisecond;
+            var (filtered, total,
+                filteredHeal, totalHeal,
+                filteredTaken, totalTaken) = BuildSkillListSnapshot(dpsData);
 
             // Get player info once
             string playerName;
             Classes playerClass;
             ClassSpec playerSpec;
-            int powerLevel = 0;
+            var powerLevel = 0;
 
 
             if (_storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out var playerInfo))
@@ -474,7 +607,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             if (damageValue > 0)
             {
                 result[StatisticType.Damage][dpsData.UID] = new DpsDataProcessed(
-                    dpsData, damageValue, duration, skillList, playerName, playerClass, playerSpec,
+                    dpsData, damageValue, duration, filtered, total, filteredHeal, totalHeal,
+                    filteredTaken, totalTaken, playerName, playerClass, playerSpec,
                     powerLevel);
             }
 
@@ -483,7 +617,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             if (healingValue > 0)
             {
                 result[StatisticType.Healing][dpsData.UID] = new DpsDataProcessed(
-                    dpsData, healingValue, duration, skillList, playerName, playerClass, playerSpec, powerLevel);
+                    dpsData, healingValue, duration, filtered, total, filteredHeal, totalHeal,
+                    filteredTaken, totalTaken, playerName, playerClass, playerSpec, powerLevel);
             }
 
             // Process TakenDamage
@@ -494,12 +629,16 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 if (dpsData.IsNpcData)
                 {
                     result[StatisticType.NpcTakenDamage][dpsData.UID] = new DpsDataProcessed(
-                        dpsData, takenDamageValue, duration, skillList, playerName, playerClass, playerSpec, powerLevel);
+                        dpsData, takenDamageValue, duration, filtered, total, filteredHeal, totalHeal,
+                    filteredTaken, totalTaken, playerName, playerClass, playerSpec,
+                        powerLevel);
                 }
                 else
                 {
                     result[StatisticType.TakenDamage][dpsData.UID] = new DpsDataProcessed(
-                        dpsData, takenDamageValue, duration, skillList, playerName, playerClass, playerSpec, powerLevel);
+                        dpsData, takenDamageValue, duration, filtered, total, filteredHeal, totalHeal,
+                    filteredTaken, totalTaken, playerName, playerClass, playerSpec,
+                        powerLevel);
                 }
             }
         }
@@ -510,18 +649,131 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     /// <summary>
     /// Builds skill list snapshot
     /// </summary>
-    private List<SkillItemViewModel> BuildSkillListSnapshot(DpsData dpsData)
+    private (List<SkillItemViewModel> filtered, List<SkillItemViewModel> total,
+        List<SkillItemViewModel> filteredHeal, List<SkillItemViewModel> totalHeal,
+        List<SkillItemViewModel> filteredTakenDamage, List<SkillItemViewModel> totalTakenDamage) BuildSkillListSnapshot(DpsData dpsData)
     {
         var skills = dpsData.ReadOnlySkillDataList;
         if (skills.Count == 0)
         {
-            return [];
+            return ([], [], [], [], [], []);
         }
-
-        var orderedSkills = skills.OrderByDescending(static s => s.TotalValue);
 
         var skillDisplayLimit = CurrentStatisticData?.SkillDisplayLimit ?? 8;
 
+        // Process damage skills (existing logic)
+        var orderedSkills = skills.OrderByDescending(static s => s.TotalValue);
+        var damageSkills = ProjectSkills(orderedSkills, skillDisplayLimit);
+
+        // Process battle logs to separate healing and taken damage skills
+        var battleLogs = dpsData.ReadOnlyBattleLogs;
+        var healingSkillDict = new Dictionary<long, (long totalValue, int useTimes, int critTimes, int luckyTimes)>();
+        var takenDamageSkillDict = new Dictionary<long, (long totalValue, int useTimes, int critTimes, int luckyTimes)>();
+
+        // Aggregate skills from battle logs
+        foreach (var log in battleLogs)
+        {
+            if (log.IsHeal)
+            {
+                // Healing skill
+                if (!healingSkillDict.TryGetValue(log.SkillID, out var healData))
+                {
+                    healData = (0, 0, 0, 0);
+                }
+                healingSkillDict[log.SkillID] = (
+                    healData.totalValue + log.Value,
+                    healData.useTimes + 1,
+                    healData.critTimes + (log.IsCritical ? 1 : 0),
+                    healData.luckyTimes + (log.IsLucky ? 1 : 0)
+                );
+            }
+            else if (log.IsTargetPlayer && log.TargetUuid == dpsData.UID)
+            {
+                // Taken damage skill (when this player is the target)
+                if (!takenDamageSkillDict.TryGetValue(log.SkillID, out var takenData))
+                {
+                    takenData = (0, 0, 0, 0);
+                }
+                takenDamageSkillDict[log.SkillID] = (
+                    takenData.totalValue + log.Value,
+                    takenData.useTimes + 1,
+                    takenData.critTimes + (log.IsCritical ? 1 : 0),
+                    takenData.luckyTimes + (log.IsLucky ? 1 : 0)
+                );
+            }
+        }
+
+        // Convert healing skills to ViewModels
+        var healingSkillsOrdered = healingSkillDict
+            .OrderByDescending(static kvp => kvp.Value.totalValue)
+            .Select(kvp =>
+            {
+                var (totalValue, useTimes, critTimes, luckyTimes) = kvp.Value;
+                var average = useTimes > 0 ? Math.Round(totalValue / (double)useTimes) : 0d;
+                var avgHeal = average > int.MaxValue ? int.MaxValue : (int)average;
+                var skillIdText = kvp.Key.ToString();
+                var skillName = EmbeddedSkillConfig.TryGet(skillIdText, out var definition)
+                    ? definition.Name
+                    : skillIdText;
+                var critRate = useTimes > 0 ? (double)critTimes / useTimes : 0d;
+
+                return new SkillItemViewModel
+                {
+                    SkillName = skillName,
+                    TotalDamage = totalValue,
+                    HitCount = useTimes,
+                    CritCount = critTimes,
+                    AvgDamage = avgHeal,
+                    CritRate = critRate,
+                };
+            });
+
+        var healingSkillsList = healingSkillsOrdered.ToList();
+        var filteredHealingSkills = skillDisplayLimit > 0
+            ? healingSkillsList.Take(skillDisplayLimit).ToList()
+            : healingSkillsList;
+
+        // Convert taken damage skills to ViewModels
+        var takenDamageSkillsOrdered = takenDamageSkillDict
+            .OrderByDescending(static kvp => kvp.Value.totalValue)
+            .Select(kvp =>
+            {
+                var (totalValue, useTimes, critTimes, luckyTimes) = kvp.Value;
+                var average = useTimes > 0 ? Math.Round(totalValue / (double)useTimes) : 0d;
+                var avgDamage = average > int.MaxValue ? int.MaxValue : (int)average;
+                var skillIdText = kvp.Key.ToString();
+                var skillName = EmbeddedSkillConfig.TryGet(skillIdText, out var definition)
+                    ? definition.Name
+                    : skillIdText;
+                var critRate = useTimes > 0 ? (double)critTimes / useTimes : 0d;
+
+                return new SkillItemViewModel
+                {
+                    SkillName = skillName,
+                    TotalDamage = totalValue,
+                    HitCount = useTimes,
+                    CritCount = critTimes,
+                    AvgDamage = avgDamage,
+                    CritRate = critRate,
+                };
+            });
+
+        var takenDamageSkillsList = takenDamageSkillsOrdered.ToList();
+        var filteredTakenDamageSkills = skillDisplayLimit > 0
+            ? takenDamageSkillsList.Take(skillDisplayLimit).ToList()
+            : takenDamageSkillsList;
+
+        return (damageSkills.filtered, damageSkills.total,
+            filteredHealingSkills, healingSkillsList,
+            filteredTakenDamageSkills, takenDamageSkillsList);
+    }
+
+    /// <summary>
+    /// Helper method to project skills into ViewModels
+    /// </summary>
+    private (List<SkillItemViewModel> filtered, List<SkillItemViewModel> total) ProjectSkills(
+        IOrderedEnumerable<SkillData> orderedSkills, int skillDisplayLimit)
+    {
         var projected = orderedSkills.Select(skill =>
         {
             var average = skill.UseTimes > 0
@@ -537,19 +789,27 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 ? definition.Name
                 : skillIdText;
 
+            var critRate = skill.UseTimes > 0
+                ? (double)skill.CritTimes / skill.UseTimes
+                : 0d;
+
             return new SkillItemViewModel
             {
                 SkillName = skillName,
                 TotalDamage = skill.TotalValue,
                 HitCount = skill.UseTimes,
                 CritCount = skill.CritTimes,
-                AvgDamage = avgDamage
+                AvgDamage = avgDamage,
+                CritRate = critRate,
             };
         });
 
-        return skillDisplayLimit > 0
-            ? projected.Take(skillDisplayLimit).ToList()
-            : projected.ToList();
+        var list = projected.ToList();
+        var filtered = skillDisplayLimit > 0
+            ? list.Take(skillDisplayLimit).ToList()
+            : list;
+
+        return (filtered, list);
     }
 
     [RelayCommand]
@@ -566,6 +826,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         {
             vm.SkillDisplayLimit = clampedLimit;
         }
+
+        UpdateData();
 
         // Notify that current data's SkillDisplayLimit changed
         OnPropertyChanged(nameof(CurrentStatisticData));
@@ -695,9 +957,52 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         _dispatcher.BeginInvoke(() =>
         {
             // Freeze current section duration and await first datapoint of the new section
-            _lastSectionElapsed = _timer.IsRunning ? (_timer.Elapsed - _sectionStartElapsed) : TimeSpan.Zero;
+            _lastSectionElapsed = _timer.IsRunning ? _timer.Elapsed - _sectionStartElapsed : TimeSpan.Zero;
             _awaitingSectionStart = true;
             UpdateBattleDuration();
+
+            // In Active mode, pause the active timer until first datapoint of the new section arrives.
+            if (AppConfig.DpsUpdateMode == DpsUpdateMode.Active)
+            {
+                StopDpsUpdateTimer();
+
+                // Remove previous one-shot if still attached
+                if (_resumeActiveTimerHandler != null)
+                {
+                    _storage.DpsDataUpdated -= _resumeActiveTimerHandler;
+                    _resumeActiveTimerHandler = null;
+                }
+
+                // Setup one-shot resume on first datapoint
+                _resumeActiveTimerHandler = () =>
+                {
+                    // Ensure executed on UI thread
+                    _dispatcher.BeginInvoke(() =>
+                    {
+                        // Unsubscribe this one-shot handler
+                        if (_resumeActiveTimerHandler != null)
+                        {
+                            _storage.DpsDataUpdated -= _resumeActiveTimerHandler;
+                            _resumeActiveTimerHandler = null;
+                        }
+
+                        // Process this datapoint and resume periodic timer
+                        try
+                        {
+                            DataStorage_DpsDataUpdated();
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Failed to process first datapoint after new section");
+                        }
+
+                        StartDpsUpdateTimer(AppConfig.DpsUpdateInterval);
+                    });
+                };
+
+                // Subscribe one-shot handler
+                _storage.DpsDataUpdated += _resumeActiveTimerHandler;
+            }
 
             // Do NOT clear current UI data here; wait until data for the new section arrives
         });

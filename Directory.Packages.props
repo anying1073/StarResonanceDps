@@ -4,11 +4,14 @@
     <!-- Enable Central Package Version Management -->
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-
   <ItemGroup>
     <!-- WPF -->
     <PackageVersion Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
     <PackageVersion Include="Ihon.ResXKeyCodeGenerator" Version="0.0.1" />
+    
+    <!-- Charting: OxyPlot (stable, excellent MVVM support) -->
+    <PackageVersion Include="OxyPlot.Wpf" Version="2.2.0" />
+    
     <PackageVersion Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
     <PackageVersion Include="WPFLocalizeExtension" Version="3.10.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
@@ -23,7 +26,6 @@
     <PackageVersion Include="Serilog.Sinks.Observable" Version="3.0.0" />
     <PackageVersion Include="Serilog.Settings.Configuration" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
-
     <!-- Core -->
     <PackageVersion Include="Google.Protobuf" Version="3.33.0" />
     <PackageVersion Include="Grpc.Tools" Version="2.72.0" />
@@ -35,23 +37,19 @@
     <PackageVersion Include="System.IO.Pipelines" Version="9.0.10" />
     <PackageVersion Include="System.Threading.Channels" Version="9.0.10" />
     <PackageVersion Include="ZstdNet" Version="1.4.5" />
-
     <!-- Benchmarks -->
     <PackageVersion Include="BenchmarkDotNet" Version="0.13.7" />
-
     <!-- WinForm -->
     <PackageVersion Include="AntdUI" Version="2.1.12" />
     <PackageVersion Include="ClosedXML" Version="0.105.0" />
     <PackageVersion Include="Flurl.Http" Version="4.0.2" />
     <PackageVersion Include="System.ServiceProcess.ServiceController" Version="9.0.10" />
-
     <!-- Test packages -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-
     <!-- Assets -->
     <PackageVersion Include="System.Drawing.Common" Version="9.0.10" />
   </ItemGroup>

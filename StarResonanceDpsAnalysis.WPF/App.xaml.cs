@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -149,7 +150,9 @@ public partial class App : Application
     static readonly Dictionary<Type, ServiceLifetime> LifeTimeOverrides = new()
     {
         { typeof(DpsStatisticsViewModel), ServiceLifetime.Singleton },
-        { typeof(DpsStatisticsView), ServiceLifetime.Transient }
+        { typeof(DpsStatisticsView), ServiceLifetime.Transient },
+        { typeof(SkillBreakdownViewModel), ServiceLifetime.Transient },
+        { typeof(SkillBreakdownView), ServiceLifetime.Transient },
     };
 
     private static void RegisterViewModels(IServiceCollection services)

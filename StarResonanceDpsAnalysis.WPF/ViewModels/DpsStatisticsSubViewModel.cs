@@ -7,7 +7,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core;
 using StarResonanceDpsAnalysis.Core.Data.Models;
-using StarResonanceDpsAnalysis.Core.Extends.Data;
 using StarResonanceDpsAnalysis.Core.Models;
 using StarResonanceDpsAnalysis.WPF.Data;
 using StarResonanceDpsAnalysis.WPF.Extensions;
@@ -23,7 +22,12 @@ public readonly record struct DpsDataProcessed(
     DpsData OriginalData,
     ulong Value,
     ulong Duration,
-    List<SkillItemViewModel> SkillList,
+    List<SkillItemViewModel> FilteredSkillList,
+    List<SkillItemViewModel> TotalSkillList,
+    List<SkillItemViewModel> FilteredHealSkillList,
+    List<SkillItemViewModel> TotalHealSkillList,
+    List<SkillItemViewModel> FilteredTakenDamageSkillList,
+    List<SkillItemViewModel> TotalTakenDamageSkillList,
     string PlayerName,
     Classes PlayerClass,
     ClassSpec PlayerSpec,
@@ -80,7 +84,6 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
                     LocalIterate(e.NewItems, item => DataDictionary[item.Player.Uid] = item);
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    //TODO: Fix reset handling
                     DataDictionary.Clear();
                     CurrentPlayerSlot = null;
                     break;
@@ -175,79 +178,11 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
                     Spec = playerInfo?.Spec ?? ClassSpec.Unknown,
                     IsNpc = dpsData.IsNpcData
                 },
-                SkillList = BuildSkillListSnapshot(dpsData),
             };
             _dispatcher.Invoke(() => { Data.Add(slot); });
         }
 
         return slot;
-    }
-
-    public void UpdateData(IReadOnlyList<DpsData> data)
-    {
-        _logger.LogDebug("Enter updatedata");
-
-        var currentPlayerUid = _storage.CurrentPlayerInfo.UID;
-        var hasCurrentPlayer = currentPlayerUid != 0;
-
-        // Update all slots with their data
-        foreach (var dpsData in data)
-        {
-            var slot = GetOrAddStatisticDataViewModel(dpsData);
-            var value = GetValueForType(dpsData);
-
-            // Calculate duration once
-            var duration = (dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0)).ConvertToUnsigned();
-
-            // Update slot values
-            slot.Value = value;
-            slot.Duration = duration;
-            slot.SkillList = BuildSkillListSnapshot(dpsData);
-
-            // Update player info if available
-            if (_storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out var playerInfo))
-            {
-                slot.Player.Name = playerInfo.Name ?? $"UID: {dpsData.UID}";
-                slot.Player.Class = playerInfo.ProfessionID.GetClassNameById();
-                slot.Player.Spec = playerInfo.Spec;
-                slot.Player.Uid = playerInfo.UID;
-            }
-            else
-            {
-                slot.Player.Name = $"UID: {dpsData.UID}";
-                slot.Player.Class = Classes.Unknown;
-                slot.Player.Spec = ClassSpec.Unknown;
-                slot.Player.Uid = dpsData.UID;
-            }
-
-            // Set current player slot if this is the current player
-            if (hasCurrentPlayer && dpsData.UID == currentPlayerUid)
-            {
-                SelectedSlot = slot;
-                CurrentPlayerSlot = slot;
-            }
-        }
-
-        // Batch calculate percentages
-        if (Data.Count > 0)
-        {
-            var maxValue = Data.Max(d => d.Value);
-            var totalValue = Data.Sum(d => Convert.ToDouble(d.Value));
-
-            var hasMaxValue = maxValue > 0;
-            var hasTotalValue = totalValue > 0;
-
-            foreach (var slot in Data)
-            {
-                slot.PercentOfMax = hasMaxValue ? slot.Value / (double)maxValue * 100 : 0;
-                slot.Percent = hasTotalValue ? slot.Value / totalValue : 0;
-            }
-        }
-
-        // Sort data in place 
-        SortSlotsInPlace();
-
-        _logger.LogDebug("Exit updatedata");
     }
 
     /// <summary>
@@ -268,8 +203,10 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
 
             // Update slot values with pre-computed data
             slot.Value = processed.Value;
+            _logger.LogInformation("Value updated");
             slot.Duration = processed.Duration;
-            slot.SkillList = processed.SkillList;
+            slot.Damage.FilteredSkillList = processed.FilteredSkillList;
+            slot.Damage.TotalSkillList = processed.TotalSkillList;
 
             // Update player info
             slot.Player.Name = processed.PlayerName;
@@ -330,74 +267,6 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
         }
     }
 
-    private List<SkillItemViewModel> BuildSkillListSnapshot(DpsData dpsData)
-    {
-        var skills = dpsData.ReadOnlySkillDataList;
-        if (skills.Count == 0)
-        {
-            return [];
-        }
-
-        var orderedSkills = skills
-            .OrderByDescending(static s => s.TotalValue);
-
-        var projected = orderedSkills.Select(skill =>
-        {
-            var average = skill.UseTimes > 0
-                ? Math.Round(skill.TotalValue / (double)skill.UseTimes)
-                : 0d;
-
-            var avgDamage = average > int.MaxValue
-                ? int.MaxValue
-                : (int)average;
-
-            var skillIdText = skill.SkillId.ToString();
-            var skillName = EmbeddedSkillConfig.TryGet(skillIdText, out var definition)
-                ? definition.Name
-                : skillIdText;
-
-            return new SkillItemViewModel
-            {
-                SkillName = skillName,
-                TotalDamage = skill.TotalValue,
-                HitCount = skill.UseTimes,
-                CritCount = skill.CritTimes,
-                AvgDamage = avgDamage
-            };
-        });
-
-        return ApplySkillDisplayLimit(projected);
-    }
-
-    private List<SkillItemViewModel> ApplySkillDisplayLimit(IEnumerable<SkillItemViewModel> skills)
-    {
-        var limit = SkillDisplayLimit;
-        return limit > 0
-            ? skills.Take(limit).ToList()
-            : skills.ToList();
-    }
-
-    partial void OnSkillDisplayLimitChanged(int value)
-    {
-        if (value < 0)
-        {
-            SkillDisplayLimit = 0;
-            return;
-        }
-
-        if (!Initialized) return;
-        RefreshSkillSnapshots();
-    }
-
-    private void RefreshSkillSnapshots()
-    {
-        var dpsList = ScopeTime == ScopeTime.Total
-            ? _storage.ReadOnlyFullDpsDataList
-            : _storage.ReadOnlySectionedDpsDataList;
-
-        UpdateData(dpsList);
-    }
-
     public void AddTestItem()
     {
         var slots = Data;
@@ -414,22 +283,52 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
                 Name = $"Test Player {slots.Count + 1}",
                 Spec = ClassSpec.Unknown
             },
-            SkillList = ApplySkillDisplayLimit(new[]
-            {
-                new SkillItemViewModel
-                {
-                    SkillName = "Test Skill A", TotalDamage = 15000, HitCount = 25, CritCount = 8, AvgDamage = 600
-                },
-                new SkillItemViewModel
-                {
-                    SkillName = "Test Skill B", TotalDamage = 8500, HitCount = 15, CritCount = 4, AvgDamage = 567
-                },
-                new SkillItemViewModel
-                {
-                    SkillName = "Test Skill C", TotalDamage = 12300, HitCount = 30, CritCount = 12, AvgDamage = 410
-                }
-            })
         };
+        newItem.Damage.FilteredSkillList =
+        [
+            new SkillItemViewModel
+            {
+                SkillName = "Test Skill A", TotalDamage = 15000, HitCount = 25, CritCount = 8, AvgDamage = 600
+            },
+            new SkillItemViewModel
+            {
+                SkillName = "Test Skill B", TotalDamage = 8500, HitCount = 15, CritCount = 4, AvgDamage = 567
+            },
+            new SkillItemViewModel
+            {
+                SkillName = "Test Skill C", TotalDamage = 12300, HitCount = 30, CritCount = 12, AvgDamage = 410
+            }
+        ];
+        newItem.Heal.FilteredSkillList =
+        [
+            new SkillItemViewModel
+            {
+                SkillName = "Test Heal Skill A", TotalDamage = 15000, HitCount = 25, CritCount = 8, AvgDamage = 600
+            },
+            new SkillItemViewModel
+            {
+                SkillName = "Test Heal Skill B", TotalDamage = 8500, HitCount = 15, CritCount = 4, AvgDamage = 567
+            },
+            new SkillItemViewModel
+            {
+                SkillName = "Test Heal Skill C", TotalDamage = 12300, HitCount = 30, CritCount = 12, AvgDamage = 410
+            }
+        ];
+        newItem.TakenDamage.FilteredSkillList =
+        [
+            new SkillItemViewModel
+            {
+                SkillName = "Test Taken Skill A", TotalDamage = 15000, HitCount = 25, CritCount = 8, AvgDamage = 600
+            },
+            new SkillItemViewModel
+            {
+                SkillName = "Test Taken Skill B", TotalDamage = 8500, HitCount = 15, CritCount = 4, AvgDamage = 567
+            },
+            new SkillItemViewModel
+            {
+                SkillName = "Test Taken Skill C", TotalDamage = 12300, HitCount = 30, CritCount = 12, AvgDamage = 410
+            }
+        ];
 
         // Calculate percentages
         if (slots.Count > 0)

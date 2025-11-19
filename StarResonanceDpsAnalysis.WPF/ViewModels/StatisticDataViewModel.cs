@@ -1,9 +1,10 @@
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
-[DebuggerDisplay("Name:{Player.Name};Value:{Value}")]
+[DebuggerDisplay("Name:{Player?.Name};Value:{Value}")]
 public partial class StatisticDataViewModel(DebugFunctions debug) : BaseViewModel, IComparable<StatisticDataViewModel>
 {
     [ObservableProperty] private ulong _duration;
@@ -11,16 +12,49 @@ public partial class StatisticDataViewModel(DebugFunctions debug) : BaseViewMode
     [ObservableProperty] private double _percent;
     [ObservableProperty] private double _percentOfMax;
     [ObservableProperty] private PlayerInfoViewModel _player = new();
-
-    [ObservableProperty] private IReadOnlyList<SkillItemViewModel> _skillList = [];
-
     [ObservableProperty] private ulong _value;
+
     public DebugFunctions Debug { get; } = debug;
+    public SkillData Damage { get; } = new();
+    public SkillData Heal { get; } = new();
+    public SkillData TakenDamage { get; } = new();
 
     public int CompareTo(StatisticDataViewModel? other)
     {
         if (ReferenceEquals(this, other)) return 0;
         if (other is null) return 1;
         return Value.CompareTo(other.Value);
+    }
+
+    public void Reset()
+    {
+        // Reset numeric fields
+        Duration = 0;
+        Index = 0;
+        Percent = 0;
+        PercentOfMax = 0;
+        Value = 0;
+
+        Damage.Reset();
+        Heal.Reset();
+        TakenDamage.Reset();
+
+        // Reset player info
+        Player = new PlayerInfoViewModel();
+    }
+
+    public partial class SkillData : BaseViewModel
+    {
+        [ObservableProperty] private IReadOnlyList<SkillItemViewModel> _filteredSkillList = [];
+        [ObservableProperty] private IReadOnlyList<SkillItemViewModel> _totalSkillList = [];
+
+        [ObservableProperty] private ObservableCollection<(TimeSpan duration, double section, double total)> _dps = new();
+
+        public void Reset()
+        {
+            this.FilteredSkillList = [];
+            this.TotalSkillList = [];
+            if (Dps.Count > 0) this.Dps.Clear();
+        }
     }
 }
