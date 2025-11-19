@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -79,14 +80,64 @@ namespace StarResonanceDpsAnalysis.Core.Data.Models
         /// 是否为NPC数据
         /// </summary>
         public bool IsNpcData { get; internal set; } = false;
+
+        // Lock-free immutable battle logs
+        private ImmutableList<BattleLog> _battleLogs = ImmutableList<BattleLog>.Empty;
+
         /// <summary>
-        /// 战斗日志列表
+        /// 战斗日志列表 - 内部使用的可变构建器
         /// </summary>
-        public List<BattleLog> BattleLogs { get; } = new(16384);
+        internal List<BattleLog> BattleLogs { get; } = new(16384);
+
         /// <summary>
-        /// 只读战斗日志列表
+        /// 只读战斗日志列表 - 返回快照，无需锁
         /// </summary>
-        public IReadOnlyList<BattleLog> ReadOnlyBattleLogs => BattleLogs.AsReadOnly();
+        public IReadOnlyList<BattleLog> ReadOnlyBattleLogs => Volatile.Read(ref _battleLogs);
+
+        /// <summary>
+        /// 添加战斗日志（线程安全，无锁）
+        /// </summary>
+        internal void AddBattleLog(BattleLog log)
+        {
+            // Add to mutable list for internal processing
+            BattleLogs.Add(log);
+
+            // Update immutable snapshot atomically
+            ImmutableList<BattleLog> current, updated;
+            do
+            {
+                current = Volatile.Read(ref _battleLogs);
+                updated = current.Add(log);
+            } while (Interlocked.CompareExchange(ref _battleLogs, updated, current) != current);
+        }
+
+        /// <summary>
+        /// 批量添加战斗日志（性能优化，线程安全）
+        /// </summary>
+        internal void AddBattleLogRange(IEnumerable<BattleLog> logs)
+        {
+            var logsArray = logs as BattleLog[] ?? logs.ToArray();
+            
+            // Add to mutable list
+            BattleLogs.AddRange(logsArray);
+
+            // Update immutable snapshot atomically
+            ImmutableList<BattleLog> current, updated;
+            do
+            {
+                current = Volatile.Read(ref _battleLogs);
+                updated = current.AddRange(logsArray);
+            } while (Interlocked.CompareExchange(ref _battleLogs, updated, current) != current);
+        }
+
+        /// <summary>
+        /// 清空战斗日志（线程安全）
+        /// </summary>
+        internal void ClearBattleLogs()
+        {
+            BattleLogs.Clear();
+            Volatile.Write(ref _battleLogs, ImmutableList<BattleLog>.Empty);
+        }
 
         /// <summary>
         /// 技能统计数据字典

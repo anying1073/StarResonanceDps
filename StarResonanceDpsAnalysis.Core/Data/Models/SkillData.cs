@@ -69,7 +69,7 @@ public class SkillData(long skillId)
         Interlocked.Increment(ref _luckyTimes);
     }
 
-    internal long AddTotalValue(long value)
+    internal long IncrementTotalValue(long value)
     {
         return Interlocked.Add(ref _totalValue, value);
     }

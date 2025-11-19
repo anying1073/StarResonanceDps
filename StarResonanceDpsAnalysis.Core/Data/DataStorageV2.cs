@@ -583,7 +583,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         if (log.IsHeal)
         {
             var (fullData, sectionedData) = SetLogInfos(log.AttackerUuid, log);
-            TrySetSubProfessionBySkillId(log.AttackerUuid, log.SkillID);
+            TrySetSpecBySkillId(log.AttackerUuid, log.SkillID);
             UpdateDpsData(fullData, sectionedData, log, DpsType.Heal);
         }
         else
@@ -604,7 +604,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     private void ProcessPlayerAttackLog(BattleLog log)
     {
         var (fullData, sectionedData) = SetLogInfos(log.AttackerUuid, log);
-        TrySetSubProfessionBySkillId(log.AttackerUuid, log.SkillID);
+        TrySetSpecBySkillId(log.AttackerUuid, log.SkillID);
         UpdateDpsData(fullData, sectionedData, log, DpsType.AttackDamage);
     }
 
@@ -677,8 +677,8 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
 
-        fullData.BattleLogs.Add(log);
-        sectionedData.BattleLogs.Add(log);
+        fullData.AddBattleLog(log);
+        sectionedData.AddBattleLog(log);
     }
 
     /// <summary>
@@ -740,7 +740,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
 
             dpsData.UpdateSkillData(battleLog.SkillID, skillData =>
             {
-                skillData.TotalValue += battleLog.Value;
+                skillData.IncrementTotalValue(battleLog.Value);
                 skillData.IncrementUseTimes();
                 if (battleLog.IsCritical) skillData.IncrementCritTimes();
                 if (battleLog.IsLucky) skillData.IncrementLuckyTimes();
@@ -758,7 +758,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
 
     #region SetPlayerProperties
 
-    private void TrySetSubProfessionBySkillId(long uid, long skillId)
+    private void TrySetSpecBySkillId(long uid, long skillId)
     {
         if (!PlayerInfoData.TryGetValue(uid, out var playerInfo))
         {
