@@ -8,4 +8,8 @@ public interface IDeviceManagementService
     Task<NetworkAdapterInfo?> GetAutoSelectedNetworkAdapterAsync();
     void SetActiveNetworkAdapter(NetworkAdapterInfo adapter);
     void StopActiveCapture();
+
+    // New: switch to control whether ProcessPortsWatcher-based port filtering is enabled
+    bool UseProcessPortsFilter { get; }
+    void SetUseProcessPortsFilter(bool enabled);
 }

@@ -22,6 +22,7 @@ namespace StarResonanceDpsAnalysis.WPF.Services
         ];
 
         private NetworkAdapterInfo? _activeAdapter;
+        private bool _useProcessPortsFilter = true;
 
         public Task<List<(string name, string description)>> GetNetworkAdaptersAsync()
             => Task.FromResult(_mockAdapters);
@@ -37,6 +38,13 @@ namespace StarResonanceDpsAnalysis.WPF.Services
         public void StopActiveCapture()
         {
             // Design-time no-op
+        }
+
+        public bool UseProcessPortsFilter => _useProcessPortsFilter;
+
+        public void SetUseProcessPortsFilter(bool enabled)
+        {
+            _useProcessPortsFilter = enabled;
         }
     }
 }

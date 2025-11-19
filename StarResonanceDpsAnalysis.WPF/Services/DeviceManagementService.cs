@@ -19,9 +19,51 @@ public class DeviceManagementService(
     private ILiveDevice? _activeDevice;
     private ProcessPortsWatcher? _portsWatcher;
 
+    // New: switch to enable/disable dynamic port-based filtering
+    // When false, we will set a simple filter: "ip and tcp"
+    public bool UseProcessPortsFilter { get; private set; } = true;
+
     public async Task<List<(string name, string description)>> GetNetworkAdaptersAsync()
     {
         return await Task.FromResult(captureDeviceList.Select(device => (device.Name, device.Description)).ToList());
+    }
+
+    /// <summary>
+    /// Toggle port-based filtering at runtime. If capture is active, the device filter and watcher are reconfigured accordingly.
+    /// </summary>
+    public void SetUseProcessPortsFilter(bool enabled)
+    {
+        if (UseProcessPortsFilter == enabled) return;
+        UseProcessPortsFilter = enabled;
+
+        // Reconfigure current capture if any
+        if (_activeDevice == null)
+            return;
+
+        if (!UseProcessPortsFilter)
+        {
+            // Dispose watcher and set a broad filter
+            if (_portsWatcher != null)
+            {
+                _portsWatcher.PortsChanged -= PortsWatcherOnPortsChanged;
+                _portsWatcher.Dispose();
+                _portsWatcher = null;
+            }
+
+            TrySetDeviceFilter("ip and tcp");
+        }
+        else
+        {
+            // Create and start watcher, then apply ports filter snapshot
+            if (_portsWatcher == null)
+            {
+                _portsWatcher = new ProcessPortsWatcher(["star.exe", "BPSR_STEAM.exe", "BPSR_EPIC.exe", "BPSR.exe"]);
+                _portsWatcher.PortsChanged += PortsWatcherOnPortsChanged;
+                _portsWatcher.Start();
+            }
+
+            ApplyProcessPortsFilter(_portsWatcher.TcpPorts, _portsWatcher.UdpPorts);
+        }
     }
 
     /// <summary>
@@ -105,8 +147,12 @@ public class DeviceManagementService(
             _portsWatcher = null;
         }
 
-        _portsWatcher = new ProcessPortsWatcher(["star.exe", "BPSR_STEAM.exe", "BPSR_EPIC.exe", "BPSR.exe"]);
-        _portsWatcher.PortsChanged += PortsWatcherOnPortsChanged;
+        // Only create watcher when using port-based filtering
+        if (UseProcessPortsFilter)
+        {
+            _portsWatcher = new ProcessPortsWatcher(["star.exe", "BPSR_STEAM.exe", "BPSR_EPIC.exe", "BPSR.exe"]);
+            _portsWatcher.PortsChanged += PortsWatcherOnPortsChanged;
+        }
 
         var device = captureDeviceList.FirstOrDefault(d => d.Name == adapter.Name);
         Debug.Assert(device != null, "Selected device not found by name");
@@ -119,17 +165,28 @@ public class DeviceManagementService(
             BufferSize = 1024 * 1024 * 4
         });
 
-        // Start with no traffic until ports are known (use a filter that never matches)
-        TrySetDeviceFilter(BuildFilter(Array.Empty<int>(), Array.Empty<int>()));
+        if (UseProcessPortsFilter)
+        {
+            // Start with no traffic until ports are known (use a filter that never matches)
+            TrySetDeviceFilter(BuildFilter(Array.Empty<int>(), Array.Empty<int>()));
+        }
+        else
+        {
+            // Broad filter: capture IPv4 TCP only
+            TrySetDeviceFilter("ip and tcp");
+        }
 
         device.OnPacketArrival += OnPacketArrival;
         device.StartCapture();
         _activeDevice = device;
 
-        // Start the watcher after capture is active to avoid missing early events
-        _portsWatcher.Start();
-        // Immediately apply current snapshot (if any)
-        ApplyProcessPortsFilter(_portsWatcher.TcpPorts, _portsWatcher.UdpPorts);
+        if (UseProcessPortsFilter && _portsWatcher != null)
+        {
+            // Start the watcher after capture is active to avoid missing early events
+            _portsWatcher.Start();
+            // Immediately apply current snapshot (if any)
+            ApplyProcessPortsFilter(_portsWatcher.TcpPorts, _portsWatcher.UdpPorts);
+        }
 
         packetAnalyzer.Start();
         logger.LogInformation(WpfLogEvents.DeviceSwitched, "Active capture device switched to: {Name}", adapter.Name);
@@ -165,18 +222,31 @@ public class DeviceManagementService(
 
     private void PortsWatcherOnPortsChanged(object? sender, PortsChangedEventArgs e)
     {
+        if (!UseProcessPortsFilter) return;
         logger.LogDebug(WpfLogEvents.PortsChanged, "Process ports changed: TCP={TcpCount}, UDP={UdpCount}", e.TcpPorts.Count, e.UdpPorts.Count);
         ApplyProcessPortsFilter(e.TcpPorts, e.UdpPorts);
     }
 
     private void ApplyProcessPortsFilter(IReadOnlyCollection<int> tcpPorts, IReadOnlyCollection<int> udpPorts)
     {
+        if (!UseProcessPortsFilter)
+        {
+            TrySetDeviceFilter("ip and tcp");
+            return;
+        }
+
         var filter = BuildFilter(tcpPorts, udpPorts);
         TrySetDeviceFilter(filter);
     }
 
     private string BuildFilter(IReadOnlyCollection<int> tcpPorts, IReadOnlyCollection<int> udpPorts)
     {
+        if (!UseProcessPortsFilter)
+        {
+            // Simple BPF when not filtering by ports
+            return "ip and tcp";
+        }
+
         // Build BPF like: (ip or ip6) and ((tcp and (port a or port b)) or (udp and (port c or port d)))
         var parts = new List<string>();
         if (tcpPorts.Count > 0)
