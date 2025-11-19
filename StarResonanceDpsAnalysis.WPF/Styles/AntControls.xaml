@@ -212,68 +212,95 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Slider">
-                    <Grid>
-                        <!--  Background track - changed to blue  -->
-                        <Border
-                            Height="4"
-                            VerticalAlignment="Center"
-                            Background="{StaticResource AntPrimaryBrush}"
-                            CornerRadius="2" />
+                    <Grid VerticalAlignment="Center">
                         <Track
                             x:Name="PART_Track"
                             IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
                             Maximum="{TemplateBinding Maximum}"
                             Minimum="{TemplateBinding Minimum}"
                             Value="{Binding Path=Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                            <!--  Filled portion (left of thumb)  -->
                             <Track.DecreaseRepeatButton>
                                 <RepeatButton
-                                    Background="Transparent"
+                                    Height="6"
+                                    VerticalAlignment="Center"
+                                    Background="{StaticResource AntPrimaryBrush}"
                                     BorderThickness="0"
-                                    Command="Slider.DecreaseLarge">
+                                    IsEnabled="False">
                                     <RepeatButton.Template>
                                         <ControlTemplate TargetType="RepeatButton">
-                                            <!--  Empty template to remove hover rectangle  -->
-                                            <Rectangle Fill="Transparent" />
+                                            <Border
+                                                Height="6"
+                                                Background="{TemplateBinding Background}"
+                                                CornerRadius="3" />
                                         </ControlTemplate>
                                     </RepeatButton.Template>
                                 </RepeatButton>
                             </Track.DecreaseRepeatButton>
+
+                            <!--  Remaining portion (right of thumb)  -->
                             <Track.IncreaseRepeatButton>
                                 <RepeatButton
-                                    Background="Transparent"
+                                    Height="6"
+                                    VerticalAlignment="Center"
+                                    Background="{StaticResource AntBorderBrush}"
                                     BorderThickness="0"
-                                    Command="Slider.IncreaseLarge">
+                                    IsEnabled="False">
                                     <RepeatButton.Template>
                                         <ControlTemplate TargetType="RepeatButton">
-                                            <!--  Empty template to remove hover rectangle  -->
-                                            <Rectangle Fill="Transparent" />
+                                            <Border
+                                                Height="6"
+                                                Background="{TemplateBinding Background}"
+                                                CornerRadius="3" />
                                         </ControlTemplate>
                                     </RepeatButton.Template>
                                 </RepeatButton>
                             </Track.IncreaseRepeatButton>
+
+                            <!--  Thumb  -->
                             <Track.Thumb>
                                 <Thumb
                                     x:Name="Thumb"
                                     Width="14"
                                     Height="14"
-                                    Background="White"
-                                    BorderBrush="#FFCCCCCC"
+                                    Background="{StaticResource AntPrimaryBrush}"
+                                    BorderBrush="{StaticResource AntBorderBrush}"
                                     BorderThickness="1">
                                     <Thumb.Template>
                                         <ControlTemplate TargetType="Thumb">
-                                            <Ellipse
-                                                Fill="White"
-                                                Stroke="#FFCCCCCC"
-                                                StrokeThickness="1" />
+                                            <Grid>
+                                                <Ellipse
+                                                    Width="14"
+                                                    Height="14"
+                                                    Fill="{TemplateBinding Background}"
+                                                    Stroke="{TemplateBinding BorderBrush}"
+                                                    StrokeThickness="1">
+                                                    <Ellipse.Effect>
+                                                        <DropShadowEffect
+                                                            BlurRadius="4"
+                                                            Opacity="0.25"
+                                                            ShadowDepth="1"
+                                                            Color="#000" />
+                                                    </Ellipse.Effect>
+                                                </Ellipse>
+                                            </Grid>
                                         </ControlTemplate>
                                     </Thumb.Template>
                                 </Thumb>
                             </Track.Thumb>
                         </Track>
                     </Grid>
+
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Thumb" Property="Background" Value="{StaticResource AntHoverBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Thumb" Property="BorderBrush" Value="{StaticResource AntPrimaryBrush}" />
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Thumb" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="Thumb" Property="Opacity" Value="0.6" />
+                            <Setter TargetName="PART_Track" Property="Opacity" Value="0.6" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
