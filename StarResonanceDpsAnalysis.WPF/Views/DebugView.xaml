@@ -58,7 +58,8 @@
                     FontSize="10"
                     Foreground="DarkBlue"
                     Text="{Binding Category}"
-                    TextTrimming="CharacterEllipsis" />
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="Wrap" />
 
                 <TextBlock
                     Grid.Column="3"
@@ -66,7 +67,7 @@
                     FontFamily="Consolas"
                     FontSize="11"
                     Text="{Binding Message}"
-                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="WrapWithOverflow"
                     ToolTip="{Binding Exception, Converter={StaticResource ExceptionToStringConverter}}" />
             </Grid>
         </DataTemplate>
