@@ -47,6 +47,14 @@ public partial class App : Application
         var app = new App();
         app.InitializeComponent();
 
+        // General exception handler for unhandled exceptions
+        app.DispatcherUnhandledException += (sender, e) =>
+        {
+            _logger?.LogError(e.Exception, "Unhandled dispatcher exception");
+            // Optionally handle gracefully
+            // e.Handled = true;
+        };
+
         // Centralized application startup (localization, adapter, analyzer)
         var appStartup = Host.Services.GetRequiredService<IApplicationStartup>();
         appStartup.InitializeAsync().Wait();
