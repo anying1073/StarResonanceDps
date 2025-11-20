@@ -757,6 +757,12 @@
   <data name="Settings_NetworkAdapterAutoSelect_Button" xml:space="preserve">
     <value>Automático</value>
   </data>
+  <data name="Debug_Localization_Language" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Debug_Localization_Apply" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="MainView_Plugin_Search_PlaceHolder" xml:space="preserve">
     <value>Pesquisar...</value>
   </data>
@@ -809,7 +815,8 @@
     <value>Modo de Atualização de DPS</value>
   </data>
   <data name="Settings_Combat_DpsUpdateMode_Tooltip" xml:space="preserve">
-    <value>Passivo: Atualizações baseadas em eventos (baixo uso de CPU)&#x0a;Ativo: Atualizações periódicas baseadas em temporizador (intervalo configurável)</value>
+    <value>Passivo: Atualizações baseadas em eventos (baixo uso de CPU)
+Ativo: Atualizações periódicas baseadas em temporizador (intervalo configurável)</value>
   </data>
   <data name="Settings_Combat_DpsUpdateMode_Passive" xml:space="preserve">
     <value>Passivo</value>
@@ -821,9 +828,19 @@
     <value>Intervalo de Atualização de DPS</value>
   </data>
   <data name="Settings_Combat_DpsUpdateInterval_Tooltip" xml:space="preserve">
-    <value>Efetivo apenas no modo Ativo&#x0a;Recomendado: 500-2000 milissegundos</value>
+    <value>Efetivo apenas no modo Ativo
+Recomendado: 500-2000 milissegundos</value>
   </data>
   <data name="Settings_Common_Milliseconds" xml:space="preserve">
     <value>ms</value>
+  </data>
+  <data name="Window_Piling_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainView_Plugin_Piling_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainView_Plugin_Piling_Description" xml:space="preserve">
+    <value />
   </data>
 </root>

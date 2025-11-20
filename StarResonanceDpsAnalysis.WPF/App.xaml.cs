@@ -127,18 +127,18 @@ public partial class App : Application
                 services.AddSingleton<IGlobalHotkeyService, GlobalHotkeyService>();
                 services.AddSingleton<IMousePenetrationService, MousePenetrationService>();
                 services.AddSingleton<ITopmostService, TopmostService>();
+
+                RegisterBuiltInPlugins(services);
+
                 services.AddSingleton<IPluginManager, PluginManager>();
-                services.AddSingleton<IPlugin, DpsPlugin>();
-                services.AddSingleton<IPlugin, ModuleSolverPlugin>();
-                services.AddSingleton<IPlugin, WorldBossPlugin>();
                 services.AddSingleton<ITrayService, TrayService>();
 
-                if (_logStream != null) services.AddSingleton<IObservable<LogEvent>>(_logStream);
+                if (_logStream != null) services.AddSingleton(_logStream);
 
                 services.AddSingleton(_ => Current.Dispatcher);
 
                 // Localization manager singleton
-                services.AddSingleton<LocalizationConfiguration>(new LocalizationConfiguration
+                services.AddSingleton(new LocalizationConfiguration
                 {
                     LocalizationDirectory = Path.Combine(AppContext.BaseDirectory, "Data")
                 });
@@ -165,10 +165,17 @@ public partial class App : Application
         RegisterTypes(services, "StarResonanceDpsAnalysis.WPF.Views", "View");
     }
 
+    private static void RegisterBuiltInPlugins(IServiceCollection services) 
+    {
+        RegisterTypes(services, "StarResonanceDpsAnalysis.WPF.Plugins.BuiltIn", "Plugin", typeof(IPlugin), ServiceLifetime.Singleton);
+    }
+
     private static void RegisterTypes(
         IServiceCollection services,
         string @namespace,
-        string suffix)
+        string suffix,
+        Type? serviceType = null,
+        ServiceLifetime defLifetime = ServiceLifetime.Transient)
     {
         var types = typeof(App).Assembly
             .GetTypes()
@@ -182,9 +189,11 @@ public partial class App : Application
         {
             var lifetime = LifeTimeOverrides.TryGetValue(type, out var overrideLifetime)
                 ? overrideLifetime
-                : ServiceLifetime.Transient;
+                : defLifetime;
 
-            services.Add(new ServiceDescriptor(type, type, lifetime));
+            serviceType ??= type;
+
+            services.Add(new ServiceDescriptor(serviceType, type, lifetime));
         }
     }
 }

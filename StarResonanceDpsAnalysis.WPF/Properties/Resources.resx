@@ -911,10 +911,11 @@
     <value>Close application?</value>
   </data>
   <data name="Settings_Combat_DpsUpdateMode" xml:space="preserve">
-  <value>DPS Update Mode</value>
+    <value>DPS Update Mode</value>
   </data>
   <data name="Settings_Combat_DpsUpdateMode_Tooltip" xml:space="preserve">
-    <value>Passive: Event-driven updates (low CPU usage)&#x0a;Active: Timer-based periodic updates (configurable refresh interval)</value>
+    <value>Passive: Event-driven updates (low CPU usage)
+Active: Timer-based periodic updates (configurable refresh interval)</value>
   </data>
   <data name="Settings_Combat_DpsUpdateMode_Passive" xml:space="preserve">
     <value>Passive</value>
@@ -926,9 +927,19 @@
     <value>DPS Update Interval</value>
   </data>
   <data name="Settings_Combat_DpsUpdateInterval_Tooltip" xml:space="preserve">
-    <value>Only effective in Active mode&#x0a;Recommended: 500-2000 milliseconds</value>
+    <value>Only effective in Active mode
+Recommended: 500-2000 milliseconds</value>
   </data>
   <data name="Settings_Common_Milliseconds" xml:space="preserve">
     <value>ms</value>
+  </data>
+  <data name="Window_Piling_Title" xml:space="preserve">
+    <value>打桩模式</value>
+  </data>
+  <data name="MainView_Plugin_Piling_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainView_Plugin_Piling_Description" xml:space="preserve">
+    <value />
   </data>
 </root>

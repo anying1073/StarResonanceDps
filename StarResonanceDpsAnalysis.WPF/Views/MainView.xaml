@@ -109,6 +109,8 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         </Style>
 
         <Style x:Key="PluginBorder" TargetType="Border">
@@ -325,11 +327,9 @@
 
                                 <ListBox
                                     Grid.Row="0"
-                                    ItemsSource="{Binding Plugins}"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                    SelectedItem="{Binding SelectedPlugin}"
                                     Style="{StaticResource PluginListBox}" 
+                                    ItemsSource="{Binding Plugins}"
+                                    SelectedItem="{Binding SelectedPlugin}"
                                     d:ItemsSource="{d:SampleData ItemCount=5}">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem">
@@ -603,7 +603,6 @@
                                                 SelectedItem="{Binding Theme}" />
                                             <TextBlock Style="{StaticResource TestTextBlockStyle}" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_ThemeTest}}" />
                                             <Button Command="{Binding Debug.CallDebugWindowCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_PcapTest}}" />
-                                            <Button Command="{Binding CallPersonalDpsViewCommand}" Content="Personal DPS View" />
                                             <Button Command="{Binding CallSkillBreakdownViewCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_SkillBreakdown}}" />
                                             <Button Command="{Binding CallDamageReferenceViewCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_DamageReference}}" />
                                             <Button Command="{Binding CallSettingsViewCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_Settings}}" />
