@@ -174,7 +174,7 @@ public partial class App : Application
         IServiceCollection services,
         string @namespace,
         string suffix,
-        Type? serviceType = null,
+        Type? overrideServiceType = null,
         ServiceLifetime defLifetime = ServiceLifetime.Transient)
     {
         var types = typeof(App).Assembly
@@ -191,7 +191,7 @@ public partial class App : Application
                 ? overrideLifetime
                 : defLifetime;
 
-            serviceType ??= type;
+            var serviceType = overrideServiceType ?? type;
 
             services.Add(new ServiceDescriptor(serviceType, type, lifetime));
         }
