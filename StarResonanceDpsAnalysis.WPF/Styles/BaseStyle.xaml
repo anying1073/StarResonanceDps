@@ -61,6 +61,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="SpliterBase" TargetType="Border">
         <Setter Property="Height" Value="1" />
         <Setter Property="Background" Value="#ECECEC" />
@@ -83,6 +84,7 @@
         TargetType="TextBlock">
         <Setter Property="Foreground" Value="#2297F4" />
     </Style>
+
     <Style
         x:Key="CardHeaderMainTitleStyle"
         BasedOn="{StaticResource CardHeaderBaseStyle}"
@@ -108,6 +110,9 @@
 
     <!--  设置默认字体  -->
     <Style BasedOn="{StaticResource NormalTextBlockBaseStyle}" TargetType="TextBlock" />
+    <Style TargetType="AccessText">
+        <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC" />
+    </Style>
 
     <!--  设置默认滚动条样式  -->
     <Style TargetType="ScrollBar">
@@ -147,6 +152,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
 </ResourceDictionary>

@@ -171,8 +171,6 @@
                 </TextBlock>
 
                 <!--  职业图标  -->
-                <!--  Width="{Binding ActualHeight, ElementName=PlayerName}"  -->
-                <!--  Height="{Binding ActualHeight, ElementName=PlayerName}"  -->
                 <Image
                     Style="{StaticResource ProfessionImage}"
                     Source="{Binding Player.Class, Converter={StaticResource ClassesToIconConverter}, FallbackValue={StaticResource ClassesUnknownIcon}}"
@@ -468,12 +466,13 @@
                                 <ContextMenu Style="{StaticResource ModernContextMenu}">
                                     <!--  只给 MenuItem 应用样式，Separator 不受影响  -->
                                     <ContextMenu.Resources>
-                                        <Style BasedOn="{StaticResource ModernMenuItem}" TargetType="{x:Type MenuItem}" />
+                                        <Style BasedOn="{StaticResource ModernMenuItem}" TargetType="MenuItem" />
+                                        <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" BasedOn="{StaticResource ModernMenuSeparator}" TargetType="Separator" />
                                     </ContextMenu.Resources>
                                     <MenuItem
                                         Command="{Binding OpenSettingsCommand}"
                                         Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Settings}}"
-                                        IsCheckable="false" />
+                                        IsCheckable="False" />
                                     <Separator />
 
                                     <MenuItem
@@ -484,8 +483,6 @@
                                         Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_ShowTotal}}"
                                         IsChecked="False"
                                         Style="{StaticResource CheckableMenuItem}" />
-
-                                    <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_PersonalMode}}" />
                                     <!--  记录设置  -->
                                     <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_RecordSettings}}" ItemContainerStyle="{StaticResource CheckableMenuItem}">
                                         <!--  pass a parameter (literal) to the command  -->
@@ -572,22 +569,7 @@
                                     </MenuItem>
                                     <!--  历史记录  -->
                                     <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_History}}" ItemContainerStyle="{StaticResource CheckableMenuItem}" />
-                                    <!--  打桩模式  -->
-                                    <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Training}}" ItemContainerStyle="{StaticResource CheckableMenuItem}">
-                                        <MenuItem
-                                            Click="PilingMenuItem_Click"
-                                            Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Training_Personal}}"
-                                            IsCheckable="True" />
-                                        <MenuItem
-                                            Click="PilingMenuItem_Click"
-                                            Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Training_Faction}}"
-                                            IsCheckable="True" />
-                                        <MenuItem
-                                            Click="PilingMenuItem_Click"
-                                            Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Training_Extreme}}"
-                                            IsCheckable="True" />
-                                    </MenuItem>
-
+                                    
                                     <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_SkillDiary}}" />
 
                                     <Separator />
