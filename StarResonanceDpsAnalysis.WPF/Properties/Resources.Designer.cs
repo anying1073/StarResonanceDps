@@ -19,7 +19,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -1044,18 +1044,18 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         /// <summary>
         ///   查找类似  的本地化字符串。
         /// </summary>
-        public static string MainView_Plugin_Piling_Description {
+        public static string MainView_Plugin_Training_Description {
             get {
-                return ResourceManager.GetString("MainView_Plugin_Piling_Description", resourceCulture);
+                return ResourceManager.GetString("MainView_Plugin_Training_Description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似  的本地化字符串。
         /// </summary>
-        public static string MainView_Plugin_Piling_Title {
+        public static string MainView_Plugin_Training_Title {
             get {
-                return ResourceManager.GetString("MainView_Plugin_Piling_Title", resourceCulture);
+                return ResourceManager.GetString("MainView_Plugin_Training_Title", resourceCulture);
             }
         }
         
@@ -1150,11 +1150,11 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Solo Mode 的本地化字符串。
+        ///   查找类似 Solo/Traning Mode 的本地化字符串。
         /// </summary>
-        public static string Menu_PersonalMode {
+        public static string Menu_Personal_Training_Mode {
             get {
-                return ResourceManager.GetString("Menu_PersonalMode", resourceCulture);
+                return ResourceManager.GetString("Menu_Personal_Training_Mode", resourceCulture);
             }
         }
         
@@ -2450,9 +2450,9 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         /// <summary>
         ///   查找类似 打桩模式 的本地化字符串。
         /// </summary>
-        public static string Window_Piling_Title {
+        public static string Window_Training_Title {
             get {
-                return ResourceManager.GetString("Window_Piling_Title", resourceCulture);
+                return ResourceManager.GetString("Window_Training_Title", resourceCulture);
             }
         }
         

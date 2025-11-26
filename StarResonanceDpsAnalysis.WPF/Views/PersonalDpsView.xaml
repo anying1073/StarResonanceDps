@@ -4,14 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StarResonanceDpsAnalysis.WPF.Views"
+        xmlns:vms="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
         xmlns:ctrl="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:StarResonanceDpsAnalysis.WPF.Behaviors"
         mc:Ignorable="d"
         Title="PersonalDpsView"
         Width="800" Height="110"
         lex:LocalizeDictionary.DesignCulture="en-US"
         Style="{StaticResource TransparentWindow}"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignInstance Type=vms:PersonalDpsViewModel}">
 
     <Window.Resources>
 
@@ -177,24 +181,44 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <ctrl:RingProgressBar
-                        Style="{StaticResource RingProgressBar}"
-                        Maximum="100"
-                        Value="75"
-                        Grid.Column="0">
-                        <ctrl:RingProgressBar.InnerContent>
-                            <Border Style="{StaticResource RingProgressBarCircleBorder}">
-                                <TextBlock
-                                    Style="{StaticResource DpsPersentText}"
-                                    Text="75%"
-                                    FontSize="20"
-                                    FontWeight="Bold"
-                                    Foreground="#6BA5FC"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center" />
-                            </Border>
-                        </ctrl:RingProgressBar.InnerContent>
-                    </ctrl:RingProgressBar>
+                    <Grid Grid.Column="0">
+                        <ctrl:RingProgressBar
+                            Style="{StaticResource RingProgressBar}"
+                            Maximum="100"
+                            Value="{Binding RemainingPercent}"
+                            Visibility="{Binding EnableTrainingMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ctrl:RingProgressBar.InnerContent>
+                                <Border Style="{StaticResource RingProgressBarCircleBorder}">
+                                    <TextBlock
+                                        Style="{StaticResource DpsPersentText}"
+                                        Text="{Binding RemainingTimeDisplay}"
+                                        FontSize="18"
+                                        FontWeight="Bold"
+                                        Foreground="#6BA5FC"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center" />
+                                </Border>
+                            </ctrl:RingProgressBar.InnerContent>
+                        </ctrl:RingProgressBar>
+                        <ctrl:RingProgressBar
+                            Style="{StaticResource RingProgressBar}"
+                            Maximum="100"
+                            Value="75"
+                            Visibility="{Binding EnableTrainingMode, Converter={StaticResource BoolToInvertedVisibilityConverter}}">
+                            <ctrl:RingProgressBar.InnerContent>
+                                <Border Style="{StaticResource RingProgressBarCircleBorder}">
+                                    <TextBlock
+                                        Style="{StaticResource DpsPersentText}"
+                                        Text="75%"
+                                        FontSize="18"
+                                        FontWeight="Bold"
+                                        Foreground="#6BA5FC"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center" />
+                                </Border>
+                            </ctrl:RingProgressBar.InnerContent>
+                        </ctrl:RingProgressBar>
+                    </Grid>
 
                     <StackPanel Style="{StaticResource DpsStackPanel}" Grid.Column="1">
                         <TextBlock Style="{StaticResource DpsTextBase}" Text="当前伤害"/>
@@ -217,20 +241,55 @@
                         Style="{StaticResource SpliterBorder}"
                         Grid.Column="0" />
 
-                    <Button
-                        Style="{StaticResource IconButton}"
-                        Content="&#xe612;"
-                        Grid.Column="2"/>
+                    <Grid Grid.Column="2">
+                        <Button
+                            Style="{StaticResource IconButton}"
+                            Content="&#xec4c;"
+                            Command="{Binding OpenDamageReferenceViewCommand}"
+                            Visibility="{Binding EnableTrainingMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Button
+                            Style="{StaticResource IconButton}"
+                            Content="&#xe612;"
+                            Command="{Binding ShowStatisticsAndHidePersonalCommand}"
+                            Visibility="{Binding EnableTrainingMode, Converter={StaticResource BoolToInvertedVisibilityConverter}}"/>
+                    </Grid>
 
                     <Button
                         Style="{StaticResource IconButton}"
                         Content="&#xeb95;"
+                        Command="{Binding OpenSkillBreakdownViewCommand}"
                         Grid.Column="3"/>
 
                     <Button
                         Style="{StaticResource IconButton}"
                         Content="&#xe6ad;"
-                        Grid.Column="4"/>
+                        Grid.Column="4">
+                        <b:Interaction.Behaviors>
+                            <behaviors:OpenContextMenuBehavior />
+                        </b:Interaction.Behaviors>
+                        <Button.ContextMenu>
+                            <ContextMenu Style="{StaticResource ModernContextMenu}">
+                                <ContextMenu.Resources>
+                                    <Style BasedOn="{StaticResource ModernMenuItem}" TargetType="MenuItem" />
+                                    <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" BasedOn="{StaticResource ModernMenuSeparator}" TargetType="Separator" />
+                                </ContextMenu.Resources>
+                                <MenuItem
+                                    Header="打桩模式"
+                                    IsCheckable="True"
+                                    IsChecked="{Binding EnableTrainingMode}" />
+                                <MenuItem
+                                    Command="{Binding ExportSrlogsCommand}"
+                                    Header="导出为srlogs" />
+                                <MenuItem
+                                    Command="{Binding ClearCommand}"
+                                    Header="清空" />
+                                <Separator />
+                                <MenuItem
+                                    Command="{Binding CloseWindowCommand}"
+                                    Header="关闭" />
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
 
                     <Border 
                         Style="{StaticResource SpliterBorder}"
@@ -241,15 +300,13 @@
                     <StackPanel x:Name="TabControlIndexChanger" Style="{StaticResource SwitchSelectStackPanel}">
 
                         <ToggleButton
-                            Click="TabSelector_Click"
                             Content="关闭"
                             Style="{StaticResource SelectorToggleButton}"
-                            Tag="0" />
+                            IsChecked="{Binding StartTraining, Mode=TwoWay, Converter={StaticResource BoolNegationConverter}}"/>
                         <ToggleButton
-                            Click="TabSelector_Click"
                             Content="开启"
                             Style="{StaticResource SelectorToggleButton}"
-                            Tag="1" />
+                            IsChecked="{Binding StartTraining, Mode=TwoWay}"/>
 
                     </StackPanel>
                 </Border>

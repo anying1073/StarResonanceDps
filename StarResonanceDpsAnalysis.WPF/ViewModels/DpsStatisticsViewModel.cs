@@ -247,6 +247,13 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     [RelayCommand]
+    private void OpenPersonalDpsView()
+    {
+        _windowManagement.PersonalDpsView.Show();
+        _windowManagement.DpsStatisticsView.Hide();
+    }
+
+    [RelayCommand]
     public void ResetAll()
     {
         _storage.ClearAllDpsData();

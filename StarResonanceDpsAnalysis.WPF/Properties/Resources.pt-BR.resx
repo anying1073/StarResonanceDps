@@ -129,9 +129,6 @@
   <data name="Menu_ShowTotal" xml:space="preserve">
     <value>Mostrar Dano Total</value>
   </data>
-  <data name="Menu_PersonalMode" xml:space="preserve">
-    <value>Modo Solo</value>
-  </data>
   <data name="Menu_RecordSettings" xml:space="preserve">
     <value>Opções de Gravação</value>
   </data>
@@ -834,13 +831,13 @@ Recomendado: 500-2000 milissegundos</value>
   <data name="Settings_Common_Milliseconds" xml:space="preserve">
     <value>ms</value>
   </data>
-  <data name="Window_Piling_Title" xml:space="preserve">
+  <data name="Window_Training_Title" xml:space="preserve">
     <value />
   </data>
-  <data name="MainView_Plugin_Piling_Title" xml:space="preserve">
+  <data name="MainView_Plugin_Training_Title" xml:space="preserve">
     <value />
   </data>
-  <data name="MainView_Plugin_Piling_Description" xml:space="preserve">
+  <data name="MainView_Plugin_Training_Description" xml:space="preserve">
     <value />
   </data>
 </root>

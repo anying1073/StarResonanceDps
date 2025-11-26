@@ -129,8 +129,8 @@
   <data name="Menu_ShowTotal" xml:space="preserve">
     <value>Show Total Damage</value>
   </data>
-  <data name="Menu_PersonalMode" xml:space="preserve">
-    <value>Solo Mode</value>
+  <data name="Menu_Personal_Training_Mode" xml:space="preserve">
+    <value>Solo/Traning Mode</value>
   </data>
   <data name="Menu_RecordSettings" xml:space="preserve">
     <value>Record Options</value>
@@ -933,13 +933,13 @@ Recommended: 500-2000 milliseconds</value>
   <data name="Settings_Common_Milliseconds" xml:space="preserve">
     <value>ms</value>
   </data>
-  <data name="Window_Piling_Title" xml:space="preserve">
-    <value>打桩模式</value>
+  <data name="Window_Training_Title" xml:space="preserve">
+    <value>训练模式</value>
   </data>
-  <data name="MainView_Plugin_Piling_Title" xml:space="preserve">
+  <data name="MainView_Plugin_Training_Title" xml:space="preserve">
     <value />
   </data>
-  <data name="MainView_Plugin_Piling_Description" xml:space="preserve">
+  <data name="MainView_Plugin_Training_Description" xml:space="preserve">
     <value />
   </data>
 </root>

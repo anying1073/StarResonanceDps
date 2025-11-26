@@ -469,28 +469,38 @@
                                         <Style BasedOn="{StaticResource ModernMenuItem}" TargetType="MenuItem" />
                                         <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" BasedOn="{StaticResource ModernMenuSeparator}" TargetType="Separator" />
                                     </ContextMenu.Resources>
+                                    
                                     <MenuItem
                                         Command="{Binding OpenSettingsCommand}"
                                         Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Settings}}"
                                         IsCheckable="False" />
+                                    
                                     <Separator />
 
                                     <MenuItem
                                         Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_StatisticBoss}}"
                                         IsChecked="False"
                                         Style="{StaticResource CheckableMenuItem}" />
+
                                     <MenuItem
                                         Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_ShowTotal}}"
                                         IsChecked="False"
                                         Style="{StaticResource CheckableMenuItem}" />
+
+                                    <MenuItem
+                                        Command="{Binding OpenPersonalDpsViewCommand}"
+                                        Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Personal_Training_Mode}}" />
+
                                     <!--  记录设置  -->
                                     <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_RecordSettings}}" ItemContainerStyle="{StaticResource CheckableMenuItem}">
+                                        
                                         <!--  pass a parameter (literal) to the command  -->
                                         <MenuItem Command="{Binding Options.SetMinimalDurationCommand}" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Record_Always}}">
                                             <MenuItem.CommandParameter>
                                                 <system:Int32>-1</system:Int32>
                                             </MenuItem.CommandParameter>
                                         </MenuItem>
+                                        
                                         <MenuItem
                                             Command="{Binding Options.SetMinimalDurationCommand}"
                                             Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Record_Skip1Min}}"
@@ -499,6 +509,7 @@
                                                 <system:Int32>60</system:Int32>
                                             </MenuItem.CommandParameter>
                                         </MenuItem>
+                                        
                                         <!--  Click="RecordSettingsMenuItem_Click"  -->
                                         <MenuItem
                                             Command="{Binding Options.SetMinimalDurationCommand}"
@@ -508,9 +519,12 @@
                                                 <system:Int32>120</system:Int32>
                                             </MenuItem.CommandParameter>
                                         </MenuItem>
+                                        
                                     </MenuItem>
+                                    
                                     <!--  技能显示设置  -->
                                     <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_SkillDisplay}}" ItemContainerStyle="{StaticResource CheckableMenuItem}">
+                                        
                                         <MenuItem Command="{Binding SetSkillDisplayLimitCommand}" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_SkillDisplay_Top5}}">
                                             <MenuItem.CommandParameter>
                                                 <system:Int32>5</system:Int32>
@@ -522,6 +536,7 @@
                                                 </MultiBinding>
                                             </MenuItem.IsChecked>
                                         </MenuItem>
+                                        
                                         <MenuItem Command="{Binding SetSkillDisplayLimitCommand}" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_SkillDisplay_Top8}}">
                                             <MenuItem.CommandParameter>
                                                 <system:Int32>8</system:Int32>
@@ -533,6 +548,7 @@
                                                 </MultiBinding>
                                             </MenuItem.IsChecked>
                                         </MenuItem>
+                                        
                                         <MenuItem Command="{Binding SetSkillDisplayLimitCommand}" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_SkillDisplay_Top10}}">
                                             <MenuItem.CommandParameter>
                                                 <system:Int32>10</system:Int32>
@@ -544,6 +560,7 @@
                                                 </MultiBinding>
                                             </MenuItem.IsChecked>
                                         </MenuItem>
+                                        
                                         <MenuItem Command="{Binding SetSkillDisplayLimitCommand}" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_SkillDisplay_Top15}}">
                                             <MenuItem.CommandParameter>
                                                 <system:Int32>15</system:Int32>
@@ -555,6 +572,7 @@
                                                 </MultiBinding>
                                             </MenuItem.IsChecked>
                                         </MenuItem>
+                                        
                                         <MenuItem Command="{Binding SetSkillDisplayLimitCommand}" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_SkillDisplay_All}}">
                                             <MenuItem.CommandParameter>
                                                 <system:Int32>0</system:Int32>
@@ -566,14 +584,18 @@
                                                 </MultiBinding>
                                             </MenuItem.IsChecked>
                                         </MenuItem>
+                                        
                                     </MenuItem>
+                                    
                                     <!--  历史记录  -->
                                     <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_History}}" ItemContainerStyle="{StaticResource CheckableMenuItem}" />
                                     
                                     <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_SkillDiary}}" />
 
                                     <Separator />
+                                    
                                     <MenuItem Command="{Binding ShutdownCommand}" Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Exit}}" />
+                                
                                 </ContextMenu>
                             </Button.ContextMenu>
                         </Button>

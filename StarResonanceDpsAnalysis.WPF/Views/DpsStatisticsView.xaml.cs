@@ -18,7 +18,7 @@ public partial class DpsStatisticsView : Window
             typeof(DpsStatisticsView),
             new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-    private double _beforePilingHeight;
+    private double _beforeTrainingHeight;
 
     public DpsStatisticsView(DpsStatisticsViewModel vm)
     {
@@ -48,11 +48,11 @@ public partial class DpsStatisticsView : Window
             if (ActualHeight < 60)
             {
                 Collapse = false;
-                _beforePilingHeight = 360;
+                _beforeTrainingHeight = 360;
             }
             else
             {
-                _beforePilingHeight = ActualHeight;
+                _beforeTrainingHeight = ActualHeight;
             }
         }
 
@@ -65,7 +65,7 @@ public partial class DpsStatisticsView : Window
         var animationHeight = new DoubleAnimation
         {
             From = ActualHeight,
-            To = Collapse ? baseHeight : _beforePilingHeight,
+            To = Collapse ? baseHeight : _beforeTrainingHeight,
             Duration = duration,
             EasingFunction = easingFunction
         };
@@ -88,11 +88,11 @@ public partial class DpsStatisticsView : Window
     }
 
     /// <summary>
-    /// 打桩模式选择
+    /// 训练模式选择
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void PilingMenuItem_Click(object sender, RoutedEventArgs e)
+    private void TrainingMenuItem_Click(object sender, RoutedEventArgs e)
     {
         var me = (MenuItem)sender;
         var owner = ItemsControl.ItemsControlFromItemContainer(me);
