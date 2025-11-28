@@ -15,9 +15,9 @@ public partial class StatisticDataViewModel(DebugFunctions debug) : BaseViewMode
     [ObservableProperty] private ulong _value;
 
     public DebugFunctions Debug { get; } = debug;
-    public SkillData Damage { get; } = new();
-    public SkillData Heal { get; } = new();
-    public SkillData TakenDamage { get; } = new();
+    public SkillDataCollection Damage { get; } = new();
+    public SkillDataCollection Heal { get; } = new();
+    public SkillDataCollection TakenDamage { get; } = new();
 
     public int CompareTo(StatisticDataViewModel? other)
     {
@@ -43,7 +43,7 @@ public partial class StatisticDataViewModel(DebugFunctions debug) : BaseViewMode
         Player = new PlayerInfoViewModel();
     }
 
-    public partial class SkillData : BaseViewModel
+    public partial class SkillDataCollection : BaseViewModel
     {
         [ObservableProperty] private IReadOnlyList<SkillItemViewModel> _filteredSkillList = [];
         [ObservableProperty] private IReadOnlyList<SkillItemViewModel> _totalSkillList = [];
