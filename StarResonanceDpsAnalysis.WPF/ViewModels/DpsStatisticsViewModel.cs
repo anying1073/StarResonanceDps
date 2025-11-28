@@ -45,11 +45,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     private readonly ITopmostService _topmostService;
     private readonly IWindowManagementService _windowManagement;
 
-    [ObservableProperty] private AppConfig _appConfig;
-
     // Whether we are waiting for the first datapoint of a new section
     private bool _awaitingSectionStart;
-    [ObservableProperty] private TimeSpan _battleDuration;
 
     // Timer for active update mode
     private DispatcherTimer? _dpsUpdateTimer;
