@@ -72,6 +72,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     // One-shot handler to resume active timer when first datapoint of a new section arrives
     private DpsDataUpdatedEventHandler? _resumeActiveTimerHandler;
 
+
     /// <inheritdoc/>
     public DpsStatisticsViewModel(IApplicationControlService appControlService,
         IDataStorage storage,
