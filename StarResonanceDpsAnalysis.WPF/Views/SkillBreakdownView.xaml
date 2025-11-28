@@ -636,22 +636,22 @@
                                         </Grid.ColumnDefinitions>
 
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamage.Total, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamageStats.Total, StringFormat={}{0:N0}}" />
                                             <TextBlock Style="{StaticResource SummaryLabelText}" Text="Total Damage Taken" />
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="1">
-                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamage.Average, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamageStats.Average, StringFormat={}{0:N0}}" />
                                             <TextBlock Style="{StaticResource SummaryLabelText}" Text="Average DTPS" />
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="2">
-                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamage.Hits, StringFormat={}{0:N0}}" />
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamageStats.Hits, StringFormat={}{0:N0}}" />
                                             <TextBlock Style="{StaticResource SummaryLabelText}" Text="Total Hits Taken" />
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="3">
-                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamage.CritRate, StringFormat={}{0:F1}%}" />
+                                            <TextBlock Style="{StaticResource SummaryStatText}" Text="{Binding TakenDamageStats.CritRate, StringFormat={}{0:F1}%}" />
                                             <TextBlock Style="{StaticResource SummaryLabelText}" Text="Crit Rate" />
                                         </StackPanel>
                                     </Grid>

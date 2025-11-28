@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using OxyPlot;
-using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.WPF.Extensions;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -16,18 +13,13 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 /// </summary>
 public partial class SkillBreakdownViewModel(ILogger<SkillBreakdownViewModel> logger) : BaseViewModel
 {
-    #region Observed Slot (Data Source)
-
-    [ObservableProperty] private StatisticDataViewModel? _observedSlot;
-
-    #endregion
-
     /// <summary>
     /// Initializes the ViewModel from a <see cref="StatisticDataViewModel"/>.
     /// </summary>
     public void InitializeFrom(StatisticDataViewModel slot)
     {
-        logger.LogDebug("Initializing SkillBreakdownViewModel from StatisticDataViewModel for player {PlayerName}", slot.Player?.Name);
+        logger.LogDebug("Initializing SkillBreakdownViewModel from StatisticDataViewModel for player {PlayerName}",
+            slot.Player.Name);
 
         ObservedSlot = slot;
 
@@ -41,7 +33,7 @@ public partial class SkillBreakdownViewModel(ILogger<SkillBreakdownViewModel> lo
         // Calculate statistics from skills
         DamageStats = slot.Damage.TotalSkillList.FromSkillsToDamage(duration);
         HealingStats = slot.Heal.TotalSkillList.FromSkillsToHealing(duration);
-        TakenDamage = slot.TakenDamage.TotalSkillList.FromSkillsToDamageTaken(duration);
+        TakenDamageStats = slot.TakenDamage.TotalSkillList.FromSkillsToDamageTaken(duration);
 
         // Initialize Chart Data
         InitializeTimeSeries(slot.Damage.Dps, DpsPlot);
@@ -55,6 +47,53 @@ public partial class SkillBreakdownViewModel(ILogger<SkillBreakdownViewModel> lo
         logger.LogDebug("SkillBreakdownViewModel initialized for player: {PlayerName}", PlayerName);
     }
 
+    #region Observed Slot (Data Source)
+
+    [ObservableProperty] private StatisticDataViewModel? _observedSlot;
+
+    partial void OnObservedSlotChanged(StatisticDataViewModel? oldValue, StatisticDataViewModel? newValue)
+    {
+        if (oldValue is not null)
+        {
+            oldValue.Damage.SkillChanged -= DamageSkillChanged;
+            oldValue.Heal.SkillChanged -= HealSkillChanged;
+            oldValue.TakenDamage.SkillChanged -= TakenDamageSkillChanged;
+        }
+
+        if (newValue is not null)
+        {
+            newValue.Damage.SkillChanged += DamageSkillChanged;
+            newValue.Heal.SkillChanged += HealSkillChanged;
+            newValue.TakenDamage.SkillChanged += TakenDamageSkillChanged;
+        }
+    }
+
+    private void DamageSkillChanged(IReadOnlyList<SkillItemViewModel>? skills)
+    {
+        if (ObservedSlot is null) return;
+        if (skills is null) return;
+        var duration = ObservedSlot.Duration > 0 ? ObservedSlot.Duration : 1;
+        skills.UpdateDamage(duration, DamageStats);
+    }
+
+    private void HealSkillChanged(IReadOnlyList<SkillItemViewModel>? skills)
+    {
+        if (ObservedSlot is null) return;
+        if (skills is null) return;
+        var duration = ObservedSlot.Duration > 0 ? ObservedSlot.Duration : 1;
+        skills.UpdateHealing(duration, HealingStats);
+    }
+
+    private void TakenDamageSkillChanged(IReadOnlyList<SkillItemViewModel>? skills)
+    {
+        if (ObservedSlot is null) return;
+        if (skills is null) return;
+        var duration = ObservedSlot.Duration > 0 ? ObservedSlot.Duration : 1;
+        skills.UpdateDamageTaken(duration, TakenDamageStats);
+    }
+
+    #endregion
+
     #region Player Info Properties
 
     [ObservableProperty] private string _playerName = string.Empty;
@@ -67,20 +106,17 @@ public partial class SkillBreakdownViewModel(ILogger<SkillBreakdownViewModel> lo
 
     [ObservableProperty] private DataStatistics _damageStats = new();
     [ObservableProperty] private DataStatistics _healingStats = new();
-    [ObservableProperty] private DataStatistics _takenDamage = new();
+    [ObservableProperty] private DataStatistics _takenDamageStats = new();
 
     #endregion
 
     #region Chart Models - OxyPlot
 
-    [ObservableProperty]
-    private PlotViewModel _dpsPlot = new(new PlotOptions { YAxisTitle = "Time (s)" });
+    [ObservableProperty] private PlotViewModel _dpsPlot = new(new PlotOptions { YAxisTitle = "Time (s)" });
 
-    [ObservableProperty]
-    private PlotViewModel _hpsPlot = new(new PlotOptions { YAxisTitle = "Time (s)" });
+    [ObservableProperty] private PlotViewModel _hpsPlot = new(new PlotOptions { YAxisTitle = "Time (s)" });
 
-    [ObservableProperty]
-    private PlotViewModel _dtpsPlot = new(new PlotOptions { YAxisTitle = "Time (s)" });
+    [ObservableProperty] private PlotViewModel _dtpsPlot = new(new PlotOptions { YAxisTitle = "Time (s)" });
 
     #endregion
 
@@ -95,7 +131,8 @@ public partial class SkillBreakdownViewModel(ILogger<SkillBreakdownViewModel> lo
 
     #region Chart Initialization
 
-    private void InitializeTimeSeries(ObservableCollection<(TimeSpan duration, double section, double total)> data, PlotViewModel target)
+    private void InitializeTimeSeries(ObservableCollection<(TimeSpan duration, double section, double total)> data,
+        PlotViewModel target)
     {
         void HandleCollectionChanged(object? sender, NotifyCollectionChangedEventArgs args)
         {
@@ -106,11 +143,13 @@ public partial class SkillBreakdownViewModel(ILogger<SkillBreakdownViewModel> lo
                     {
                         target.LineSeriesData.Points.Add(new DataPoint(ss.duration.TotalSeconds, ss.section));
                     }
+
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     target.LineSeriesData.Points.Clear();
                     break;
             }
+
             target.RefreshSeries();
         }
 
