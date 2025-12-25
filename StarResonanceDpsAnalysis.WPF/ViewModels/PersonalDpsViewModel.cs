@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows.Threading;
@@ -8,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.WPF.Config;
+using StarResonanceDpsAnalysis.WPF.Converters;
+using StarResonanceDpsAnalysis.WPF.Extensions;
 using StarResonanceDpsAnalysis.WPF.Services;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -59,6 +62,9 @@ public partial class PersonalDpsViewModel : BaseViewModel
         _configManager = configManager;
         _logger = logger;
 
+        //throw new NotImplementedException();
+
+        /*
         // 订阅DPS数据更新事件
         _dataStorage.DpsDataUpdated += OnDpsDataUpdated;
         _dataStorage.BattleLogCreated += OnBattleLogCreated;
@@ -78,6 +84,7 @@ public partial class PersonalDpsViewModel : BaseViewModel
         UpdatePersonalDpsDisplay();
 
         _logger?.LogInformation("PersonalDpsViewModel initialized");
+        */
     }
 
     public TimeSpan TimeLimit { get; } = TimeSpan.FromMinutes(3);
@@ -187,7 +194,7 @@ public partial class PersonalDpsViewModel : BaseViewModel
         _logger?.LogDebug("OnDpsDataUpdated called in PersonalDpsViewModel");
 
         var currentPlayerUid = _configManager.CurrentConfig.Uid;
-        var dpsDataDict = _dataStorage.ReadOnlySectionedDpsDatas;
+        var dpsDataDict = _dataStorage.GetStatistics(false);
 
         // 检查是否有数据
         bool hasDataNow = dpsDataDict.Count > 0 &&
@@ -241,18 +248,18 @@ public partial class PersonalDpsViewModel : BaseViewModel
             // 如果UID为0,尝试自动检测第一个非NPC玩家
             if (currentPlayerUid == 0)
             {
-                var dpsDict = _dataStorage.ReadOnlySectionedDpsDatas;
+                var dpsDict = _dataStorage.GetStatistics(false);
 
-                var firstPlayer = dpsDict.Values.FirstOrDefault(d => !d.IsNpcData);
+                var firstPlayer = dpsDict.Values.FirstOrDefault(d => !d.IsNpc);
                 if (firstPlayer != null)
                 {
-                    currentPlayerUid = firstPlayer.UID;
+                    currentPlayerUid = firstPlayer.Uid;
                     _logger?.LogInformation("Auto-detected player UID: {UID}", currentPlayerUid);
                 }
             }
 
             _logger?.LogDebug("UpdatePersonalDpsDisplay: CurrentPlayerUUID={UUID}, DataCount={Count}",
-                currentPlayerUid, _dataStorage.ReadOnlySectionedDpsDatas.Count);
+                currentPlayerUid, _dataStorage.GetStatisticsCount(false));
 
             if (currentPlayerUid == 0)
             {
@@ -264,7 +271,7 @@ public partial class PersonalDpsViewModel : BaseViewModel
                 return;
             }
 
-            var dpsDataDict = _dataStorage.ReadOnlySectionedDpsDatas;
+            var dpsDataDict = _dataStorage.GetStatistics(false);
 
             if (!dpsDataDict.TryGetValue(currentPlayerUid, out var currentPlayerData))
             {
@@ -280,9 +287,12 @@ public partial class PersonalDpsViewModel : BaseViewModel
             ulong totalDamage;
             if (EnableTrainingMode && StartTraining)
             {
+                // TODO: remove temporarily, need to add more mechanism to fix
+                throw new NotImplementedException();
+                /*
                 // 打桩模式下，只统计对特定木桩的伤害
                 totalDamage = 0;
-                var battleLogs = currentPlayerData.ReadOnlyBattleLogs;
+                var battleLogs = currentPlayerData.GetOrCreateSkill();
                 
                 foreach (var log in battleLogs)
                 {
@@ -305,15 +315,16 @@ public partial class PersonalDpsViewModel : BaseViewModel
                 }
                 
                 _logger?.LogDebug("打桩模式：木桩类型={Type}, 过滤后伤害={Damage}", SelectedDummyTarget, totalDamage);
+                */
             }
             else
             {
                 // 非打桩模式，统计所有伤害
-                totalDamage = (ulong)Math.Max(0, currentPlayerData.TotalAttackDamage);
+                totalDamage = Math.Max(0, currentPlayerData.AttackDamage.Total).ConvertToUnsigned();
             }
 
             // 计算经过的秒数
-            var elapsedTicks = currentPlayerData.LastLoggedTick - (currentPlayerData.StartLoggedTick ?? 0);
+            var elapsedTicks = currentPlayerData.ElapsedTicks();
             var elapsedSeconds = elapsedTicks > 0 ? TimeSpan.FromTicks(elapsedTicks).TotalSeconds : 0;
 
             var dps = elapsedSeconds > 0 ? totalDamage / elapsedSeconds : 0;
@@ -324,8 +335,8 @@ public partial class PersonalDpsViewModel : BaseViewModel
             var formattedDisplay = $"{FormatNumberByConfig(totalDamage)} ({FormatNumberByConfig((ulong)dps)})";
 
             // 计算团队总伤害占比
-            var allPlayerData = dpsDataDict.Values.Where(d => !d.IsNpcData).ToList();
-            var teamTotalDamage = (ulong)allPlayerData.Sum(d => Math.Max(0, d.TotalAttackDamage));
+            var allPlayerData = dpsDataDict.Values.Where(d => !d.IsNpc).ToList();
+            var teamTotalDamage = (ulong)allPlayerData.Sum(d => Math.Max(0, d.AttackDamage.Total));
 
             _logger?.LogDebug("Team Stats: TeamTotal={TeamTotal}, PlayerCount={Count}",
                 teamTotalDamage, allPlayerData.Count);

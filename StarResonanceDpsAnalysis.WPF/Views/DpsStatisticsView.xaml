@@ -841,9 +841,9 @@
                         Style="{StaticResource FooterTextContent}">
                         <!-- 快照模式下显示[快照],战斗模式下显示排名 -->
                         <TextBlock.Text>
-                            <MultiBinding Converter="{StaticResource SnapshotOrRankConverter}">
+                            <MultiBinding Converter="{StaticResource SnapshotOrRankConverter}" FallbackValue="[--]" StringFormat="{}[{0}]">
                                 <Binding Path="IsViewingSnapshot" />
-                                <Binding Path="CurrentPlayerRank" />
+                                <Binding Path="CurrentStatisticData.CurrentPlayerRank" />
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
@@ -883,9 +883,8 @@
                             <TextBlock.Text>
                                 <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
                                     <Binding
-                                        FallbackValue="--"
                                         Path="CurrentStatisticData.CurrentPlayerSlot.Value"
-                                        TargetNullValue="--" />
+                                        />
                                     <Binding Path="DataContext.AppConfig.DamageDisplayType" RelativeSource="{RelativeSource AncestorType=Window, Mode=FindAncestor}" />
                                 </MultiBinding>
                             </TextBlock.Text>

@@ -7,6 +7,8 @@ using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Properties;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using StarResonanceDpsAnalysis.Core.Data.Models;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Models;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -93,6 +95,54 @@ public partial class SkillBreakdownViewModel : BaseViewModel
         UpdateHitTypeDistribution(TakenDamageStats, DtpsPlot);
 
         _logger.LogDebug("SkillBreakdownViewModel initialized for player: {PlayerName}", PlayerName);
+    }
+
+    /// <summary>
+    /// ? NEW: Initialize from PlayerStatistics directly (100% accurate!)
+    /// </summary>
+    public void InitializeFrom(
+        PlayerStatistics playerStats,
+        PlayerInfo? playerInfo,
+        StatisticType statisticType,
+        StatisticDataViewModel slot)
+    {
+        _logger.LogDebug("Initializing SkillBreakdownViewModel from PlayerStatistics for UID {Uid}", 
+            playerStats.Uid);
+
+        ObservedSlot = slot; // Keep reference for DPS time series
+
+        // Player Info
+        PlayerName = playerInfo?.Name ?? $"UID: {playerStats.Uid}";
+        Uid = playerStats.Uid;
+        PowerLevel = playerInfo?.CombatPower ?? 0;
+        StatisticIndex = statisticType;
+
+        var duration = TimeSpan.FromTicks(playerStats.LastTick - (playerStats.StartTick ?? 0));
+
+        // ? Build skill lists from PlayerStatistics (no battle log iteration!)
+        var (damageSkills, healingSkills, takenSkills) = 
+            StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(playerStats);
+
+        // ? Calculate stats from PlayerStatistics directly
+        DamageStats = playerStats.AttackDamage.ToDataStatistics(duration);
+        HealingStats = playerStats.Healing.ToDataStatistics(duration);
+        TakenDamageStats = playerStats.TakenDamage.ToDataStatistics(duration);
+
+        // Initialize Chart Data (still use time series from slot for DPS trends)
+        InitializeTimeSeries(slot.Damage.Dps, DpsPlot);
+        InitializeTimeSeries(slot.Heal.Dps, HpsPlot);
+        InitializeTimeSeries(slot.TakenDamage.Dps, DtpsPlot);
+
+        // ? Use accurate skill lists from PlayerStatistics
+        UpdatePieChartDirect(damageSkills, DpsPlot);
+        UpdatePieChartDirect(healingSkills, HpsPlot);
+        UpdatePieChartDirect(takenSkills, DtpsPlot);
+
+        UpdateHitTypeDistribution(DamageStats, DpsPlot);
+        UpdateHitTypeDistribution(HealingStats, HpsPlot);
+        UpdateHitTypeDistribution(TakenDamageStats, DtpsPlot);
+
+        _logger.LogDebug("SkillBreakdownViewModel initialized from PlayerStatistics: {Name}", PlayerName);
     }
 
     private void UpdatePlotOption()
@@ -248,6 +298,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
 
         data.CollectionChanged += HandleCollectionChanged;
 
+        target.LineSeriesData.Points.Clear();
         foreach (var (duration, section, _) in data)
         {
             target.LineSeriesData.Points.Add(new DataPoint(duration.TotalSeconds, section));
@@ -268,6 +319,14 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     }
 
     private static void UpdatePieChart(IReadOnlyList<SkillItemViewModel> skills, PlotViewModel target)
+    {
+        target.SetPieSeriesData(skills);
+    }
+
+    /// <summary>
+    /// ? NEW: Update pie chart directly with skill list (no event subscription)
+    /// </summary>
+    private static void UpdatePieChartDirect(List<SkillItemViewModel> skills, PlotViewModel target)
     {
         target.SetPieSeriesData(skills);
     }

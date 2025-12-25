@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using StarResonanceDpsAnalysis.Core.Models;
@@ -24,7 +25,7 @@ public partial class PlayerInfoViewModel : BaseViewModel
 
     [ObservableProperty] private string _guild = string.Empty;
     [ObservableProperty] private bool _isNpc;
-    [ObservableProperty] private string _name = string.Empty;
+    [ObservableProperty] private string? _name;
 
     [ObservableProperty] private string _playerInfo = string.Empty;
     [ObservableProperty] private int _powerLevel;
@@ -66,9 +67,10 @@ public partial class PlayerInfoViewModel : BaseViewModel
             var hasName = !string.IsNullOrWhiteSpace(Name);
             var name = hasName switch
             {
-                true => Mask ? NameMasker.Mask(Name) : Name,
+                true => Mask ? NameMasker.Mask(Name!) : Name!,
                 false => $"UID:{(Mask ? NameMasker.Mask(Uid.ToString()) : Uid.ToString())}",
             };
+            Debug.Assert(name != null);    
             return name;
         }
 

@@ -11,6 +11,25 @@ namespace StarResonanceDpsAnalysis.WPF.Extensions;
 public static class StatisticsToViewModelConverter
 {
     /// <summary>
+    /// ✅ NEW: Convert StatisticValues to DataStatistics (WPF model)
+    /// </summary>
+    public static DataStatistics ToDataStatistics(this StatisticValues stats, TimeSpan duration)
+    {
+        var durationSeconds = duration.TotalSeconds;
+        return new DataStatistics
+        {
+            Total = stats.Total,
+            Hits = stats.HitCount,
+            CritCount = stats.CritCount,
+            LuckyCount = stats.LuckyCount,
+            Average = durationSeconds > 0 ? stats.Total / durationSeconds : 0,
+            NormalValue = stats.NormalValue,
+            CritValue = stats.CritValue,
+            LuckyValue = stats.LuckyValue
+        };
+    }
+
+    /// <summary>
     /// Build skill lists directly from PlayerStatistics (no battle log iteration needed!)
     /// </summary>
     public static (List<SkillItemViewModel> damage, List<SkillItemViewModel> healing, List<SkillItemViewModel> takenDamage)

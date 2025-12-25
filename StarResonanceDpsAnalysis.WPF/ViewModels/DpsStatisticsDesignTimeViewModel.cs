@@ -7,6 +7,7 @@ using Serilog.Events;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Services;
@@ -229,6 +230,16 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
 
         public void SetPlayerSeasonStrength(long playerUid, int seasonStrength)
         {
+        }
+
+        public IReadOnlyDictionary<long, PlayerStatistics> GetStatistics(bool fullSession)
+        {
+            return null!;
+        }
+
+        public int GetStatisticsCount(bool fullSession)
+        {
+            return -1;
         }
 
         public void Dispose()
