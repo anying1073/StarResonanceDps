@@ -23,6 +23,7 @@ public interface IDataStorage : IDisposable
     event DpsDataUpdatedEventHandler? DpsDataUpdated;
     event DataUpdatedEventHandler? DataUpdated;
     event ServerChangedEventHandler? ServerChanged;
+    event SectionEndedEventHandler? SectionEnded;
 
     void LoadPlayerInfoFromFile();
     void SavePlayerInfoToFile();
@@ -75,6 +76,7 @@ public interface IDataStorage : IDisposable
 public delegate void ServerConnectionStateChangedEventHandler(bool serverConnectionState);
 public delegate void PlayerInfoUpdatedEventHandler(PlayerInfo info);
 public delegate void NewSectionCreatedEventHandler();
+public delegate void SectionEndedEventHandler();
 public delegate void BattleLogCreatedEventHandler(BattleLog battleLog);
 public delegate void DpsDataUpdatedEventHandler();
 public delegate void DataUpdatedEventHandler();

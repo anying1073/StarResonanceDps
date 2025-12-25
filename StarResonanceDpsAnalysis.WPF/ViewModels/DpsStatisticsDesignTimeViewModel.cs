@@ -124,6 +124,7 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
         public event DpsDataUpdatedEventHandler? DpsDataUpdated;
         public event DataUpdatedEventHandler? DataUpdated;
         public event ServerChangedEventHandler? ServerChanged;
+        public event SectionEndedEventHandler? SectionEnded;
 #pragma warning restore
 
         public void LoadPlayerInfoFromFile()

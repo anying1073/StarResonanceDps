@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Data.Models;
@@ -23,6 +24,9 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
 
     private readonly object _newSectionCreatedLock = new();
     private readonly Dictionary<Delegate, Delegate> _newSectionCreatedMap = new();
+
+    private readonly object _sectionEndedLock = new();
+    private readonly Dictionary<Delegate, Delegate> _sectionEndedMap = new();
 
     private readonly object _playerInfoUpdatedLock = new();
     private readonly Dictionary<Delegate, Delegate> _playerInfoUpdatedMap = new();
@@ -228,6 +232,34 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
                 {
                     DataStorage.NewSectionCreated -= (NewSectionCreatedEventHandler)wrapper!;
                     _newSectionCreatedMap.Remove(value);
+                }
+            }
+        }
+    }
+
+    public event SectionEndedEventHandler? SectionEnded
+    {
+        add
+        {
+            if (value is null) return;
+            lock (_sectionEndedLock)
+            {
+                if (_sectionEndedMap.ContainsKey(value)) return;
+                SectionEndedEventHandler wrapper = () => value();
+                _sectionEndedMap.Add(value, wrapper);
+                DataStorage.SectionEnded += wrapper;
+            }
+
+        }
+        remove
+        {
+            if (value is null) return;
+            lock (_sectionEndedLock)
+            {
+                if (_sectionEndedMap.TryGetValue(value, out var wrapper))
+                {
+                    DataStorage.SectionEnded -= (SectionEndedEventHandler)wrapper!;
+                    _sectionEndedMap.Remove(value);
                 }
             }
         }
@@ -469,7 +501,7 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         DataStorage.ReadOnlyPlayerInfoDatas[playerUid].EnergyFlag = readInt32;
     }
 
-    public void SetNpcTemplateId(long playerUid,int templateId)
+    public void SetNpcTemplateId(long playerUid, int templateId)
     {
         EnsurePlayer(playerUid);
         DataStorage.ReadOnlyPlayerInfoDatas[playerUid].NpcTemplateId = templateId;

@@ -21,10 +21,10 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     private readonly object _sectionTimeoutLock = new();
     // ===== Thread Safety Support =====
     private readonly object _battleLogProcessLock = new();
-    
+
     // ===== Statistics Engine =====
     private readonly StatisticsAdapter _statisticsAdapter = new(logger);
-    
+
     private bool _disposed;
     private bool _hasPendingBattleLogEvents;
     private bool _hasPendingDataEvents;
@@ -33,9 +33,9 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     private bool _isServerConnected;
     private DateTime _lastLogWallClockAtUtc = DateTime.MinValue;
 
-    // ===== Section timeout monitor =====
+    // ===== Section timeout state =====
     private Timer? _sectionTimeoutTimer;
-    private bool _timeoutSectionClearedOnce;
+    private bool _isSectionTimedOut;
 
     /// <summary>
     /// 玩家信息字典 (Key: UID)
@@ -248,15 +248,15 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     {
         if (_disposed) return;
         DateTime last;
-        bool alreadyCleared;
+        bool alreadyTimedOut;
 
         lock (_sectionTimeoutLock)
         {
             last = _lastLogWallClockAtUtc;
-            alreadyCleared = _timeoutSectionClearedOnce;
+            alreadyTimedOut = _isSectionTimedOut;
         }
 
-        if (alreadyCleared) return;
+        if (alreadyTimedOut) return;
         if (last == DateTime.MinValue) return;
 
         var now = DateTime.UtcNow;
@@ -265,29 +265,23 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         var sectionStats = _statisticsAdapter.GetStatistics(fullSession: false);
         if (sectionStats.Count == 0)
         {
-            _timeoutSectionClearedOnce = true;
+            lock (_sectionTimeoutLock)
+            {
+                _isSectionTimedOut = true;
+            }
             return;
         }
 
-        try
+        // Mark as timed out, but don't clear yet
+        lock (_sectionTimeoutLock)
         {
-            BeforeSectionCleared?.Invoke();
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "An error occurred during BeforeSectionCleared event");
-            ExceptionHelper.ThrowIfDebug(ex);
+            _isSectionTimedOut = true;
         }
 
-        try
-        {
-            _statisticsAdapter.ResetSection();
-            RaiseNewSectionCreated();
-        }
-        finally
-        {
-            _timeoutSectionClearedOnce = true;
-        }
+        logger.LogDebug("Section timed out at {Time}, will clear on next log arrival", now);
+        
+        // ⭐ Raise SectionEnded event to notify UI
+        RaiseSectionEnded();
     }
 
     private void TriggerPlayerInfoUpdated(long uid)
@@ -411,11 +405,11 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
 
             // ✅ 完全使用 StatisticsAdapter 处理统计数据
             _statisticsAdapter.ProcessLog(log);
-            
+
             // 只负责玩家信息管理
             EnsurePlayer(log.AttackerUuid);
             EnsurePlayer(log.TargetUuid);
-            
+
             if (log.IsAttackerPlayer)
             {
                 TrySetSpecBySkillId(log.AttackerUuid, log.SkillID);
@@ -427,15 +421,40 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
 
     private bool CheckAndHandleSectionTimeout(BattleLog log)
     {
-        if (LastBattleLog == null)
-            return false;
+        bool shouldClearSection = false;
+        bool wasTimedOut = false;
 
-        var timeSinceLastLog = log.TimeTicks - LastBattleLog.TimeTicks;
+        lock (_sectionTimeoutLock)
+        {
+            wasTimedOut = _isSectionTimedOut;
 
-        if (timeSinceLastLog > SectionTimeout.Ticks || ForceNewBattleSection)
+            // Check if we should clear due to timeout flag
+            if (_isSectionTimedOut)
+            {
+                shouldClearSection = true;
+                _isSectionTimedOut = false;
+            }
+            // Check if we should clear due to manual force flag
+            else if (ForceNewBattleSection)
+            {
+                shouldClearSection = true;
+                ForceNewBattleSection = false;
+            }
+            // Check if we should clear due to time gap (only if we haven't timed out yet)
+            else if (LastBattleLog != null)
+            {
+                var timeSinceLastLog = log.TimeTicks - LastBattleLog.TimeTicks;
+                if (timeSinceLastLog > SectionTimeout.Ticks)
+                {
+                    shouldClearSection = true;
+                }
+            }
+        }
+
+        if (shouldClearSection)
         {
             var sectionStats = _statisticsAdapter.GetStatistics(fullSession: false);
-            
+
             if (sectionStats.Count > 0)
             {
                 try
@@ -450,8 +469,12 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
             }
 
             _statisticsAdapter.ResetSection();
-            
-            ForceNewBattleSection = false;
+
+            if (wasTimedOut)
+            {
+                logger.LogDebug("Section cleared due to timeout on new log arrival");
+            }
+
             return true;
         }
 
@@ -465,7 +488,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         lock (_sectionTimeoutLock)
         {
             _lastLogWallClockAtUtc = DateTime.UtcNow;
-            _timeoutSectionClearedOnce = false;
+            _isSectionTimedOut = false;
         }
 
         EnsureSectionMonitorStarted();
@@ -589,8 +612,12 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     /// </summary>
     public void ClearAllDpsData()
     {
-        ForceNewBattleSection = true;
-        
+        lock (_sectionTimeoutLock)
+        {
+            ForceNewBattleSection = true;
+            _isSectionTimedOut = false;
+        }
+
         // ✅ 完全使用 StatisticsAdapter
         _statisticsAdapter.ClearAll();
         RaiseDpsDataUpdated();
@@ -602,8 +629,12 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     /// </summary>
     public void ClearDpsData()
     {
-        ForceNewBattleSection = true;
-        
+        lock (_sectionTimeoutLock)
+        {
+            ForceNewBattleSection = true;
+            _isSectionTimedOut = false;
+        }
+
         // ✅ 完全使用 StatisticsAdapter
         _statisticsAdapter.ResetSection();
 
@@ -631,9 +662,9 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     }
 
     #endregion
-    
+
     #region Battle Log Access
-    
+
     /// <summary>
     /// Get battle logs for a specific player
     /// </summary>
@@ -641,7 +672,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     {
         return _statisticsAdapter.GetBattleLogsForPlayer(uid, fullSession);
     }
-    
+
     /// <summary>
     /// Get all battle logs (for snapshots, etc.)
     /// </summary>
@@ -649,7 +680,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     {
         return _statisticsAdapter.GetBattleLogs(fullSession);
     }
-    
+
     /// <summary>
     /// Get PlayerStatistics directly (for WPF)
     /// </summary>
@@ -679,6 +710,7 @@ public partial class DataStorageV2
     public event DataUpdatedEventHandler? DataUpdated;
     public event ServerChangedEventHandler? ServerChanged;
     public event Action? BeforeSectionCleared;
+    public event SectionEndedEventHandler? SectionEnded;
 
     public void RaiseServerChanged(string currentServer, string prevServer)
     {
@@ -783,5 +815,19 @@ public partial class DataStorageV2
         }
     }
 
+    private void RaiseSectionEnded()
+    {
+        try
+        {
+            SectionEnded?.Invoke();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred during trigger event(SectionEnded)");
+            Console.WriteLine(
+                $"An error occurred during trigger event(SectionEnded) => {ex.Message}\r\n{ex.StackTrace}");
+            ExceptionHelper.ThrowIfDebug(ex);
+        }
+    }
     #endregion
 }

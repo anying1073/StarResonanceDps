@@ -61,6 +61,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
     // Whether we are waiting for the first datapoint of a new section
     private bool _awaitingSectionStart;
+    
+    // ⭐ New flag: indicates section has timed out but not yet cleared
+    private bool _sectionTimedOut;
+    
     [ObservableProperty] private TimeSpan _battleDuration;
 
     [ObservableProperty] private BattleSnapshotData? _currentSnapshot;
@@ -161,6 +165,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         _storage.ServerConnectionStateChanged += StorageOnServerConnectionStateChanged;
         _storage.PlayerInfoUpdated += StorageOnPlayerInfoUpdated;
         _storage.ServerChanged += StorageOnServerChanged; // ⭐ 订阅服务器切换事件
+        _storage.SectionEnded += SectionEnded;
 
         // 订阅DebugFunctions事件
         DebugFunctions.SampleDataRequested += OnSampleDataRequested;
@@ -172,6 +177,32 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         LoadDpsStatisticsSettings();
 
         _logger.LogDebug("DpsStatisticsViewModel constructor completed");
+    }
+
+    private void SectionEnded()
+    {
+        if (!_dispatcher.CheckAccess())
+        {
+            _dispatcher.BeginInvoke(SectionEnded);
+            return;
+        }
+
+        _logger.LogInformation("=== SectionEnded event received ===");
+
+        // ⭐ Capture the final section duration before it gets cleared
+        var finalSectionDuration = _timer.Elapsed - _sectionStartElapsed;
+        _lastSectionElapsed = finalSectionDuration;
+        
+        // ⭐ Set the timed out flag to freeze duration display
+        _sectionTimedOut = true;
+
+        _logger.LogInformation("Section ended, final duration: {Duration:F1}s", finalSectionDuration.TotalSeconds);
+
+        // ⭐ DON'T set _awaitingSectionStart here - let the data clearing logic handle it
+        // This allows the duration to display the final frozen value
+        
+        // Update duration display immediately
+        UpdateBattleDuration();
     }
 
     /// <summary>
@@ -473,6 +504,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _sectionStartElapsed = _timer.Elapsed; // ⬅️ 保留计时器已经过的时间
             _lastSectionElapsed = TimeSpan.Zero;
             _awaitingSectionStart = false;
+            _sectionTimedOut = false; // ⭐ Reset timeout flag
         }
         else
         {
@@ -485,6 +517,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _sectionStartElapsed = TimeSpan.Zero;
             _lastSectionElapsed = TimeSpan.Zero;
             _awaitingSectionStart = false;
+            _sectionTimedOut = false; // ⭐ Reset timeout flag
 
             // ⭐ 新增: 清空全程累计时长
             _totalCombatDuration = TimeSpan.Zero;
@@ -584,6 +617,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         _storage.ClearDpsData();
         // Move section start to current elapsed so section duration becomes zero
         _sectionStartElapsed = _timer.Elapsed;
+        _sectionTimedOut = false; // ⭐ Reset timeout flag
+        _lastSectionElapsed = TimeSpan.Zero;
     }
 
     /// <summary>
@@ -830,36 +865,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
 
         var stat = _storage.GetStatistics(ScopeTime == ScopeTime.Total);
-        // ⭐ 新增: 检测脱战,在数据清空前保存快照
-        if (_timer.IsRunning && !HasData(stat) && !_awaitingSectionStart)
-        {
-            _logger.LogInformation("检测到脱战(数据为空),准备保存快照...");
-
-            // ⭐ 关键: 此时 sectioned 数据还未被 NewSectionCreated 清空!
-            if (ScopeTime == ScopeTime.Current && _storage.GetStatisticsCount(false) > 0)
-            {
-                try
-                {
-                    var sectionDuration = _timer.Elapsed - _sectionStartElapsed;
-                    _logger.LogInformation("脱战前保存当前快照, 数据量: {Count}, 时长: {Duration:F1}s",
-                        _storage.GetStatisticsCount(false), sectionDuration.TotalSeconds);
-
-                    SnapshotService.SaveCurrentSnapshot(_storage, sectionDuration, Options.MinimalDurationInSeconds);
-
-                    // ⭐ 设置标志,跳过 StorageOnNewSectionCreated 中的保存
-                    _skipNextSnapshotSave = true;
-
-                    _logger.LogInformation("✅ 脱战前保存快照成功");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "❌ 脱战前保存快照失败");
-                }
-            }
-
-            // 设置等待状态
-            _awaitingSectionStart = true;
-        }
+        
+        // ⭐ Removed the automatic snapshot saving logic here since it's now handled by:
+        // 1. BeforeSectionCleared event (triggered by DataStorageV2 before clearing)
+        // 2. SectionEnded event (triggered when timeout occurs)
 
         // 只处理战斗开始的情况
         if (!_timer.IsRunning && HasData(stat))
@@ -867,6 +876,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _logger.LogInformation("检测到战斗数据,启动计时器");
             _timer.Start();
             _sectionStartElapsed = _timer.Elapsed;
+            _sectionTimedOut = false; // ⭐ Reset timeout flag when combat starts
         }
 
         // If we're waiting for the first datapoint of new section and data arrives, reset UI
@@ -884,6 +894,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 _sectionStartElapsed = _timer.Elapsed;
                 _lastSectionElapsed = TimeSpan.Zero;
                 _awaitingSectionStart = false;
+                _sectionTimedOut = false; // ⭐ Reset timeout flag when new section starts
                 _skipNextSnapshotSave = false; // ⬅️ 重置标志
                 _logger.LogDebug("Section start processed, new section begins");
             }
@@ -1102,7 +1113,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         if (data.Count > 0)
         {
             _logger.LogDebug(
-                "TeamTotal [{Type}]: Total={Total:N0}, DPS={Dps:N0}, " +
+                "TeamTotal [{Type}]: Total={Total:N0}, DPS={Dbs:N0}, " +
                 "Players={Players}(skipped={SkipP}), NPCs={NPCs}(skipped={SkipN}), " +
                 "Duration={Duration:F1}s, Label={Label}",
                 StatisticIndex, totalValue, TeamTotalDps,
@@ -1472,14 +1483,32 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
         if (_timer.IsRunning)
         {
-            if (ScopeTime == ScopeTime.Current && _awaitingSectionStart)
+            if (ScopeTime == ScopeTime.Current)
             {
-                // Freeze to last section elapsed until new data arrives
-                BattleDuration = _lastSectionElapsed;
-                return;
-            }
+                if (_awaitingSectionStart)
+                {
+                    // Freeze to last section elapsed until new data arrives
+                    BattleDuration = _lastSectionElapsed;
+                    return;
+                }
+                
+                // ⭐ If section has timed out, freeze at captured final duration
+                if (_sectionTimedOut && _lastSectionElapsed > TimeSpan.Zero)
+                {
+                    BattleDuration = _lastSectionElapsed;
+                    return;
+                }
+                
+                // Normal case: display current section duration
+                var elapsed = _timer.Elapsed - _sectionStartElapsed;
+                if (elapsed < TimeSpan.Zero)
+                {
+                    elapsed = TimeSpan.Zero;
+                }
 
-            if (ScopeTime == ScopeTime.Total)
+                BattleDuration = elapsed;
+            }
+            else // ScopeTime.Total
             {
                 // ⭐ 全程模式: 显示累计战斗时长
                 if (_awaitingSectionStart)
@@ -1493,17 +1522,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                     var currentSectionDuration = _timer.Elapsed - _sectionStartElapsed;
                     BattleDuration = _totalCombatDuration + currentSectionDuration;
                 }
-            }
-            else // ScopeTime.Current
-            {
-                // ⭐ 当前模式: 只显示当前战斗区间时长
-                var elapsed = _timer.Elapsed - _sectionStartElapsed;
-                if (elapsed < TimeSpan.Zero)
-                {
-                    elapsed = TimeSpan.Zero;
-                }
-
-                BattleDuration = elapsed;
             }
         }
     }
@@ -1525,18 +1543,19 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             // ⭐ 新增: 累加上一次战斗的时长到全程计时
             if (_timer.IsRunning)
             {
-                var lastSectionDuration = _timer.Elapsed - _sectionStartElapsed;
-                if (lastSectionDuration > TimeSpan.Zero)
+                // Use the captured _lastSectionElapsed instead of recalculating
+                // This ensures we use the exact duration from when the section ended
+                if (_lastSectionElapsed > TimeSpan.Zero)
                 {
-                    _totalCombatDuration += lastSectionDuration;
+                    _totalCombatDuration += _lastSectionElapsed;
                     _logger.LogInformation("累加战斗时长: +{Duration:F1}s, 全程累计: {Total:F1}s",
-                        lastSectionDuration.TotalSeconds, _totalCombatDuration.TotalSeconds);
+                        _lastSectionElapsed.TotalSeconds, _totalCombatDuration.TotalSeconds);
                 }
             }
 
-            // 更新UI状态
-            _lastSectionElapsed = _timer.IsRunning ? _timer.Elapsed - _sectionStartElapsed : TimeSpan.Zero;
+            // ⭐ NOW set awaiting flag since section data has been cleared
             _awaitingSectionStart = true;
+            _sectionTimedOut = false; // ⭐ Reset timeout flag since section is now cleared
             UpdateBattleDuration();
 
             _logger.LogInformation("NewSection完成: awaiting={AwaitingStart}, 全程时长={TotalDuration:F1}s",

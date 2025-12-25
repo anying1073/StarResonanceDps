@@ -141,6 +141,8 @@ public static class DataStorage
     /// </summary>
     public static event ServerChangedEventHandler? ServerChanged;
 
+    public static event SectionEndedEventHandler? SectionEnded;
+
     /// <summary>
     /// 从文件加载缓存玩家信息
     /// </summary>
@@ -736,5 +738,9 @@ public static class DataStorage
         TriggerPlayerInfoUpdated(uid);
     }
 
+    private static void OnSectionEnded()
+    {
+        SectionEnded?.Invoke();
+    }
     #endregion
 }
