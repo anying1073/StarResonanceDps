@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Xml;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Data.Models;
+using StarResonanceDpsAnalysis.Core.Statistics;
 
 namespace StarResonanceDpsAnalysis.Core.Data;
 
@@ -484,5 +485,15 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
     {
         EnsurePlayer(playerUid);
         DataStorage.ReadOnlyPlayerInfoDatas[playerUid].SeasonStrength = seasonStrength;
+    }
+
+    public IReadOnlyDictionary<long, PlayerStatistics> GetStatistics(bool fullSession)
+    {
+        throw new NotSupportedException();
+    }
+
+    public int GetStatisticsCount(bool fullSession)
+    {
+        throw new NotSupportedException();
     }
 }

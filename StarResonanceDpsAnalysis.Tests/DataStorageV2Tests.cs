@@ -31,8 +31,10 @@ public class DataStorageV2Tests
         storage.ClearAllDpsData();
 
         // Assert
-        Assert.Empty(storage.ReadOnlyFullDpsDatas);
-        Assert.Empty(storage.ReadOnlySectionedDpsDatas);
+        var full = storage.GetStatistics(true);
+        var section = storage.GetStatistics(false);
+        Assert.Empty(full);
+        Assert.Empty(section);
         Assert.True(dpsDataUpdated);
         Assert.True(dataUpdated);
     }
@@ -61,8 +63,10 @@ public class DataStorageV2Tests
         storage.ClearDpsData();
 
         // Assert
-        Assert.NotEmpty(storage.ReadOnlyFullDpsDatas); // Full data still exists
-        Assert.Empty(storage.ReadOnlySectionedDpsDatas); // Section cleared
+        var full = storage.GetStatistics(true);
+        var section = storage.GetStatistics(false);
+        Assert.NotEmpty(full); // Full data still exists
+        Assert.Empty(section); // Section cleared
         Assert.True(dpsDataUpdated);
         Assert.True(dataUpdated);
     }
@@ -108,7 +112,8 @@ public class DataStorageV2Tests
         Assert.Equal(2, battleLogCreatedCount);
         Assert.True(dpsDataUpdated);
         Assert.True(dataUpdated);
-        Assert.Equal(150, storage.ReadOnlyFullDpsDatas[1].TotalAttackDamage);
+        var full = storage.GetStatistics(true).Values.ToList();
+        Assert.Equal(150, full[0].AttackDamage.Total);
     }
 
     [Fact]

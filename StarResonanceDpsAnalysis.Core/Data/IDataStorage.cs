@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Data.Models;
+using StarResonanceDpsAnalysis.Core.Statistics;
 
 namespace StarResonanceDpsAnalysis.Core.Data;
 
@@ -9,14 +10,6 @@ public interface IDataStorage : IDisposable
     PlayerInfo CurrentPlayerInfo { get; }
 
     ReadOnlyDictionary<long, PlayerInfo> ReadOnlyPlayerInfoDatas { get; }
-
-    ReadOnlyDictionary<long, DpsData> ReadOnlyFullDpsDatas { get; }
-
-    IReadOnlyList<DpsData> ReadOnlyFullDpsDataList { get; }
-
-    ReadOnlyDictionary<long, DpsData> ReadOnlySectionedDpsDatas { get; }
-
-    IReadOnlyList<DpsData> ReadOnlySectionedDpsDataList { get; }
 
     TimeSpan SectionTimeout { get; set; }
 
@@ -64,6 +57,19 @@ public interface IDataStorage : IDisposable
     void SetNpcTemplateId(long playerUid, int templateId);
     void SetPlayerSeasonLevel(long playerUid, int seasonLevel);
     void SetPlayerSeasonStrength(long playerUid, int seasonStrength);
+
+    /// <summary>
+    /// Get PlayerStatistics directly (for WPF)
+    /// </summary>
+    IReadOnlyDictionary<long, PlayerStatistics> GetStatistics(bool fullSession);
+
+    /// <summary>
+    /// Returns the number of statistics records available for the current session.
+    /// </summary>
+    /// <param name="fullSession">true to include all statistics from the entire session; false to include only statistics from the current
+    /// segment.</param>
+    /// <returns>The total number of statistics records. Returns 0 if no statistics are available.</returns>
+    int GetStatisticsCount(bool fullSession);
 }
 
 public delegate void ServerConnectionStateChangedEventHandler(bool serverConnectionState);
@@ -73,3 +79,23 @@ public delegate void BattleLogCreatedEventHandler(BattleLog battleLog);
 public delegate void DpsDataUpdatedEventHandler();
 public delegate void DataUpdatedEventHandler();
 public delegate void ServerChangedEventHandler(string currentServer, string prevServer);
+
+public static class DataStorageHelper
+{
+    /// <summary>
+    /// Check if there is any data in the storage
+    /// </summary>
+    /// <param name="storage">Data storage</param>
+    /// <param name="full">Target statistic scope, if null then check both full and section</param>
+    /// <returns></returns>
+    public static bool HasData(this IDataStorage storage, bool? full = null)
+    {
+        if (full == null)
+        {
+            return storage.GetStatisticsCount(true) > 0 || storage.GetStatisticsCount(false) > 0;
+        }
+
+        return storage.GetStatisticsCount((bool)full) > 0;
+    }
+
+}

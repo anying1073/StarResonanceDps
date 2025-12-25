@@ -82,7 +82,7 @@ public class DataStorageV2Benchmarks
     public void GetDpsData()
     {
         // New approach: access via StatisticsAdapter through readonly properties
-        var dpsDatas = _dataStorage.ReadOnlyFullDpsDatas;
+        var dpsDatas = _dataStorage.GetStatistics(true);
         _ = dpsDatas.Count;
     }
 }

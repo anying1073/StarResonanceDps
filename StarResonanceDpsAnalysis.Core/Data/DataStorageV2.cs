@@ -68,54 +68,6 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     public ReadOnlyDictionary<long, PlayerInfo> ReadOnlyPlayerInfoDatas => PlayerInfoData.AsReadOnly();
 
     /// <summary>
-    /// 只读全程玩家DPS字典 (Key: UID) - 从 StatisticsAdapter 获取
-    /// </summary>
-    public ReadOnlyDictionary<long, DpsData> ReadOnlyFullDpsDatas
-    {
-        get
-        {
-            var newStats = _statisticsAdapter.ToLegacyFormat(fullSession: true);
-            return newStats.AsReadOnly();
-        }
-    }
-
-    /// <summary>
-    /// 只读全程玩家DPS列表 - 从 StatisticsAdapter 获取
-    /// </summary>
-    public IReadOnlyList<DpsData> ReadOnlyFullDpsDataList
-    {
-        get
-        {
-            var newStats = _statisticsAdapter.ToLegacyFormat(fullSession: true);
-            return newStats.Values.ToList().AsReadOnly();
-        }
-    }
-
-    /// <summary>
-    /// 阶段性只读玩家DPS字典 (Key: UID) - 从 StatisticsAdapter 获取
-    /// </summary>
-    public ReadOnlyDictionary<long, DpsData> ReadOnlySectionedDpsDatas
-    {
-        get
-        {
-            var newStats = _statisticsAdapter.ToLegacyFormat(fullSession: false);
-            return newStats.AsReadOnly();
-        }
-    }
-
-    /// <summary>
-    /// 阶段性只读玩家DPS列表 - 从 StatisticsAdapter 获取
-    /// </summary>
-    public IReadOnlyList<DpsData> ReadOnlySectionedDpsDataList
-    {
-        get
-        {
-            var newStats = _statisticsAdapter.ToLegacyFormat(fullSession: false);
-            return newStats.Values.ToList().AsReadOnly();
-        }
-    }
-
-    /// <summary>
     /// 战斗日志分段超时时间 (默认: 5000ms)
     /// </summary>
     public TimeSpan SectionTimeout { get; set; } = TimeSpan.FromMilliseconds(5000);
@@ -498,6 +450,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
             }
 
             _statisticsAdapter.ResetSection();
+            
             ForceNewBattleSection = false;
             return true;
         }
@@ -640,7 +593,6 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         
         // ✅ 完全使用 StatisticsAdapter
         _statisticsAdapter.ClearAll();
-
         RaiseDpsDataUpdated();
         RaiseDataUpdated();
     }
@@ -683,7 +635,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     #region Battle Log Access
     
     /// <summary>
-    /// ✅ NEW: Get battle logs for a specific player
+    /// Get battle logs for a specific player
     /// </summary>
     public IReadOnlyList<BattleLog> GetBattleLogsForPlayer(long uid, bool fullSession)
     {
@@ -691,7 +643,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     }
     
     /// <summary>
-    /// ✅ NEW: Get all battle logs (for snapshots, etc.)
+    /// Get all battle logs (for snapshots, etc.)
     /// </summary>
     public IReadOnlyList<BattleLog> GetBattleLogs(bool fullSession)
     {
@@ -699,13 +651,18 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     }
     
     /// <summary>
-    /// ✅ NEW: Get PlayerStatistics directly (for WPF)
+    /// Get PlayerStatistics directly (for WPF)
     /// </summary>
     public IReadOnlyDictionary<long, PlayerStatistics> GetStatistics(bool fullSession)
     {
         return _statisticsAdapter.GetStatistics(fullSession);
     }
-    
+
+    public int GetStatisticsCount(bool fullSession)
+    {
+        return _statisticsAdapter.GetStatisticsCount(fullSession);
+    }
+
     #endregion
 }
 
