@@ -90,6 +90,16 @@ internal static class ConverterNumberHelper
             : NumberDisplayMode.KMB;
     }
 
+    public static string FormatHumanReadable<T>(T value, NumberDisplayMode mode, CultureInfo culture)
+    {
+        if (!TryToDouble(value, out var doubleValue))
+        {
+            return value?.ToString() ?? string.Empty;
+        }
+
+        return FormatHumanReadable(doubleValue, mode, culture);
+    }
+
     public static string FormatHumanReadable(double value, NumberDisplayMode mode, CultureInfo culture)
     {
         var sign = value < 0 ? "-" : string.Empty;

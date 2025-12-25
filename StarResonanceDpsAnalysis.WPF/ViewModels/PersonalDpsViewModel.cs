@@ -371,42 +371,7 @@ public partial class PersonalDpsViewModel : BaseViewModel
     {
         var damageDisplayType = _configManager.CurrentConfig.DamageDisplayType;
 
-        if (damageDisplayType == Models.NumberDisplayMode.Wan)
-        {
-            return FormatNumberWan(value);
-        }
-        else
-        {
-            return FormatNumberKMB(value);
-        }
-    }
-
-    /// <summary>
-    /// ⭐ KMB格式化(K/M/B)
-    /// </summary>
-    private static string FormatNumberKMB(ulong value)
-    {
-        if (value < 10_000)
-            return value.ToString("N0");
-
-        if (value >= 1_000_000_000)
-            return $"{value / 1_000_000_000.0:0.##}B";
-
-        if (value >= 1_000_000)
-            return $"{value / 1_000_000.0:0.##}M";
-
-        return $"{value / 1_000.0:0.##}K";
-    }
-
-    /// <summary>
-    /// ⭐ 万模式格式化(万)
-    /// </summary>
-    private static string FormatNumberWan(ulong value)
-    {
-        if (value < 10_000)
-            return value.ToString("N0");
-
-        return $"{value / 10_000.0:0.##}万";
+        return ConverterNumberHelper.FormatHumanReadable(value, damageDisplayType, CultureInfo.CurrentCulture);
     }
 
     private void RemainingTimerOnTick(object? state)
