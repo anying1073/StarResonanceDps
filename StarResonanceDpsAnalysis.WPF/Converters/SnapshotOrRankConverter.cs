@@ -6,7 +6,7 @@ namespace StarResonanceDpsAnalysis.WPF.Converters;
 
 public sealed class SnapshotOrRankConverter : IMultiValueConverter
 {
-    public object Convert(object?[] values, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(object?[]? values, Type targetType, object? parameter, CultureInfo culture)
     {
         if (values == null || values.Length < 2)
         {
@@ -14,7 +14,7 @@ public sealed class SnapshotOrRankConverter : IMultiValueConverter
         }
 
         // 第一个参数: IsViewingSnapshot (是否在快照模式)
-        var isSnapshot = values[0] is bool b && b;
+        var isSnapshot = values[0] is true;
         
         // 如果是快照模式,显示[快照]
         if (isSnapshot)
@@ -25,11 +25,11 @@ public sealed class SnapshotOrRankConverter : IMultiValueConverter
         // 第二个参数: CurrentPlayerRank (玩家排名字符串,格式已经是"[01]"或"[--]")
         if (values[1] == null || values[1] == DependencyProperty.UnsetValue)
         {
-            return "[--]";
+            return null;
         }
 
         // 战斗模式下,直接返回排名字符串(已经包含方括号)
-        var rank = values[1]?.ToString() ?? "[--]";
+        var rank = values[1]?.ToString();
         return rank;
     }
 

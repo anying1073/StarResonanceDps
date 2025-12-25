@@ -8,6 +8,7 @@ using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.Core;
 using StarResonanceDpsAnalysis.Core.Data;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config; // ⭐ 新增：引入配置管理器
 
 namespace StarResonanceDpsAnalysis.WPF.Services;
@@ -30,15 +31,15 @@ public class BattleSnapshotService
         _logger = logger;
         _configManager = configManager; // ⭐ 新增：注入配置管理器
         _snapshotDirectory = Path.Combine(Environment.CurrentDirectory, "BattleSnapshots");
-      
+
         // 确保目录存在
-if (!Directory.Exists(_snapshotDirectory))
+        if (!Directory.Exists(_snapshotDirectory))
         {
-  Directory.CreateDirectory(_snapshotDirectory);
-}
+            Directory.CreateDirectory(_snapshotDirectory);
+        }
 
         // 启动时加载现有快照
-      LoadSnapshots();
+        LoadSnapshots();
     }
 
     /// <summary>
@@ -119,36 +120,36 @@ if (!Directory.Exists(_snapshotDirectory))
         var players = new Dictionary<long, SnapshotPlayerData>();
 
         // ⭐ 强制使用FullDpsData
-        var dpsList = storage.ReadOnlyFullDpsDataList;
+        var dpsList = storage.GetStatistics(true);
 
         ulong teamTotalDamage = 0;
         ulong teamTotalHealing = 0;
         ulong teamTotalTaken = 0;
 
-        foreach (var dpsData in dpsList)
+        foreach (var dpsData in dpsList.Values)
         {
-            storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out var playerInfo);
+            storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.Uid, out var playerInfo);
 
-            var damage = (ulong)Math.Max(0, dpsData.TotalAttackDamage);
-            var healing = (ulong)Math.Max(0, dpsData.TotalHeal);
-            var taken = (ulong)Math.Max(0, dpsData.TotalTakenDamage);
+            var damage = (ulong)Math.Max(0, dpsData.TakenDamage.Total);
+            var healing = (ulong)Math.Max(0, dpsData.Healing.Total);
+            var taken = (ulong)Math.Max(0, dpsData.TakenDamage.Total);
 
             teamTotalDamage += damage;
             teamTotalHealing += healing;
             teamTotalTaken += taken;
 
-            var elapsedTicks = dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0);
+            var elapsedTicks = dpsData.ElapsedTicks();
             var elapsedSeconds = elapsedTicks > 0 ? TimeSpan.FromTicks(elapsedTicks).TotalSeconds : duration.TotalSeconds;
 
             // ⭐ 保存技能数据
-            var damageSkills = BuildSkillSnapshot(dpsData.ReadOnlySkillDataList, SkillType.Damage);
-            var healingSkills = BuildHealingSkillSnapshot(dpsData.ReadOnlyBattleLogs);
-            var takenSkills = BuildTakenSkillSnapshot(dpsData.ReadOnlyBattleLogs, dpsData.UID);
+            var damageSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.Damage);
+            var healingSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.Heal);
+            var takenSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.TakenDamage);
 
-            players[dpsData.UID] = new SnapshotPlayerData
+            players[dpsData.Uid] = new SnapshotPlayerData
             {
-                Uid = dpsData.UID,
-                Nickname = playerInfo?.Name ?? $"UID: {dpsData.UID}",
+                Uid = dpsData.Uid,
+                Nickname = playerInfo?.Name ?? $"UID: {dpsData.Uid}",
                 CombatPower = playerInfo?.CombatPower ?? 0,
                 Profession = playerInfo?.Class.ToString() ?? "Unknown",
                 SubProfession = playerInfo?.SubProfessionName ?? "",
@@ -157,7 +158,7 @@ if (!Directory.Exists(_snapshotDirectory))
                 TotalHealing = healing,
                 TotalHps = elapsedSeconds > 0 ? healing / elapsedSeconds : 0,
                 TakenDamage = taken,
-                IsNpc = dpsData.IsNpcData,
+                IsNpc = dpsData.IsNpc,
 
                 // ⭐ 保存技能列表
                 DamageSkills = damageSkills,
@@ -190,7 +191,7 @@ if (!Directory.Exists(_snapshotDirectory))
         // ? 硬性限制: 低于10秒的战斗永远不保存
         if (duration.TotalSeconds < AbsoluteMinDurationSeconds)
         {
-            _logger.LogInformation("战斗时长不足{Min}秒({Actual:F1}秒),跳过保存全程快照(硬性限制)", 
+            _logger.LogInformation("战斗时长不足{Min}秒({Actual:F1}秒),跳过保存全程快照(硬性限制)",
         AbsoluteMinDurationSeconds, duration.TotalSeconds);
             return;
         }
@@ -198,39 +199,39 @@ if (!Directory.Exists(_snapshotDirectory))
         // ? 用户设置的过滤条件(可选)
         if (minDurationSeconds > 0 && duration.TotalSeconds < minDurationSeconds)
         {
-        _logger.LogInformation("战斗时长不足用户设置的{UserMin}秒({Actual:F1}秒),跳过保存全程快照(用户设置)", 
-   minDurationSeconds, duration.TotalSeconds);
-          return;
+            _logger.LogInformation("战斗时长不足用户设置的{UserMin}秒({Actual:F1}秒),跳过保存全程快照(用户设置)",
+       minDurationSeconds, duration.TotalSeconds);
+            return;
         }
 
- try
-    {
-          var snapshot = CreateSnapshot(storage, duration, ScopeType.Total);
-            
-    // 保存到磁盘
+        try
+        {
+            var snapshot = CreateSnapshot(storage, duration, ScopeType.Total);
+
+            // 保存到磁盘
             SaveSnapshotToDisk(snapshot);
-    
-   // 添加到内存列表(插入到开头)
+
+            // 添加到内存列表(插入到开头)
             TotalSnapshots.Insert(0, snapshot);
 
- // ? 只保留最新的8条,超出的释放内存并删除磁盘文件
-  while (TotalSnapshots.Count > MaxSnapshots)
+            // ? 只保留最新的8条,超出的释放内存并删除磁盘文件
+            while (TotalSnapshots.Count > MaxSnapshots)
             {
-  var oldest = TotalSnapshots[TotalSnapshots.Count - 1];
+                var oldest = TotalSnapshots[TotalSnapshots.Count - 1];
                 TotalSnapshots.RemoveAt(TotalSnapshots.Count - 1);
-                
-      // 删除对应的磁盘文件
-       TryDeleteSnapshotFile(oldest.FilePath);
-      
-      _logger.LogDebug("移除旧快照: {Time}, 文件已删除", oldest.StartedAt);
-     }
-     
-          _logger.LogInformation("保存全程快照成功: {Time}, 时长: {Duration:F1}秒, 当前保存数量: {Count}/{Max}", 
-                snapshot.StartedAt, duration.TotalSeconds, TotalSnapshots.Count, MaxSnapshots);
+
+                // 删除对应的磁盘文件
+                TryDeleteSnapshotFile(oldest.FilePath);
+
+                _logger.LogDebug("移除旧快照: {Time}, 文件已删除", oldest.StartedAt);
+            }
+
+            _logger.LogInformation("保存全程快照成功: {Time}, 时长: {Duration:F1}秒, 当前保存数量: {Count}/{Max}",
+                  snapshot.StartedAt, duration.TotalSeconds, TotalSnapshots.Count, MaxSnapshots);
         }
         catch (Exception ex)
         {
-       _logger.LogError(ex, "保存全程快照失败");
+            _logger.LogError(ex, "保存全程快照失败");
         }
     }
 
@@ -241,127 +242,94 @@ if (!Directory.Exists(_snapshotDirectory))
     {
         var now = DateTime.Now;
         var players = new Dictionary<long, SnapshotPlayerData>();
-        
+
         // 根据类型选择数据源
-        var dpsList = scopeType == ScopeType.Total 
-            ? storage.ReadOnlyFullDpsDataList 
-    : storage.ReadOnlySectionedDpsDataList;
+        var dpsList = storage.GetStatistics(scopeType == ScopeType.Total);
 
         ulong teamTotalDamage = 0;
         ulong teamTotalHealing = 0;
         ulong teamTotalTaken = 0;
 
-        foreach (var dpsData in dpsList)
-   {
-     storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out var playerInfo);
-      
-            var damage = (ulong)Math.Max(0, dpsData.TotalAttackDamage);
-            var healing = (ulong)Math.Max(0, dpsData.TotalHeal);
-    var taken = (ulong)Math.Max(0, dpsData.TotalTakenDamage);
-       
+        foreach (var dpsData in dpsList.Values)
+        {
+            storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.Uid, out var playerInfo);
+
+            var damage = (ulong)Math.Max(0, dpsData.AttackDamage.Total);
+            var healing = (ulong)Math.Max(0, dpsData.Healing.Total);
+            var taken = (ulong)Math.Max(0, dpsData.TakenDamage.Total);
+
             teamTotalDamage += damage;
             teamTotalHealing += healing;
-   teamTotalTaken += taken;
-    
-        var elapsedTicks = dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0);
-  var elapsedSeconds = elapsedTicks > 0 ? TimeSpan.FromTicks(elapsedTicks).TotalSeconds : duration.TotalSeconds;
-    
-          // ? 新增: 保存技能数据
-            var damageSkills = BuildSkillSnapshot(dpsData.ReadOnlySkillDataList, SkillType.Damage);
-    var healingSkills = BuildHealingSkillSnapshot(dpsData.ReadOnlyBattleLogs);
-            var takenSkills = BuildTakenSkillSnapshot(dpsData.ReadOnlyBattleLogs, dpsData.UID);
-            
-      players[dpsData.UID] = new SnapshotPlayerData
- {
-     Uid = dpsData.UID,
-          Nickname = playerInfo?.Name ?? $"UID: {dpsData.UID}",
- CombatPower = playerInfo?.CombatPower ?? 0,
-            Profession = playerInfo?.Class.ToString() ?? "Unknown",
-       SubProfession = playerInfo?.SubProfessionName ?? "",
-       TotalDamage = damage,
-            TotalDps = elapsedSeconds > 0 ? damage / elapsedSeconds : 0,
-    TotalHealing = healing,
-           TotalHps = elapsedSeconds > 0 ? healing / elapsedSeconds : 0,
-      TakenDamage = taken,
-         IsNpc = dpsData.IsNpcData,
-                
-      // ? 新增: 保存技能列表
-          DamageSkills = damageSkills,
-         HealingSkills = healingSkills,
-  TakenSkills = takenSkills
+            teamTotalTaken += taken;
+
+            var elapsedTicks = dpsData.ElapsedTicks();
+            var elapsedSeconds = elapsedTicks > 0 ? TimeSpan.FromTicks(elapsedTicks).TotalSeconds : duration.TotalSeconds;
+
+            // ? 新增: 保存技能数据
+            var damageSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.Damage);
+            var healingSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.Heal);
+            var takenSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.TakenDamage);
+
+            players[dpsData.Uid] = new SnapshotPlayerData
+            {
+                Uid = dpsData.Uid,
+                Nickname = playerInfo?.Name ?? $"UID: {dpsData.Uid}",
+                CombatPower = playerInfo?.CombatPower ?? 0,
+                Profession = playerInfo?.Class.ToString() ?? "Unknown",
+                SubProfession = playerInfo?.SubProfessionName ?? "",
+                TotalDamage = damage,
+                TotalDps = elapsedSeconds > 0 ? damage / elapsedSeconds : 0,
+                TotalHealing = healing,
+                TotalHps = elapsedSeconds > 0 ? healing / elapsedSeconds : 0,
+                TakenDamage = taken,
+                IsNpc = dpsData.IsNpc,
+
+                // ? 新增: 保存技能列表
+                DamageSkills = damageSkills,
+                HealingSkills = healingSkills,
+                TakenSkills = takenSkills
             };
         }
 
-return new BattleSnapshotData
+        return new BattleSnapshotData
         {
-   ScopeType = scopeType,
-     StartedAt = now.AddTicks(-duration.Ticks),
-   EndedAt = now,
+            ScopeType = scopeType,
+            StartedAt = now.AddTicks(-duration.Ticks),
+            EndedAt = now,
             Duration = duration,
             TeamTotalDamage = teamTotalDamage,
-        TeamTotalHealing = teamTotalHealing,
+            TeamTotalHealing = teamTotalHealing,
             TeamTotalTakenDamage = teamTotalTaken,
-      Players = players
+            Players = players
         };
     }
 
     /// <summary>
     /// ? 新增: 从技能列表构建伤害技能快照
     /// </summary>
-    private List<SnapshotSkillData> BuildSkillSnapshot(IReadOnlyList<SkillData> skills, SkillType targetType)
+    private List<SnapshotSkillData> BuildSkillSnapshot(Dictionary<long, SkillStatistics> skills, SkillType targetType)
     {
         var result = new List<SnapshotSkillData>();
-   
-  foreach (var skill in skills)
-        {
-    // 根据技能ID判断类型
-   var skillType = EmbeddedSkillConfig.GetTypeOf((int)skill.SkillId);
-   if (skillType != targetType)
- continue;
-                
-   result.Add(new SnapshotSkillData
-        {
-     SkillId = skill.SkillId,
-    SkillName = EmbeddedSkillConfig.GetName((int)skill.SkillId),
-         TotalValue = (ulong)Math.Max(0, skill.TotalValue),
-  UseTimes = skill.UseTimes,
-        CritTimes = skill.CritTimes,
-    LuckyTimes = skill.LuckyTimes
-      });
-    }
-     
-        return result;
-    }
 
-    /// <summary>
-    /// ? 新增: 从战斗日志构建治疗技能快照
-    /// </summary>
-    private List<SnapshotSkillData> BuildHealingSkillSnapshot(IReadOnlyList<BattleLog> logs)
-    {
-var skillDict = new Dictionary<long, SnapshotSkillData>();
-        
- foreach (var log in logs)
+        foreach (var skill in skills.Values)
         {
-            if (!log.IsHeal)
-            continue;
-          
-    if (!skillDict.TryGetValue(log.SkillID, out var skillData))
+            // 根据技能ID判断类型
+            var skillType = EmbeddedSkillConfig.GetTypeOf((int)skill.SkillId);
+            if (skillType != targetType)
+                continue;
+
+            result.Add(new SnapshotSkillData
             {
-    skillData = new SnapshotSkillData
-     {
-      SkillId = log.SkillID,
-            SkillName = EmbeddedSkillConfig.GetName((int)log.SkillID)
-      };
-                skillDict[log.SkillID] = skillData;
-         }
-            
-    skillData.TotalValue += (ulong)Math.Max(0, log.Value);
- skillData.UseTimes++;
-if (log.IsCritical) skillData.CritTimes++;
-        if (log.IsLucky) skillData.LuckyTimes++;
+                SkillId = skill.SkillId,
+                SkillName = EmbeddedSkillConfig.GetName((int)skill.SkillId),
+                TotalValue = (ulong)Math.Max(0, skill.TotalValue),
+                UseTimes = skill.UseTimes,
+                CritTimes = skill.CritTimes,
+                LuckyTimes = skill.LuckyTimes
+            });
         }
-        
-        return skillDict.Values.OrderByDescending(s => s.TotalValue).ToList();
+
+        return result;
     }
 
     /// <summary>
@@ -370,117 +338,117 @@ if (log.IsCritical) skillData.CritTimes++;
     private List<SnapshotSkillData> BuildTakenSkillSnapshot(IReadOnlyList<BattleLog> logs, long targetUid)
     {
         var skillDict = new Dictionary<long, SnapshotSkillData>();
-   
+
         foreach (var log in logs)
-      {
-  // 只统计目标是当前玩家的伤害
- if (log.IsHeal || log.TargetUuid != targetUid)
-continue;
-                
- if (!skillDict.TryGetValue(log.SkillID, out var skillData))
-    {
-         skillData = new SnapshotSkillData
-       {
- SkillId = log.SkillID,
-        SkillName = EmbeddedSkillConfig.GetName((int)log.SkillID)
-           };
-    skillDict[log.SkillID] = skillData;
-       }
-         
-skillData.TotalValue += (ulong)Math.Max(0, log.Value);
-     skillData.UseTimes++;
+        {
+            // 只统计目标是当前玩家的伤害
+            if (log.IsHeal || log.TargetUuid != targetUid)
+                continue;
+
+            if (!skillDict.TryGetValue(log.SkillID, out var skillData))
+            {
+                skillData = new SnapshotSkillData
+                {
+                    SkillId = log.SkillID,
+                    SkillName = EmbeddedSkillConfig.GetName((int)log.SkillID)
+                };
+                skillDict[log.SkillID] = skillData;
+            }
+
+            skillData.TotalValue += (ulong)Math.Max(0, log.Value);
+            skillData.UseTimes++;
             if (log.IsCritical) skillData.CritTimes++;
-      if (log.IsLucky) skillData.LuckyTimes++;
-   }
-        
-      return skillDict.Values.OrderByDescending(s => s.TotalValue).ToList();
+            if (log.IsLucky) skillData.LuckyTimes++;
+        }
+
+        return skillDict.Values.OrderByDescending(s => s.TotalValue).ToList();
     }
 
     /// <summary>
     /// 保存快照到磁盘
     /// </summary>
-  private void SaveSnapshotToDisk(BattleSnapshotData snapshot)
+    private void SaveSnapshotToDisk(BattleSnapshotData snapshot)
     {
         var fileName = $"{snapshot.ScopeType}_{snapshot.StartedAt:yyyy-MM-dd_HH-mm-ss}.json";
-     var filePath = Path.Combine(_snapshotDirectory, fileName);
-        
-        var json = JsonSerializer.Serialize(snapshot, new JsonSerializerOptions 
-        { 
-            WriteIndented = true 
+        var filePath = Path.Combine(_snapshotDirectory, fileName);
+
+        var json = JsonSerializer.Serialize(snapshot, new JsonSerializerOptions
+        {
+            WriteIndented = true
         });
- 
-    File.WriteAllText(filePath, json);
-  snapshot.FilePath = filePath;
+
+        File.WriteAllText(filePath, json);
+        snapshot.FilePath = filePath;
     }
 
     /// <summary>
     /// 从磁盘加载快照
-  /// </summary>
+    /// </summary>
     private void LoadSnapshots()
     {
         try
         {
-  if (!Directory.Exists(_snapshotDirectory))
-         {
-return;
-   }
-
-       var files = Directory.GetFiles(_snapshotDirectory, "*.json")
-   .OrderByDescending(f => File.GetCreationTime(f))
-      .ToList();
-
-   foreach (var file in files)
-  {
-    try
-   {
-              var json = File.ReadAllText(file);
-            var snapshot = JsonSerializer.Deserialize<BattleSnapshotData>(json);
-   
-         if (snapshot != null)
-    {
-          snapshot.FilePath = file;
-    
-       if (snapshot.ScopeType == ScopeType.Current)
+            if (!Directory.Exists(_snapshotDirectory))
             {
-  if (CurrentSnapshots.Count < MaxSnapshots)
-  {
-          CurrentSnapshots.Add(snapshot);
-    }
-     else
-          {
-   // ? 超出限制,删除文件并释放内存
-           File.Delete(file);
-           _logger.LogDebug("启动时删除超出限制的旧快照文件: {File}", file);
-   }
-    }
-              else
+                return;
+            }
+
+            var files = Directory.GetFiles(_snapshotDirectory, "*.json")
+        .OrderByDescending(f => File.GetCreationTime(f))
+           .ToList();
+
+            foreach (var file in files)
             {
-    if (TotalSnapshots.Count < MaxSnapshots)
-          {
-     TotalSnapshots.Add(snapshot);
-               }
-        else
-      {
-    // ? 超出限制,删除文件并释放内存
-         File.Delete(file);
-         _logger.LogDebug("启动时删除超出限制的旧快照文件: {File}", file);
-     }
-           }
-   }
+                try
+                {
+                    var json = File.ReadAllText(file);
+                    var snapshot = JsonSerializer.Deserialize<BattleSnapshotData>(json);
+
+                    if (snapshot != null)
+                    {
+                        snapshot.FilePath = file;
+
+                        if (snapshot.ScopeType == ScopeType.Current)
+                        {
+                            if (CurrentSnapshots.Count < MaxSnapshots)
+                            {
+                                CurrentSnapshots.Add(snapshot);
+                            }
+                            else
+                            {
+                                // ? 超出限制,删除文件并释放内存
+                                File.Delete(file);
+                                _logger.LogDebug("启动时删除超出限制的旧快照文件: {File}", file);
+                            }
+                        }
+                        else
+                        {
+                            if (TotalSnapshots.Count < MaxSnapshots)
+                            {
+                                TotalSnapshots.Add(snapshot);
+                            }
+                            else
+                            {
+                                // ? 超出限制,删除文件并释放内存
+                                File.Delete(file);
+                                _logger.LogDebug("启动时删除超出限制的旧快照文件: {File}", file);
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
-         {
-       _logger.LogWarning(ex, "加载快照文件失败: {File}", file);
-   // 损坏的文件直接删除
-     try { File.Delete(file); } catch { }
-             }
-         }
+                {
+                    _logger.LogWarning(ex, "加载快照文件失败: {File}", file);
+                    // 损坏的文件直接删除
+                    try { File.Delete(file); } catch { }
+                }
+            }
 
-    _logger.LogInformation("加载快照完成: 当前={Current}/{MaxCurrent}, 全程={Total}/{MaxTotal}", 
-                CurrentSnapshots.Count, MaxSnapshots, TotalSnapshots.Count, MaxSnapshots);
+            _logger.LogInformation("加载快照完成: 当前={Current}/{MaxCurrent}, 全程={Total}/{MaxTotal}",
+                        CurrentSnapshots.Count, MaxSnapshots, TotalSnapshots.Count, MaxSnapshots);
         }
         catch (Exception ex)
-     {
+        {
             _logger.LogError(ex, "加载快照失败");
         }
     }
@@ -492,15 +460,15 @@ return;
     {
         try
         {
-      if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
-{
+            if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+            {
                 File.Delete(filePath);
-       _logger.LogDebug("成功删除快照文件: {File}", filePath);
-   }
-     }
+                _logger.LogDebug("成功删除快照文件: {File}", filePath);
+            }
+        }
         catch (Exception ex)
         {
-          _logger.LogWarning(ex, "删除快照文件失败: {File}", filePath);
+            _logger.LogWarning(ex, "删除快照文件失败: {File}", filePath);
         }
     }
 }
@@ -514,22 +482,22 @@ public class BattleSnapshotData
     public DateTime StartedAt { get; set; }
     public DateTime EndedAt { get; set; }
     public TimeSpan Duration { get; set; }
-  public ulong TeamTotalDamage { get; set; }
+    public ulong TeamTotalDamage { get; set; }
     public ulong TeamTotalHealing { get; set; }
     public ulong TeamTotalTakenDamage { get; set; }
     public Dictionary<long, SnapshotPlayerData> Players { get; set; } = new();
-    
+
     /// <summary>
     /// 文件路径(不序列化)
     /// </summary>
     [System.Text.Json.Serialization.JsonIgnore]
     public string FilePath { get; set; } = "";
-    
+
     /// <summary>
     /// 显示标签
     /// </summary>
     [System.Text.Json.Serialization.JsonIgnore]
-    public string DisplayLabel => 
+    public string DisplayLabel =>
         $"{(ScopeType == ScopeType.Current ? "当前" : "全程")} {StartedAt:HH:mm:ss} ({Duration:mm\\:ss})";
 }
 
@@ -545,11 +513,11 @@ public class SnapshotPlayerData
     public string SubProfession { get; set; } = "";
     public ulong TotalDamage { get; set; }
     public double TotalDps { get; set; }
- public ulong TotalHealing { get; set; }
+    public ulong TotalHealing { get; set; }
     public double TotalHps { get; set; }
     public ulong TakenDamage { get; set; }
     public bool IsNpc { get; set; }
-    
+
     // ? 新增: 技能数据列表
     public List<SnapshotSkillData> DamageSkills { get; set; } = new();
     public List<SnapshotSkillData> HealingSkills { get; set; } = new();
@@ -562,8 +530,8 @@ public class SnapshotPlayerData
 public class SnapshotSkillData
 {
     public long SkillId { get; set; }
-  public string SkillName { get; set; } = "";
- public ulong TotalValue { get; set; }
+    public string SkillName { get; set; } = "";
+    public ulong TotalValue { get; set; }
     public int UseTimes { get; set; }
     public int CritTimes { get; set; }
     public int LuckyTimes { get; set; }

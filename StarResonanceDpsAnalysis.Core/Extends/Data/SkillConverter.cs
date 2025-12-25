@@ -5,7 +5,8 @@ namespace StarResonanceDpsAnalysis.Core
     {
         Damage,
         Heal,
-        Unknown
+        Unknown,
+        TakenDamage
     }
 
     public enum ElementType
