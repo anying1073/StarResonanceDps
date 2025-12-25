@@ -85,4 +85,14 @@ public sealed class StatisticsEngine
     /// </summary>
     public IReadOnlyList<BattleLog> GetSectionBattleLogs()
         => _context.SectionBattleLogs;
+
+    public int GetFullStatisticsCount()
+    {
+        return _context.FullStatistics.Count;
+    }
+
+    public int GetSectionStatisticsCount()
+    {
+        return _context.SectionStatistics.Count;
+    }
 }

@@ -44,9 +44,11 @@ public sealed class TakenDamageCalculator : IStatisticsCalculator
     {
         stats.StartTick ??= log.TimeTicks;
         stats.LastTick = log.TimeTicks;
+        var ticks = stats.LastTick - (stats.StartTick ?? 0);
         
         var values = stats.TakenDamage;
         values.Total += log.Value;
+        values.ValuePerSecond = ticks > 0 ? (double)values.Total * TimeSpan.TicksPerMillisecond / ticks : double.NaN;
         values.HitCount++;
         
         if (log.IsCritical && log.IsLucky)

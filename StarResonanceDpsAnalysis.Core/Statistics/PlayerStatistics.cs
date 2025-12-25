@@ -53,6 +53,11 @@ public sealed class PlayerStatistics(long uid)
 
         return stats;
     }
+
+    public long ElapsedTicks()
+    {
+        return LastTick - StartTick ?? 0;
+    }
 }
 
 /// <summary>
@@ -67,6 +72,7 @@ public sealed class StatisticValues
     public long NormalValue { get; set; }
     public long CritValue { get; set; }
     public long LuckyValue { get; set; }
+    public double ValuePerSecond { get; set; }
 }
 
 /// <summary>

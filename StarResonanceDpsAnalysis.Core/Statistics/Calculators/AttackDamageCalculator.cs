@@ -10,36 +10,38 @@ namespace StarResonanceDpsAnalysis.Core.Statistics.Calculators;
 public sealed class AttackDamageCalculator : IStatisticsCalculator
 {
     public string StatisticTypeName => "Damage";
-    
+
     public void Calculate(BattleLog log, StatisticsContext context)
     {
         // Only process if attacker is player and target is not player (attacking NPCs)
         if (!log.IsAttackerPlayer || log.IsTargetPlayer || log.IsHeal)
             return;
-            
+
         var fullStats = context.GetOrCreateFullStats(log.AttackerUuid);
         var sectionStats = context.GetOrCreateSectionStats(log.AttackerUuid);
-        
+
         UpdateStatistics(log, fullStats);
         UpdateStatistics(log, sectionStats);
     }
-    
+
     public void ResetSection(StatisticsContext context)
     {
         // Section reset is handled by context
     }
-    
+
     private void UpdateStatistics(BattleLog log, PlayerStatistics stats)
     {
         // Update timing
         stats.StartTick ??= log.TimeTicks;
         stats.LastTick = log.TimeTicks;
-        
+        var ticks = stats.LastTick - (stats.StartTick ?? 0);
+
         // Update totals
         var values = stats.AttackDamage;
         values.Total += log.Value;
+        values.ValuePerSecond = ticks > 0 ? (double)values.Total * TimeSpan.TicksPerMillisecond / ticks : double.NaN;
         values.HitCount++;
-        
+
         if (log.IsCritical && log.IsLucky)
         {
             values.CritCount++;
@@ -61,7 +63,7 @@ public sealed class AttackDamageCalculator : IStatisticsCalculator
         {
             values.NormalValue += log.Value;
         }
-        
+
         // Update skill breakdown
         var skill = stats.GetOrCreateSkill(log.SkillID);
         skill.TotalValue += log.Value;
