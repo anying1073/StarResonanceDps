@@ -159,7 +159,7 @@ public partial class AppConfig : ObservableObject
     private int _dpsUpdateInterval = 1000;
 
     /// <summary>
-    /// ⭐ 新增: 历史记录最大保存数量
+    /// 历史记录最大保存数量
     /// 默认值：15条
     /// 范围：5 - 50
     /// </summary>
@@ -167,35 +167,35 @@ public partial class AppConfig : ObservableObject
     private int _maxHistoryCount = 15;
 
     /// <summary>
-    /// ⭐ 新增: 打桩模式默认木桩类型
+    /// 打桩模式默认木桩类型
     /// 默认值：Center (中间木桩)
     /// </summary>
     [ObservableProperty]
     private int _defaultDummyTarget = 0; // 0=Center, 1=TDummy
 
     /// <summary>
-    /// ⭐ 新增: DPS统计页面 - 技能显示数量
+    /// DPS统计页面 - 技能显示数量
     /// 默认值：8条
     /// </summary>
     [ObservableProperty]
     private int _skillDisplayLimit = 8;
 
     /// <summary>
-    /// ⭐ 新增: DPS统计页面 - 是否统计NPC数据
+    /// DPS统计页面 - 是否统计NPC数据
     /// 默认值：false (不统计NPC)
     /// </summary>
     [ObservableProperty]
     private bool _isIncludeNpcData = false;
 
     /// <summary>
-    /// ⭐ 新增: DPS统计页面 - 是否显示团队总伤
+    /// DPS统计页面 - 是否显示团队总伤
     /// 默认值：true (显示)
     /// </summary>
     [ObservableProperty]
     private bool _showTeamTotalDamage = true;
 
     /// <summary>
-    /// ⭐ 新增: DPS统计页面 - 快照最小记录时长(秒)
+    /// DPS统计页面 - 快照最小记录时长(秒)
     /// 默认值：5秒
     /// 范围：0 - 300秒
     /// </summary>
@@ -208,6 +208,26 @@ public partial class AppConfig : ObservableObject
     /// </summary>
     [ObservableProperty]
     private bool _usePlayerStatisticsPath = true;
+
+    /// <summary>
+    /// 玩家信息自定义格式字符串
+    /// 支持的占位符:
+    /// {Name} - 玩家名称
+    /// {Spec} - 职业流派
+    /// {PowerLevel} - 战力
+    /// {SeasonStrength} - 赛季强度
+    /// {SeasonLevel} - 赛季等级
+    /// {Guild} - 公会
+    /// {Uid} - UID
+    /// </summary>
+    [ObservableProperty]
+    private string _playerInfoFormatString = "{Name} - {Spec} ({PowerLevel}-{SeasonStrength})";
+
+    /// <summary>
+    /// 是否使用自定义格式字符串（false 则使用字段可见性配置）
+    /// </summary>
+    [ObservableProperty]
+    private bool _useCustomFormat = false;
 
     public AppConfig Clone()
     {

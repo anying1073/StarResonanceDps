@@ -1,4 +1,4 @@
-﻿<Window
+<Window
     x:Class="StarResonanceDpsAnalysis.WPF.Views.DpsStatisticsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -276,7 +276,7 @@
                     <MultiBinding Converter="{StaticResource StatisticTypeToSkillListConverter}">
                         <Binding Path="." />
                         <Binding Path="DataContext.StatisticIndex" RelativeSource="{RelativeSource AncestorType=Window}" />
-                        <!--  ⭐ 新增: 添加SkillListRefreshTrigger作为第三个绑定源,每次触发器改变时重新执行转换器  -->
+                        <!--  添加SkillListRefreshTrigger作为第三个绑定源,每次触发器改变时重新执行转换器  -->
                         <Binding Path="SkillListRefreshTrigger" />
                     </MultiBinding>
                 </ctrl:DpsDetailPopup.SkillList>

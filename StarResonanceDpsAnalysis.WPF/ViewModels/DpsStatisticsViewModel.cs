@@ -32,7 +32,7 @@ public partial class DpsStatisticsOptions : BaseViewModel
     }
 
     /// <summary>
-    /// ⭐ 新增: 当最小记录时长改变时保存到配置
+    /// 当最小记录时长改变时保存到配置
     /// </summary>
     partial void OnMinimalDurationInSecondsChanged(int value)
     {
@@ -49,7 +49,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     private readonly IMessageDialogService _messageDialogService;
     private readonly ILogger<DpsStatisticsViewModel> _logger;
 
-    // ⭐ 新增: 快照服务
+    // 快照服务
 
     private readonly IDataStorage _storage;
 
@@ -77,13 +77,13 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     private DispatcherTimer? _durationTimer;
     private int _indicatorHoverCount;
 
-    // ⭐ 新增: 控制是否显示NPC数据
+    // 控制是否显示NPC数据
     [ObservableProperty] private bool _isIncludeNpcData;
 
     private bool _isInitialized;
     [ObservableProperty] private bool _isServerConnected;
 
-    // ⭐ 新增: 快照查看模式相关字段
+    // 快照查看模式相关字段
     [ObservableProperty] private bool _isViewingSnapshot;
 
     // Captured elapsed of the last section to freeze UI until new data arrives
@@ -106,7 +106,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     [ObservableProperty] private string _teamTotalLabel = "团队DPS"; // 动态标签
     [ObservableProperty] private bool _temporaryMaskPlayerName;
 
-    // ⭐ 新增: 全程累计战斗时长（不包括脱战时间）
+    // 全程累计战斗时长（不包括脱战时间）
     private TimeSpan _totalCombatDuration = TimeSpan.Zero;
 
     // 保存实时数据订阅状态,以便恢复
@@ -206,7 +206,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     /// <summary>
-    /// ⭐ 新增: 从配置加载DPS统计页面的设置
+    /// 从配置加载DPS统计页面的设置
     /// </summary>
     private void LoadDpsStatisticsSettings()
     {
@@ -238,7 +238,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     /// <summary>
-    /// ⭐ 新增: Options属性变更处理
+    /// Options属性变更处理
     /// </summary>
     private void Options_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -251,7 +251,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }
     }
 
-    // ⭐ 新增: 暴露快照服务给View绑定
+    // 暴露快照服务给View绑定
     public BattleSnapshotService SnapshotService { get; }
 
     public Dictionary<StatisticType, DpsStatisticsSubViewModel> StatisticData { get; }
@@ -427,7 +427,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private void OpenPersonalDpsView()
     {
-        // ⭐ 新增: 检查用户是否设置了UID
+        // 检查用户是否设置了UID
         var userUid = _configManager.CurrentConfig.Uid;
 
         if (userUid <= 0)
@@ -466,7 +466,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _logger.LogInformation("已停止战斗计时器");
         }
 
-        // ⭐ 新增: 保存快照(在清空数据之前)
+        // 保存快照(在清空数据之前)
         if (_storage.HasData())
         {
             try
@@ -519,7 +519,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _awaitingSectionStart = false;
             _sectionTimedOut = false; // ⭐ Reset timeout flag
 
-            // ⭐ 新增: 清空全程累计时长
+            // 清空全程累计时长
             _totalCombatDuration = TimeSpan.Zero;
             _logger.LogInformation("已重置全程累计战斗时长");
         }
@@ -950,10 +950,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
         ulong totalValue = 0;
         double totalElapsedSeconds = 0;
-        var playerCount = 0; // ⭐ 新增: 统计玩家数量
-        var npcCount = 0; // ⭐ 新增: 统计NPC数量
-        var skippedPlayers = 0; // ⭐ 新增: 统计跳过的玩家
-        var skippedNpcs = 0; // ⭐ 新增: 统计跳过的NPC
+        var playerCount = 0; // 统计玩家数量
+        var npcCount = 0; // 统计NPC数量
+        var skippedPlayers = 0; // 统计跳过的玩家
+        var skippedNpcs = 0; // 统计跳过的NPC
 
         // 根据当前统计类型计算不同的数值
         foreach (var dpsData in data.Values)
@@ -1018,7 +1018,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             TeamTotalDps = totalElapsedSeconds > 0 ? totalValue / totalElapsedSeconds : 0;
         }
 
-        // ⭐ 新增: 详细日志输出(只在有数据时输出,避免日志爆炸)
+        // 详细日志输出(只在有数据时输出,避免日志爆炸)
         if (data.Count > 0)
         {
             _logger.LogDebug(
@@ -1041,10 +1041,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
         ulong totalValue = 0;
         double totalElapsedSeconds = 0;
-        var playerCount = 0; // ⭐ 新增: 统计玩家数量
-        var npcCount = 0; // ⭐ 新增: 统计NPC数量
-        var skippedPlayers = 0; // ⭐ 新增: 统计跳过的玩家
-        var skippedNpcs = 0; // ⭐ 新增: 统计跳过的NPC
+        var playerCount = 0; // 统计玩家数量
+        var npcCount = 0; // 统计NPC数量
+        var skippedPlayers = 0; // 统计跳过的玩家
+        var skippedNpcs = 0; // 统计跳过的NPC
 
         // 根据当前统计类型计算不同的数值
         foreach (var dpsData in data)
@@ -1109,7 +1109,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             TeamTotalDps = totalElapsedSeconds > 0 ? totalValue / totalElapsedSeconds : 0;
         }
 
-        // ⭐ 新增: 详细日志输出(只在有数据时输出,避免日志爆炸)
+        // 详细日志输出(只在有数据时输出,避免日志爆炸)
         if (data.Count > 0)
         {
             _logger.LogDebug(
@@ -1200,6 +1200,9 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             [StatisticType.NpcTakenDamage] = new()
         };
 
+        // 获取当前用户UID用于隐藏自己的DPS数据
+        var currentPlayerUid = _configManager.CurrentConfig.Uid;
+
         foreach (var playerStats in data.Values)
         {
             var durationTicks = playerStats.LastTick - (playerStats.StartTick ?? 0);
@@ -1222,7 +1225,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 }
             }
 
-            // ✅ Process Healing - 只统计玩家治疗
+            // Process Healing - 只统计玩家治疗
             var healingValue = (ulong)Math.Max(0, playerStats.Healing.Total);
             if (healingValue > 0 && !playerStats.IsNpc)
             {
@@ -1230,7 +1233,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                     playerStats, healingValue, durationTicks, totalDmg, totalHeal, totalTaken, playerStats.Uid);
             }
 
-            // ✅ Process TakenDamage
+            // Process TakenDamage
             var takenDamageValue = (ulong)Math.Max(0, playerStats.TakenDamage.Total);
             if (takenDamageValue > 0)
             {
@@ -1251,7 +1254,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }
 
         _logger.LogDebug(
-            $"PreProcess complete (PlayerStatistics path): Damage count = {result[StatisticType.Damage].Count}, NpcTakenDamage count = {result[StatisticType.NpcTakenDamage].Count}, IsIncludeNpcData = {IsIncludeNpcData}");
+            "PreProcess complete (PlayerStatistics path): Damage count = {Count}, NpcTakenDamage count = {I}, IsIncludeNpcData = {IsIncludeNpcData}", result[StatisticType.Damage].Count, result[StatisticType.NpcTakenDamage].Count, IsIncludeNpcData);
         return result;
     }
 
@@ -1540,7 +1543,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 _skipNextSnapshotSave = false;
             }
 
-            // ⭐ 新增: 累加上一次战斗的时长到全程计时
+            // 累加上一次战斗的时长到全程计时
             if (_timer.IsRunning)
             {
                 // Use the captured _lastSectionElapsed instead of recalculating
@@ -1607,7 +1610,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     /// <summary>
-    /// ⭐ 新增: 服务器切换事件处理
+    /// 服务器切换事件处理
     /// </summary>
     private void StorageOnServerChanged(string currentServer, string prevServer)
     {
@@ -1675,18 +1678,18 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         UpdateData(stat);
     }
 
-    // ⭐ 新增: 当ShowTeamTotalDamage改变时保存配置
+    // 当ShowTeamTotalDamage改变时保存配置
     partial void OnShowTeamTotalDamageChanged(bool value)
     {
         _logger.LogDebug("ShowTeamTotalDamage changed to: {Value}", value);
-        
+
         // 保存到配置
         _configManager.CurrentConfig.ShowTeamTotalDamage = value;
         _ = _configManager.SaveAsync();
         _logger.LogInformation("显示团队总伤设置已保存到配置: {Value}", value);
     }
 
-    // ⭐ 新增: 当IsIncludeNpcData改变时刷新数据
+    // 当IsIncludeNpcData改变时刷新数据
     partial void OnIsIncludeNpcDataChanged(bool value)
     {
         _logger.LogDebug($"IsIncludeNpcData changed to: {value}");
@@ -1696,7 +1699,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         _ = _configManager.SaveAsync();
         _logger.LogInformation("统计NPC设置已保存到配置: {Value}", value);
 
-        // ⭐ 新增: 如果取消勾选,清除所有StatisticData中的NPC数据
+        // 如果取消勾选,清除所有StatisticData中的NPC数据
         if (!value)
         {
             _logger.LogInformation("Removing NPC data from UI (IsIncludeNpcData=false)");
@@ -1727,7 +1730,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         UpdateData();
     }
 
-    // ⭐ 新增: 快照查看模式相关命令
+    // 快照查看模式相关命令
     [RelayCommand]
     private void ViewFullSnapshot()
     {
@@ -1760,7 +1763,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         ScopeTime = ScopeTime.Current;
     }
 
-    // ⭐ 新增: 加载快照命令
+    // 加载快照命令
     [RelayCommand]
     private void LoadSnapshot(BattleSnapshotData snapshot)
     {
@@ -1784,7 +1787,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     /// <summary>
-    /// ⭐ 新增: 进入快照查看模式
+    /// 进入快照查看模式
     /// </summary>
     private void EnterSnapshotViewMode(BattleSnapshotData snapshot)
     {
@@ -1803,14 +1806,14 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 _logger.LogDebug("已停止DPS更新定时器");
             }
 
-            // ⭐ 新增: 停止战斗时长定时器
+            // 停止战斗时长定时器
             if (_durationTimer != null)
             {
                 _durationTimer.Stop();
                 _logger.LogDebug("已停止战斗时长定时器");
             }
 
-            // ⭐ 新增: 停止主计时器(Stopwatch)
+            // 停止主计时器(Stopwatch)
             if (_timer.IsRunning)
             {
                 _timer.Stop();
@@ -1835,7 +1838,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     /// <summary>
-    /// ⭐ 新增: 退出快照查看模式,恢复实时统计
+    /// 退出快照查看模式,恢复实时统计
     /// </summary>
     [RelayCommand]
     private void ExitSnapshotViewMode()
@@ -1869,14 +1872,14 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _logger.LogDebug("已恢复DPS更新定时器");
         }
 
-        // ⭐ 新增: 恢复战斗时长定时器
+        // 恢复战斗时长定时器
         if (_durationTimer != null && !_durationTimer.IsEnabled)
         {
             _durationTimer.Start();
             _logger.LogDebug("已恢复战斗时长定时器");
         }
 
-        // ⭐ 新增: 恢复主计时器(如果之前在运行)
+        // 恢复主计时器(如果之前在运行)
         // 注意:只有当有实时数据时才需要恢复
         var hasData = _storage.HasData();
         if (hasData && !_timer.IsRunning)
@@ -1895,7 +1898,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     /// <summary>
-    /// ⭐ 新增: 将快照数据加载到UI显示
+    /// 将快照数据加载到UI显示
     /// </summary>
     private void LoadSnapshotDataToUI(BattleSnapshotData snapshot)
     {
@@ -2005,7 +2008,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     }
 
     /// <summary>
-    /// ⭐ 新增: 将快照技能数据转换为ViewModel
+    /// 将快照技能数据转换为ViewModel
     /// </summary>
     private List<SkillItemViewModel> ConvertSnapshotSkillsToViewModel(List<SnapshotSkillData> snapshotSkills,
         StatisticType statisticType)
@@ -2053,15 +2056,13 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }).ToList();
     }
 
-    partial void OnAppConfigChanging(AppConfig value)
+    partial void OnAppConfigChanging(AppConfig? oldValue, AppConfig newValue)
     {
-        _appConfig.PropertyChanged -= AppConfigOnPropertyChanged;
-    }
-
-    partial void OnAppConfigChanged(AppConfig value)
-    {
-        value.PropertyChanged += AppConfigOnPropertyChanged;
-        ApplyMaskToPlayers(value.MaskPlayerName);
+        if (oldValue != null) oldValue.PropertyChanged -= AppConfigOnPropertyChanged;
+        newValue.PropertyChanged += AppConfigOnPropertyChanged;
+        ApplyMaskToPlayers(newValue.MaskPlayerName);
+        ApplyPlayerInfoFormatToPlayers(newValue.PlayerInfoFormatString);
+        ApplyPlayerInfoFormatSwitchToPlayers(newValue.UseCustomFormat);
     }
 
     private void AppConfigOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -2070,27 +2071,60 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         {
             ApplyMaskToPlayers(AppConfig.MaskPlayerName);
         }
+
+        if (e.PropertyName == nameof(AppConfig.PlayerInfoFormatString))
+        {
+            ApplyPlayerInfoFormatToPlayers(AppConfig.PlayerInfoFormatString);
+        }
+
+        if (e.PropertyName == nameof(AppConfig.UseCustomFormat))
+        {
+            ApplyPlayerInfoFormatSwitchToPlayers(AppConfig.UseCustomFormat);
+        }
     }
 
     private void ApplyMaskToPlayers(bool mask)
     {
-        if (_dispatcher.CheckAccess())
-        {
-            Apply();
-        }
-        else
-        {
-            _dispatcher.Invoke(Apply);
-        }
-
-        return;
-
-        void Apply()
+        InvokeOnDispatcher(() =>
         {
             foreach (var vm in StatisticData.Values)
             {
                 vm.SetPlayerInfoMask(mask);
             }
+        });
+    }
+
+    private void ApplyPlayerInfoFormatSwitchToPlayers(bool valueUseCustomFormat)
+    {
+        InvokeOnDispatcher(() =>
+        {
+            foreach (var vm in StatisticData.Values)
+            {
+                vm.SetUsePlayerInfoFormat(valueUseCustomFormat);
+            }
+        });
+    }
+
+    private void ApplyPlayerInfoFormatToPlayers(string formatString)
+    {
+        InvokeOnDispatcher(() =>
+        {
+            foreach (var vm in StatisticData.Values)
+            {
+                vm.SetPlayerInfoFormat(formatString);
+            }
+        });
+    }
+
+    private void InvokeOnDispatcher(Action action)
+    {
+        if (_dispatcher.CheckAccess())
+        {
+            action();
+        }
+        else
+        {
+            _dispatcher.Invoke(action);
         }
     }
 }

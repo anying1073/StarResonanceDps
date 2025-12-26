@@ -29,7 +29,7 @@ public partial class DpsStatisticsView : Window
         // ⭐ 初始化默认值:记录所有(0秒)
         vm.Options.MinimalDurationInSeconds = 0;
 
-        // ⭐ 新增: 右键退出快照模式
+        // 右键退出快照模式
         MouseRightButtonDown += OnWindowRightClick;
     }
 
@@ -137,7 +137,7 @@ public partial class DpsStatisticsView : Window
     }
 
     /// <summary>
-    /// ⭐ 新增: 记录设置选择(互斥单选)
+    /// 记录设置选择(互斥单选)
     /// </summary>
     private void RecordSettingsMenuItem_Click(object sender, RoutedEventArgs e)
     {
@@ -159,7 +159,7 @@ public partial class DpsStatisticsView : Window
     }
 
     /// <summary>
-    /// ⭐ 新增: 窗口右键处理 - 退出快照模式
+    /// 窗口右键处理 - 退出快照模式
     /// </summary>
     private void OnWindowRightClick(object sender, MouseButtonEventArgs e)
     {

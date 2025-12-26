@@ -30,7 +30,7 @@ namespace StarResonanceDpsAnalysis.WPF.Views
                 rootElement.LayoutTransform = new ScaleTransform(scale, scale);
             }
             
-            // ⭐ 新增: 从配置中读取置顶状态,与DPS统计窗口保持一致
+            // 从配置中读取置顶状态,与DPS统计窗口保持一致
             Topmost = configManager.CurrentConfig.TopmostEnabled;
         }
 

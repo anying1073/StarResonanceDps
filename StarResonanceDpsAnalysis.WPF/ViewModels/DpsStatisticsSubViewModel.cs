@@ -118,6 +118,22 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
         }
     }
 
+    public void SetUsePlayerInfoFormat(bool useFormat)
+    {
+        foreach (var value in Data)
+        {
+            value.Player.UseCustomFormat = useFormat;
+        }
+    }
+
+    public void SetPlayerInfoFormat(string formatString)
+    {
+        foreach (var value in Data)
+        {
+            value.Player.FormatString = formatString;
+        }
+    }
+
     /// <summary>
     /// Sorts the slots collection in-place based on the current sort criteria
     /// </summary>
@@ -165,38 +181,8 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
         }
     }
 
-    protected StatisticDataViewModel GetOrAddStatisticDataViewModel(DpsData dpsData)
-    {
-        if (DataDictionary.TryGetValue(dpsData.UID, out var slot)) return slot;
-
-        // Debug.Assert(playerInfo != null, nameof(playerInfo) + " != null");
-        var ret = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.UID, out var playerInfo);
-        slot = new StatisticDataViewModel(_debugFunctions, _localizationManager)
-        {
-            Index = 999,
-            Value = 0,
-            DurationTicks = dpsData.LastLoggedTick - (dpsData.StartLoggedTick ?? 0),
-            Player = new PlayerInfoViewModel(_localizationManager)
-            {
-                Uid = dpsData.UID,
-                Guild = "Unknown",
-                Name = playerInfo?.Name,
-                Spec = playerInfo?.Spec ?? ClassSpec.Unknown,
-                IsNpc = dpsData.IsNpcData,
-                NpcTemplateId = playerInfo?.NpcTemplateId ?? 0,
-                Mask = _parent.AppConfig.MaskPlayerName
-            },
-            // Set the hover action to call parent's SetIndicatorHover
-            SetHoverStateAction = isHovering => _parent.SetIndicatorHover(isHovering)
-        };
-
-        _dispatcher.Invoke(() => { Data.Add(slot); });
-
-        return slot;
-    }
-
     /// <summary>
-    /// ? NEW: Get or add StatisticDataViewModel from PlayerStatistics (new architecture)
+    /// Get or add StatisticDataViewModel from PlayerStatistics (new architecture)
     /// </summary>
     protected StatisticDataViewModel GetOrAddStatisticDataViewModel(PlayerStatistics playerStats)
     {
@@ -217,7 +203,10 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
                 Spec = playerInfo?.Spec ?? ClassSpec.Unknown,
                 IsNpc = playerStats.IsNpc,
                 NpcTemplateId = playerInfo?.NpcTemplateId ?? 0,
-                Mask = _parent.AppConfig.MaskPlayerName
+                Mask = _parent.AppConfig.MaskPlayerName,
+                // ⭐ 应用自定义格式字符串配置
+                UseCustomFormat = _parent.AppConfig.UseCustomFormat,
+                FormatString = _parent.AppConfig.PlayerInfoFormatString
             },
             SetHoverStateAction = isHovering => _parent.SetIndicatorHover(isHovering)
         };
@@ -397,8 +386,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             new SkillItemViewModel
             {
                 SkillName = "Test Skill C",
-                Damage = new SkillItemViewModel.SkillValue { TotalValue = 12300, HitCount = 30, CritCount = 12, Average = 410 }
-            }
+                Damage = new SkillItemViewModel.SkillValue { TotalValue = 12300, HitCount = 30, CritCount = 12, Average = 410 } }
         ];
         newItem.Heal.FilteredSkillList =
         [

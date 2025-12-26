@@ -843,6 +843,15 @@
   <data name="Window_BossTracker_Title" xml:space="preserve">
     <value>野外Boss状态查看器</value>
   </data>
+  <data name="Debug_Localization_Language" xml:space="preserve">
+    <value>语言：</value>
+  </data>
+  <data name="Debug_Localization_TestKey" xml:space="preserve">
+    <value>测试键：</value>
+  </data>
+  <data name="Debug_Localization_Test" xml:space="preserve">
+    <value>测试</value>
+  </data>
   <data name="MainView_Plugin_Search_PlaceHolder" xml:space="preserve">
     <value>搜索...</value>
   </data>
@@ -1039,5 +1048,50 @@
   </data>
   <data name="Common_HitType_Normal" xml:space="preserve">
     <value>普通</value>
+  </data>
+  <data name="Settings_PlayerInfoCustomization_Title" xml:space="preserve">
+    <value>玩家信息显示</value>
+  </data>
+  <data name="Settings_PlayerInfoCustomization_Description" xml:space="preserve">
+    <value>定制玩家信息显示</value>
+  </data>
+  <data name="Settings_PlayerInfo_UseCustomFormat" xml:space="preserve">
+    <value>启用自定义格式</value>
+  </data>
+  <data name="Settings_PlayerInfo_QuickPresets" xml:space="preserve">
+    <value>快速预设</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Default" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Simple" xml:space="preserve">
+    <value>简洁</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Detailed" xml:space="preserve">
+    <value>详细</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_NameOnly" xml:space="preserve">
+    <value>仅名称</value>
+  </data>
+  <data name="Settings_PlayerInfo_AddFields" xml:space="preserve">
+    <value>添加信息字段</value>
+  </data>
+  <data name="Settings_PlayerInfo_AddSeparators" xml:space="preserve">
+    <value>添加分隔符</value>
+  </data>
+  <data name="Settings_PlayerInfo_FormatString" xml:space="preserve">
+    <value>自定义格式字符串</value>
+  </data>
+  <data name="Settings_PlayerInfo_FormatString_Tooltip" xml:space="preserve">
+    <value>高级：直接使用 {Name}、{Spec}、{PowerLevel} 等占位符编辑格式字符串。</value>
+  </data>
+  <data name="Settings_PlayerInfo_Clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="Settings_PlayerInfo_Clear_Tooltip" xml:space="preserve">
+    <value>清空格式字符串并重新开始</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preview" xml:space="preserve">
+    <value>实时预览</value>
   </data>
 </root>

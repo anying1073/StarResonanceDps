@@ -1839,6 +1839,141 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Information Fields.
+        /// </summary>
+        public static string Settings_PlayerInfo_AddFields {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_AddFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Separators.
+        /// </summary>
+        public static string Settings_PlayerInfo_AddSeparators {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_AddSeparators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string Settings_PlayerInfo_Clear {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the format string and start fresh.
+        /// </summary>
+        public static string Settings_PlayerInfo_Clear_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_Clear_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Format String.
+        /// </summary>
+        public static string Settings_PlayerInfo_FormatString {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_FormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced: Directly edit the format string using placeholders like {Name}, {Spec}, {PowerLevel}, etc..
+        /// </summary>
+        public static string Settings_PlayerInfo_FormatString_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_FormatString_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        public static string Settings_PlayerInfo_Preset_Default {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_Preset_Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detailed.
+        /// </summary>
+        public static string Settings_PlayerInfo_Preset_Detailed {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_Preset_Detailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name Only.
+        /// </summary>
+        public static string Settings_PlayerInfo_Preset_NameOnly {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_Preset_NameOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simple.
+        /// </summary>
+        public static string Settings_PlayerInfo_Preset_Simple {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_Preset_Simple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Live Preview.
+        /// </summary>
+        public static string Settings_PlayerInfo_Preview {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quick Presets.
+        /// </summary>
+        public static string Settings_PlayerInfo_QuickPresets {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_QuickPresets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Custom Format.
+        /// </summary>
+        public static string Settings_PlayerInfo_UseCustomFormat {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_UseCustomFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom player info display.
+        /// </summary>
+        public static string Settings_PlayerInfoCustomization_Description {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfoCustomization_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player info display.
+        /// </summary>
+        public static string Settings_PlayerInfoCustomization_Title {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfoCustomization_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do not use data results to discriminate or harm the game community environment..
         /// </summary>
         public static string Settings_PlayerNameMask_Warning_Message {

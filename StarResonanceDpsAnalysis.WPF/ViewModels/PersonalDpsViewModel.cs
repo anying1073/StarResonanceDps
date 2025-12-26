@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -41,12 +41,12 @@ public partial class PersonalDpsViewModel : BaseViewModel
     private readonly object _timerLock = new();
     private Timer? _remainingTimer;
 
-    // ⭐ 新增: 缓存上一次的显示数据（脱战后保持显示）
+    // 缓存上一次的显示数据（脱战后保持显示）
     private string _cachedDpsDisplay = "0 (0)";
     private double _cachedTeamPercent = 0;
     private string _cachedPercentDisplay = "0%";
 
-    // ⭐ 新增: 标记是否正在等待新战斗开始
+    // 标记是否正在等待新战斗开始
     private bool _awaitingNewBattle = false;
 
     public PersonalDpsViewModel(
@@ -97,7 +97,7 @@ public partial class PersonalDpsViewModel : BaseViewModel
     [ObservableProperty] private double _teamDamagePercent = 0;
     [ObservableProperty] private string _teamPercentDisplay = "0%";
 
-    // ⭐ 新增: 木桩类型选择（默认为中间木桩）
+    // 木桩类型选择（默认为中间木桩）
     [ObservableProperty] private DummyTargetType _selectedDummyTarget = DummyTargetType.Center;
 
     public double RemainingPercent

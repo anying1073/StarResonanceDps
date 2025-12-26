@@ -843,6 +843,15 @@
   <data name="Window_BossTracker_Title" xml:space="preserve">
     <value>월드 보스 상태 보기</value>
   </data>
+  <data name="Debug_Localization_Language" xml:space="preserve">
+    <value>언어:</value>
+  </data>
+  <data name="Debug_Localization_TestKey" xml:space="preserve">
+    <value>테스트 키:</value>
+  </data>
+  <data name="Debug_Localization_Test" xml:space="preserve">
+    <value>테스트</value>
+  </data>
   <data name="MainView_Plugin_Search_PlaceHolder" xml:space="preserve">
     <value>검색...</value>
   </data>
@@ -1030,5 +1039,59 @@
   </data>
   <data name="SkillBreakdown_Chart_DpsSeriesXAxis" xml:space="preserve">
     <value />
+  </data>
+  <data name="Common_HitType_Lucky" xml:space="preserve">
+    <value>행운</value>
+  </data>
+  <data name="Common_HitType_Critical" xml:space="preserve">
+    <value>치명타</value>
+  </data>
+  <data name="Common_HitType_Normal" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="Settings_PlayerInfoCustomization_Title" xml:space="preserve">
+    <value>플레이어 정보 표시</value>
+  </data>
+  <data name="Settings_PlayerInfoCustomization_Description" xml:space="preserve">
+    <value>플레이어 정보 표시 사용자 지정</value>
+  </data>
+  <data name="Settings_PlayerInfo_UseCustomFormat" xml:space="preserve">
+    <value>사용자 지정 형식 사용</value>
+  </data>
+  <data name="Settings_PlayerInfo_QuickPresets" xml:space="preserve">
+    <value>빠른 프리셋</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Default" xml:space="preserve">
+    <value>기본</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Simple" xml:space="preserve">
+    <value>간단</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Detailed" xml:space="preserve">
+    <value>상세</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_NameOnly" xml:space="preserve">
+    <value>이름만</value>
+  </data>
+  <data name="Settings_PlayerInfo_AddFields" xml:space="preserve">
+    <value>정보 필드 추가</value>
+  </data>
+  <data name="Settings_PlayerInfo_AddSeparators" xml:space="preserve">
+    <value>구분자 추가</value>
+  </data>
+  <data name="Settings_PlayerInfo_FormatString" xml:space="preserve">
+    <value>사용자 지정 형식 문자열</value>
+  </data>
+  <data name="Settings_PlayerInfo_FormatString_Tooltip" xml:space="preserve">
+    <value>고급: {Name}, {Spec}, {PowerLevel} 등의 자리표시자를 사용해 형식 문자열을 직접 편집합니다.</value>
+  </data>
+  <data name="Settings_PlayerInfo_Clear" xml:space="preserve">
+    <value>지우기</value>
+  </data>
+  <data name="Settings_PlayerInfo_Clear_Tooltip" xml:space="preserve">
+    <value>형식 문자열을 지우고 새로 시작합니다.</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preview" xml:space="preserve">
+    <value>실시간 미리보기</value>
   </data>
 </root>

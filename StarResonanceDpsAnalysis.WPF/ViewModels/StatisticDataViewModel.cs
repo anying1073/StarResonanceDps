@@ -16,8 +16,6 @@ public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationMa
     [ObservableProperty] private PlayerInfoViewModel _player = new(localizationManager);
     [ObservableProperty] private ulong _value;
 
-    // ? 新增: 技能列表刷新触发器
-    // 每次FilteredSkillList改变时递增此值,触发绑定更新
     [ObservableProperty] private int _skillListRefreshTrigger = 0;
 
     // Action to notify parent about hover state change
@@ -91,9 +89,9 @@ public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationMa
 
         /// <summary>
         /// Take top n skills from TotalSkillList to FilteredSkillList<br/>
-        /// 从TotalSkillList重新过滤出FilteredSkillList
+        /// 浠嶵otalSkillList閲嶆柊杩囨护鍑篎ilteredSkillList
         /// </summary>
-        /// <param name="limit">显示条数限制,0表示显示全部</param>
+        /// <param name="limit">鏄剧ず鏉℃暟闄愬埗,0琛ㄧず鏄剧ず鍏ㄩ儴</param>
         public void RefreshFilteredList(int limit = 0)
         {
             var newFiltered = limit > 0

@@ -1068,4 +1068,49 @@ How to get: After a fight, your character will automatically appear in the stats
   <data name="Common_HitType_Normal" xml:space="preserve">
     <value>Normal</value>
   </data>
+  <data name="Settings_PlayerInfoCustomization_Title" xml:space="preserve">
+    <value>Player info display</value>
+  </data>
+  <data name="Settings_PlayerInfoCustomization_Description" xml:space="preserve">
+    <value>Custom player info display</value>
+  </data>
+    <data name="Settings_PlayerInfo_UseCustomFormat" xml:space="preserve">
+    <value>Enable Custom Format</value>
+  </data>
+  <data name="Settings_PlayerInfo_QuickPresets" xml:space="preserve">
+    <value>Quick Presets</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Simple" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Detailed" xml:space="preserve">
+    <value>Detailed</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_NameOnly" xml:space="preserve">
+    <value>Name Only</value>
+  </data>
+  <data name="Settings_PlayerInfo_AddFields" xml:space="preserve">
+    <value>Add Information Fields</value>
+  </data>
+  <data name="Settings_PlayerInfo_AddSeparators" xml:space="preserve">
+    <value>Add Separators</value>
+  </data>
+  <data name="Settings_PlayerInfo_FormatString" xml:space="preserve">
+    <value>Custom Format String</value>
+  </data>
+  <data name="Settings_PlayerInfo_FormatString_Tooltip" xml:space="preserve">
+    <value>Advanced: Directly edit the format string using placeholders like {Name}, {Spec}, {PowerLevel}, etc.</value>
+  </data>
+  <data name="Settings_PlayerInfo_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Settings_PlayerInfo_Clear_Tooltip" xml:space="preserve">
+    <value>Clear the format string and start fresh</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preview" xml:space="preserve">
+    <value>Live Preview</value>
+  </data>
 </root>

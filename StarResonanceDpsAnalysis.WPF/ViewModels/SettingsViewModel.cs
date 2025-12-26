@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging.Abstractions;
 using StarResonanceDpsAnalysis.Core.Extends.System;
+using StarResonanceDpsAnalysis.Core.Models;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
@@ -56,6 +57,112 @@ public partial class SettingsViewModel(
 
     [ObservableProperty] private Option<Language>? _selectedLanguage;
     [ObservableProperty] private Option<NumberDisplayMode>? _selectedNumberDisplayMode;
+
+
+    /// <summary>
+    /// 格式字符串预览
+    /// </summary>
+    public string FormatPreview
+    {
+        get
+        {
+            if (!AppConfig.UseCustomFormat) return "Custom format is disabled. Using field visibility settings.";
+            
+            // 创建一个示例 PlayerInfoViewModel 来生成预览
+            var previewVm = new PlayerInfoViewModel(localization)
+            {
+                Name = "PlayerName",
+                Spec = ClassSpec.FrostMageIcicle,
+                PowerLevel = 25000,
+                SeasonStrength = 8,
+                SeasonLevel = 50,
+                Guild = "MyGuild",
+                Uid = 123456789,
+                Mask = false,
+                UseCustomFormat = true,
+                FormatString = AppConfig.PlayerInfoFormatString
+            };
+            
+            // Trigger the update to generate the formatted string
+            return previewVm.PlayerInfo;
+        }
+    }
+
+    /// <summary>
+    /// 可用的格式化字段列表
+    /// </summary>
+    public List<FormatFieldOption> AvailableFormatFields { get; } = new()
+    {
+        new FormatFieldOption("Name", "Player Name", "{Name}", "e.g., PlayerName"),
+        new FormatFieldOption("Spec", "Class Spec", "{Spec}", "e.g., FrostMage"),
+        new FormatFieldOption("PowerLevel", "Power Level", "{PowerLevel}", "e.g., 25000"),
+        new FormatFieldOption("SeasonStrength", "Season Strength", "{SeasonStrength}", "e.g., 8"),
+        new FormatFieldOption("SeasonLevel", "Season Level", "{SeasonLevel}", "e.g., 50"),
+        new FormatFieldOption("Guild", "Guild Name", "{Guild}", "e.g., MyGuild"),
+        new FormatFieldOption("Uid", "Player UID", "{Uid}", "e.g., 123456789"),
+    };
+
+    /// <summary>
+    /// 常用分隔符列表
+    /// </summary>
+    public List<string> CommonSeparators { get; } = new()
+    {
+        " - ",
+        " | ",
+        " / ",
+        " • ",
+        ", ",
+        " ",
+    };
+
+    /// <summary>
+    /// 添加字段到格式字符串
+    /// </summary>
+    [RelayCommand]
+    private void AddFieldToFormat(FormatFieldOption? field)
+    {
+        if (field == null) return;
+        
+        AppConfig.PlayerInfoFormatString += field.Placeholder;
+        AppConfig.UseCustomFormat = true;
+        OnPropertyChanged(nameof(FormatPreview));
+    }
+
+    /// <summary>
+    /// 添加分隔符到格式字符串
+    /// </summary>
+    [RelayCommand]
+    private void AddSeparatorToFormat(string? separator)
+    {
+        if (string.IsNullOrEmpty(separator)) return;
+        
+        AppConfig.PlayerInfoFormatString += separator;
+        OnPropertyChanged(nameof(FormatPreview));
+    }
+
+    /// <summary>
+    /// 清空格式字符串
+    /// </summary>
+    [RelayCommand]
+    private void ClearFormat()
+    {
+        AppConfig.PlayerInfoFormatString = string.Empty;
+        OnPropertyChanged(nameof(FormatPreview));
+    }
+
+    /// <summary>
+    /// 设置格式字符串预设
+    /// </summary>
+    [RelayCommand]
+    private void SetPlayerInfoFormatPreset(string preset)
+    {
+        if (!string.IsNullOrEmpty(preset))
+        {
+            AppConfig.PlayerInfoFormatString = preset;
+            AppConfig.UseCustomFormat = true;
+            OnPropertyChanged(nameof(FormatPreview));
+        }
+    }
 
     public event Action? RequestClose;
 
@@ -233,6 +340,11 @@ public partial class SettingsViewModel(
                 ApplyOpacityImmediately(config.Opacity);
             }
         }
+        else if (e.PropertyName is nameof(AppConfig.PlayerInfoFormatString) or nameof(AppConfig.UseCustomFormat))
+        {
+            // Update format string preview only (no real-time application to actual config)
+            OnPropertyChanged(nameof(FormatPreview));
+        }
 
         if (_isLoaded)
         {
@@ -366,9 +478,10 @@ public partial class SettingsViewModel(
 
         // Restore opacity to original value
         configManager.CurrentConfig.Opacity = _originalConfig.Opacity;
-
-        // Note: Other properties are already isolated in the cloned AppConfig
-        // so they don't affect the running application until saved
+        
+        // Restore player info format settings
+        configManager.CurrentConfig.UseCustomFormat = _originalConfig.UseCustomFormat;
+        configManager.CurrentConfig.PlayerInfoFormatString = _originalConfig.PlayerInfoFormatString;
     }
 
     private void OnCultureChanged(object? sender, CultureInfo culture)
@@ -509,4 +622,23 @@ public sealed class SettingsDesignTimeViewModel : SettingsViewModel
 internal sealed class DesignMessageDialogService : IMessageDialogService
 {
     public bool? Show(string title, string content, Window? owner = null) => true;
+}
+
+/// <summary>
+/// 格式字段选项
+/// </summary>
+public class FormatFieldOption
+{
+    public string Id { get; set; }
+    public string DisplayName { get; set; }
+    public string Placeholder { get; set; }
+    public string Example { get; set; }
+
+    public FormatFieldOption(string id, string displayName, string placeholder, string example)
+    {
+        Id = id;
+        DisplayName = displayName;
+        Placeholder = placeholder;
+        Example = example;
+    }
 }

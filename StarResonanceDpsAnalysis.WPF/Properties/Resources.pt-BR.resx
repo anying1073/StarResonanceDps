@@ -129,6 +129,9 @@
   <data name="Menu_ShowTotal" xml:space="preserve">
     <value>Mostrar Dano Total</value>
   </data>
+  <data name="Menu_Personal_Training_Mode" xml:space="preserve">
+    <value>Modo Solo/Treino</value>
+  </data>
   <data name="Menu_RecordSettings" xml:space="preserve">
     <value>Opções de Gravação</value>
   </data>
@@ -161,6 +164,15 @@
   </data>
   <data name="Menu_History" xml:space="preserve">
     <value>Histórico</value>
+  </data>
+  <data name="Menu_History_Current" xml:space="preserve">
+    <value>Batalha atual</value>
+  </data>
+  <data name="Menu_History_Total" xml:space="preserve">
+    <value>Batalha completa</value>
+  </data>
+  <data name="Menu_ExitSnapshotMode" xml:space="preserve">
+    <value>Sair do modo de instantâneo</value>
   </data>
   <data name="Menu_Exit" xml:space="preserve">
     <value>Sair</value>
@@ -251,6 +263,9 @@
   </data>
   <data name="Menu_TemporaryMaskPlayerName" xml:space="preserve">
     <value>Mascaramento temporário</value>
+  </data>
+  <data name="Settings_Section_Language_Title" xml:space="preserve">
+    <value>Configurações de exibição</value>
   </data>
   <data name="Settings_Section_Language_Description" xml:space="preserve">
     <value>Preferências de exibição da interface</value>
@@ -639,8 +654,53 @@
   <data name="SkillBreakdown_Label_LuckRate" xml:space="preserve">
     <value>Taxa de sorte</value>
   </data>
+  <data name="SkillBreakdown_Value_LuckRate" xml:space="preserve">
+    <value>0%</value>
+  </data>
+  <data name="SkillBreakdown_Label_CritCount" xml:space="preserve">
+    <value>Acertos críticos</value>
+  </data>
+  <data name="SkillBreakdown_Value_CritCount" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="SkillBreakdown_Label_NormalDamage" xml:space="preserve">
+    <value>Dano normal</value>
+  </data>
+  <data name="SkillBreakdown_Value_NormalDamage" xml:space="preserve">
+    <value>28.71K</value>
+  </data>
   <data name="SkillBreakdown_Label_CritDamage" xml:space="preserve">
     <value>Dano Crítico</value>
+  </data>
+  <data name="SkillBreakdown_Value_CritDamage" xml:space="preserve">
+    <value>13.92K</value>
+  </data>
+  <data name="SkillBreakdown_Label_LuckCount" xml:space="preserve">
+    <value>Acertos de sorte</value>
+  </data>
+  <data name="SkillBreakdown_Value_LuckCount" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="SkillBreakdown_Label_LuckDamage" xml:space="preserve">
+    <value>Dano de sorte</value>
+  </data>
+  <data name="SkillBreakdown_Value_LuckDamage" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="SkillBreakdown_Label_AverageDamage" xml:space="preserve">
+    <value>Acerto médio</value>
+  </data>
+  <data name="SkillBreakdown_Value_AverageDamage" xml:space="preserve">
+    <value>7106</value>
+  </data>
+  <data name="SkillBreakdown_Label_DamageTakenCount" xml:space="preserve">
+    <value>Vezes atingido</value>
+  </data>
+  <data name="SkillBreakdown_Value_DamageTakenCount" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="SkillBreakdown_Placeholder_Form" xml:space="preserve">
+    <value>Imagine uma tabela de dados aqui</value>
   </data>
   <data name="SkillBreakdown_Info_Name" xml:space="preserve">
     <value>--Nome de Exemplo--</value>
@@ -657,6 +717,27 @@
   <data name="SkillBreakdown_Info_Badge" xml:space="preserve">
     <value>Emblema: 190</value>
   </data>
+  <data name="SkillBreakdown_Tab_Output" xml:space="preserve">
+    <value>DPS</value>
+  </data>
+  <data name="SkillBreakdown_Tab_Healing" xml:space="preserve">
+    <value>Cura</value>
+  </data>
+  <data name="SkillBreakdown_Tab_Tanking" xml:space="preserve">
+    <value>Dano recebido</value>
+  </data>
+  <data name="SkillBreakdown_Tab_Summary" xml:space="preserve">
+    <value>Resumo</value>
+  </data>
+  <data name="SkillBreakdown_Tab_Details" xml:space="preserve">
+    <value>Detalhes</value>
+  </data>
+  <data name="SkillBreakdown_Placeholder_Details" xml:space="preserve">
+    <value>Espaço reservado de detalhes</value>
+  </data>
+  <data name="SkillBreakdown_Tab_Graph" xml:space="preserve">
+    <value>Gráfico</value>
+  </data>
   <data name="SkillBreakdown_Placeholder_Graph" xml:space="preserve">
     <value>Espaço reservado para gráfico</value>
   </data>
@@ -668,6 +749,9 @@
   </data>
   <data name="Common_Dash" xml:space="preserve">
     <value>-</value>
+  </data>
+  <data name="SkillBreakdown_Section_DamageDistribution" xml:space="preserve">
+    <value>Distribuição de dano</value>
   </data>
   <data name="StatisticType_Damage" xml:space="preserve">
     <value>Dano</value>
@@ -756,8 +840,17 @@
   <data name="Settings_NetworkAdapterAutoSelect_Button" xml:space="preserve">
     <value>Automático</value>
   </data>
+  <data name="Window_BossTracker_Title" xml:space="preserve">
+    <value>Rastreador de status do boss</value>
+  </data>
   <data name="Debug_Localization_Language" xml:space="preserve">
     <value>Idioma:</value>
+  </data>
+  <data name="Debug_Localization_TestKey" xml:space="preserve">
+    <value>Chave de teste:</value>
+  </data>
+  <data name="Debug_Localization_Test" xml:space="preserve">
+    <value>Teste</value>
   </data>
   <data name="MainView_Plugin_Search_PlaceHolder" xml:space="preserve">
     <value>Pesquisar...</value>
@@ -947,6 +1040,60 @@ Como obter: Após uma luta, seu personagem aparecerá automaticamente na janela 
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="SkillBreakdown_Chart_DpsSeriesXAxis" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
+  </data>
+  <data name="Common_HitType_Lucky" xml:space="preserve">
+    <value>Sorte</value>
+  </data>
+  <data name="Common_HitType_Critical" xml:space="preserve">
+    <value>Crítico</value>
+  </data>
+  <data name="Common_HitType_Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="Settings_PlayerInfoCustomization_Title" xml:space="preserve">
+    <value>Exibição de informações do jogador</value>
+  </data>
+  <data name="Settings_PlayerInfoCustomization_Description" xml:space="preserve">
+    <value>Exibição personalizada de informações do jogador</value>
+  </data>
+  <data name="Settings_PlayerInfo_UseCustomFormat" xml:space="preserve">
+    <value>Ativar formato personalizado</value>
+  </data>
+  <data name="Settings_PlayerInfo_QuickPresets" xml:space="preserve">
+    <value>Predefinições rápidas</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Default" xml:space="preserve">
+    <value>Padrão</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Simple" xml:space="preserve">
+    <value>Simples</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_Detailed" xml:space="preserve">
+    <value>Detalhado</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preset_NameOnly" xml:space="preserve">
+    <value>Somente nome</value>
+  </data>
+  <data name="Settings_PlayerInfo_AddFields" xml:space="preserve">
+    <value>Adicionar campos de informação</value>
+  </data>
+  <data name="Settings_PlayerInfo_AddSeparators" xml:space="preserve">
+    <value>Adicionar separadores</value>
+  </data>
+  <data name="Settings_PlayerInfo_FormatString" xml:space="preserve">
+    <value>String de formato personalizada</value>
+  </data>
+  <data name="Settings_PlayerInfo_FormatString_Tooltip" xml:space="preserve">
+    <value>Avançado: Edite diretamente a string de formato usando marcadores como {Name}, {Spec}, {PowerLevel}, etc.</value>
+  </data>
+  <data name="Settings_PlayerInfo_Clear" xml:space="preserve">
+    <value>Limpar</value>
+  </data>
+  <data name="Settings_PlayerInfo_Clear_Tooltip" xml:space="preserve">
+    <value>Limpar a string de formato e começar do zero</value>
+  </data>
+  <data name="Settings_PlayerInfo_Preview" xml:space="preserve">
+    <value>Pré-visualização ao vivo</value>
   </data>
   <data name="Menu_Training_Personal" xml:space="preserve">
     <value>Treino Solo</value>
