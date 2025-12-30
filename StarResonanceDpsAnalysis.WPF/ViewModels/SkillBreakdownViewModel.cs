@@ -6,8 +6,6 @@ using StarResonanceDpsAnalysis.WPF.Extensions;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Properties;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Models;
 
@@ -35,32 +33,11 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     {
         _logger = logger;
         _localizationManager = localizationManager;
+        
         var xAxis = GetXAxisName();
-        _dpsPlot = new PlotViewModel(new PlotOptions
-        {
-            XAxisTitle = xAxis,
-            HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
-            HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
-            HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
-            StatisticType = StatisticType.Damage
-        });
-        _hpsPlot = new PlotViewModel(new PlotOptions
-        {
-            XAxisTitle = xAxis,
-            HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
-            HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
-            HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
-            StatisticType = StatisticType.Healing
-        });
-        _dtpsPlot = new PlotViewModel(new PlotOptions
-        {
-            XAxisTitle = xAxis,
-            HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
-            HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
-            HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
-            StatisticType = StatisticType.TakenDamage
-        });
-
+        _dpsPlot = CreatePlotViewModel(xAxis, StatisticType.Damage);
+        _hpsPlot = CreatePlotViewModel(xAxis, StatisticType.Healing);
+        _dtpsPlot = CreatePlotViewModel(xAxis, StatisticType.TakenDamage);
         // Initialize Tab ViewModels
         InitializeTabViewModels();
     }
@@ -133,62 +110,22 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     /// </summary>
     public void InitializeFrom(
         PlayerStatistics playerStats,
-        PlayerInfo? playerInfo,
+        Core.Data.Models.PlayerInfo? playerInfo,
         StatisticType statisticType,
         StatisticDataViewModel slot)
     {
         _logger.LogDebug("Initializing SkillBreakdownViewModel from PlayerStatistics for UID {Uid}",
             playerStats.Uid);
+        
         _playerStatistics = playerStats;
+        ObservedSlot = slot;
 
-        ObservedSlot = slot; // Keep reference for backward compatibility
-
-        // Player Info
-        PlayerName = playerInfo?.Name ?? $"UID: {playerStats.Uid}";
-        Uid = playerStats.Uid;
-        PowerLevel = playerInfo?.CombatPower ?? 0;
+        // Update player info
+        UpdatePlayerInfo(playerStats, playerInfo);
         StatisticIndex = statisticType;
 
-        var duration = TimeSpan.FromTicks(playerStats.LastTick - (playerStats.StartTick ?? 0));
-
-        // Build skill lists from PlayerStatistics (no battle log iteration!)
-        var (damageSkills, healingSkills, takenSkills) =
-            StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(playerStats);
-
-        // Calculate stats from PlayerStatistics directly
-        DamageStats = playerStats.AttackDamage.ToDataStatistics(duration);
-        HealingStats = playerStats.Healing.ToDataStatistics(duration);
-        TakenDamageStats = playerStats.TakenDamage.ToDataStatistics(duration);
-
-        // ⭐ Populate Skills collections
-        foreach (var skill in damageSkills)
-        {
-            DamageStats.Skills.Add(skill);
-        }
-        foreach (var skill in healingSkills)
-        {
-            HealingStats.Skills.Add(skill);
-        }
-        foreach (var skill in takenSkills)
-        {
-            TakenDamageStats.Skills.Add(skill);
-        }
-
-        // ⭐ NEW: Load time series data directly from PlayerStatistics Core layer
-        InitializeTimeSeriesFromCore(playerStats.GetDpsSamples(), DpsPlot);
-        InitializeTimeSeriesFromCore(playerStats.GetHpsSamples(), HpsPlot);
-        InitializeTimeSeriesFromCore(playerStats.GetDtpsSamples(), DtpsPlot);
-        // Update Tab ViewModels
-        UpdateTabViewModels();
-
-        // Use accurate skill lists from PlayerStatistics
-        UpdatePieChartDirect(damageSkills, DpsPlot);
-        UpdatePieChartDirect(healingSkills, HpsPlot);
-        UpdatePieChartDirect(takenSkills, DtpsPlot);
-
-        UpdateHitTypeDistribution(DamageStats, DpsPlot);
-        UpdateHitTypeDistribution(HealingStats, HpsPlot);
-        UpdateHitTypeDistribution(TakenDamageStats, DtpsPlot);
+        // Update all statistics
+        RefreshAllStatistics();
 
         _logger.LogDebug("SkillBreakdownViewModel initialized from PlayerStatistics: {Name}", PlayerName);
     }
@@ -308,47 +245,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel
         }
     }
 
-    private void UpdatePlotOption()
-    {
-        var xAxis = GetXAxisName();
-        DpsPlot.UpdateOption(new PlotOptions
-        {
-            SeriesPlotTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_RealTimeDps),
-            XAxisTitle = xAxis,
-            DistributionPlotTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution),
-            HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
-            HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
-            HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
-            StatisticType = StatisticType.Damage
-        });
-        HpsPlot.UpdateOption(new PlotOptions
-        {
-            SeriesPlotTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_RealTimeHps),
-            XAxisTitle = xAxis,
-            DistributionPlotTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HealTypeDistribution),
-            HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
-            HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
-            HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
-            StatisticType = StatisticType.Healing
-        });
-        DtpsPlot.UpdateOption(new PlotOptions
-        {
-            SeriesPlotTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_RealTimeDtps),
-            XAxisTitle = xAxis,
-            DistributionPlotTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution),
-            HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
-            HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
-            HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
-            StatisticType = StatisticType.TakenDamage
-        });
-    }
-
-    private string GetXAxisName()
-    {
-        var xAxis = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_DpsSeriesXAxis);
-        return xAxis;
-    }
-
     #region Observed Slot (Data Source)
 
     [ObservableProperty] private StatisticDataViewModel? _observedSlot;
@@ -374,9 +270,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     #region Chart Models - OxyPlot
 
     [ObservableProperty] private PlotViewModel _dpsPlot;
-
     [ObservableProperty] private PlotViewModel _hpsPlot;
-
     [ObservableProperty] private PlotViewModel _dtpsPlot;
 
     #endregion
@@ -390,12 +284,131 @@ public partial class SkillBreakdownViewModel : BaseViewModel
 
     #endregion
 
-    #region Chart Initialization
+    #region Private Helper Methods
 
     /// <summary>
-    /// ⭐ NEW: Initialize time series chart from Core layer samples (PlayerStatistics)
+    /// Create a PlotViewModel with localized options
     /// </summary>
-    private void InitializeTimeSeriesFromCore(IReadOnlyList<DpsDataPoint> samples, PlotViewModel target)
+    private PlotViewModel CreatePlotViewModel(string xAxisTitle, StatisticType statisticType)
+    {
+        return new PlotViewModel(new PlotOptions
+        {
+            XAxisTitle = xAxisTitle,
+            HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
+            HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
+            HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
+            StatisticType = statisticType
+        });
+    }
+
+    /// <summary>
+    /// Update player basic information
+    /// </summary>
+    private void UpdatePlayerInfo(PlayerStatistics playerStats, Core.Data.Models.PlayerInfo? playerInfo)
+    {
+        PlayerName = playerInfo?.Name ?? $"UID: {playerStats.Uid}";
+        Uid = playerStats.Uid;
+        PowerLevel = playerInfo?.CombatPower ?? 0;
+    }
+
+    /// <summary>
+    /// Refresh all statistics from PlayerStatistics (Single Responsibility)
+    /// </summary>
+    private void RefreshAllStatistics()
+    {
+        if (_playerStatistics == null)
+        {
+            _logger.LogWarning("Cannot refresh statistics: PlayerStatistics is null");
+            return;
+        }
+
+        var duration = TimeSpan.FromTicks(_playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0));
+        var (damageSkills, healingSkills, takenSkills) = 
+            StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(_playerStatistics);
+
+        // Update damage statistics
+        UpdateStatisticSet(
+            _playerStatistics.AttackDamage,
+            damageSkills,
+            duration,
+            stats => DamageStats = stats,
+            _playerStatistics.GetDpsSamples(),
+            DpsPlot);
+
+        // Update healing statistics
+        UpdateStatisticSet(
+            _playerStatistics.Healing,
+            healingSkills,
+            duration,
+            stats => HealingStats = stats,
+            _playerStatistics.GetHpsSamples(),
+            HpsPlot);
+
+        // Update taken damage statistics
+        UpdateStatisticSet(
+            _playerStatistics.TakenDamage,
+            takenSkills,
+            duration,
+            stats => TakenDamageStats = stats,
+            _playerStatistics.GetDtpsSamples(),
+            DtpsPlot);
+    }
+
+    /// <summary>
+    /// Update a single statistic set with all its associated data (Open/Closed Principle)
+    /// </summary>
+    private void UpdateStatisticSet(
+        StatisticValues statisticValues,
+        List<SkillItemViewModel> skills,
+        TimeSpan duration,
+        Action<DataStatistics> setStatistics,
+        IReadOnlyList<DpsDataPoint> timeSeries,
+        PlotViewModel plot)
+    {
+        // Convert and set statistics
+        var stats = statisticValues.ToDataStatistics(duration);
+        PopulateSkills(stats.Skills, skills);
+        setStatistics(stats);
+
+        // Update charts
+        UpdateChartsForStatistic(skills, timeSeries, stats, plot);
+    }
+
+    /// <summary>
+    /// Populate skills collection efficiently
+    /// </summary>
+    private static void PopulateSkills(ObservableCollection<SkillItemViewModel> target, List<SkillItemViewModel> source)
+    {
+        target.Clear();
+        foreach (var skill in source)
+        {
+            target.Add(skill);
+        }
+    }
+
+    /// <summary>
+    /// Update all charts for a single statistic type (Single Responsibility)
+    /// </summary>
+    private static void UpdateChartsForStatistic(
+        List<SkillItemViewModel> skills,
+        IReadOnlyList<DpsDataPoint> timeSeries,
+        DataStatistics stats,
+        PlotViewModel plot)
+    {
+        // Time series
+        UpdateTimeSeriesChart(timeSeries, plot);
+        
+        // Pie chart
+        plot.SetPieSeriesData(skills);
+        
+        // Hit type distribution
+        UpdateHitTypeDistribution(stats, plot);
+    }
+
+    /// <summary>
+    /// Update time series chart from Core layer samples
+    /// </summary>
+    private static void UpdateTimeSeriesChart(IReadOnlyList<DpsDataPoint> samples, PlotViewModel target)
     {
         target.LineSeriesData.Points.Clear();
         foreach (var sample in samples)
@@ -406,61 +419,69 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// LEGACY: Initialize time series from ViewModel ObservableCollection (backward compatibility)
+    /// Update hit type distribution for a statistic
     /// </summary>
-    private void InitializeTimeSeries(ObservableCollection<(TimeSpan time, double value)> data,
-        PlotViewModel target)
-    {
-        RefreshTimeSeries(target, data);
-    }
-
-    private void RefreshTimeSeries(PlotViewModel target, ICollection<(TimeSpan time, double value)> data)
-    {
-        target.LineSeriesData.Points.Clear();
-        foreach (var (time, value) in data)
-        {
-            target.LineSeriesData.Points.Add(new DataPoint(time.TotalSeconds, value));
-        }
-
-        target.RefreshSeries();
-    }
-
-    private static void InitializePie(StatisticDataViewModel.SkillDataCollection data,
-        PlotViewModel target)
-    {
-        data.SkillChanged += list =>
-        {
-            if (list == null) return;
-            UpdatePieChart(list, target);
-        };
-        UpdatePieChart(data.TotalSkillList, target);
-    }
-
-    private static void UpdatePieChart(IReadOnlyList<SkillItemViewModel> skills, PlotViewModel target)
-    {
-        target.SetPieSeriesData(skills);
-    }
-
-    /// <summary>
-    /// Update pie chart directly with skill list (no event subscription)
-    /// </summary>
-    private static void UpdatePieChartDirect(List<SkillItemViewModel> skills, PlotViewModel target)
-    {
-        target.SetPieSeriesData(skills);
-    }
-
-    private void UpdateHitTypeDistribution(DataStatistics stat, PlotViewModel target)
+    private static void UpdateHitTypeDistribution(DataStatistics stat, PlotViewModel target)
     {
         if (stat.Hits <= 0) return;
+        
         var crit = (double)stat.CritCount / stat.Hits * 100;
         var lucky = (double)stat.LuckyCount / stat.Hits * 100;
         var normal = 100 - crit - lucky;
+        
         target.SetHitTypeDistribution(normal, crit, lucky);
 
         // Update ChartViewModel properties for the new UI
         // We need to access the corresponding TabContentViewModel's ChartViewModel
         // But here we only have PlotViewModel target.
         // We should update the TabContentViewModel instead.
+    }
+
+    /// <summary>
+    /// Update plot options with current localization
+    /// </summary>
+    private void UpdatePlotOption()
+    {
+        var xAxis = GetXAxisName();
+        
+        UpdateSinglePlotOption(DpsPlot, xAxis, StatisticType.Damage,
+            ResourcesKeys.SkillBreakdown_Chart_RealTimeDps,
+            ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
+            
+        UpdateSinglePlotOption(HpsPlot, xAxis, StatisticType.Healing,
+            ResourcesKeys.SkillBreakdown_Chart_RealTimeHps,
+            ResourcesKeys.SkillBreakdown_Chart_HealTypeDistribution);
+            
+        UpdateSinglePlotOption(DtpsPlot, xAxis, StatisticType.TakenDamage,
+            ResourcesKeys.SkillBreakdown_Chart_RealTimeDtps,
+            ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
+    }
+
+    /// <summary>
+    /// Update options for a single plot
+    /// </summary>
+    private void UpdateSinglePlotOption(
+        PlotViewModel plot,
+        string xAxisTitle,
+        StatisticType statisticType,
+        string seriesTitleKey,
+        string distributionTitleKey)
+    {
+        plot.UpdateOption(new PlotOptions
+        {
+            SeriesPlotTitle = _localizationManager.GetString(seriesTitleKey),
+            XAxisTitle = xAxisTitle,
+            DistributionPlotTitle = _localizationManager.GetString(distributionTitleKey),
+            HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
+            HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
+            HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
+            StatisticType = statisticType
+        });
+    }
+
+    private string GetXAxisName()
+    {
+        return _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_DpsSeriesXAxis);
     }
 
     #endregion
@@ -472,7 +493,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     {
         if (ZoomLevel >= MaxZoom) return;
         ZoomLevel += ZoomStep;
-        UpdateAllChartZooms();
+        ApplyZoomToAllCharts();
         _logger.LogDebug("Zoomed in to {ZoomLevel}", ZoomLevel);
     }
 
@@ -481,7 +502,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     {
         if (ZoomLevel <= MinZoom) return;
         ZoomLevel -= ZoomStep;
-        UpdateAllChartZooms();
+        ApplyZoomToAllCharts();
         _logger.LogDebug("Zoomed out to {ZoomLevel}", ZoomLevel);
     }
 
@@ -493,7 +514,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
         _logger.LogDebug("Zoom reset to default");
     }
 
-    private void UpdateAllChartZooms()
+    private void ApplyZoomToAllCharts()
     {
         DpsPlot.ApplyZoomToModel(ZoomLevel);
         HpsPlot.ApplyZoomToModel(ZoomLevel);
@@ -531,47 +552,9 @@ public partial class SkillBreakdownViewModel : BaseViewModel
             _logger.LogDebug("PlayerStatistic is null, refresh abort, return");
             return;
         }
-        var duration = TimeSpan.FromTicks(_playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0));
 
-        // Build skill lists from PlayerStatistics (no battle log iteration!)
-        var (damageSkills, healingSkills, takenSkills) =
-            StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(_playerStatistics);
-
-        DamageStats = _playerStatistics.AttackDamage.ToDataStatistics(duration);
-        HealingStats = _playerStatistics.Healing.ToDataStatistics(duration);
-        TakenDamageStats = _playerStatistics.TakenDamage.ToDataStatistics(duration);
-
-        // ⭐ Populate Skills collections
-        DamageStats.Skills.Clear();
-        foreach (var skill in damageSkills)
-        {
-            DamageStats.Skills.Add(skill);
-        }
-        HealingStats.Skills.Clear();
-        foreach (var skill in healingSkills)
-        {
-            HealingStats.Skills.Add(skill);
-        }
-        TakenDamageStats.Skills.Clear();
-        foreach (var skill in takenSkills)
-        {
-            TakenDamageStats.Skills.Add(skill);
-        }
-
-        // ⭐ Refresh time series from Core layer
-        InitializeTimeSeriesFromCore(_playerStatistics.GetDpsSamples(), DpsPlot);
-        InitializeTimeSeriesFromCore(_playerStatistics.GetHpsSamples(), HpsPlot);
-        InitializeTimeSeriesFromCore(_playerStatistics.GetDtpsSamples(), DtpsPlot);
-
-        // Use accurate skill lists from PlayerStatistics
-        UpdatePieChartDirect(damageSkills, DpsPlot);
-        UpdatePieChartDirect(healingSkills, HpsPlot);
-        UpdatePieChartDirect(takenSkills, DtpsPlot);
-
-        UpdateHitTypeDistribution(DamageStats, DpsPlot);
-        UpdateHitTypeDistribution(HealingStats, HpsPlot);
-        UpdateHitTypeDistribution(TakenDamageStats, DtpsPlot);
-        _logger.LogDebug("Manual refresh");
+        RefreshAllStatistics();
+        _logger.LogDebug("Manual refresh completed");
     }
 
     #endregion
