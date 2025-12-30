@@ -240,7 +240,12 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
 
         public int GetStatisticsCount(bool fullSession)
         {
-            return -1;
+            return 0;
+        }
+
+        public void RecordSamples(TimeSpan sectionDuration)
+        {
+            // Design-time stub - no implementation needed
         }
 
         public void Dispose()
@@ -307,10 +312,3 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
 
     #endregion
 }
-
-
-
-
-
-
-

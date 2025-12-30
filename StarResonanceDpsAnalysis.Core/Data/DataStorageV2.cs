@@ -694,6 +694,16 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         return _statisticsAdapter.GetStatisticsCount(fullSession);
     }
 
+    /// <summary>
+    /// Record DPS/HPS/DTPS samples for all players
+    /// Delegates to StatisticsAdapter (following SOLID principles)
+    /// Records for both full session and section simultaneously
+    /// </summary>
+    public void RecordSamples(TimeSpan sectionDuration)
+    {
+        _statisticsAdapter.RecordSamples(sectionDuration);
+    }
+
     #endregion
 }
 

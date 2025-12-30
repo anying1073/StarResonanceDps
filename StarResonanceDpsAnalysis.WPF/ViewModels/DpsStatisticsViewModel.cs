@@ -61,10 +61,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
     // Whether we are waiting for the first datapoint of a new section
     private bool _awaitingSectionStart;
-    
+
     // ⭐ New flag: indicates section has timed out but not yet cleared
     private bool _sectionTimedOut;
-    
+
     [ObservableProperty] private TimeSpan _battleDuration;
 
     [ObservableProperty] private BattleSnapshotData? _currentSnapshot;
@@ -192,7 +192,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         // ⭐ Capture the final section duration before it gets cleared
         var finalSectionDuration = _timer.Elapsed - _sectionStartElapsed;
         _lastSectionElapsed = finalSectionDuration;
-        
+
         // ⭐ Set the timed out flag to freeze duration display
         _sectionTimedOut = true;
 
@@ -200,7 +200,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
         // ⭐ DON'T set _awaitingSectionStart here - let the data clearing logic handle it
         // This allows the duration to display the final frozen value
-        
+
         // Update duration display immediately
         UpdateBattleDuration();
     }
@@ -367,28 +367,15 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         var vm = _windowManagement.SkillBreakdownView.DataContext as SkillBreakdownViewModel;
         Debug.Assert(vm != null, "vm!=null");
 
-        // ✅ NEW: Use PlayerStatistics if available (DataStorageV2 + UsePlayerStatisticsPath)
-        if (_storage is DataStorageV2 storageV2 && AppConfig.UsePlayerStatisticsPath)
-        {
-            var playerStats = storageV2.GetStatistics(fullSession: ScopeTime == ScopeTime.Total);
-            if (playerStats.TryGetValue(target.Player.Uid, out var stats))
-            {
-                _logger.LogInformation("Using PlayerStatistics for SkillBreakdown (accurate data)");
+        var playerStats = _storage.GetStatistics(fullSession: ScopeTime == ScopeTime.Total);
+        if (!playerStats.TryGetValue(target.Player.Uid, out var stats)) return;
+        _logger.LogInformation("Using PlayerStatistics for SkillBreakdown (accurate data)");
 
-                var playerInfo = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(target.Player.Uid, out var info)
-                    ? info
-                    : null;
+        var playerInfo = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(target.Player.Uid, out var info)
+            ? info
+            : null;
 
-                vm.InitializeFrom(stats, playerInfo, StatisticIndex, target);
-                _windowManagement.SkillBreakdownView.Show();
-                _windowManagement.SkillBreakdownView.Activate();
-                return;
-            }
-        }
-
-        // ❌ Fallback: Use legacy StatisticDataViewModel (battle log iteration)
-        _logger.LogDebug("Fallback to legacy SkillBreakdown (may differ from DPS view)");
-        vm.InitializeFrom(target, StatisticIndex);
+        vm.InitializeFrom(stats, playerInfo, StatisticIndex, target);
         _windowManagement.SkillBreakdownView.Show();
         _windowManagement.SkillBreakdownView.Activate();
     }
@@ -895,7 +882,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
 
         var stat = _storage.GetStatistics(ScopeTime == ScopeTime.Total);
-        
+
         // ⭐ Removed the automatic snapshot saving logic here since it's now handled by:
         // 1. BeforeSectionCleared event (triggered by DataStorageV2 before clearing)
         // 2. SectionEnded event (triggered when timeout occurs)
@@ -963,8 +950,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             subViewModel.UpdateDataOptimized(processedData, currentPlayerUid);
         }
 
-        // Append per-player DPS samples after sub VMs updated
-        AppendDpsSamples(data);
+        // ⭐ Record DPS/HPS/DTPS samples in Core layer (proper separation of concerns)
+        // Core layer automatically records for BOTH full and section simultaneously
+        var sectionDuration = ComputeSectionDuration();
+        _storage.RecordSamples(sectionDuration);
 
         // Update team total damage and DPS
         UpdateTeamTotalStats(data);
@@ -1152,55 +1141,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }
     }
 
-    /// <summary>
-    /// Appends per-player DPS/HPS/DTPS samples (section and total) into each player's StatisticDataViewModel series.
-    /// Keeps only the latest N points to avoid unbounded growth.
-    /// Adds duration since the last section start to each sample.
-    /// </summary>
-    private void AppendDpsSamples(IReadOnlyDictionary<long, PlayerStatistics> data)
-    {
-        // Cap size to roughly what the chart needs
-        const int maxSamples = 300;
-
-        // Calculate section duration once per tick (independent of scope)
-        var sectionDuration = ComputeSectionDuration();
-
-        foreach (var dpsData in data.Values)
-        {
-            // Locate the corresponding slot in the damage view (primary)
-            var damageVm = StatisticData.TryGetValue(StatisticType.Damage, out var sub) ? sub : null;
-            if (damageVm == null) continue;
-
-            if (!damageVm.DataDictionary.TryGetValue(dpsData.Uid, out var slot)) continue;
-
-            // Push samples with duration
-            var dpsSeries = slot.Damage.Dps;
-            var totalDps = dpsData.AttackDamage.ValuePerSecond;
-            dpsSeries.Add((sectionDuration, totalDps, totalDps));
-            if (dpsSeries.Count > maxSamples)
-            {
-                while (dpsSeries.Count > maxSamples) dpsSeries.RemoveAt(0);
-            }
-
-            var hpsSeries = slot.Heal.Dps;
-            var totalHps = dpsData.Healing.ValuePerSecond;
-            hpsSeries.Add((sectionDuration, totalHps, totalHps));
-            if (hpsSeries.Count > maxSamples)
-            {
-                while (hpsSeries.Count > maxSamples) hpsSeries.RemoveAt(0);
-            }
-
-            var dtpsSeries = slot.TakenDamage.Dps;
-            var totalDtps = dpsData.TakenDamage.ValuePerSecond;
-            dtpsSeries.Add((sectionDuration, totalDtps, totalDtps));
-            if (dtpsSeries.Count > maxSamples)
-            {
-                while (dtpsSeries.Count > maxSamples) dtpsSeries.RemoveAt(0);
-            }
-        }
-    }
-
-
     private TimeSpan ComputeSectionDuration()
     {
         // Duration after the new section is created
@@ -1327,44 +1267,56 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         var damageSkills = new List<SkillItemViewModel>();
         var healingSkills = new List<SkillItemViewModel>();
 
-        foreach (var (skillId, skillStat) in playerStats.Skills)
+        foreach (var (skillId, skillStat) in playerStats.AttackDamage.Skills)
         {
-            // Check if this is a healing skill via EmbeddedSkillConfig
-            var skillType = EmbeddedSkillConfig.GetTypeOf((int)skillId);
-            var isHealing = skillType == SkillType.Heal;
-
             var skillName = EmbeddedSkillConfig.TryGet(skillId.ToString(), out var def)
                 ? def.Name
                 : skillId.ToString();
 
-            var skillValue = new SkillItemViewModel.SkillValue
+            var vm = new SkillItemViewModel
             {
-                TotalValue = (long)skillStat.TotalValue,
-                HitCount = skillStat.UseTimes,
-                CritCount = skillStat.CritTimes,
-                LuckyCount = skillStat.LuckyTimes,
-                Average = skillStat.UseTimes > 0 ? Math.Round((double)skillStat.TotalValue / skillStat.UseTimes) : 0,
-                CritRate = skillStat.UseTimes > 0 ? (double)skillStat.CritTimes / skillStat.UseTimes : 0,
-                CritValue = 0,  // Not available in PlayerStatistics
-                LuckyValue = 0  // Not available in PlayerStatistics
+                SkillId = skillId,
+                SkillName = skillName,
+                Damage = new SkillItemViewModel.SkillValue
+                {
+                    TotalValue = (long)skillStat.TotalValue,
+                    HitCount = skillStat.UseTimes,
+                    CritCount = skillStat.CritTimes,
+                    LuckyCount = skillStat.LuckyTimes,
+                    Average = skillStat.UseTimes > 0 ? Math.Round((double)skillStat.TotalValue / skillStat.UseTimes) : 0,
+                    CritRate = skillStat.UseTimes > 0 ? (double)skillStat.CritTimes / skillStat.UseTimes : 0,
+                    CritValue = 0,  // Not available in PlayerStatistics
+                    LuckyValue = 0  // Not available in PlayerStatistics
+                }
             };
+
+            damageSkills.Add(vm);
+        }
+
+        foreach (var (skillId, skillStat) in playerStats.Healing.Skills)
+        {
+            var skillName = EmbeddedSkillConfig.TryGet(skillId.ToString(), out var def)
+                ? def.Name
+                : skillId.ToString();
 
             var vm = new SkillItemViewModel
             {
                 SkillId = skillId,
-                SkillName = skillName
+                SkillName = skillName,
+                Heal = new SkillItemViewModel.SkillValue
+                {
+                    TotalValue = (long)skillStat.TotalValue,
+                    HitCount = skillStat.UseTimes,
+                    CritCount = skillStat.CritTimes,
+                    LuckyCount = skillStat.LuckyTimes,
+                    Average = skillStat.UseTimes > 0 ? Math.Round((double)skillStat.TotalValue / skillStat.UseTimes) : 0,
+                    CritRate = skillStat.UseTimes > 0 ? (double)skillStat.CritTimes / skillStat.UseTimes : 0,
+                    CritValue = 0,  // Not available in PlayerStatistics
+                    LuckyValue = 0  // Not available in PlayerStatistics
+                }
             };
 
-            if (isHealing)
-            {
-                vm.Heal = skillValue;
-                healingSkills.Add(vm);
-            }
-            else
-            {
-                vm.Damage = skillValue;
-                damageSkills.Add(vm);
-            }
+            healingSkills.Add(vm);
         }
 
         // Sort by total value descending
@@ -1372,7 +1324,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         healingSkills = healingSkills.OrderByDescending(s => s.Heal?.TotalValue ?? 0).ToList();
 
         // ✅ Taken damage skills: Direct from PlayerStatistics.TakenDamageSkills
-        var takenSkills = playerStats.TakenDamageSkills.Values
+        var takenSkills = playerStats.TakenDamage.Skills.Values
             .OrderByDescending(s => s.TotalValue)
             .Select(s => new SkillItemViewModel
             {
@@ -1524,14 +1476,14 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                     BattleDuration = _lastSectionElapsed;
                     return;
                 }
-                
+
                 // ⭐ If section has timed out, freeze at captured final duration
                 if (_sectionTimedOut && _lastSectionElapsed > TimeSpan.Zero)
                 {
                     BattleDuration = _lastSectionElapsed;
                     return;
                 }
-                
+
                 // Normal case: display current section duration
                 var elapsed = _timer.Elapsed - _sectionStartElapsed;
                 if (elapsed < TimeSpan.Zero)

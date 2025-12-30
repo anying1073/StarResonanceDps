@@ -21,6 +21,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     private readonly ILogger<SkillBreakdownViewModel> _logger;
     private readonly LocalizationManager _localizationManager;
     [ObservableProperty] private StatisticType _statisticIndex;
+    private PlayerStatistics? _playerStatistics;
 
     // NEW: Tab ViewModels for modular components
     [ObservableProperty] private TabContentViewModel _dpsTabViewModel = new();
@@ -128,49 +129,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// Initializes the ViewModel from a <see cref="StatisticDataViewModel"/>.
-    /// </summary>
-    public void InitializeFrom(StatisticDataViewModel slot, StatisticType statisticType)
-    {
-        _logger.LogDebug("Initializing SkillBreakdownViewModel from StatisticDataViewModel for player {PlayerName}",
-            slot.Player.Name);
-
-        ObservedSlot = slot;
-
-        // Player Info
-        PlayerName = slot.Player?.Name ?? "Unknown";
-        Uid = slot.Player?.Uid ?? 0;
-        PowerLevel = slot.Player?.PowerLevel ?? 0;
-        StatisticIndex = statisticType;
-
-        var duration = TimeSpan.FromTicks(slot.DurationTicks);
-
-        // Calculate statistics from skills
-        DamageStats = slot.Damage.TotalSkillList.FromSkillsToDamage(duration);
-        HealingStats = slot.Heal.TotalSkillList.FromSkillsToHealing(duration);
-        TakenDamageStats = slot.TakenDamage.TotalSkillList.FromSkillsToDamageTaken(duration);
-
-        // Update Tab ViewModels
-        UpdateTabViewModels();
-
-        // Initialize Chart Data
-        InitializeTimeSeries(slot.Damage.Dps, DpsPlot);
-        InitializeTimeSeries(slot.Heal.Dps, HpsPlot);
-        InitializeTimeSeries(slot.TakenDamage.Dps, DtpsPlot);
-
-        InitializePie(slot.Damage, DpsPlot);
-        InitializePie(slot.Heal, HpsPlot);
-        InitializePie(slot.TakenDamage, DtpsPlot);
-
-        UpdateHitTypeDistribution(DamageStats, DpsPlot);
-        UpdateHitTypeDistribution(HealingStats, HpsPlot);
-        UpdateHitTypeDistribution(TakenDamageStats, DtpsPlot);
-
-        _logger.LogDebug("SkillBreakdownViewModel initialized for player: {PlayerName}", PlayerName);
-    }
-
-    /// <summary>
-    /// ? NEW: Initialize from PlayerStatistics directly (100% accurate!)
+    /// Initialize from PlayerStatistics directly 
     /// </summary>
     public void InitializeFrom(
         PlayerStatistics playerStats,
@@ -178,10 +137,11 @@ public partial class SkillBreakdownViewModel : BaseViewModel
         StatisticType statisticType,
         StatisticDataViewModel slot)
     {
-        _logger.LogDebug("Initializing SkillBreakdownViewModel from PlayerStatistics for UID {Uid}", 
+        _logger.LogDebug("Initializing SkillBreakdownViewModel from PlayerStatistics for UID {Uid}",
             playerStats.Uid);
+        _playerStatistics = playerStats;
 
-        ObservedSlot = slot; // Keep reference for DPS time series
+        ObservedSlot = slot; // Keep reference for backward compatibility
 
         // Player Info
         PlayerName = playerInfo?.Name ?? $"UID: {playerStats.Uid}";
@@ -191,24 +151,37 @@ public partial class SkillBreakdownViewModel : BaseViewModel
 
         var duration = TimeSpan.FromTicks(playerStats.LastTick - (playerStats.StartTick ?? 0));
 
-        // ? Build skill lists from PlayerStatistics (no battle log iteration!)
-        var (damageSkills, healingSkills, takenSkills) = 
+        // Build skill lists from PlayerStatistics (no battle log iteration!)
+        var (damageSkills, healingSkills, takenSkills) =
             StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(playerStats);
 
-        // ? Calculate stats from PlayerStatistics directly
+        // Calculate stats from PlayerStatistics directly
         DamageStats = playerStats.AttackDamage.ToDataStatistics(duration);
         HealingStats = playerStats.Healing.ToDataStatistics(duration);
         TakenDamageStats = playerStats.TakenDamage.ToDataStatistics(duration);
 
+        // ⭐ Populate Skills collections
+        foreach (var skill in damageSkills)
+        {
+            DamageStats.Skills.Add(skill);
+        }
+        foreach (var skill in healingSkills)
+        {
+            HealingStats.Skills.Add(skill);
+        }
+        foreach (var skill in takenSkills)
+        {
+            TakenDamageStats.Skills.Add(skill);
+        }
+
+        // ⭐ NEW: Load time series data directly from PlayerStatistics Core layer
+        InitializeTimeSeriesFromCore(playerStats.GetDpsSamples(), DpsPlot);
+        InitializeTimeSeriesFromCore(playerStats.GetHpsSamples(), HpsPlot);
+        InitializeTimeSeriesFromCore(playerStats.GetDtpsSamples(), DtpsPlot);
         // Update Tab ViewModels
         UpdateTabViewModels();
 
-        // Initialize Chart Data (still use time series from slot for DPS trends)
-        InitializeTimeSeries(slot.Damage.Dps, DpsPlot);
-        InitializeTimeSeries(slot.Heal.Dps, HpsPlot);
-        InitializeTimeSeries(slot.TakenDamage.Dps, DtpsPlot);
-
-        // ? Use accurate skill lists from PlayerStatistics
+        // Use accurate skill lists from PlayerStatistics
         UpdatePieChartDirect(damageSkills, DpsPlot);
         UpdatePieChartDirect(healingSkills, HpsPlot);
         UpdatePieChartDirect(takenSkills, DtpsPlot);
@@ -380,51 +353,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel
 
     [ObservableProperty] private StatisticDataViewModel? _observedSlot;
 
-    partial void OnObservedSlotChanged(StatisticDataViewModel? oldValue, StatisticDataViewModel? newValue)
-    {
-        if (oldValue is not null)
-        {
-            oldValue.Damage.SkillChanged -= DamageSkillChanged;
-            oldValue.Heal.SkillChanged -= HealSkillChanged;
-            oldValue.TakenDamage.SkillChanged -= TakenDamageSkillChanged;
-        }
-
-        if (newValue is not null)
-        {
-            newValue.Damage.SkillChanged += DamageSkillChanged;
-            newValue.Heal.SkillChanged += HealSkillChanged;
-            newValue.TakenDamage.SkillChanged += TakenDamageSkillChanged;
-        }
-    }
-
-    private void DamageSkillChanged(IReadOnlyList<SkillItemViewModel>? skills)
-    {
-        if (ObservedSlot is null) return;
-        if (skills is null) return;
-        var duration = TimeSpan.FromTicks(ObservedSlot.DurationTicks);
-
-        skills.UpdateDamage(duration, DamageStats);
-        UpdateHitTypeDistribution(DamageStats, DpsPlot);
-    }
-
-    private void HealSkillChanged(IReadOnlyList<SkillItemViewModel>? skills)
-    {
-        if (ObservedSlot is null) return;
-        if (skills is null) return;
-        var duration = TimeSpan.FromTicks(ObservedSlot.DurationTicks);
-        skills.UpdateHealing(duration, HealingStats);
-        UpdateHitTypeDistribution(HealingStats, HpsPlot);
-    }
-
-    private void TakenDamageSkillChanged(IReadOnlyList<SkillItemViewModel>? skills)
-    {
-        if (ObservedSlot is null) return;
-        if (skills is null) return;
-        var duration = TimeSpan.FromTicks(ObservedSlot.DurationTicks);
-        skills.UpdateDamageTaken(duration, TakenDamageStats);
-        UpdateHitTypeDistribution(TakenDamageStats, DtpsPlot);
-    }
-
     #endregion
 
     #region Player Info Properties
@@ -464,34 +392,34 @@ public partial class SkillBreakdownViewModel : BaseViewModel
 
     #region Chart Initialization
 
-    private static void InitializeTimeSeries(ObservableCollection<(TimeSpan duration, double section, double total)> data,
+    /// <summary>
+    /// ⭐ NEW: Initialize time series chart from Core layer samples (PlayerStatistics)
+    /// </summary>
+    private void InitializeTimeSeriesFromCore(IReadOnlyList<DpsDataPoint> samples, PlotViewModel target)
+    {
+        target.LineSeriesData.Points.Clear();
+        foreach (var sample in samples)
+        {
+            target.LineSeriesData.Points.Add(new DataPoint(sample.Time.TotalSeconds, sample.Value));
+        }
+        target.RefreshSeries();
+    }
+
+    /// <summary>
+    /// LEGACY: Initialize time series from ViewModel ObservableCollection (backward compatibility)
+    /// </summary>
+    private void InitializeTimeSeries(ObservableCollection<(TimeSpan time, double value)> data,
         PlotViewModel target)
     {
-        void HandleCollectionChanged(object? sender, NotifyCollectionChangedEventArgs args)
-        {
-            switch (args.Action)
-            {
-                case NotifyCollectionChangedAction.Add when args.NewItems is not null:
-                    foreach ((TimeSpan duration, double section, double _) ss in args.NewItems)
-                    {
-                        target.LineSeriesData.Points.Add(new DataPoint(ss.duration.TotalSeconds, ss.section));
-                    }
+        RefreshTimeSeries(target, data);
+    }
 
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    target.LineSeriesData.Points.Clear();
-                    break;
-            }
-
-            target.RefreshSeries();
-        }
-
-        data.CollectionChanged += HandleCollectionChanged;
-
+    private void RefreshTimeSeries(PlotViewModel target, ICollection<(TimeSpan time, double value)> data)
+    {
         target.LineSeriesData.Points.Clear();
-        foreach (var (duration, section, _) in data)
+        foreach (var (time, value) in data)
         {
-            target.LineSeriesData.Points.Add(new DataPoint(duration.TotalSeconds, section));
+            target.LineSeriesData.Points.Add(new DataPoint(time.TotalSeconds, value));
         }
 
         target.RefreshSeries();
@@ -514,7 +442,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// ? NEW: Update pie chart directly with skill list (no event subscription)
+    /// Update pie chart directly with skill list (no event subscription)
     /// </summary>
     private static void UpdatePieChartDirect(List<SkillItemViewModel> skills, PlotViewModel target)
     {
@@ -598,6 +526,51 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     [RelayCommand]
     private void Refresh()
     {
+        if (_playerStatistics == null)
+        {
+            _logger.LogDebug("PlayerStatistic is null, refresh abort, return");
+            return;
+        }
+        var duration = TimeSpan.FromTicks(_playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0));
+
+        // Build skill lists from PlayerStatistics (no battle log iteration!)
+        var (damageSkills, healingSkills, takenSkills) =
+            StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(_playerStatistics);
+
+        DamageStats = _playerStatistics.AttackDamage.ToDataStatistics(duration);
+        HealingStats = _playerStatistics.Healing.ToDataStatistics(duration);
+        TakenDamageStats = _playerStatistics.TakenDamage.ToDataStatistics(duration);
+
+        // ⭐ Populate Skills collections
+        DamageStats.Skills.Clear();
+        foreach (var skill in damageSkills)
+        {
+            DamageStats.Skills.Add(skill);
+        }
+        HealingStats.Skills.Clear();
+        foreach (var skill in healingSkills)
+        {
+            HealingStats.Skills.Add(skill);
+        }
+        TakenDamageStats.Skills.Clear();
+        foreach (var skill in takenSkills)
+        {
+            TakenDamageStats.Skills.Add(skill);
+        }
+
+        // ⭐ Refresh time series from Core layer
+        InitializeTimeSeriesFromCore(_playerStatistics.GetDpsSamples(), DpsPlot);
+        InitializeTimeSeriesFromCore(_playerStatistics.GetHpsSamples(), HpsPlot);
+        InitializeTimeSeriesFromCore(_playerStatistics.GetDtpsSamples(), DtpsPlot);
+
+        // Use accurate skill lists from PlayerStatistics
+        UpdatePieChartDirect(damageSkills, DpsPlot);
+        UpdatePieChartDirect(healingSkills, HpsPlot);
+        UpdatePieChartDirect(takenSkills, DtpsPlot);
+
+        UpdateHitTypeDistribution(DamageStats, DpsPlot);
+        UpdateHitTypeDistribution(HealingStats, HpsPlot);
+        UpdateHitTypeDistribution(TakenDamageStats, DtpsPlot);
         _logger.LogDebug("Manual refresh");
     }
 

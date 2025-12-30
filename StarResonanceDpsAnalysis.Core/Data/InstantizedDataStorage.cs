@@ -528,4 +528,11 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
     {
         throw new NotSupportedException();
     }
+
+    public void RecordSamples(TimeSpan sectionDuration)
+    {
+        // InstantizedDataStorage forwards to static DataStorage which doesn't support this
+        // This is intentional as it's a legacy adapter
+        throw new NotSupportedException("RecordSamples is not supported in InstantizedDataStorage. Use DataStorageV2 instead.");
+    }
 }

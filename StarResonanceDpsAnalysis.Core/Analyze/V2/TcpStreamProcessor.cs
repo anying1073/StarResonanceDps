@@ -41,6 +41,9 @@ internal sealed class TcpStreamProcessor : IDisposable
 
     // Pipe replaces the previous MemoryStream staging buffer
     private Pipe _pipe;
+    
+    // Reentrancy guard for ParseFromPipe
+    private bool _isParsingPipe;
 
     public string CurrentServer => CurrentServerEndpoint.ToString();
     public ServerEndpoint CurrentServerEndpoint { get; private set; }
@@ -198,68 +201,90 @@ internal sealed class TcpStreamProcessor : IDisposable
 
     private void ParseFromPipe()
     {
-        var reader = _pipe.Reader;
-        while (reader.TryRead(out var result))
+        // Prevent reentrancy - if we're already parsing, skip this call
+        if (_isParsingPipe)
         {
-            var buffer = result.Buffer;
-            long consumedBytes = 0;
-            var parsedPackets = 0;
+            return;
+        }
 
-            while (true)
+        _isParsingPipe = true;
+        try
+        {
+            var reader = _pipe.Reader;
+            while (reader.TryRead(out var result))
             {
-                if (buffer.Length < 4) break;
+                var buffer = result.Buffer;
+                long consumedBytes = 0;
+                var parsedPackets = 0;
 
-                // Peek 4-byte big-endian length
-                var head = buffer.Slice(0, 4);
-                int packetSize;
-                if (head.IsSingleSegment)
+                while (true)
                 {
-                    packetSize = BinaryPrimitives.ReadInt32BigEndian(head.FirstSpan);
+                    if (buffer.Length < 4) break;
+
+                    // Peek 4-byte big-endian length
+                    var head = buffer.Slice(0, 4);
+                    int packetSize;
+                    if (head.IsSingleSegment)
+                    {
+                        packetSize = BinaryPrimitives.ReadInt32BigEndian(head.FirstSpan);
+                    }
+                    else
+                    {
+                        // Multi-segment sequence: allocate a small temporary array
+                        var tmp = head.ToArray();
+                        packetSize = BinaryPrimitives.ReadInt32BigEndian(tmp);
+                    }
+
+                    if (packetSize <= 4 || packetSize > 0x0FFFFF) break;
+
+                    if (buffer.Length < packetSize) break; // not enough data yet
+
+                    var packetSeq = buffer.Slice(0, packetSize);
+
+                    // Zero-copy: pass span directly
+                    try
+                    {
+                        if (packetSeq.IsSingleSegment)
+                        {
+                            _messageAnalyzer.Process(packetSeq.FirstSpan);
+                        }
+                        else
+                        {
+                            // Multi-segment: coalesce minimally into a pooled buffer
+                            var exactPacket = new byte[packetSize];
+                            packetSeq.CopyTo(exactPacket);
+                            _messageAnalyzer.Process(exactPacket);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger?.LogError(ex, "Error processing message in ParseFromPipe");
+                        // Continue processing remaining packets
+                    }
+
+                    parsedPackets++;
+                    buffer = buffer.Slice(packetSize);
+                    consumedBytes += packetSize;
                 }
-                else
+
+                if (parsedPackets > 0)
                 {
-                    // Multi-segment sequence: allocate a small temporary array
-                    var tmp = head.ToArray();
-                    packetSize = BinaryPrimitives.ReadInt32BigEndian(tmp);
+                    _logger?.LogTrace("Parsed {Count} framed messages from pipe", parsedPackets);
                 }
 
-                if (packetSize <= 4 || packetSize > 0x0FFFFF) break;
+                var consumed = result.Buffer.GetPosition(consumedBytes);
+                var examined = buffer.End; // leave remaining unconsumed
+                reader.AdvanceTo(consumed, examined);
 
-                if (buffer.Length < packetSize) break; // not enough data yet
-
-                var packetSeq = buffer.Slice(0, packetSize);
-
-                // Zero-copy: pass span directly
-                if (packetSeq.IsSingleSegment)
+                if (result.IsCompleted && buffer.Length == 0)
                 {
-                    _messageAnalyzer.Process(packetSeq.FirstSpan);
+                    break;
                 }
-                else
-                {
-                    // Multi-segment: coalesce minimally into a pooled buffer
-                    var exactPacket = new byte[packetSize];
-                    packetSeq.CopyTo(exactPacket);
-                    _messageAnalyzer.Process(exactPacket);
-                }
-
-                parsedPackets++;
-                buffer = buffer.Slice(packetSize);
-                consumedBytes += packetSize;
             }
-
-            if (parsedPackets > 0)
-            {
-                _logger?.LogTrace("Parsed {Count} framed messages from pipe", parsedPackets);
-            }
-
-            var consumed = result.Buffer.GetPosition(consumedBytes);
-            var examined = buffer.End; // leave remaining unconsumed
-            reader.AdvanceTo(consumed, examined);
-
-            if (result.IsCompleted && buffer.Length == 0)
-            {
-                break;
-            }
+        }
+        finally
+        {
+            _isParsingPipe = false;
         }
     }
 

@@ -141,9 +141,9 @@ public class BattleSnapshotService
                 elapsedTicks > 0 ? TimeSpan.FromTicks(elapsedTicks).TotalSeconds : duration.TotalSeconds;
 
             // ⭐ 保存技能数据
-            var damageSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.Damage);
-            var healingSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.Heal);
-            var takenSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.TakenDamage);
+            var damageSkills = BuildSkillSnapshot(dpsData.AttackDamage.Skills, SkillType.Damage);
+            var healingSkills = BuildSkillSnapshot(dpsData.Healing.Skills, SkillType.Heal);
+            var takenSkills = BuildSkillSnapshot(dpsData.TakenDamage.Skills, SkillType.TakenDamage);
 
             players[dpsData.Uid] = new SnapshotPlayerData
             {
@@ -266,9 +266,9 @@ public class BattleSnapshotService
                 elapsedTicks > 0 ? TimeSpan.FromTicks(elapsedTicks).TotalSeconds : duration.TotalSeconds;
 
             // ? 新增: 保存技能数据
-            var damageSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.Damage);
-            var healingSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.Heal);
-            var takenSkills = BuildSkillSnapshot(dpsData.Skills, SkillType.TakenDamage);
+            var damageSkills = BuildSkillSnapshot(dpsData.AttackDamage.Skills, SkillType.Damage);
+            var healingSkills = BuildSkillSnapshot(dpsData.Healing.Skills, SkillType.Heal);
+            var takenSkills = BuildSkillSnapshot(dpsData.TakenDamage.Skills, SkillType.TakenDamage);
 
             players[dpsData.Uid] = new SnapshotPlayerData
             {

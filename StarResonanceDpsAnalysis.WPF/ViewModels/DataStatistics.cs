@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -15,6 +16,7 @@ public partial class DataStatistics : BaseViewModel
     [ObservableProperty] private long _normalValue;
     [ObservableProperty] private long _critValue;
     [ObservableProperty] private long _luckyValue;
+    [ObservableProperty] private ObservableCollection<SkillItemViewModel> _skills = new();
 
     public double LuckyRate => Hits > 0 ? (double)LuckyCount / Hits : double.NaN;
 

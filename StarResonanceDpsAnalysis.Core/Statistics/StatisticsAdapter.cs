@@ -12,11 +12,13 @@ public sealed class StatisticsAdapter
 {
     private readonly StatisticsEngine _engine;
     private readonly ILogger? _logger;
+    private readonly ISampleRecorder _sampleRecorder;
 
-    public StatisticsAdapter(ILogger? logger = null)
+    public StatisticsAdapter(ILogger? logger = null, ISampleRecorder? sampleRecorder = null)
     {
         _logger = logger;
         _engine = new StatisticsEngine();
+        _sampleRecorder = sampleRecorder ?? new PeriodicSampleRecorder();
 
         // Register all calculators (OCP: easily add new ones)
         _engine.RegisterCalculator(new AttackDamageCalculator());
@@ -40,18 +42,59 @@ public sealed class StatisticsAdapter
     }
 
     /// <summary>
+    /// Record DPS/HPS/DTPS samples for all players
+    /// Records samples for BOTH full session and current section simultaneously
+    /// Should be called periodically (e.g., every update cycle)
+    /// </summary>
+    /// <param name="sectionDuration">Time elapsed since section start</param>
+    public void RecordSamples(TimeSpan sectionDuration)
+    {
+        // ⭐ Record samples for BOTH full and section at the same time
+        var fullStats = _engine.GetFullStatistics();
+        var sectionStats = _engine.GetSectionStatistics();
+
+        // Record full session samples (accumulates across all sections)
+        _sampleRecorder.RecordSamples(fullStats, sectionDuration);
+        
+        // Record section samples (only for current combat section)
+        _sampleRecorder.RecordSamples(sectionStats, sectionDuration);
+    }
+
+    /// <summary>
     /// Reset section statistics and battle logs
+    /// Clears section samples but preserves full session samples
     /// </summary>
     public void ResetSection()
     {
+        // ⭐ Clear ONLY section samples (not full session)
+        var sectionStats = _engine.GetSectionStatistics();
+        foreach (var playerStats in sectionStats.Values)
+        {
+            playerStats.ClearSamples();
+        }
+        
         _engine.ResetSection();
     }
 
     /// <summary>
     /// Clear all statistics and battle logs (both full and section)
+    /// Clears samples for both scopes
     /// </summary>
     public void ClearAll()
     {
+        // ⭐ Clear samples for BOTH full and section
+        var fullStats = _engine.GetFullStatistics();
+        foreach (var playerStats in fullStats.Values)
+        {
+            playerStats.ClearSamples();
+        }
+        
+        var sectionStats = _engine.GetSectionStatistics();
+        foreach (var playerStats in sectionStats.Values)
+        {
+            playerStats.ClearSamples();
+        }
+        
         _engine.ClearAll();
     }
 
@@ -77,76 +120,6 @@ public sealed class StatisticsAdapter
         return allLogs
             .Where(log => log.AttackerUuid == uid || log.TargetUuid == uid)
             .ToList();
-    }
-
-    /// <summary>
-    /// Convert new statistics to legacy DpsData format
-    /// </summary>
-    public Dictionary<long, DpsData> ToLegacyFormat(bool fullSession)
-    {
-        var stats = fullSession
-            ? _engine.GetFullStatistics()
-            : _engine.GetSectionStatistics();
-
-        // ? Convert dictionary to array BEFORE iterating to avoid "Collection was modified" exception
-        // Even though stats is a snapshot dictionary, we need to freeze it as an array
-        var statsSnapshot = stats.ToArray();
-
-        // ? Get battle logs snapshot ONCE to avoid concurrent modification
-        var battleLogs = fullSession
-            ? _engine.GetFullBattleLogs()
-            : _engine.GetSectionBattleLogs();
-
-        // ? Convert to array to avoid "Collection was modified" exception
-        var battleLogsSnapshot = battleLogs.ToArray();
-
-        var result = new Dictionary<long, DpsData>();
-
-        // ? Iterate over the frozen snapshot array instead of the dictionary
-        foreach (var (uid, playerStats) in statsSnapshot)
-        {
-            var dpsData = new DpsData
-            {
-                UID = uid,
-                StartLoggedTick = playerStats.StartTick,
-                LastLoggedTick = playerStats.LastTick,
-                TotalAttackDamage = playerStats.AttackDamage.Total,
-                TotalTakenDamage = playerStats.TakenDamage.Total,
-                TotalHeal = playerStats.Healing.Total,
-                IsNpcData = playerStats.IsNpc
-            };
-
-            // ? Filter logs for this player
-            var playerLogs = battleLogsSnapshot
-                .Where(log => log.AttackerUuid == uid || log.TargetUuid == uid)
-                .ToArray();
-
-            // ? Use AddBattleLogRange - updates BOTH mutable and immutable
-            if (playerLogs.Length > 0)
-            {
-                dpsData.AddBattleLogRange(playerLogs);
-            }
-
-            // ? CRITICAL FIX: Snapshot the Skills dictionary before iterating
-            // PlayerStatistics.Skills is a mutable dictionary that can be modified by other threads
-            var skillsSnapshot = playerStats.Skills.ToArray();
-
-            // Convert skill statistics
-            foreach (var (skillId, skillStats) in skillsSnapshot)
-            {
-                dpsData.UpdateSkillData(skillId, skill =>
-                {
-                    skill.TotalValue = (long)skillStats.TotalValue;
-                    skill.UseTimes = skillStats.UseTimes;
-                    skill.CritTimes = skillStats.CritTimes;
-                    skill.LuckyTimes = skillStats.LuckyTimes;
-                });
-            }
-
-            result[uid] = dpsData;
-        }
-
-        return result;
     }
 
     /// <summary>

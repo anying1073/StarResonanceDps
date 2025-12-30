@@ -1,7 +1,7 @@
 using StarResonanceDpsAnalysis.Core;
 using StarResonanceDpsAnalysis.Core.Statistics;
-using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace StarResonanceDpsAnalysis.WPF.Extensions;
 
@@ -11,7 +11,7 @@ namespace StarResonanceDpsAnalysis.WPF.Extensions;
 public static class StatisticsToViewModelConverter
 {
     /// <summary>
-    /// ✅ NEW: Convert StatisticValues to DataStatistics (WPF model)
+    /// Convert StatisticValues to DataStatistics (WPF model)
     /// </summary>
     public static DataStatistics ToDataStatistics(this StatisticValues stats, TimeSpan duration)
     {
@@ -22,10 +22,11 @@ public static class StatisticsToViewModelConverter
             Hits = stats.HitCount,
             CritCount = stats.CritCount,
             LuckyCount = stats.LuckyCount,
-            Average = durationSeconds > 0 ? stats.Total / durationSeconds : 0,
+            Average = durationSeconds > 0 ? stats.Total / durationSeconds : double.NaN,
             NormalValue = stats.NormalValue,
             CritValue = stats.CritValue,
-            LuckyValue = stats.LuckyValue
+            LuckyValue = stats.LuckyValue,
+            Skills = new ObservableCollection<SkillItemViewModel>()
         };
     }
 
@@ -40,51 +41,69 @@ public static class StatisticsToViewModelConverter
         var takenSkills = new List<SkillItemViewModel>();
 
         // ✅ Process attack/heal skills from playerStats.Skills
-        foreach (var (skillId, skillStats) in playerStats.Skills)
+        foreach (var (skillId, skillStats) in playerStats.AttackDamage.Skills)
         {
-            var skillType = EmbeddedSkillConfig.GetTypeOf((int)skillId);
             var skillName = EmbeddedSkillConfig.GetName((int)skillId);
 
             var skillVm = new SkillItemViewModel
             {
                 SkillId = skillId,
-                SkillName = skillName
-            };
-
-            var value = new SkillItemViewModel.SkillValue
-            {
-                TotalValue = skillStats.TotalValue,
-                HitCount = skillStats.UseTimes,
-                CritCount = skillStats.CritTimes,
-                LuckyCount = skillStats.LuckyTimes,
-                Average = skillStats.UseTimes > 0
+                SkillName = skillName,
+                Damage = new SkillItemViewModel.SkillValue
+                {
+                    TotalValue = skillStats.TotalValue,
+                    HitCount = skillStats.UseTimes,
+                    CritCount = skillStats.CritTimes,
+                    LuckyCount = skillStats.LuckyTimes,
+                    Average = skillStats.UseTimes > 0
                     ? skillStats.TotalValue / (double)skillStats.UseTimes
                     : 0,
-                CritRate = skillStats.UseTimes > 0
+                    CritRate = skillStats.UseTimes > 0
                     ? skillStats.CritTimes / (double)skillStats.UseTimes
                     : 0,
-                // Calculate values
-                CritValue = 0, // Not stored separately in SkillStatistics
-                LuckyValue = 0,
-                NormalValue = skillStats.TotalValue // Approximate
+                    // Calculate values
+                    CritValue = 0, // Not stored separately in SkillStatistics
+                    LuckyValue = 0,
+                    NormalValue = skillStats.TotalValue, // Approximate
+                }
             };
 
-            switch (skillType)
+
+            damageSkills.Add(skillVm);
+        }
+
+
+        // ✅ Process taken damage skills from playerStats.TakenDamageSkills
+        foreach (var (skillId, skillStats) in playerStats.Healing.Skills)
+        {
+            var skillName = EmbeddedSkillConfig.GetName((int)skillId);
+
+            var skillVm = new SkillItemViewModel
             {
-                case SkillType.Damage:
-                    skillVm.Damage = value;
-                    damageSkills.Add(skillVm);
-                    break;
-                case SkillType.Heal: // ✅ Fixed: Heal not Healing
-                    skillVm.Heal = value;
-                    healingSkills.Add(skillVm);
-                    break;
-                // Other types can be added here
-            }
+                SkillId = skillId,
+                SkillName = skillName,
+                Heal = new SkillItemViewModel.SkillValue
+                {
+                    TotalValue = skillStats.TotalValue,
+                    HitCount = skillStats.UseTimes,
+                    CritCount = skillStats.CritTimes,
+                    LuckyCount = skillStats.LuckyTimes,
+                    Average = skillStats.UseTimes > 0
+                        ? skillStats.TotalValue / (double)skillStats.UseTimes
+                        : 0,
+                    CritRate = skillStats.UseTimes > 0
+                        ? skillStats.CritTimes / (double)skillStats.UseTimes
+                        : 0,
+                    CritValue = 0,
+                    LuckyValue = 0,
+                    NormalValue = skillStats.TotalValue
+                }
+            };
+            healingSkills.Add(skillVm);
         }
 
         // ✅ Process taken damage skills from playerStats.TakenDamageSkills
-        foreach (var (skillId, skillStats) in playerStats.TakenDamageSkills)
+        foreach (var (skillId, skillStats) in playerStats.TakenDamage.Skills)
         {
             var skillName = EmbeddedSkillConfig.GetName((int)skillId);
 

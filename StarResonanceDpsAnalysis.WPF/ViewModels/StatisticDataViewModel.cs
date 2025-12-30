@@ -78,7 +78,9 @@ public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationMa
         [ObservableProperty] private IReadOnlyList<SkillItemViewModel> _filteredSkillList = [];
         [ObservableProperty] private IReadOnlyList<SkillItemViewModel> _totalSkillList = [];
 
-        [ObservableProperty] private ObservableCollection<(TimeSpan duration, double section, double total)> _dps = new();
+        // Note: DPS time series data is now stored in PlayerStatistics in the Core layer
+        // This property is kept for backward compatibility with existing views
+        [ObservableProperty] private ObservableCollection<(TimeSpan time, double value)> _dps = new();
 
         public void Reset()
         {

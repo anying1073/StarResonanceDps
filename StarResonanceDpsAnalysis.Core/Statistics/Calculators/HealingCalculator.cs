@@ -61,7 +61,7 @@ public sealed class HealingCalculator : IStatisticsCalculator
             values.NormalValue += log.Value;
         }
         
-        var skill = stats.GetOrCreateSkill(log.SkillID);
+        var skill = stats.GetOrCreateHealingSkill(log.SkillID);
         skill.TotalValue += log.Value;
         skill.UseTimes++;
         if (log.IsCritical) skill.CritTimes++;
