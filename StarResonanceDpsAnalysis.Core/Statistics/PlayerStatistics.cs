@@ -226,9 +226,11 @@ public sealed class StatisticValues
     public int HitCount { get; set; }
     public int CritCount { get; set; }
     public int LuckyCount { get; set; }
+    public int CritAndLuckyCount { get; set; }
     public long NormalValue { get; set; }
     public long CritValue { get; set; }
     public long LuckyValue { get; set; }
+    public long CritAndLuckyValue { get; set; }
     public double ValuePerSecond { get; set; }
     public ConcurrentDictionary<long, SkillStatistics> Skills { get; } = new();
 }
@@ -242,7 +244,11 @@ public sealed class SkillStatistics(long skillId)
     public long TotalValue { get; set; }
     public int UseTimes { get; set; }
     public int CritTimes { get; set; }
+    public long CritValue { get; set; }
     public int LuckyTimes { get; set; }
+    public long LuckValue { get; set; }
+    public int CritAndLuckyTimes { get; set; }
+    public long CritAndLuckyValue { get; set; }
 }
 
 /// <summary>

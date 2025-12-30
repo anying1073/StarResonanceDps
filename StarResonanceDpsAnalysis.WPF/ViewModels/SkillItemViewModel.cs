@@ -19,10 +19,12 @@ public partial class SkillItemViewModel : BaseViewModel
         [ObservableProperty] private long _normalValue;
         [ObservableProperty] private double _average;
         [ObservableProperty] private double _critRate;
+        [ObservableProperty] private double _luckyRate;
         [ObservableProperty] private long _critValue;
         [ObservableProperty] private int _critCount;
         [ObservableProperty] private long _luckyValue;
         [ObservableProperty] private int _luckyCount;
+        [ObservableProperty] private double _percentToTotal;
     }
 
     [ObservableProperty] private double _percentage;

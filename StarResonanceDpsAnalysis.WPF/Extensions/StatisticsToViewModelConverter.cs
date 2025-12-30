@@ -21,11 +21,11 @@ public static class StatisticsToViewModelConverter
             Total = stats.Total,
             Hits = stats.HitCount,
             CritCount = stats.CritCount,
-            LuckyCount = stats.LuckyCount,
+            LuckyCount = stats.LuckyCount + stats.CritAndLuckyCount,
             Average = durationSeconds > 0 ? stats.Total / durationSeconds : double.NaN,
             NormalValue = stats.NormalValue,
             CritValue = stats.CritValue,
-            LuckyValue = stats.LuckyValue,
+            LuckyValue = stats.LuckyValue + stats.CritAndLuckyValue,
             Skills = new ObservableCollection<SkillItemViewModel>()
         };
     }
@@ -36,107 +36,85 @@ public static class StatisticsToViewModelConverter
     public static (List<SkillItemViewModel> damage, List<SkillItemViewModel> healing, List<SkillItemViewModel> takenDamage)
         BuildSkillListsFromPlayerStats(PlayerStatistics playerStats)
     {
-        var damageSkills = new List<SkillItemViewModel>();
-        var healingSkills = new List<SkillItemViewModel>();
-        var takenSkills = new List<SkillItemViewModel>();
+        var damageSkills = BuildSkillList(
+            playerStats.AttackDamage.Skills,
+            playerStats.AttackDamage.Total,
+            (vm, value) => vm.Damage = value);
 
-        // ✅ Process attack/heal skills from playerStats.Skills
-        foreach (var (skillId, skillStats) in playerStats.AttackDamage.Skills)
-        {
-            var skillName = EmbeddedSkillConfig.GetName((int)skillId);
+        var healingSkills = BuildSkillList(
+            playerStats.Healing.Skills,
+            playerStats.Healing.Total,
+            (vm, value) => vm.Heal = value);
 
-            var skillVm = new SkillItemViewModel
-            {
-                SkillId = skillId,
-                SkillName = skillName,
-                Damage = new SkillItemViewModel.SkillValue
-                {
-                    TotalValue = skillStats.TotalValue,
-                    HitCount = skillStats.UseTimes,
-                    CritCount = skillStats.CritTimes,
-                    LuckyCount = skillStats.LuckyTimes,
-                    Average = skillStats.UseTimes > 0
-                    ? skillStats.TotalValue / (double)skillStats.UseTimes
-                    : 0,
-                    CritRate = skillStats.UseTimes > 0
-                    ? skillStats.CritTimes / (double)skillStats.UseTimes
-                    : 0,
-                    // Calculate values
-                    CritValue = 0, // Not stored separately in SkillStatistics
-                    LuckyValue = 0,
-                    NormalValue = skillStats.TotalValue, // Approximate
-                }
-            };
-
-
-            damageSkills.Add(skillVm);
-        }
-
-
-        // ✅ Process taken damage skills from playerStats.TakenDamageSkills
-        foreach (var (skillId, skillStats) in playerStats.Healing.Skills)
-        {
-            var skillName = EmbeddedSkillConfig.GetName((int)skillId);
-
-            var skillVm = new SkillItemViewModel
-            {
-                SkillId = skillId,
-                SkillName = skillName,
-                Heal = new SkillItemViewModel.SkillValue
-                {
-                    TotalValue = skillStats.TotalValue,
-                    HitCount = skillStats.UseTimes,
-                    CritCount = skillStats.CritTimes,
-                    LuckyCount = skillStats.LuckyTimes,
-                    Average = skillStats.UseTimes > 0
-                        ? skillStats.TotalValue / (double)skillStats.UseTimes
-                        : 0,
-                    CritRate = skillStats.UseTimes > 0
-                        ? skillStats.CritTimes / (double)skillStats.UseTimes
-                        : 0,
-                    CritValue = 0,
-                    LuckyValue = 0,
-                    NormalValue = skillStats.TotalValue
-                }
-            };
-            healingSkills.Add(skillVm);
-        }
-
-        // ✅ Process taken damage skills from playerStats.TakenDamageSkills
-        foreach (var (skillId, skillStats) in playerStats.TakenDamage.Skills)
-        {
-            var skillName = EmbeddedSkillConfig.GetName((int)skillId);
-
-            var skillVm = new SkillItemViewModel
-            {
-                SkillId = skillId,
-                SkillName = skillName,
-                TakenDamage = new SkillItemViewModel.SkillValue
-                {
-                    TotalValue = skillStats.TotalValue,
-                    HitCount = skillStats.UseTimes,
-                    CritCount = skillStats.CritTimes,
-                    LuckyCount = skillStats.LuckyTimes,
-                    Average = skillStats.UseTimes > 0
-                        ? skillStats.TotalValue / (double)skillStats.UseTimes
-                        : 0,
-                    CritRate = skillStats.UseTimes > 0
-                        ? skillStats.CritTimes / (double)skillStats.UseTimes
-                        : 0,
-                    CritValue = 0,
-                    LuckyValue = 0,
-                    NormalValue = skillStats.TotalValue
-                }
-            };
-
-            takenSkills.Add(skillVm);
-        }
-
-        // Sort by total value descending
-        damageSkills = damageSkills.OrderByDescending(s => s.Damage.TotalValue).ToList();
-        healingSkills = healingSkills.OrderByDescending(s => s.Heal.TotalValue).ToList();
-        takenSkills = takenSkills.OrderByDescending(s => s.TakenDamage.TotalValue).ToList();
+        var takenSkills = BuildSkillList(
+            playerStats.TakenDamage.Skills,
+            playerStats.TakenDamage.Total,
+            (vm, value) => vm.TakenDamage = value);
 
         return (damageSkills, healingSkills, takenSkills);
     }
+
+    /// <summary>
+    /// Generic method to build skill list from skill statistics
+    /// </summary>
+    private static List<SkillItemViewModel> BuildSkillList(
+        IReadOnlyDictionary<long, SkillStatistics> skills,
+        long totalValue,
+        Action<SkillItemViewModel, SkillItemViewModel.SkillValue> setProperty)
+    {
+        var result = new List<SkillItemViewModel>(skills.Count);
+
+        foreach (var (skillId, skillStats) in skills)
+        {
+            var skillVm = new SkillItemViewModel
+            {
+                SkillId = skillId,
+                SkillName = EmbeddedSkillConfig.GetName((int)skillId)
+            };
+
+            var skillValue = CreateSkillValue(skillStats, totalValue);
+            setProperty(skillVm, skillValue);
+
+            result.Add(skillVm);
+        }
+
+        return result.OrderByDescending(GetTotalValue).ToList();
+    }
+
+    /// <summary>
+    /// Create SkillValue from SkillStatistics
+    /// </summary>
+    private static SkillItemViewModel.SkillValue CreateSkillValue(SkillStatistics stats, long parentTotal)
+    {
+        var totalLucky = stats.LuckyTimes + stats.CritAndLuckyTimes;
+        var luckyValue = stats.LuckValue + stats.CritAndLuckyValue;
+        var normalValue = stats.TotalValue - stats.CritValue - luckyValue;
+
+        return new SkillItemViewModel.SkillValue
+        {
+            TotalValue = stats.TotalValue,
+            HitCount = stats.UseTimes,
+            CritCount = stats.CritTimes,
+            LuckyCount = totalLucky,
+            Average = stats.UseTimes > 0 ? stats.TotalValue / (double)stats.UseTimes : 0,
+            CritRate = GetRate(stats.CritTimes, stats.UseTimes),
+            LuckyRate = GetRate(totalLucky, stats.UseTimes),
+            CritValue = stats.CritValue,
+            LuckyValue = luckyValue,
+            NormalValue = normalValue,
+            PercentToTotal = GetRate(stats.TotalValue, parentTotal)
+        };
+    }
+
+    /// <summary>
+    /// Calculate rate (returns 0 if divider is 0)
+    /// </summary>
+    private static double GetRate(double value, double divider) => 
+        divider > 0 ? value / divider : 0;
+
+    /// <summary>
+    /// Get total value from skill view model based on which property is set
+    /// </summary>
+    private static long GetTotalValue(SkillItemViewModel vm) =>
+        vm.Damage?.TotalValue ?? vm.Heal?.TotalValue ?? vm.TakenDamage?.TotalValue ?? 0;
 }
