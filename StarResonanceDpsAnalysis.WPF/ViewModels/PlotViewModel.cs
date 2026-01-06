@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
@@ -32,13 +32,18 @@ public partial class PlotViewModel : BaseViewModel
     public PlotViewModel(PlotOptions? options)
     {
         _statisticType = options?.StatisticType ?? StatisticType.TakenDamage;
-        LineSeriesData = new LineSeries
+        
+        // ⭐ Use custom smoothed line series for better visual appearance with Catmull-Rom spline interpolation
+        LineSeriesData = new SmoothLineSeries
         {
             Title = options?.LineSeriesTitle,
             Color = OxyColor.FromRgb(230, 74, 25),
             StrokeThickness = 2,
-            MarkerType = MarkerType.None
+            MarkerType = MarkerType.None,
+            CanTrackerInterpolatePoints = true,
+            InterpolationSteps = 8 // Number of interpolated points between each data point (8-12 recommended)
         };
+        
         _seriesPlotModel = new PlotModel
         {
             Title = options?.SeriesPlotTitle,
@@ -99,7 +104,7 @@ public partial class PlotViewModel : BaseViewModel
         (_hitTypeBarPlotModel, _hitTypeBarCategoryAxis) = CreateHitTypeBarPlotModel(options);
     }
 
-    public LineSeries LineSeriesData { get; }
+    public SmoothLineSeries LineSeriesData { get; }
     public PieSeries PieSeriesData { get; }
 
     public void SetPieSeriesData(IReadOnlyList<SkillItemViewModel> skills)
@@ -208,9 +213,6 @@ public partial class PlotViewModel : BaseViewModel
         var series = new BarSeries
         {
             FillColor = OxyColor.FromRgb(34, 151, 244)
-            // Optionally make this explicit:
-            // YAxisKey = categoryAxis.Key,
-            // XAxisKey = valueAxis.Key
         };
 
         series.Items.Add(new BarItem(0));
@@ -297,7 +299,6 @@ public partial class PlotViewModel : BaseViewModel
         PiePlotModel.Title = plotOptions.PiePlotTitle;
         PiePlotModel.InvalidatePlot(true);
 
-        //HitTypeBarPlotModel.Title = plotOptions.DistributionPlotTitle;
         _hitTypeBarCategoryAxis.ItemsSource = new List<string>
         {
             plotOptions.HitTypeNormal ?? "Normal", plotOptions.HitTypeCritical ?? "Critical",

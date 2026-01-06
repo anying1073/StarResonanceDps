@@ -820,6 +820,48 @@
                                         </Grid>
                                     </Border>
 
+                                    <Border Style="{StaticResource SectionFieldBorderBase}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="39*" />
+                                                <ColumnDefinition Width="*" MinWidth="10" />
+                                                <ColumnDefinition Width="60*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Style="{StaticResource FieldName}"
+                                                Text="Time Series Sample Capacity"
+                                                ToolTip="Maximum number of data points stored for DPS/HPS/DTPS trend charts. Higher values show more history but use more memory. Range: 50-1000 samples." />
+                                            <Grid Grid.Column="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="50" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Slider
+                                                    Grid.Column="0"
+                                                    IsSnapToTickEnabled="True"
+                                                    Maximum="1000"
+                                                    Minimum="50"
+                                                    Style="{StaticResource AntSliderStyle}"
+                                                    TickFrequency="50"
+                                                    Value="{Binding AppConfig.TimeSeriesSampleCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock
+                                                    Grid.Column="2"
+                                                    Style="{StaticResource SuffixText}"
+                                                    Text="{Binding AppConfig.TimeSeriesSampleCapacity, Mode=OneWay}" />
+                                                <TextBlock
+                                                    Grid.Column="4"
+                                                    Style="{StaticResource SuffixText}"
+                                                    Text="samples" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+
                                 </StackPanel>
                             </Border>
 

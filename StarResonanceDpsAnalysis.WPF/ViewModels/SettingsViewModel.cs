@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -7,8 +8,12 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging.Abstractions;
+using StarResonanceDpsAnalysis.Core.Analyze.Models;
+using StarResonanceDpsAnalysis.Core.Data;
+using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Extends.System;
 using StarResonanceDpsAnalysis.Core.Models;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
@@ -23,7 +28,8 @@ public partial class SettingsViewModel(
     IConfigManager configManager,
     IDeviceManagementService deviceManagementService,
     LocalizationManager localization,
-    IMessageDialogService messageDialogService)
+    IMessageDialogService messageDialogService,
+    IDataStorage dataStorage)
     : BaseViewModel
 {
     [ObservableProperty] private AppConfig _appConfig = configManager.CurrentConfig.Clone(); // Initialized here with a cloned config; may be overwritten in LoadedAsync
@@ -345,6 +351,22 @@ public partial class SettingsViewModel(
             // Update format string preview only (no real-time application to actual config)
             OnPropertyChanged(nameof(FormatPreview));
         }
+        else if (e.PropertyName == nameof(AppConfig.TimeSeriesSampleCapacity))
+        {
+            // Update the Core layer's static configuration
+            if (_isLoaded)
+            {
+                StarResonanceDpsAnalysis.Core.Statistics.StatisticsConfiguration.TimeSeriesSampleCapacity = config.TimeSeriesSampleCapacity;
+            }
+        }
+        else if (e.PropertyName == nameof(AppConfig.DpsUpdateInterval))
+        {
+            // Update sample recording interval when DpsUpdateInterval changes
+            if (_isLoaded && dataStorage is DataStorageV2 storageV2)
+            {
+                storageV2.SampleRecordingInterval = config.DpsUpdateInterval;
+            }
+        }
 
         if (_isLoaded)
         {
@@ -662,7 +684,12 @@ public enum ShortcutType
 
 public sealed class SettingsDesignTimeViewModel : SettingsViewModel
 {
-    public SettingsDesignTimeViewModel() : base(new DesignConfigManager(), new DesignTimeDeviceManagementService(), new LocalizationManager(new LocalizationConfiguration(), NullLogger<LocalizationManager>.Instance), new DesignMessageDialogService())
+    public SettingsDesignTimeViewModel() : base(
+        new DesignConfigManager(), 
+        new DesignTimeDeviceManagementService(), 
+        new LocalizationManager(new LocalizationConfiguration(), NullLogger<LocalizationManager>.Instance), 
+        new DesignMessageDialogService(),
+        new DesignDataStorage())
     {
         AppConfig = new AppConfig
         {
@@ -706,20 +733,61 @@ internal sealed class DesignMessageDialogService : IMessageDialogService
 }
 
 /// <summary>
-/// 格式字段选项
+/// Design-time stub for IDataStorage
 /// </summary>
-public class FormatFieldOption
+internal sealed class DesignDataStorage : IDataStorage
 {
-    public string Id { get; set; }
-    public string DisplayName { get; set; }
-    public string Placeholder { get; set; }
-    public string Example { get; set; }
+    public PlayerInfo CurrentPlayerInfo => new();
+    public ReadOnlyDictionary<long, PlayerInfo> ReadOnlyPlayerInfoDatas => new(new Dictionary<long, PlayerInfo>());
+    public ReadOnlyDictionary<long, DpsData> ReadOnlyFullDpsDatas => new(new Dictionary<long, DpsData>());
+    public IReadOnlyList<DpsData> ReadOnlyFullDpsDataList => Array.Empty<DpsData>();
+    public ReadOnlyDictionary<long, DpsData> ReadOnlySectionedDpsDatas => new(new Dictionary<long, DpsData>());
+    public IReadOnlyList<DpsData> ReadOnlySectionedDpsDataList => Array.Empty<DpsData>();
+    public TimeSpan SectionTimeout { get; set; }
+    public bool IsServerConnected { get; set; }
+    public long CurrentPlayerUUID { get; set; }
 
-    public FormatFieldOption(string id, string displayName, string placeholder, string example)
-    {
-        Id = id;
-        DisplayName = displayName;
-        Placeholder = placeholder;
-        Example = example;
-    }
+#pragma warning disable CS0067
+    public event ServerConnectionStateChangedEventHandler? ServerConnectionStateChanged;
+    public event PlayerInfoUpdatedEventHandler? PlayerInfoUpdated;
+    public event NewSectionCreatedEventHandler? NewSectionCreated;
+    public event BattleLogCreatedEventHandler? BattleLogCreated;
+    public event DpsDataUpdatedEventHandler? DpsDataUpdated;
+    public event DataUpdatedEventHandler? DataUpdated;
+    public event ServerChangedEventHandler? ServerChanged;
+    public event Action? BeforeSectionCleared;
+    public event SectionEndedEventHandler? SectionEnded;
+#pragma warning restore
+
+    public void LoadPlayerInfoFromFile() { }
+    public void SavePlayerInfoToFile() { }
+    public Dictionary<long, PlayerInfoFileData> BuildPlayerDicFromBattleLog(List<BattleLog> battleLogs) => new();
+    public void ClearAllDpsData() { }
+    public void ClearDpsData() { }
+    public void ClearCurrentPlayerInfo() { }
+    public void ClearPlayerInfos() { }
+    public void ClearAllPlayerInfos() { }
+    public void RaiseServerChanged(string currentServerStr, string prevServer) { }
+    public void SetPlayerLevel(long playerUid, int tmpLevel) { }
+    public bool EnsurePlayer(long playerUid) => true;
+    public void SetPlayerHP(long playerUid, long hp) { }
+    public void SetPlayerMaxHP(long playerUid, long maxHp) { }
+    public void SetPlayerName(long playerUid, string playerName) { }
+    public void SetPlayerCombatPower(long playerUid, int combatPower) { }
+    public void SetPlayerProfessionID(long playerUid, int professionId) { }
+    public void AddBattleLog(BattleLog log) { }
+    public void SetPlayerRankLevel(long playerUid, int readInt32) { }
+    public void SetPlayerCritical(long playerUid, int readInt32) { }
+    public void SetPlayerLucky(long playerUid, int readInt32) { }
+    public void SetPlayerElementFlag(long playerUid, int readInt32) { }
+    public void SetPlayerReductionLevel(long playerUid, int readInt32) { }
+    public void SetPlayerEnergyFlag(long playerUid, int readInt32) { }
+    public void SetNpcTemplateId(long playerUid, int templateId) { }
+    public void SetPlayerSeasonLevel(long playerUid, int seasonLevel) { }
+    public void SetPlayerSeasonStrength(long playerUid, int seasonStrength) { }
+    public IReadOnlyList<BattleLog> GetBattleLogsForPlayer(long uid, bool fullSession) => Array.Empty<BattleLog>();
+    public IReadOnlyList<BattleLog> GetBattleLogs(bool fullSession) => Array.Empty<BattleLog>();
+    public IReadOnlyDictionary<long, PlayerStatistics> GetStatistics(bool fullSession) => new Dictionary<long, PlayerStatistics>();
+    public int GetStatisticsCount(bool fullSession) => 0;
+    public void Dispose() { }
 }

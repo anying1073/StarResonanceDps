@@ -17,33 +17,42 @@ public interface ISampleRecorder
 /// <summary>
 /// Records samples periodically for all players
 /// SRP: Single Responsibility - only handles periodic sample recording
+/// Note: Delta values are automatically recorded in UpdateDeltaValues(), 
+/// so this recorder only needs to trigger the update.
 /// </summary>
 public sealed class PeriodicSampleRecorder : ISampleRecorder
+{
+    /// <summary>
+    /// Creates a periodic sample recorder
+    /// </summary>
+    public PeriodicSampleRecorder()
+    {
+    }
+
+    public void RecordSamples(IReadOnlyDictionary<long, PlayerStatistics> statistics, TimeSpan sectionDuration)
+    {
+        foreach (var playerStats in statistics.Values)
+        {
+            // Update delta values - this automatically records delta samples to time series
+            playerStats.UpdateDeltaValues();
+        }
+    }
+}
+
+/// <summary>
+/// Records delta samples for comparison and analysis
+/// Useful for detecting burst patterns
+/// Note: Delta values are automatically recorded in UpdateDeltaValues(), 
+/// so this recorder only needs to trigger the update.
+/// </summary>
+public sealed class HybridSampleRecorder : ISampleRecorder
 {
     public void RecordSamples(IReadOnlyDictionary<long, PlayerStatistics> statistics, TimeSpan sectionDuration)
     {
         foreach (var playerStats in statistics.Values)
         {
-            // Get current DPS/HPS/DTPS values
-            var dps = playerStats.AttackDamage.ValuePerSecond;
-            var hps = playerStats.Healing.ValuePerSecond;
-            var dtps = playerStats.TakenDamage.ValuePerSecond;
-
-            // Only record valid values (not NaN)
-            if (!double.IsNaN(dps))
-            {
-                playerStats.AddDpsSample(sectionDuration, dps);
-            }
-
-            if (!double.IsNaN(hps))
-            {
-                playerStats.AddHpsSample(sectionDuration, hps);
-            }
-
-            if (!double.IsNaN(dtps))
-            {
-                playerStats.AddDtpsSample(sectionDuration, dtps);
-            }
+            // Update delta values - this automatically records delta samples to time series
+            playerStats.UpdateDeltaValues();
         }
     }
 }

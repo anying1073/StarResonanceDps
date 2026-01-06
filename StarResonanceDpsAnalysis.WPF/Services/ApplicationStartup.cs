@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.Core.Data;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
@@ -23,6 +24,20 @@ public sealed class ApplicationStartup(
         try
         {
             logger.LogInformation(WpfLogEvents.StartupInit, "Startup initialization started");
+            
+            // ? Configure time series sample capacity from config
+            StatisticsConfiguration.TimeSeriesSampleCapacity = configManager.CurrentConfig.TimeSeriesSampleCapacity;
+            logger.LogInformation("Time series sample capacity configured: {Capacity}", 
+                StatisticsConfiguration.TimeSeriesSampleCapacity);
+            
+            // ? Configure sample recording interval from DpsUpdateInterval
+            if (dataStorage is DataStorageV2 storageV2)
+            {
+                storageV2.SampleRecordingInterval = configManager.CurrentConfig.DpsUpdateInterval;
+                logger.LogInformation("Sample recording interval configured: {Interval}ms", 
+                    storageV2.SampleRecordingInterval);
+            }
+            
             // Apply localization
             localization.Initialize(configManager.CurrentConfig.Language);
 

@@ -230,6 +230,14 @@ public partial class AppConfig : ObservableObject
     private bool _useCustomFormat = false;
 
     /// <summary>
+    /// Time series sample capacity for DPS/HPS/DTPS charts
+    /// Default: 300 samples
+    /// Range: 50 - 1000 samples (null for unlimited)
+    /// </summary>
+    [ObservableProperty]
+    private int _timeSeriesSampleCapacity = 300;
+
+    /// <summary>
     /// ⭐ 新增: 窗口主题颜色（顶部栏和底部栏）
     /// 默认值：#1690F8 (蓝色)
     /// </summary>

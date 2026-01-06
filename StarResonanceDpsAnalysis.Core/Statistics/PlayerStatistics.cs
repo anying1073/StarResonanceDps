@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-
 namespace StarResonanceDpsAnalysis.Core.Statistics;
 
 /// <summary>
@@ -14,11 +12,11 @@ public sealed class PlayerStatistics
     public StatisticValues AttackDamage { get; } = new();
     public StatisticValues TakenDamage { get; } = new();
     public StatisticValues Healing { get; } = new();
-
-    // Time series data managers (Dependency Inversion: depend on abstraction)
-    private readonly ITimeSeriesSampleManager _dpsSamples;
-    private readonly ITimeSeriesSampleManager _hpsSamples;
-    private readonly ITimeSeriesSampleManager _dtpsSamples;
+    
+    // Delta time series data managers for incremental values (ONLY delta tracking)
+    private readonly ITimeSeriesSampleManager _deltaDpsSamples;
+    private readonly ITimeSeriesSampleManager _deltaHpsSamples;
+    private readonly ITimeSeriesSampleManager _deltaDtpsSamples;
 
     // Timing info
     public long? StartTick { get; set; }
@@ -26,6 +24,15 @@ public sealed class PlayerStatistics
 
     // NPC flag
     public bool IsNpc { get; set; }
+
+    // Previous values for delta calculation
+    private DeltaTrackingSnapshot _previousSnapshot;
+    
+    // Track last recorded tick to prevent duplicate sample recordings
+    private long _lastRecordedTick;
+    
+    // Flag to control delta tracking
+    private bool _isDeltaTrackingEnabled = true;
 
     /// <summary>
     /// Creates a new PlayerStatistics instance with default capacity-based sampling
@@ -35,9 +42,9 @@ public sealed class PlayerStatistics
     public PlayerStatistics(long uid, int? timeSeriesCapacity = 300)
     {
         Uid = uid;
-        _dpsSamples = new TimeSeriesSampleManager(timeSeriesCapacity);
-        _hpsSamples = new TimeSeriesSampleManager(timeSeriesCapacity);
-        _dtpsSamples = new TimeSeriesSampleManager(timeSeriesCapacity);
+        _deltaDpsSamples = new TimeSeriesSampleManager(timeSeriesCapacity);
+        _deltaHpsSamples = new TimeSeriesSampleManager(timeSeriesCapacity);
+        _deltaDtpsSamples = new TimeSeriesSampleManager(timeSeriesCapacity);
     }
 
     /// <summary>
@@ -49,9 +56,9 @@ public sealed class PlayerStatistics
     public PlayerStatistics(long uid, Func<ITimeSeriesSampleManager> sampleManagerFactory)
     {
         Uid = uid;
-        _dpsSamples = sampleManagerFactory();
-        _hpsSamples = sampleManagerFactory();
-        _dtpsSamples = sampleManagerFactory();
+        _deltaDpsSamples = sampleManagerFactory();
+        _deltaHpsSamples = sampleManagerFactory();
+        _deltaDtpsSamples = sampleManagerFactory();
     }
 
     /// <summary>
@@ -84,175 +91,192 @@ public sealed class PlayerStatistics
     }
 
     /// <summary>
-    /// Add a DPS data point for time series tracking
+    /// Calculate delta values per second since last update
+    /// Should be called periodically (e.g., every second) to update delta metrics
     /// </summary>
-    public void AddDpsSample(TimeSpan time, double dps)
+    public void UpdateDeltaValues()
     {
-        _dpsSamples.AddSample(time, dps);
+        // Skip delta calculation if tracking is disabled
+        if (!_isDeltaTrackingEnabled)
+        {
+            return;
+        }
+        
+        if (IsFirstUpdate())
+        {
+            InitializeDeltaTracking();
+            return;
+        }
+
+        var elapsed = CalculateElapsedTime();
+        if (!elapsed.HasValue)
+        {
+            return; // No time elapsed, skip calculation
+        }
+
+        var deltas = CalculateDeltas();
+        ApplyDeltaValues(deltas, elapsed.Value);
+        
+        // Record delta values to time series
+        RecordDeltaSamples(deltas, elapsed.Value);
     }
 
     /// <summary>
-    /// Add an HPS data point for time series tracking
+    /// Stop delta tracking (called when section ends)
+    /// Preserves current delta values but stops calculating new ones
     /// </summary>
-    public void AddHpsSample(TimeSpan time, double hps)
+    public void StopDeltaTracking()
     {
-        _hpsSamples.AddSample(time, hps);
+        _isDeltaTrackingEnabled = false;
+    }
+    
+    /// <summary>
+    /// Resume delta tracking (called when new section starts)
+    /// </summary>
+    public void ResumeDeltaTracking()
+    {
+        _isDeltaTrackingEnabled = true;
     }
 
     /// <summary>
-    /// Add a DTPS (Damage Taken Per Second) data point for time series tracking
+    /// Reset delta tracking (useful when clearing or resetting statistics)
+    /// Also re-enables tracking if it was stopped
     /// </summary>
-    public void AddDtpsSample(TimeSpan time, double dtps)
+    public void ResetDeltaTracking()
     {
-        _dtpsSamples.AddSample(time, dtps);
+        _previousSnapshot = default;
+        ClearDeltaValues();
+        _isDeltaTrackingEnabled = true; // Re-enable tracking on reset
     }
 
     /// <summary>
-    /// Get DPS samples as a read-only list
+    /// Get delta DPS samples as a read-only list (incremental DPS between measurements)
     /// </summary>
-    public IReadOnlyList<DpsDataPoint> GetDpsSamples()
+    public IReadOnlyList<DpsDataPoint> GetDeltaDpsSamples()
     {
-        return _dpsSamples.GetSamples();
+        return _deltaDpsSamples.GetSamples();
     }
 
     /// <summary>
-    /// Get HPS samples as a read-only list
+    /// Get delta HPS samples as a read-only list (incremental HPS between measurements)
     /// </summary>
-    public IReadOnlyList<DpsDataPoint> GetHpsSamples()
+    public IReadOnlyList<DpsDataPoint> GetDeltaHpsSamples()
     {
-        return _hpsSamples.GetSamples();
+        return _deltaHpsSamples.GetSamples();
     }
 
     /// <summary>
-    /// Get DTPS samples as a read-only list
+    /// Get delta DTPS samples as a read-only list (incremental DTPS between measurements)
     /// </summary>
-    public IReadOnlyList<DpsDataPoint> GetDtpsSamples()
+    public IReadOnlyList<DpsDataPoint> GetDeltaDtpsSamples()
     {
-        return _dtpsSamples.GetSamples();
+        return _deltaDtpsSamples.GetSamples();
     }
 
     /// <summary>
-    /// Clear all DPS/HPS/DTPS samples
+    /// Clear all delta DPS/HPS/DTPS samples
     /// </summary>
     public void ClearSamples()
     {
-        _dpsSamples.Clear();
-        _hpsSamples.Clear();
-        _dtpsSamples.Clear();
+        _deltaDpsSamples.Clear();
+        _deltaHpsSamples.Clear();
+        _deltaDtpsSamples.Clear();
+        ResetDeltaTracking();
     }
-}
 
-/// <summary>
-/// Interface for managing time series samples
-/// ISP: Interface Segregation - small, focused interface
-/// </summary>
-public interface ITimeSeriesSampleManager
-{
-    void AddSample(TimeSpan time, double value);
-    IReadOnlyList<DpsDataPoint> GetSamples();
-    void Clear();
-}
+    #region Delta Calculation Helpers
 
-/// <summary>
-/// Manages time series samples with automatic capacity management
-/// SRP: Single Responsibility - only manages sample collection
-/// OCP: Open/Closed - can be extended without modification
-/// </summary>
-public sealed class TimeSeriesSampleManager : ITimeSeriesSampleManager
-{
-    private readonly ConcurrentQueue<DpsDataPoint> _samples = new();
-    private readonly int? _maxCapacity; // Nullable to support unlimited storage
-    private int _count;
+    private bool IsFirstUpdate() => _previousSnapshot.Tick == 0;
+
+    private void InitializeDeltaTracking()
+    {
+        _previousSnapshot = new DeltaTrackingSnapshot
+        {
+            DamageTotal = AttackDamage.Total,
+            HealingTotal = Healing.Total,
+            TakenDamageTotal = TakenDamage.Total,
+            Tick = LastTick
+        };
+    }
+
+    private double? CalculateElapsedTime()
+    {
+        var tickDelta = LastTick - _previousSnapshot.Tick;
+        if (tickDelta <= 0)
+        {
+            return null; // No time elapsed
+        }
+        return tickDelta / (double)TimeSpan.TicksPerSecond;
+    }
+
+    private DeltaValues CalculateDeltas()
+    {
+        return new DeltaValues
+        {
+            Damage = AttackDamage.Total - _previousSnapshot.DamageTotal,
+            Healing = Healing.Total - _previousSnapshot.HealingTotal,
+            TakenDamage = TakenDamage.Total - _previousSnapshot.TakenDamageTotal
+        };
+    }
+
+    private void ApplyDeltaValues(DeltaValues deltas, double seconds)
+    {
+        AttackDamage.DeltaValuePerSecond = deltas.Damage / seconds;
+        Healing.DeltaValuePerSecond = deltas.Healing / seconds;
+        TakenDamage.DeltaValuePerSecond = deltas.TakenDamage / seconds;
+    }
+
+    private void RecordDeltaSamples(DeltaValues deltas, double seconds)
+    {
+        // Skip if we've already recorded samples at this tick
+        // This prevents duplicate recordings when UpdateDeltaValues() is called
+        // multiple times before LastTick is updated by new battle logs
+        if (LastTick == _lastRecordedTick)
+        {
+            return; // Already recorded samples at this tick
+        }
+        
+        // Calculate time from start (assuming LastTick represents current time)
+        var currentTime = StartTick.HasValue 
+            ? TimeSpan.FromTicks(LastTick - StartTick.Value) 
+            : TimeSpan.Zero;
+        
+        // Record delta values per second to time series
+        _deltaDpsSamples.AddSample(currentTime, deltas.Damage / seconds);
+        _deltaHpsSamples.AddSample(currentTime, deltas.Healing / seconds);
+        _deltaDtpsSamples.AddSample(currentTime, deltas.TakenDamage / seconds);
+        
+        // Update last recorded tick to prevent duplicates
+        _lastRecordedTick = LastTick;
+    }
+
+    private void ClearDeltaValues()
+    {
+        AttackDamage.DeltaValuePerSecond = 0;
+        Healing.DeltaValuePerSecond = 0;
+        TakenDamage.DeltaValuePerSecond = 0;
+    }
 
     /// <summary>
-    /// Creates a time series sample manager
+    /// Snapshot of previous state for delta calculation
     /// </summary>
-    /// <param name="maxCapacity">Maximum capacity. Set to null for unlimited storage.</param>
-    public TimeSeriesSampleManager(int? maxCapacity = 300)
+    private struct DeltaTrackingSnapshot
     {
-        if (maxCapacity.HasValue && maxCapacity.Value <= 0)
-            throw new ArgumentOutOfRangeException(nameof(maxCapacity), "Capacity must be positive or null for unlimited");
-        
-        _maxCapacity = maxCapacity;
+        public long DamageTotal { get; init; }
+        public long HealingTotal { get; init; }
+        public long TakenDamageTotal { get; init; }
+        public long Tick { get; init; }
     }
 
-    public void AddSample(TimeSpan time, double value)
+    /// <summary>
+    /// Delta values between two snapshots
+    /// </summary>
+    private struct DeltaValues
     {
-        _samples.Enqueue(new DpsDataPoint(time, value));
-        Interlocked.Increment(ref _count);
-        
-        // Only trim if capacity limit is set
-        if (_maxCapacity.HasValue)
-        {
-            TrimToCapacity();
-        }
+        public long Damage { get; init; }
+        public long Healing { get; init; }
+        public long TakenDamage { get; init; }
     }
 
-    public IReadOnlyList<DpsDataPoint> GetSamples()
-    {
-        return _samples.ToArray();
-    }
-
-    public void Clear()
-    {
-        _samples.Clear();
-        Interlocked.Exchange(ref _count, 0);
-    }
-
-    private void TrimToCapacity()
-    {
-        if (!_maxCapacity.HasValue) return;
-        
-        while (_count > _maxCapacity.Value)
-        {
-            if (_samples.TryDequeue(out _))
-            {
-                Interlocked.Decrement(ref _count);
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
+    #endregion
 }
-
-/// <summary>
-/// Statistics values for a specific metric (damage, healing, etc.)
-/// </summary>
-public sealed class StatisticValues
-{
-    public long Total { get; set; }
-    public int HitCount { get; set; }
-    public int CritCount { get; set; }
-    public int LuckyCount { get; set; }
-    public int CritAndLuckyCount { get; set; }
-    public long NormalValue { get; set; }
-    public long CritValue { get; set; }
-    public long LuckyValue { get; set; }
-    public long CritAndLuckyValue { get; set; }
-    public double ValuePerSecond { get; set; }
-    public ConcurrentDictionary<long, SkillStatistics> Skills { get; } = new();
-}
-
-/// <summary>
-/// Statistics for a specific skill
-/// </summary>
-public sealed class SkillStatistics(long skillId)
-{
-    public long SkillId { get; } = skillId;
-    public long TotalValue { get; set; }
-    public int UseTimes { get; set; }
-    public int CritTimes { get; set; }
-    public long CritValue { get; set; }
-    public int LuckyTimes { get; set; }
-    public long LuckValue { get; set; }
-    public int CritAndLuckyTimes { get; set; }
-    public long CritAndLuckyValue { get; set; }
-}
-
-/// <summary>
-/// Represents a single DPS/HPS/DTPS data point in time series
-/// Immutable value object following DDD principles
-/// </summary>
-public readonly record struct DpsDataPoint(TimeSpan Time, double Value);

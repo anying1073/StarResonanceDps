@@ -24,6 +24,11 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
 
     // ===== Statistics Engine =====
     private readonly StatisticsAdapter _statisticsAdapter = new(logger);
+    
+    // ===== Sample Recording Control =====
+    private readonly object _sampleRecordingLock = new();
+    private DateTime _lastSampleRecordTime = DateTime.MinValue;
+    private int _sampleRecordingIntervalMs = 1000; // Default: 1 second
 
     private bool _disposed;
     private bool _hasPendingBattleLogEvents;
@@ -36,6 +41,30 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     // ===== Section timeout state =====
     private Timer? _sectionTimeoutTimer;
     private bool _isSectionTimedOut;
+    
+    /// <summary>
+    /// Sample recording interval in milliseconds (controlled by DpsUpdateInterval)
+    /// Default: 1000ms (1 second)
+    /// Range: 100ms - 5000ms
+    /// </summary>
+    public int SampleRecordingInterval
+    {
+        get
+        {
+            lock (_sampleRecordingLock)
+            {
+                return _sampleRecordingIntervalMs;
+            }
+        }
+        set
+        {
+            lock (_sampleRecordingLock)
+            {
+                _sampleRecordingIntervalMs = Math.Clamp(value, 100, 5000);
+                logger.LogDebug("Sample recording interval updated to {Interval}ms", _sampleRecordingIntervalMs);
+            }
+        }
+    }
 
     /// <summary>
     /// 玩家信息字典 (Key: UID)
@@ -278,7 +307,10 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
             _isSectionTimedOut = true;
         }
 
-        logger.LogDebug("Section timed out at {Time}, will clear on next log arrival", now);
+        logger.LogDebug("Section timed out at {Time}, stopping delta tracking", now);
+        
+        // ⭐ Stop delta tracking when section times out
+        _statisticsAdapter.StopDeltaTracking();
         
         // ⭐ Raise SectionEnded event to notify UI
         RaiseSectionEnded();
@@ -694,20 +726,12 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         return _statisticsAdapter.GetStatisticsCount(fullSession);
     }
 
-    /// <summary>
-    /// Record DPS/HPS/DTPS samples for all players
-    /// Delegates to StatisticsAdapter (following SOLID principles)
-    /// Records for both full session and section simultaneously
-    /// </summary>
-    public void RecordSamples(TimeSpan sectionDuration)
-    {
-        _statisticsAdapter.RecordSamples(sectionDuration);
-    }
-
     #endregion
 }
 
-// Events partial class remains unchanged
+/// <summary>
+/// Events partial class remains unchanged
+/// </summary>
 public partial class DataStorageV2
 {
     #region Events
@@ -754,6 +778,31 @@ public partial class DataStorageV2
     {
         try
         {
+            // ⭐ Record samples with interval control
+            // Only record if enough time has elapsed since last recording
+            bool shouldRecord = false;
+            lock (_sampleRecordingLock)
+            {
+                var now = DateTime.UtcNow;
+                var elapsed = now - _lastSampleRecordTime;
+                
+                // Record if interval has passed or this is the first recording
+                if (_lastSampleRecordTime == DateTime.MinValue || 
+                    elapsed.TotalMilliseconds >= _sampleRecordingIntervalMs)
+                {
+                    shouldRecord = true;
+                    _lastSampleRecordTime = now;
+                }
+            }
+            
+            if (shouldRecord)
+            {
+                // Calculate section duration for sample recording
+                var sectionDuration = CalculateSectionDuration();
+                _statisticsAdapter.RecordSamples(sectionDuration);
+                logger.LogTrace("Samples recorded at interval {Interval}ms", _sampleRecordingIntervalMs);
+            }
+            
             DpsDataUpdated?.Invoke();
         }
         catch (Exception ex)
@@ -840,4 +889,38 @@ public partial class DataStorageV2
         }
     }
     #endregion
+
+    /// <summary>
+    /// Calculate current section duration for sample recording
+    /// Returns the time elapsed since the last section was cleared
+    /// </summary>
+    private TimeSpan CalculateSectionDuration()
+    {
+        if (LastBattleLog == null)
+            return TimeSpan.Zero;
+            
+        // Get the most recent tick from section statistics
+        var sectionStats = _statisticsAdapter.GetStatistics(fullSession: false);
+        if (sectionStats.Count == 0)
+            return TimeSpan.Zero;
+            
+        // Find the maximum LastTick across all players to get current battle time
+        long maxLastTick = 0;
+        long minStartTick = long.MaxValue;
+        
+        foreach (var playerStats in sectionStats.Values)
+        {
+            if (playerStats.LastTick > maxLastTick)
+                maxLastTick = playerStats.LastTick;
+                
+            if (playerStats.StartTick.HasValue && playerStats.StartTick.Value < minStartTick)
+                minStartTick = playerStats.StartTick.Value;
+        }
+        
+        if (minStartTick == long.MaxValue || maxLastTick == 0)
+            return TimeSpan.Zero;
+            
+        var durationTicks = maxLastTick - minStartTick;
+        return TimeSpan.FromTicks(Math.Max(0, durationTicks));
+    }
 }

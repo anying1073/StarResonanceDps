@@ -950,10 +950,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             subViewModel.UpdateDataOptimized(processedData, currentPlayerUid);
         }
 
-        // ⭐ Record DPS/HPS/DTPS samples in Core layer (proper separation of concerns)
-        // Core layer automatically records for BOTH full and section simultaneously
-        var sectionDuration = ComputeSectionDuration();
-        _storage.RecordSamples(sectionDuration);
+        // ⭐ REMOVED: RecordSamples is now called automatically in Core layer (DataStorageV2)
+        // Sample recording is handled by the Core layer for proper separation of concerns
 
         // Update team total damage and DPS
         UpdateTeamTotalStats(data);

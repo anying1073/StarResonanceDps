@@ -23,16 +23,14 @@ public sealed class TakenDamageCalculator : IStatisticsCalculator
         UpdateStatistics(log, sectionStats);
 
         // Also track NPC damage if attacker is not a player
-        if (!log.IsAttackerPlayer)
-        {
-            var npcFull = context.GetOrCreateFullStats(log.AttackerUuid);
-            var npcSection = context.GetOrCreateSectionStats(log.AttackerUuid);
-            npcFull.IsNpc = true;
-            npcSection.IsNpc = true;
+        if (log.IsAttackerPlayer) return;
+        var npcFull = context.GetOrCreateFullStats(log.AttackerUuid);
+        var npcSection = context.GetOrCreateSectionStats(log.AttackerUuid);
+        npcFull.IsNpc = true;
+        npcSection.IsNpc = true;
 
-            UpdateNpcAttackStats(log, npcFull);
-            UpdateNpcAttackStats(log, npcSection);
-        }
+        UpdateNpcAttackStats(log, npcFull);
+        UpdateNpcAttackStats(log, npcSection);
     }
 
     public void ResetSection(StatisticsContext context)

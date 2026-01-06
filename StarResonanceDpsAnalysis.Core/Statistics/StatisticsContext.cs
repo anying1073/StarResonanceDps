@@ -13,9 +13,21 @@ public sealed class StatisticsContext
     private readonly List<BattleLog> _fullBattleLogs = new();
     private readonly List<BattleLog> _sectionBattleLogs = new();
     
-    // ? Locks for thread safety
+    // ? Time series sample capacity configuration
+    private readonly int _timeSeriesSampleCapacity;
+    
+    // Locks for thread safety
     private readonly object _statsLock = new();
     private readonly object _logsLock = new();
+    
+    /// <summary>
+    /// Constructor with configurable time series capacity
+    /// </summary>
+    /// <param name="timeSeriesSampleCapacity">Maximum samples to store for time series data. If null, uses global configuration.</param>
+    public StatisticsContext(int? timeSeriesSampleCapacity = null)
+    {
+        _timeSeriesSampleCapacity = timeSeriesSampleCapacity ?? StatisticsConfiguration.TimeSeriesSampleCapacity;
+    }
     
     /// <summary>
     /// Get or create full-session statistics for a player
@@ -26,7 +38,7 @@ public sealed class StatisticsContext
         {
             if (!_fullStats.TryGetValue(uid, out var stats))
             {
-                stats = new PlayerStatistics(uid);
+                stats = new PlayerStatistics(uid, _timeSeriesSampleCapacity);
                 _fullStats[uid] = stats;
             }
             return stats;
@@ -42,7 +54,7 @@ public sealed class StatisticsContext
         {
             if (!_sectionStats.TryGetValue(uid, out var stats))
             {
-                stats = new PlayerStatistics(uid);
+                stats = new PlayerStatistics(uid, _timeSeriesSampleCapacity);
                 _sectionStats[uid] = stats;
             }
             return stats;

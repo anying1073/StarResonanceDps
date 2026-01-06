@@ -49,14 +49,12 @@ public sealed class StatisticsAdapter
     /// <param name="sectionDuration">Time elapsed since section start</param>
     public void RecordSamples(TimeSpan sectionDuration)
     {
-        // ⭐ Record samples for BOTH full and section at the same time
+        // Get statistics for both scopes
         var fullStats = _engine.GetFullStatistics();
         var sectionStats = _engine.GetSectionStatistics();
 
-        // Record full session samples (accumulates across all sections)
+        // Record samples (UpdateDeltaValues is called inside RecordSamples)
         _sampleRecorder.RecordSamples(fullStats, sectionDuration);
-        
-        // Record section samples (only for current combat section)
         _sampleRecorder.RecordSamples(sectionStats, sectionDuration);
     }
 
@@ -66,14 +64,30 @@ public sealed class StatisticsAdapter
     /// </summary>
     public void ResetSection()
     {
-        // ⭐ Clear ONLY section samples (not full session)
+        // ? Clear ONLY section samples (not full session)
         var sectionStats = _engine.GetSectionStatistics();
         foreach (var playerStats in sectionStats.Values)
         {
             playerStats.ClearSamples();
+            playerStats.ResumeDeltaTracking(); // Resume tracking for new section
         }
         
         _engine.ResetSection();
+    }
+    
+    /// <summary>
+    /// Stop delta tracking for all players (called when section ends)
+    /// Preserves current delta values but stops calculating new ones
+    /// </summary>
+    public void StopDeltaTracking()
+    {
+        var sectionStats = _engine.GetSectionStatistics();
+        foreach (var playerStats in sectionStats.Values)
+        {
+            playerStats.StopDeltaTracking();
+        }
+        
+        _logger?.LogDebug("Delta tracking stopped for section statistics");
     }
 
     /// <summary>
@@ -82,7 +96,7 @@ public sealed class StatisticsAdapter
     /// </summary>
     public void ClearAll()
     {
-        // ⭐ Clear samples for BOTH full and section
+        // ? Clear samples for BOTH full and section
         var fullStats = _engine.GetFullStatistics();
         foreach (var playerStats in fullStats.Values)
         {

@@ -332,7 +332,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
             damageSkills,
             duration,
             stats => DamageStats = stats,
-            _playerStatistics.GetDpsSamples(),
+            _playerStatistics.GetDeltaDpsSamples(),
             DpsPlot);
 
         // Update healing statistics
@@ -341,7 +341,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
             healingSkills,
             duration,
             stats => HealingStats = stats,
-            _playerStatistics.GetHpsSamples(),
+            _playerStatistics.GetDeltaHpsSamples(),
             HpsPlot);
 
         // Update taken damage statistics
@@ -350,7 +350,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
             takenSkills,
             duration,
             stats => TakenDamageStats = stats,
-            _playerStatistics.GetDtpsSamples(),
+            _playerStatistics.GetDeltaDtpsSamples(),
             DtpsPlot);
     }
 

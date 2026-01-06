@@ -71,14 +71,6 @@ public interface IDataStorage : IDisposable
     /// segment.</param>
     /// <returns>The total number of statistics records. Returns 0 if no statistics are available.</returns>
     int GetStatisticsCount(bool fullSession);
-
-    /// <summary>
-    /// Record DPS/HPS/DTPS samples for all players (Core layer responsibility)
-    /// Records for both full session and current section simultaneously
-    /// Should be called periodically by the presentation layer
-    /// </summary>
-    /// <param name="sectionDuration">Time elapsed since section start</param>
-    void RecordSamples(TimeSpan sectionDuration);
 }
 
 public delegate void ServerConnectionStateChangedEventHandler(bool serverConnectionState);
