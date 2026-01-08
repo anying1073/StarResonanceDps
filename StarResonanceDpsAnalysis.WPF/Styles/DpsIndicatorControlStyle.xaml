@@ -4,8 +4,6 @@
     xmlns:controls="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls"
     xmlns:conv="clr-namespace:StarResonanceDpsAnalysis.WPF.Converters">
 
-    <conv:PercentToWidthConverter x:Key="PercentToWidthConverter" />
-
     <Style TargetType="{x:Type controls:DpsIndicatorControl}">
         <Setter Property="Template">
             <Setter.Value>
@@ -32,8 +30,8 @@
                             <Rectangle.Width>
                                 <MultiBinding Converter="{StaticResource PercentToWidthConverter}">
                                     <Binding Path="AnimatedPercentage" RelativeSource="{RelativeSource TemplatedParent}" />
-                                    <Binding Path="Maximum" RelativeSource="{RelativeSource TemplatedParent}" />
                                     <Binding ElementName="Root" Path="ActualWidth" />
+                                    <!--<Binding Path="Maximum" RelativeSource="{RelativeSource TemplatedParent}" />-->
                                 </MultiBinding>
                             </Rectangle.Width>
                         </Rectangle>

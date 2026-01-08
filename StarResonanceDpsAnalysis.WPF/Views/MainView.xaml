@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vms="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
     xmlns:models="clr-namespace:StarResonanceDpsAnalysis.Core.Models;assembly=StarResonanceDpsAnalysis.Core"
+    xmlns:skillBreakdown="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls.SkillBreakdown"
     Title="{lex:Loc Key={x:Static loc:ResourcesKeys.App_Name}}"
     Width="1000"
     Height="650"
@@ -607,6 +608,7 @@
                                             <Button Command="{Binding CallDamageReferenceViewCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_DamageReference}}" />
                                             <Button Command="{Binding CallSettingsViewCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_Settings}}" />
                                             <Button Command="{Binding CallAboutViewCommand}" Content="{lex:Loc Key={x:Static loc:ResourcesKeys.MainView_Debug_Button_About}}" />
+                <skillBreakdown:SkillStatsSummaryPanel Average="{Binding TestAverage}"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
