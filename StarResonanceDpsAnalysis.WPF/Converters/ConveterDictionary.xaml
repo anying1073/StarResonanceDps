@@ -43,4 +43,6 @@
     <converters:SkillNameToGradientConverter x:Key="SkillNameToGradientConverter" />
     <converters:SkillNameToRandomGradientConverter x:Key="SkillNameToRandomGradientConverter" />
     <converters:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+    <converters:PercentToWidthConverter x:Key="PercentToWidthConverter" />
+    <converters:RateToWidthConverter x:Key="RateToWidthConverter" />
 </ResourceDictionary>

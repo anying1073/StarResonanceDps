@@ -29,6 +29,12 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/ImageResourceDictionary.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/CardHeaderStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/SimpleColorPickerStyle.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/SkillBreakdownStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/SkillStatsSummaryPanelStyle.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/ChartPanelStyle.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/SkillListPanelStyle.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/TabContentPanelStyle.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
