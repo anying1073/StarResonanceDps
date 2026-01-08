@@ -5,9 +5,14 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 /// <summary>
 /// ViewModel for TabContentPanel component
 /// </summary>
-public partial class TabContentViewModel : ObservableObject
+public partial class TabContentViewModel : BaseViewModel
 {
-    [ObservableProperty] private ChartViewModel _chartViewModel = new();
-    [ObservableProperty] private SkillStatsViewModel _statsViewModel = new();
-    [ObservableProperty] private SkillListViewModel _skillListViewModel = new();
+    [ObservableProperty] private PlotViewModel _plot;
+    [ObservableProperty] private DataStatisticsViewModel _stats = new();
+    [ObservableProperty] private SkillListViewModel _skillList = new();
+
+    public TabContentViewModel(PlotViewModel plot)
+    {
+        _plot = plot;
+    }
 }

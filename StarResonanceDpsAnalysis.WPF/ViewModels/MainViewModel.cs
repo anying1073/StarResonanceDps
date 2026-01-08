@@ -178,4 +178,7 @@ public partial class MainViewModel : BaseViewModel
             _appControlService.Shutdown();
         }
     }
+
+    [ObservableProperty]
+    private double _testAverage = 1232.5;
 }

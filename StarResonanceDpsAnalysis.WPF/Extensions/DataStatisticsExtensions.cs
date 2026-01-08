@@ -5,7 +5,7 @@ namespace StarResonanceDpsAnalysis.WPF.Extensions;
 
 public static class DataStatisticsExtensions
 {
-    public static DataStatistics FromSkillsToDamageTaken(this IReadOnlyList<SkillItemViewModel> skills,
+    public static DataStatisticsViewModel FromSkillsToDamageTaken(this IReadOnlyList<SkillItemViewModel> skills,
         TimeSpan duration)
     {
         return CreateStatistics(skills, s => s.TakenDamage, duration);
@@ -14,12 +14,12 @@ public static class DataStatisticsExtensions
     public static void UpdateDamageTaken(
         this IReadOnlyList<SkillItemViewModel> skills,
         TimeSpan duration,
-        DataStatistics stats)
+        DataStatisticsViewModel stats)
     {
         UpdateStatistics(skills, s => s.TakenDamage, duration, stats);
     }
 
-    public static DataStatistics FromSkillsToHealing(
+    public static DataStatisticsViewModel FromSkillsToHealing(
         this IReadOnlyList<SkillItemViewModel> skills,
         TimeSpan duration)
     {
@@ -29,12 +29,12 @@ public static class DataStatisticsExtensions
     public static void UpdateHealing(
         this IReadOnlyList<SkillItemViewModel> skills,
         TimeSpan duration,
-        DataStatistics stats)
+        DataStatisticsViewModel stats)
     {
         UpdateStatistics(skills, s => s.Heal, duration, stats);
     }
 
-    public static DataStatistics FromSkillsToDamage(
+    public static DataStatisticsViewModel FromSkillsToDamage(
         this IReadOnlyList<SkillItemViewModel> skills,
         TimeSpan duration)
     {
@@ -44,18 +44,18 @@ public static class DataStatisticsExtensions
     public static void UpdateDamage(
         this IReadOnlyList<SkillItemViewModel> skills,
         TimeSpan durationMs,
-        DataStatistics stats)
+        DataStatisticsViewModel stats)
     {
         UpdateStatistics(skills, s => s.Damage, durationMs, stats);
     }
 
     // Creates a new DataStatistics instance using the shared aggregation logic.
-    private static DataStatistics CreateStatistics(
+    private static DataStatisticsViewModel CreateStatistics(
         IReadOnlyList<SkillItemViewModel> skills,
         Func<SkillItemViewModel, SkillItemViewModel.SkillValue> totalSelector,
         TimeSpan duration)
     {
-        var stats = new DataStatistics();
+        var stats = new DataStatisticsViewModel();
         UpdateStatistics(skills, totalSelector, duration, stats);
         return stats;
     }
@@ -65,7 +65,7 @@ public static class DataStatisticsExtensions
         IReadOnlyList<SkillItemViewModel> skills,
         Func<SkillItemViewModel, SkillItemViewModel.SkillValue> selector,
         TimeSpan duration,
-        DataStatistics stats)
+        DataStatisticsViewModel stats)
     {
         stats.Total = skills.Sum(s => selector(s).TotalValue);
         stats.Hits = skills.Sum(s => selector(s).HitCount);

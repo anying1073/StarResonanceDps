@@ -8,7 +8,6 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 /// </summary>
 public partial class SkillListViewModel : ObservableObject
 {
-    [ObservableProperty] private string _sectionTitle = string.Empty;
     [ObservableProperty] private string _iconColor = "#2297F4";
     [ObservableProperty] private ObservableCollection<SkillItemViewModel> _skillItems = new();
 }

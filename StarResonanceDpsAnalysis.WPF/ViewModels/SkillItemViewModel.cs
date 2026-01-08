@@ -27,5 +27,5 @@ public partial class SkillItemViewModel : BaseViewModel
         [ObservableProperty] private double _percentToTotal;
     }
 
-    [ObservableProperty] private double _percentage;
+    //[ObservableProperty] private double _percentage;
 }

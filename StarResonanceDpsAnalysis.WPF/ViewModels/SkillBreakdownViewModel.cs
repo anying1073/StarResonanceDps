@@ -22,9 +22,9 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     private PlayerStatistics? _playerStatistics;
 
     // NEW: Tab ViewModels for modular components
-    [ObservableProperty] private TabContentViewModel _dpsTabViewModel = new();
-    [ObservableProperty] private TabContentViewModel _healingTabViewModel = new();
-    [ObservableProperty] private TabContentViewModel _tankingTabViewModel = new();
+    [ObservableProperty] private TabContentViewModel _dpsTabViewModel;
+    [ObservableProperty] private TabContentViewModel _healingTabViewModel;
+    [ObservableProperty] private TabContentViewModel _tankingTabViewModel;
 
     /// <summary>
     /// ViewModel for the skill breakdown view, showing detailed statistics for a player.
@@ -33,76 +33,76 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     {
         _logger = logger;
         _localizationManager = localizationManager;
-        
+
         var xAxis = GetXAxisName();
-        _dpsPlot = CreatePlotViewModel(xAxis, StatisticType.Damage);
-        _hpsPlot = CreatePlotViewModel(xAxis, StatisticType.Healing);
-        _dtpsPlot = CreatePlotViewModel(xAxis, StatisticType.TakenDamage);
+        _dpsTabViewModel = new(CreatePlotViewModel(xAxis, StatisticType.Damage));
+        _healingTabViewModel = new(CreatePlotViewModel(xAxis, StatisticType.Healing));
+        _tankingTabViewModel = new(CreatePlotViewModel(xAxis, StatisticType.TakenDamage));
         // Initialize Tab ViewModels
-        InitializeTabViewModels();
+        //InitializeTabViewModels();
     }
 
     private void InitializeTabViewModels()
     {
-        // Setup DPS Tab
-        _dpsTabViewModel.ChartViewModel.TimeSeriesTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_RealTimeDps);
-        _dpsTabViewModel.ChartViewModel.PieChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_SkillDamageDistribution);
-        _dpsTabViewModel.ChartViewModel.HitTypeChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
-        _dpsTabViewModel.ChartViewModel.ResetZoomCommand = ResetZoomCommand;
-        _dpsTabViewModel.ChartViewModel.ZoomInCommand = ZoomInCommand;
-        _dpsTabViewModel.ChartViewModel.ZoomOutCommand = ZoomOutCommand;
-        _dpsTabViewModel.SkillListViewModel.SectionTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Section_DamageSkillsAnalysis) + " (DAMAGE ANALYSIS)";
-        _dpsTabViewModel.SkillListViewModel.IconColor = "#2297F4";
-        _dpsTabViewModel.StatsViewModel.TotalLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalDamage);
-        _dpsTabViewModel.StatsViewModel.AverageLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_AverageDps);
-        _dpsTabViewModel.StatsViewModel.HitsLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalHits);
-        _dpsTabViewModel.StatsViewModel.CritRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritRate);
-        _dpsTabViewModel.StatsViewModel.CritCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritCount);
-        _dpsTabViewModel.StatsViewModel.LuckyRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckRate);
-        _dpsTabViewModel.StatsViewModel.LuckyCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckCount);
-        _dpsTabViewModel.StatsViewModel.NormalValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_NormalDamage);
-        _dpsTabViewModel.StatsViewModel.CritValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritDamage);
-        _dpsTabViewModel.StatsViewModel.LuckyValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckDamage);
+        //// Setup DPS Tab
+        //_dpsTabViewModel.ChartViewModel.TimeSeriesTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_RealTimeDps);
+        //_dpsTabViewModel.ChartViewModel.PieChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_SkillDamageDistribution);
+        //_dpsTabViewModel.ChartViewModel.HitTypeChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
+        //_dpsTabViewModel.ChartViewModel.ResetZoomCommand = ResetZoomCommand;
+        //_dpsTabViewModel.ChartViewModel.ZoomInCommand = ZoomInCommand;
+        //_dpsTabViewModel.ChartViewModel.ZoomOutCommand = ZoomOutCommand;
+        //_dpsTabViewModel.SkillListViewModel.SectionTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Section_DamageSkillsAnalysis) + " (DAMAGE ANALYSIS)";
+        //_dpsTabViewModel.SkillListViewModel.IconColor = "#2297F4";
+        //_dpsTabViewModel.StatsViewModel.TotalLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalDamage);
+        //_dpsTabViewModel.StatsViewModel.AverageLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_AverageDps);
+        //_dpsTabViewModel.StatsViewModel.HitsLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalHits);
+        //_dpsTabViewModel.StatsViewModel.CritRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritRate);
+        //_dpsTabViewModel.StatsViewModel.CritCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritCount);
+        //_dpsTabViewModel.StatsViewModel.LuckyRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckRate);
+        //_dpsTabViewModel.StatsViewModel.LuckyCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckCount);
+        //_dpsTabViewModel.StatsViewModel.NormalValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_NormalDamage);
+        //_dpsTabViewModel.StatsViewModel.CritValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritDamage);
+        //_dpsTabViewModel.StatsViewModel.LuckyValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckDamage);
 
-        // Setup Healing Tab
-        _healingTabViewModel.ChartViewModel.TimeSeriesTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_RealTimeHps);
-        _healingTabViewModel.ChartViewModel.PieChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HealingDistribution);
-        _healingTabViewModel.ChartViewModel.HitTypeChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HealTypeDistribution);
-        _healingTabViewModel.ChartViewModel.ResetZoomCommand = ResetZoomCommand;
-        _healingTabViewModel.ChartViewModel.ZoomInCommand = ZoomInCommand;
-        _healingTabViewModel.ChartViewModel.ZoomOutCommand = ZoomOutCommand;
-        _healingTabViewModel.SkillListViewModel.SectionTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Section_HealingSkillsAnalysis) + " (HEALING ANALYSIS)";
-        _healingTabViewModel.SkillListViewModel.IconColor = "#3CB371";
-        _healingTabViewModel.StatsViewModel.TotalLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalHealing);
-        _healingTabViewModel.StatsViewModel.AverageLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_AverageHps);
-        _healingTabViewModel.StatsViewModel.HitsLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalHits);
-        _healingTabViewModel.StatsViewModel.CritRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritRate);
-        _healingTabViewModel.StatsViewModel.CritCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritCount);
-        _healingTabViewModel.StatsViewModel.LuckyRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckRate);
-        _healingTabViewModel.StatsViewModel.LuckyCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckCount);
-        _healingTabViewModel.StatsViewModel.NormalValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_NormalDamage);
-        _healingTabViewModel.StatsViewModel.CritValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritDamage);
-        _healingTabViewModel.StatsViewModel.LuckyValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckDamage);
+        //// Setup Healing Tab
+        //_healingTabViewModel.ChartViewModel.TimeSeriesTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_RealTimeHps);
+        //_healingTabViewModel.ChartViewModel.PieChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HealingDistribution);
+        //_healingTabViewModel.ChartViewModel.HitTypeChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HealTypeDistribution);
+        //_healingTabViewModel.ChartViewModel.ResetZoomCommand = ResetZoomCommand;
+        //_healingTabViewModel.ChartViewModel.ZoomInCommand = ZoomInCommand;
+        //_healingTabViewModel.ChartViewModel.ZoomOutCommand = ZoomOutCommand;
+        //_healingTabViewModel.SkillListViewModel.SectionTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Section_HealingSkillsAnalysis) + " (HEALING ANALYSIS)";
+        //_healingTabViewModel.SkillListViewModel.IconColor = "#3CB371";
+        //_healingTabViewModel.StatsViewModel.TotalLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalHealing);
+        //_healingTabViewModel.StatsViewModel.AverageLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_AverageHps);
+        //_healingTabViewModel.StatsViewModel.HitsLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalHits);
+        //_healingTabViewModel.StatsViewModel.CritRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritRate);
+        //_healingTabViewModel.StatsViewModel.CritCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritCount);
+        //_healingTabViewModel.StatsViewModel.LuckyRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckRate);
+        //_healingTabViewModel.StatsViewModel.LuckyCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckCount);
+        //_healingTabViewModel.StatsViewModel.NormalValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_NormalDamage);
+        //_healingTabViewModel.StatsViewModel.CritValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritDamage);
+        //_healingTabViewModel.StatsViewModel.LuckyValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckDamage);
 
-        // Setup Tanking Tab
-        _tankingTabViewModel.ChartViewModel.TimeSeriesTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_RealTimeDtps);
-        _tankingTabViewModel.ChartViewModel.PieChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_DamageSourcesDistribution);
-        _tankingTabViewModel.ChartViewModel.HitTypeChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
-        _tankingTabViewModel.ChartViewModel.ResetZoomCommand = ResetZoomCommand;
-        _tankingTabViewModel.ChartViewModel.ZoomInCommand = ZoomInCommand;
-        _tankingTabViewModel.ChartViewModel.ZoomOutCommand = ZoomOutCommand;
-        _tankingTabViewModel.SkillListViewModel.SectionTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Section_DamageTakenAnalysis) + " (TANKING ANALYSIS)";
-        _tankingTabViewModel.SkillListViewModel.IconColor = "#E64A19";
-        _tankingTabViewModel.StatsViewModel.TotalLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalDamageTaken);
-        _tankingTabViewModel.StatsViewModel.AverageLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_AverageDtps);
-        _tankingTabViewModel.StatsViewModel.HitsLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalHitsTaken);
-        _tankingTabViewModel.StatsViewModel.CritRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritRate);
-        _tankingTabViewModel.StatsViewModel.CritCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritCount);
-        _tankingTabViewModel.StatsViewModel.LuckyRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckRate);
-        _tankingTabViewModel.StatsViewModel.LuckyCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckCount);
-        _tankingTabViewModel.StatsViewModel.NormalValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_NormalDamage);
-        _tankingTabViewModel.StatsViewModel.CritValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritDamage);
-        _tankingTabViewModel.StatsViewModel.LuckyValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckDamage);
+        //// Setup Tanking Tab
+        //_tankingTabViewModel.ChartViewModel.TimeSeriesTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_RealTimeDtps);
+        //_tankingTabViewModel.ChartViewModel.PieChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_DamageSourcesDistribution);
+        //_tankingTabViewModel.ChartViewModel.HitTypeChartTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
+        //_tankingTabViewModel.ChartViewModel.ResetZoomCommand = ResetZoomCommand;
+        //_tankingTabViewModel.ChartViewModel.ZoomInCommand = ZoomInCommand;
+        //_tankingTabViewModel.ChartViewModel.ZoomOutCommand = ZoomOutCommand;
+        //_tankingTabViewModel.SkillListViewModel.SectionTitle = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Section_DamageTakenAnalysis) + " (TANKING ANALYSIS)";
+        //_tankingTabViewModel.SkillListViewModel.IconColor = "#E64A19";
+        //_tankingTabViewModel.StatsViewModel.TotalLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalDamageTaken);
+        //_tankingTabViewModel.StatsViewModel.AverageLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_AverageDtps);
+        //_tankingTabViewModel.StatsViewModel.HitsLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_TotalHitsTaken);
+        //_tankingTabViewModel.StatsViewModel.CritRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritRate);
+        //_tankingTabViewModel.StatsViewModel.CritCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritCount);
+        //_tankingTabViewModel.StatsViewModel.LuckyRateLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckRate);
+        //_tankingTabViewModel.StatsViewModel.LuckyCountLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckCount);
+        //_tankingTabViewModel.StatsViewModel.NormalValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_NormalDamage);
+        //_tankingTabViewModel.StatsViewModel.CritValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_CritDamage);
+        //_tankingTabViewModel.StatsViewModel.LuckyValueLabel = _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Label_LuckDamage);
     }
 
     /// <summary>
@@ -116,7 +116,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     {
         _logger.LogDebug("Initializing SkillBreakdownViewModel from PlayerStatistics for UID {Uid}",
             playerStats.Uid);
-        
+
         _playerStatistics = playerStats;
         ObservedSlot = slot;
 
@@ -130,120 +130,86 @@ public partial class SkillBreakdownViewModel : BaseViewModel
         _logger.LogDebug("SkillBreakdownViewModel initialized from PlayerStatistics: {Name}", PlayerName);
     }
 
-    private void UpdateTabViewModels()
-    {
-        // Update DPS Tab
-        DpsTabViewModel.StatsViewModel.UpdateFromDataStatistics(DamageStats);
-        DpsTabViewModel.ChartViewModel.UpdateFromPlotViewModel(DpsPlot);
-        DpsTabViewModel.ChartViewModel.NormalCount = DamageStats.Hits - DamageStats.CritCount - DamageStats.LuckyCount;
-        DpsTabViewModel.ChartViewModel.CritCount = DamageStats.CritCount;
-        DpsTabViewModel.ChartViewModel.LuckyCount = DamageStats.LuckyCount;
-        if (DamageStats.Hits > 0)
-        {
-            DpsTabViewModel.ChartViewModel.NormalPercentage = (double)DpsTabViewModel.ChartViewModel.NormalCount / DamageStats.Hits * 100;
-            DpsTabViewModel.ChartViewModel.CritPercentage = (double)DamageStats.CritCount / DamageStats.Hits * 100;
-            DpsTabViewModel.ChartViewModel.LuckyPercentage = (double)DamageStats.LuckyCount / DamageStats.Hits * 100;
-        }
-        else
-        {
-            DpsTabViewModel.ChartViewModel.NormalPercentage = 0;
-            DpsTabViewModel.ChartViewModel.CritPercentage = 0;
-            DpsTabViewModel.ChartViewModel.LuckyPercentage = 0;
-        }
+    //private void UpdateTabViewModels()
+    //{
+    //    // Update DPS Tab
+    //    DpsTabViewModel.StatsViewModel.UpdateFromDataStatistics(DamageStats);
+    //    DpsTabViewModel.PlotViewModel.UpdateFromPlotViewModel(DpsPlot);
+    //    DpsTabViewModel.PlotViewModel.NormalCount = DamageStats.Hits - DamageStats.CritCount - DamageStats.LuckyCount;
+    //    DpsTabViewModel.PlotViewModel.CritCount = DamageStats.CritCount;
+    //    DpsTabViewModel.PlotViewModel.LuckyCount = DamageStats.LuckyCount;
+    //    if (DamageStats.Hits > 0)
+    //    {
+    //        DpsTabViewModel.PlotViewModel.NormalPercentage = (double)DpsTabViewModel.PlotViewModel.NormalCount / DamageStats.Hits * 100;
+    //        DpsTabViewModel.PlotViewModel.CritPercentage = (double)DamageStats.CritCount / DamageStats.Hits * 100;
+    //        DpsTabViewModel.PlotViewModel.LuckyPercentage = (double)DamageStats.LuckyCount / DamageStats.Hits * 100;
+    //    }
+    //    else
+    //    {
+    //        DpsTabViewModel.PlotViewModel.NormalPercentage = 0;
+    //        DpsTabViewModel.PlotViewModel.CritPercentage = 0;
+    //        DpsTabViewModel.PlotViewModel.LuckyPercentage = 0;
+    //    }
 
-        if (ObservedSlot != null)
-        {
-            var skills = ObservedSlot.Damage.TotalSkillList;
-            UpdateSkillPercentages(skills, DamageStats.Total);
-            DpsTabViewModel.SkillListViewModel.SkillItems = new ObservableCollection<SkillItemViewModel>(skills);
-        }
+    //    if (ObservedSlot != null)
+    //    {
+    //        var skills = ObservedSlot.Damage.TotalSkillList;
+    //        UpdateSkillPercentages(skills, DamageStats.Total);
+    //        DpsTabViewModel.SkillListViewModel.SkillItems = new ObservableCollection<SkillItemViewModel>(skills);
+    //    }
 
-        // Update Healing Tab
-        HealingTabViewModel.StatsViewModel.UpdateFromDataStatistics(HealingStats);
-        HealingTabViewModel.ChartViewModel.UpdateFromPlotViewModel(HpsPlot);
-        HealingTabViewModel.ChartViewModel.NormalCount = HealingStats.Hits - HealingStats.CritCount - HealingStats.LuckyCount;
-        HealingTabViewModel.ChartViewModel.CritCount = HealingStats.CritCount;
-        HealingTabViewModel.ChartViewModel.LuckyCount = HealingStats.LuckyCount;
-        if (HealingStats.Hits > 0)
-        {
-            HealingTabViewModel.ChartViewModel.NormalPercentage = (double)HealingTabViewModel.ChartViewModel.NormalCount / HealingStats.Hits * 100;
-            HealingTabViewModel.ChartViewModel.CritPercentage = (double)HealingStats.CritCount / HealingStats.Hits * 100;
-            HealingTabViewModel.ChartViewModel.LuckyPercentage = (double)HealingStats.LuckyCount / HealingStats.Hits * 100;
-        }
-        else
-        {
-            HealingTabViewModel.ChartViewModel.NormalPercentage = 0;
-            HealingTabViewModel.ChartViewModel.CritPercentage = 0;
-            HealingTabViewModel.ChartViewModel.LuckyPercentage = 0;
-        }
+    //    // Update Healing Tab
+    //    HealingTabViewModel.StatsViewModel.UpdateFromDataStatistics(HealingStats);
+    //    HealingTabViewModel.PlotViewModel.UpdateFromPlotViewModel(HpsPlot);
+    //    HealingTabViewModel.PlotViewModel.NormalCount = HealingStats.Hits - HealingStats.CritCount - HealingStats.LuckyCount;
+    //    HealingTabViewModel.PlotViewModel.CritCount = HealingStats.CritCount;
+    //    HealingTabViewModel.PlotViewModel.LuckyCount = HealingStats.LuckyCount;
+    //    if (HealingStats.Hits > 0)
+    //    {
+    //        HealingTabViewModel.PlotViewModel.NormalPercentage = (double)HealingTabViewModel.PlotViewModel.NormalCount / HealingStats.Hits * 100;
+    //        HealingTabViewModel.PlotViewModel.CritPercentage = (double)HealingStats.CritCount / HealingStats.Hits * 100;
+    //        HealingTabViewModel.PlotViewModel.LuckyPercentage = (double)HealingStats.LuckyCount / HealingStats.Hits * 100;
+    //    }
+    //    else
+    //    {
+    //        HealingTabViewModel.PlotViewModel.NormalPercentage = 0;
+    //        HealingTabViewModel.PlotViewModel.CritPercentage = 0;
+    //        HealingTabViewModel.PlotViewModel.LuckyPercentage = 0;
+    //    }
 
-        if (ObservedSlot != null)
-        {
-            var skills = ObservedSlot.Heal.TotalSkillList;
-            UpdateSkillPercentages(skills, HealingStats.Total);
-            HealingTabViewModel.SkillListViewModel.SkillItems = new ObservableCollection<SkillItemViewModel>(skills);
-        }
+    //    if (ObservedSlot != null)
+    //    {
+    //        var skills = ObservedSlot.Heal.TotalSkillList;
+    //        UpdateSkillPercentages(skills, HealingStats.Total);
+    //        HealingTabViewModel.SkillListViewModel.SkillItems = new ObservableCollection<SkillItemViewModel>(skills);
+    //    }
 
-        // Update Tanking Tab
-        TankingTabViewModel.StatsViewModel.UpdateFromDataStatistics(TakenDamageStats);
-        TankingTabViewModel.ChartViewModel.UpdateFromPlotViewModel(DtpsPlot);
-        TankingTabViewModel.ChartViewModel.NormalCount = TakenDamageStats.Hits - TakenDamageStats.CritCount - TakenDamageStats.LuckyCount;
-        TankingTabViewModel.ChartViewModel.CritCount = TakenDamageStats.CritCount;
-        TankingTabViewModel.ChartViewModel.LuckyCount = TakenDamageStats.LuckyCount;
-        if (TakenDamageStats.Hits > 0)
-        {
-            TankingTabViewModel.ChartViewModel.NormalPercentage = (double)TankingTabViewModel.ChartViewModel.NormalCount / TakenDamageStats.Hits * 100;
-            TankingTabViewModel.ChartViewModel.CritPercentage = (double)TakenDamageStats.CritCount / TakenDamageStats.Hits * 100;
-            TankingTabViewModel.ChartViewModel.LuckyPercentage = (double)TakenDamageStats.LuckyCount / TakenDamageStats.Hits * 100;
-        }
-        else
-        {
-            TankingTabViewModel.ChartViewModel.NormalPercentage = 0;
-            TankingTabViewModel.ChartViewModel.CritPercentage = 0;
-            TankingTabViewModel.ChartViewModel.LuckyPercentage = 0;
-        }
+    //    // Update Tanking Tab
+    //    TankingTabViewModel.StatsViewModel.UpdateFromDataStatistics(TakenDamageStats);
+    //    TankingTabViewModel.PlotViewModel.UpdateFromPlotViewModel(DtpsPlot);
+    //    TankingTabViewModel.PlotViewModel.NormalCount = TakenDamageStats.Hits - TakenDamageStats.CritCount - TakenDamageStats.LuckyCount;
+    //    TankingTabViewModel.PlotViewModel.CritCount = TakenDamageStats.CritCount;
+    //    TankingTabViewModel.PlotViewModel.LuckyCount = TakenDamageStats.LuckyCount;
+    //    if (TakenDamageStats.Hits > 0)
+    //    {
+    //        TankingTabViewModel.PlotViewModel.NormalPercentage = (double)TankingTabViewModel.PlotViewModel.NormalCount / TakenDamageStats.Hits * 100;
+    //        TankingTabViewModel.PlotViewModel.CritPercentage = (double)TakenDamageStats.CritCount / TakenDamageStats.Hits * 100;
+    //        TankingTabViewModel.PlotViewModel.LuckyPercentage = (double)TakenDamageStats.LuckyCount / TakenDamageStats.Hits * 100;
+    //    }
+    //    else
+    //    {
+    //        TankingTabViewModel.PlotViewModel.NormalPercentage = 0;
+    //        TankingTabViewModel.PlotViewModel.CritPercentage = 0;
+    //        TankingTabViewModel.PlotViewModel.LuckyPercentage = 0;
+    //    }
 
-        if (ObservedSlot != null)
-        {
-            var skills = ObservedSlot.TakenDamage.TotalSkillList;
-            UpdateSkillPercentages(skills, TakenDamageStats.Total);
-            TankingTabViewModel.SkillListViewModel.SkillItems = new ObservableCollection<SkillItemViewModel>(skills);
-        }
-    }
-
-    private void UpdateSkillPercentages(IEnumerable<SkillItemViewModel> skills, long total)
-    {
-        var skillList = skills.ToList();
-        if (skillList.Count == 0) return;
-
-        // Calculate max value for relative percentage (so the top item is 100%)
-        double max = 0;
-        foreach (var skill in skillList)
-        {
-            double val = 0;
-            if (skill.Damage.TotalValue > 0) val = skill.Damage.TotalValue;
-            else if (skill.Heal.TotalValue > 0) val = skill.Heal.TotalValue;
-            else if (skill.TakenDamage.TotalValue > 0) val = skill.TakenDamage.TotalValue;
-            
-            if (val > max) max = val;
-        }
-
-        if (max <= 0)
-        {
-            foreach (var skill in skillList) skill.Percentage = 0;
-            return;
-        }
-
-        foreach (var skill in skillList)
-        {
-            double val = 0;
-            if (skill.Damage.TotalValue > 0) val = skill.Damage.TotalValue;
-            else if (skill.Heal.TotalValue > 0) val = skill.Heal.TotalValue;
-            else if (skill.TakenDamage.TotalValue > 0) val = skill.TakenDamage.TotalValue;
-            
-            skill.Percentage = val / max * 100; 
-        }
-    }
+    //    if (ObservedSlot != null)
+    //    {
+    //        var skills = ObservedSlot.TakenDamage.TotalSkillList;
+    //        UpdateSkillPercentages(skills, TakenDamageStats.Total);
+    //        TankingTabViewModel.SkillListViewModel.SkillItems = new ObservableCollection<SkillItemViewModel>(skills);
+    //    }
+    //}
 
     #region Observed Slot (Data Source)
 
@@ -256,22 +222,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     [ObservableProperty] private string _playerName = string.Empty;
     [ObservableProperty] private long _uid;
     [ObservableProperty] private long _powerLevel;
-
-    #endregion
-
-    #region Statistics
-
-    [ObservableProperty] private DataStatistics _damageStats = new();
-    [ObservableProperty] private DataStatistics _healingStats = new();
-    [ObservableProperty] private DataStatistics _takenDamageStats = new();
-
-    #endregion
-
-    #region Chart Models - OxyPlot
-
-    [ObservableProperty] private PlotViewModel _dpsPlot;
-    [ObservableProperty] private PlotViewModel _hpsPlot;
-    [ObservableProperty] private PlotViewModel _dtpsPlot;
 
     #endregion
 
@@ -297,7 +247,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel
             HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
             HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
             HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
-            StatisticType = statisticType
+            StatisticType = statisticType,
         });
     }
 
@@ -323,61 +273,45 @@ public partial class SkillBreakdownViewModel : BaseViewModel
         }
 
         var duration = TimeSpan.FromTicks(_playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0));
-        var (damageSkills, healingSkills, takenSkills) = 
+        var (damageSkills, healingSkills, takenSkills) =
             StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(_playerStatistics);
 
         // Update damage statistics
-        UpdateStatisticSet(
-            _playerStatistics.AttackDamage,
-            damageSkills,
-            duration,
-            stats => DamageStats = stats,
-            _playerStatistics.GetDeltaDpsSamples(),
-            DpsPlot);
+        UpdateStatisticSet(DpsTabViewModel,
+            _playerStatistics.AttackDamage, damageSkills, duration, _playerStatistics.GetDeltaDpsSamples());
 
         // Update healing statistics
-        UpdateStatisticSet(
-            _playerStatistics.Healing,
-            healingSkills,
-            duration,
-            stats => HealingStats = stats,
-            _playerStatistics.GetDeltaHpsSamples(),
-            HpsPlot);
+        UpdateStatisticSet(HealingTabViewModel,
+            _playerStatistics.Healing, healingSkills, duration, _playerStatistics.GetDeltaHpsSamples());
 
         // Update taken damage statistics
-        UpdateStatisticSet(
-            _playerStatistics.TakenDamage,
-            takenSkills,
-            duration,
-            stats => TakenDamageStats = stats,
-            _playerStatistics.GetDeltaDtpsSamples(),
-            DtpsPlot);
+        UpdateStatisticSet(TankingTabViewModel,
+            _playerStatistics.TakenDamage, takenSkills, duration, _playerStatistics.GetDeltaDtpsSamples());
     }
 
     /// <summary>
     /// Update a single statistic set with all its associated data (Open/Closed Principle)
     /// </summary>
     private void UpdateStatisticSet(
+        TabContentViewModel tabViewModel,
         StatisticValues statisticValues,
         List<SkillItemViewModel> skills,
         TimeSpan duration,
-        Action<DataStatistics> setStatistics,
-        IReadOnlyList<DpsDataPoint> timeSeries,
-        PlotViewModel plot)
+        IReadOnlyList<DpsDataPoint> timeSeries)
     {
         // Convert and set statistics
         var stats = statisticValues.ToDataStatistics(duration);
-        PopulateSkills(stats.Skills, skills);
-        setStatistics(stats);
+        tabViewModel.Stats = stats;
+        PopulateSkills(tabViewModel.SkillList.SkillItems, skills);
 
         // Update charts
-        UpdateChartsForStatistic(skills, timeSeries, stats, plot);
+        UpdateChartsForStatistic(skills, timeSeries, stats, tabViewModel.Plot);
     }
 
     /// <summary>
     /// Populate skills collection efficiently
     /// </summary>
-    private static void PopulateSkills(ObservableCollection<SkillItemViewModel> target, List<SkillItemViewModel> source)
+    private void PopulateSkills(ObservableCollection<SkillItemViewModel> target, List<SkillItemViewModel> source)
     {
         target.Clear();
         foreach (var skill in source)
@@ -392,15 +326,15 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     private static void UpdateChartsForStatistic(
         List<SkillItemViewModel> skills,
         IReadOnlyList<DpsDataPoint> timeSeries,
-        DataStatistics stats,
+        DataStatisticsViewModel stats,
         PlotViewModel plot)
     {
         // Time series
         UpdateTimeSeriesChart(timeSeries, plot);
-        
+
         // Pie chart
         plot.SetPieSeriesData(skills);
-        
+
         // Hit type distribution
         UpdateHitTypeDistribution(stats, plot);
     }
@@ -421,14 +355,14 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     /// <summary>
     /// Update hit type distribution for a statistic
     /// </summary>
-    private static void UpdateHitTypeDistribution(DataStatistics stat, PlotViewModel target)
+    private static void UpdateHitTypeDistribution(DataStatisticsViewModel stat, PlotViewModel target)
     {
         if (stat.Hits <= 0) return;
-        
+
         var crit = (double)stat.CritCount / stat.Hits * 100;
         var lucky = (double)stat.LuckyCount / stat.Hits * 100;
         var normal = 100 - crit - lucky;
-        
+
         target.SetHitTypeDistribution(normal, crit, lucky);
 
         // Update ChartViewModel properties for the new UI
@@ -443,16 +377,16 @@ public partial class SkillBreakdownViewModel : BaseViewModel
     private void UpdatePlotOption()
     {
         var xAxis = GetXAxisName();
-        
-        UpdateSinglePlotOption(DpsPlot, xAxis, StatisticType.Damage,
+
+        UpdateSinglePlotOption(DpsTabViewModel.Plot, xAxis, StatisticType.Damage,
             ResourcesKeys.SkillBreakdown_Chart_RealTimeDps,
             ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
-            
-        UpdateSinglePlotOption(HpsPlot, xAxis, StatisticType.Healing,
+
+        UpdateSinglePlotOption(HealingTabViewModel.Plot, xAxis, StatisticType.Healing,
             ResourcesKeys.SkillBreakdown_Chart_RealTimeHps,
             ResourcesKeys.SkillBreakdown_Chart_HealTypeDistribution);
-            
-        UpdateSinglePlotOption(DtpsPlot, xAxis, StatisticType.TakenDamage,
+
+        UpdateSinglePlotOption(TankingTabViewModel.Plot, xAxis, StatisticType.TakenDamage,
             ResourcesKeys.SkillBreakdown_Chart_RealTimeDtps,
             ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
     }
@@ -516,16 +450,16 @@ public partial class SkillBreakdownViewModel : BaseViewModel
 
     private void ApplyZoomToAllCharts()
     {
-        DpsPlot.ApplyZoomToModel(ZoomLevel);
-        HpsPlot.ApplyZoomToModel(ZoomLevel);
-        DtpsPlot.ApplyZoomToModel(ZoomLevel);
+        DpsTabViewModel.Plot.ApplyZoomToModel(ZoomLevel);
+        HealingTabViewModel.Plot.ApplyZoomToModel(ZoomLevel);
+        TankingTabViewModel.Plot.ApplyZoomToModel(ZoomLevel);
     }
 
     private void ResetAllChartZooms()
     {
-        DpsPlot.ResetModelZoom();
-        HpsPlot.ResetModelZoom();
-        DtpsPlot.ResetModelZoom();
+        DpsTabViewModel.Plot.ResetModelZoom();
+        HealingTabViewModel.Plot.ResetModelZoom();
+        TankingTabViewModel.Plot.ResetModelZoom();
     }
 
     #endregion

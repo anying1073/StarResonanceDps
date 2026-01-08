@@ -13,10 +13,10 @@ public static class StatisticsToViewModelConverter
     /// <summary>
     /// Convert StatisticValues to DataStatistics (WPF model)
     /// </summary>
-    public static DataStatistics ToDataStatistics(this StatisticValues stats, TimeSpan duration)
+    public static DataStatisticsViewModel ToDataStatistics(this StatisticValues stats, TimeSpan duration)
     {
         var durationSeconds = duration.TotalSeconds;
-        return new DataStatistics
+        return new DataStatisticsViewModel
         {
             Total = stats.Total,
             Hits = stats.HitCount,
@@ -26,7 +26,6 @@ public static class StatisticsToViewModelConverter
             NormalValue = stats.NormalValue,
             CritValue = stats.CritValue,
             LuckyValue = stats.LuckyValue + stats.CritAndLuckyValue,
-            Skills = new ObservableCollection<SkillItemViewModel>()
         };
     }
 
