@@ -1,0 +1,69 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:skillBreakdown="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls.SkillBreakdown"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                    xmlns:properties="clr-namespace:StarResonanceDpsAnalysis.WPF.Properties">
+
+    <Style TargetType="skillBreakdown:SkillStatsSummaryPanel">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="skillBreakdown:SkillStatsSummaryPanel">
+                    <UniformGrid Rows="1" Columns="5">
+                        <Border Style="{StaticResource StatCardBorder}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource StatValueText}" Text="{Binding Total, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding TotalLabel}" />
+                                <TextBlock Style="{StaticResource StatSubText}">
+                                    <Run Text="0.0% " />
+                                    <Run Text="{lex:Loc Key=SkillBreakdown_Suffix_Progress}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource StatCardBorder}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource StatValueText}" Foreground="#2563EB" Text="{Binding Average, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding AverageLabel}" />
+                                <TextBlock Style="{StaticResource StatSubText}">
+                                    <Run Text="0 " />
+                                    <Run Text="{lex:Loc Key=SkillBreakdown_Suffix_Casts}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource StatCardBorder}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource StatValueText}" Text="{Binding Hits, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding HitsLabel}" />
+                                <TextBlock Style="{StaticResource StatSubText}">
+                                    <Run Text="0 " />
+                                    <Run Text="{lex:Loc Key=SkillBreakdown_Suffix_Progress}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource StatCardBorder}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource StatValueText}" Foreground="#10B981" Text="{Binding CritRate, StringFormat={}{0:P1}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding CritRateLabel}" />
+                                <TextBlock Style="{StaticResource StatSubText}" Foreground="#10B981">
+                                    <Run Text="{Binding CritCount, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+                                    <Run Text=" " />
+                                    <Run Text="{lex:Loc Key={x:Static properties:ResourcesKeys.SkillBreakdown_Suffix_Crits}}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource StatCardBorder}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource StatValueText}" Text="{Binding LuckyCount, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding LuckyCountLabel}" />
+                                <TextBlock Style="{StaticResource StatSubText}">
+                                    <Run Text="{Binding LuckyRate, StringFormat={}{0:P1}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+                                    <Run Text=" " />
+                                    <Run Text="{lex:Loc Key=SkillBreakdown_Suffix_Lucky}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

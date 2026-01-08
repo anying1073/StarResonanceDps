@@ -1,0 +1,160 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:skillBreakdown="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls.SkillBreakdown"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com">
+
+    <Style TargetType="skillBreakdown:SkillListPanel">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="skillBreakdown:SkillListPanel">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Style="{StaticResource SectionHeaderBorder}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <Path
+                                        Width="16"
+                                        Height="16"
+                                        Margin="0,0,8,0"
+                                        Data="M3 4h18v2H3zm0 7h18v2H3zm0 7h18v2H3z"
+                                        Stretch="Uniform">
+                                        <Path.Fill>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Offset="0" Color="#1890FF" />
+                                                <GradientStop Offset="1" Color="#69C0FF" />
+                                            </LinearGradientBrush>
+                                        </Path.Fill>
+                                    </Path>
+                                    <TextBlock Style="{StaticResource SectionTitle}" Text="{TemplateBinding SectionTitle}" />
+                                </StackPanel>
+
+                                <Border
+                                    Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    BorderBrush="#E8E8E8"
+                                    BorderThickness="1"
+                                    CornerRadius="14"
+                                    Padding="12,4">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock
+                                            Margin="0,0,4,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="13"
+                                            Foreground="#8C8C8C"
+                                            Text="{lex:Loc Key=ModuleSolve_Sort_Label}" />
+
+                                        <RadioButton
+                                            Content="{lex:Loc Key=SkillBreakdown_Label_Total}"
+                                            GroupName="SortGroup"
+                                            IsChecked="True"
+                                            Style="{StaticResource SortRadioButtonStyle}" />
+
+                                        <Border
+                                            Width="1"
+                                            Height="12"
+                                            Margin="0,0"
+                                            VerticalAlignment="Center"
+                                            Background="#E8E8E8" />
+
+                                        <RadioButton
+                                            Content="{lex:Loc Key=SkillBreakdown_Label_AverageDps}"
+                                            GroupName="SortGroup"
+                                            Style="{StaticResource SortRadioButtonStyle}" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="1" Background="#F9FAFB" BorderBrush="#E8E8E8" BorderThickness="0,1,0,1">
+                            <Grid>
+                                <Border Padding="16,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2.5*" MinWidth="180" SharedSizeGroup="ColSkill" />
+                                            <ColumnDefinition Width="1.2*" MinWidth="100" SharedSizeGroup="ColTotal" />
+                                            <ColumnDefinition Width="1*" MinWidth="80" SharedSizeGroup="ColHits" />
+                                            <ColumnDefinition Width="1*" MinWidth="80" SharedSizeGroup="ColCrit" />
+                                            <ColumnDefinition Width="1*" MinWidth="80" SharedSizeGroup="ColAvg" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Left"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="#B0B0B0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
+                                            Text="SKILL (NAME)" />
+
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="#B0B0B0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
+                                            Text="{lex:Loc Key=SkillBreakdown_Label_Total}" />
+
+                                        <TextBlock
+                                            Grid.Column="2"
+                                            HorizontalAlignment="Right"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="#B0B0B0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
+                                            Text="{lex:Loc Key=SkillBreakdown_Label_HitCount}" />
+
+                                        <TextBlock
+                                            Grid.Column="3"
+                                            HorizontalAlignment="Right"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="#B0B0B0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
+                                            Text="{lex:Loc Key=SkillBreakdown_Label_CritRate}" />
+
+                                        <TextBlock
+                                            Grid.Column="4"
+                                            HorizontalAlignment="Right"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="#B0B0B0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
+                                            Text="{lex:Loc Key=SkillBreakdown_Label_AverageDamage}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="2" Style="{StaticResource SkillListBorder}">
+                            <ScrollViewer VerticalScrollBarVisibility="Visible" Padding="0">
+                                <ItemsControl
+                                    x:Name="SkillItemsControl"
+                                    ItemsSource="{Binding SkillItems, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ItemTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Tag="{Binding IconColor, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

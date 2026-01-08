@@ -1,0 +1,84 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:skillBreakdown="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls.SkillBreakdown">
+    <Style TargetType="skillBreakdown:TabContentPanel">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="skillBreakdown:TabContentPanel">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Offset="0" Color="#FFFFFF" />
+                                    <GradientStop Offset="1" Color="#F5F7FA" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <skillBreakdown:SkillStatsSummaryPanel
+                                Margin="16,16,16,16"
+                                AverageLabel="{TemplateBinding AverageLabel}"
+                                Average="{TemplateBinding Average}"
+                                CritRateLabel="{TemplateBinding CritRateLabel}"
+                                CritCount="{TemplateBinding CritCount}"
+                                CritRate="{TemplateBinding CritRate}"
+                                HitsLabel="{TemplateBinding HitsLabel}"
+                                Hits="{TemplateBinding Hits}"
+                                LuckyCountLabel="{TemplateBinding LuckyCountLabel}"
+                                LuckyCount="{TemplateBinding LuckyCount}"
+                                LuckyRate="{TemplateBinding LuckyRate}"
+                                TotalLabel="{TemplateBinding TotalLabel}"
+                                Total="{TemplateBinding Total}" />
+                        </Border>
+
+                        <Border Grid.Row="1" Height="1" Background="#E8E8E8" />
+
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" MinWidth="300" />
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="7*" MinWidth="600" />
+                            </Grid.ColumnDefinitions>
+
+                            <GridSplitter
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                Background="#E8E8E8" />
+
+                            <ScrollViewer
+                                Grid.Column="0"
+                                Padding="16,16,8,16"
+                                VerticalScrollBarVisibility="Auto">
+                                <skillBreakdown:ChartPanel 
+                                    ChartTitle="{Binding SeriesTitle, RelativeSource={RelativeSource TemplatedParent}}"
+                                    PieChartTitle="{Binding PieChartTitle, RelativeSource={RelativeSource TemplatedParent}}"
+                                    HitTypeChartTitle="{Binding HitTypeChartTitle, RelativeSource={RelativeSource TemplatedParent}}"
+                                    LuckyCount="{Binding LuckyCount, RelativeSource={RelativeSource TemplatedParent}}"
+                                    LuckyRate="{Binding LuckyRate, RelativeSource={RelativeSource TemplatedParent}}"
+                                    CritCount="{Binding CritCount, RelativeSource={RelativeSource TemplatedParent}}"
+                                    CritRate="{Binding CritRate, RelativeSource={RelativeSource TemplatedParent}}"
+                                    SeriesPlotModel="{Binding SeriesPlotModel}"
+                                    NormalCount="{Binding NormalCount, RelativeSource={RelativeSource TemplatedParent}}"
+                                    NormalRate="{Binding NormalRate, RelativeSource={RelativeSource TemplatedParent}}"
+                                    PiePlotModel="{Binding PiePlotModel}"
+                                    DataContext="{Binding PlotViewModel, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </ScrollViewer>
+
+                            <skillBreakdown:SkillListPanel
+                                Grid.Column="2"
+                                Margin="0"
+                                IconColor="{TemplateBinding IconColor}"
+                                SkillItems="{TemplateBinding SkillItems}"
+                                SectionTitle="{TemplateBinding SkillListTitle}"
+                                ItemTemplate="{TemplateBinding ItemTemplate}" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
