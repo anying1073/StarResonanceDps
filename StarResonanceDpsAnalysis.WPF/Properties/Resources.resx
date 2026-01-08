@@ -1074,7 +1074,7 @@ How to get: After a fight, your character will automatically appear in the stats
   <data name="Settings_PlayerInfoCustomization_Description" xml:space="preserve">
     <value>Custom player info display</value>
   </data>
-    <data name="Settings_PlayerInfo_UseCustomFormat" xml:space="preserve">
+  <data name="Settings_PlayerInfo_UseCustomFormat" xml:space="preserve">
     <value>Enable Custom Format</value>
   </data>
   <data name="Settings_PlayerInfo_QuickPresets" xml:space="preserve">
@@ -1125,28 +1125,7 @@ How to get: After a fight, your character will automatically appear in the stats
   <data name="SkillBreakdown_Suffix_Lucky" xml:space="preserve">
     <value>lucky</value>
   </data>
-  <data name="SkillBreakdown_Suffix_Progress" xml:space="preserve">
-    <value>progress</value>
-  </data>
-  <data name="SkillBreakdown_Suffix_Casts" xml:space="preserve">
-    <value>casts</value>
-  </data>
-  <data name="SkillBreakdown_Suffix_Crits" xml:space="preserve">
-    <value>crits</value>
-  </data>
-  <data name="SkillBreakdown_Suffix_Lucky" xml:space="preserve">
-    <value>lucky</value>
-  </data>
-  <data name="SkillBreakdown_Suffix_Progress" xml:space="preserve">
-    <value>progress</value>
-  </data>
-  <data name="SkillBreakdown_Suffix_Casts" xml:space="preserve">
-    <value>casts</value>
-  </data>
-  <data name="SkillBreakdown_Suffix_Crits" xml:space="preserve">
-    <value>crits</value>
-  </data>
-  <data name="SkillBreakdown_Suffix_Lucky" xml:space="preserve">
-    <value>lucky</value>
+  <data name="SkillBreakdown_Label_Average" xml:space="preserve">
+    <value>Average</value>
   </data>
 </root>

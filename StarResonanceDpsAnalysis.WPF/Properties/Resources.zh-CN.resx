@@ -1094,4 +1094,7 @@
   <data name="Settings_PlayerInfo_Preview" xml:space="preserve">
     <value>实时预览</value>
   </data>
+  <data name="SkillBreakdown_Label_Average" xml:space="preserve">
+    <value>平均</value>
+  </data>
 </root>

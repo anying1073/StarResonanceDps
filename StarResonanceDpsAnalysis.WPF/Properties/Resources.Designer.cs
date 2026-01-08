@@ -2388,6 +2388,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Average.
+        /// </summary>
+        public static string SkillBreakdown_Label_Average {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Label_Average", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average hit.
         /// </summary>
         public static string SkillBreakdown_Label_AverageDamage {
@@ -2672,6 +2681,42 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string SkillBreakdown_Section_HealingSkillsAnalysis {
             get {
                 return ResourceManager.GetString("SkillBreakdown_Section_HealingSkillsAnalysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to casts.
+        /// </summary>
+        public static string SkillBreakdown_Suffix_Casts {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Suffix_Casts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to crits.
+        /// </summary>
+        public static string SkillBreakdown_Suffix_Crits {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Suffix_Crits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lucky.
+        /// </summary>
+        public static string SkillBreakdown_Suffix_Lucky {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Suffix_Lucky", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to progress.
+        /// </summary>
+        public static string SkillBreakdown_Suffix_Progress {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Suffix_Progress", resourceCulture);
             }
         }
         
