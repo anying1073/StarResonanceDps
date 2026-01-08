@@ -197,6 +197,28 @@ public sealed class PlayerStatistics
             TakenDamageTotal = TakenDamage.Total,
             Tick = LastTick
         };
+        
+        // Record initial sample at the first update
+        // Calculate time from start
+        var currentTime = StartTick.HasValue 
+            ? TimeSpan.FromTicks(LastTick - StartTick.Value) 
+            : TimeSpan.Zero;
+        
+        // Calculate elapsed time for DPS calculation
+        var elapsedSeconds = StartTick.HasValue 
+            ? (LastTick - StartTick.Value) / (double)TimeSpan.TicksPerSecond 
+            : 1.0; // Default to 1 second if no start time
+        
+        if (elapsedSeconds > 0)
+        {
+            // Record initial values as first delta samples
+            _deltaDpsSamples.AddSample(currentTime, AttackDamage.Total / elapsedSeconds);
+            _deltaHpsSamples.AddSample(currentTime, Healing.Total / elapsedSeconds);
+            _deltaDtpsSamples.AddSample(currentTime, TakenDamage.Total / elapsedSeconds);
+            
+            // Update last recorded tick to prevent duplicates
+            _lastRecordedTick = LastTick;
+        }
     }
 
     private double? CalculateElapsedTime()
