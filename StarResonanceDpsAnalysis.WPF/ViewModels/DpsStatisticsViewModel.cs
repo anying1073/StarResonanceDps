@@ -46,8 +46,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     private readonly IApplicationControlService _appControlService;
     private readonly IConfigManager _configManager;
     private readonly Dispatcher _dispatcher;
-    private readonly IMessageDialogService _messageDialogService;
     private readonly ILogger<DpsStatisticsViewModel> _logger;
+    private readonly IMessageDialogService _messageDialogService;
 
     // 快照服务
 
@@ -61,9 +61,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
     // Whether we are waiting for the first datapoint of a new section
     private bool _awaitingSectionStart;
-
-    // ⭐ New flag: indicates section has timed out but not yet cleared
-    private bool _sectionTimedOut;
 
     [ObservableProperty] private TimeSpan _battleDuration;
 
@@ -94,6 +91,9 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
     // Snapshot of elapsed time at the moment a new section starts
     private TimeSpan _sectionStartElapsed = TimeSpan.Zero;
+
+    // ⭐ New flag: indicates section has timed out but not yet cleared
+    private bool _sectionTimedOut;
     [ObservableProperty] private bool _showContextMenu;
     [ObservableProperty] private bool _showTeamTotalDamage;
 
@@ -177,78 +177,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         LoadDpsStatisticsSettings();
 
         _logger.LogDebug("DpsStatisticsViewModel constructor completed");
-    }
-
-    private void SectionEnded()
-    {
-        if (!_dispatcher.CheckAccess())
-        {
-            _dispatcher.BeginInvoke(SectionEnded);
-            return;
-        }
-
-        _logger.LogInformation("=== SectionEnded event received ===");
-
-        // ⭐ Capture the final section duration before it gets cleared
-        var finalSectionDuration = _timer.Elapsed - _sectionStartElapsed;
-        _lastSectionElapsed = finalSectionDuration;
-
-        // ⭐ Set the timed out flag to freeze duration display
-        _sectionTimedOut = true;
-
-        _logger.LogInformation("Section ended, final duration: {Duration:F1}s", finalSectionDuration.TotalSeconds);
-
-        // ⭐ DON'T set _awaitingSectionStart here - let the data clearing logic handle it
-        // This allows the duration to display the final frozen value
-
-        // Update duration display immediately
-        UpdateBattleDuration();
-    }
-
-    /// <summary>
-    /// 从配置加载DPS统计页面的设置
-    /// </summary>
-    private void LoadDpsStatisticsSettings()
-    {
-        // 加载技能显示数量
-        var savedSkillLimit = _configManager.CurrentConfig.SkillDisplayLimit;
-        if (savedSkillLimit > 0)
-        {
-            foreach (var vm in StatisticData.Values)
-            {
-                vm.SkillDisplayLimit = savedSkillLimit;
-            }
-            _logger.LogInformation("从配置加载技能显示数量: {Limit}", savedSkillLimit);
-        }
-
-        // 加载是否统计NPC
-        IsIncludeNpcData = _configManager.CurrentConfig.IsIncludeNpcData;
-        _logger.LogInformation("从配置加载统计NPC设置: {Value}", IsIncludeNpcData);
-
-        // 加载是否显示团队总伤
-        ShowTeamTotalDamage = _configManager.CurrentConfig.ShowTeamTotalDamage;
-        _logger.LogInformation("从配置加载显示团队总伤设置: {Value}", ShowTeamTotalDamage);
-
-        // 加载最小记录时长
-        Options.MinimalDurationInSeconds = _configManager.CurrentConfig.MinimalDurationInSeconds;
-        _logger.LogInformation("从配置加载最小记录时长: {Duration}秒", Options.MinimalDurationInSeconds);
-
-        // ⭐ 订阅Options的属性变更事件，以便保存配置
-        Options.PropertyChanged += Options_PropertyChanged;
-    }
-
-    /// <summary>
-    /// Options属性变更处理
-    /// </summary>
-    private void Options_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(DpsStatisticsOptions.MinimalDurationInSeconds))
-        {
-            var newValue = Options.MinimalDurationInSeconds;
-            _configManager.CurrentConfig.MinimalDurationInSeconds = newValue;
-            _ = _configManager.SaveAsync();
-            _logger.LogInformation("最小记录时长已保存到配置: {Duration}秒", newValue);
-        }
     }
 
     // ⭐ 新增: 暴露快照服务给View绑定
@@ -336,6 +264,79 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }
     }
 
+    private void SectionEnded()
+    {
+        if (!_dispatcher.CheckAccess())
+        {
+            _dispatcher.BeginInvoke(SectionEnded);
+            return;
+        }
+
+        _logger.LogInformation("=== SectionEnded event received ===");
+
+        // ⭐ Capture the final section duration before it gets cleared
+        var finalSectionDuration = _timer.Elapsed - _sectionStartElapsed;
+        _lastSectionElapsed = finalSectionDuration;
+
+        // ⭐ Set the timed out flag to freeze duration display
+        _sectionTimedOut = true;
+
+        _logger.LogInformation("Section ended, final duration: {Duration:F1}s", finalSectionDuration.TotalSeconds);
+
+        // ⭐ DON'T set _awaitingSectionStart here - let the data clearing logic handle it
+        // This allows the duration to display the final frozen value
+
+        // Update duration display immediately
+        UpdateBattleDuration();
+    }
+
+    /// <summary>
+    /// 从配置加载DPS统计页面的设置
+    /// </summary>
+    private void LoadDpsStatisticsSettings()
+    {
+        // 加载技能显示数量
+        var savedSkillLimit = _configManager.CurrentConfig.SkillDisplayLimit;
+        if (savedSkillLimit > 0)
+        {
+            foreach (var vm in StatisticData.Values)
+            {
+                vm.SkillDisplayLimit = savedSkillLimit;
+            }
+
+            _logger.LogInformation("从配置加载技能显示数量: {Limit}", savedSkillLimit);
+        }
+
+        // 加载是否统计NPC
+        IsIncludeNpcData = _configManager.CurrentConfig.IsIncludeNpcData;
+        _logger.LogInformation("从配置加载统计NPC设置: {Value}", IsIncludeNpcData);
+
+        // 加载是否显示团队总伤
+        ShowTeamTotalDamage = _configManager.CurrentConfig.ShowTeamTotalDamage;
+        _logger.LogInformation("从配置加载显示团队总伤设置: {Value}", ShowTeamTotalDamage);
+
+        // 加载最小记录时长
+        Options.MinimalDurationInSeconds = _configManager.CurrentConfig.MinimalDurationInSeconds;
+        _logger.LogInformation("从配置加载最小记录时长: {Duration}秒", Options.MinimalDurationInSeconds);
+
+        // ⭐ 订阅Options的属性变更事件，以便保存配置
+        Options.PropertyChanged += Options_PropertyChanged;
+    }
+
+    /// <summary>
+    /// Options属性变更处理
+    /// </summary>
+    private void Options_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(DpsStatisticsOptions.MinimalDurationInSeconds))
+        {
+            var newValue = Options.MinimalDurationInSeconds;
+            _configManager.CurrentConfig.MinimalDurationInSeconds = newValue;
+            _ = _configManager.SaveAsync();
+            _logger.LogInformation("最小记录时长已保存到配置: {Duration}秒", newValue);
+        }
+    }
+
     /// <summary>
     /// When hovering indicator popups, freeze sorting to avoid flicker caused by item reordering.
     /// </summary>
@@ -367,7 +368,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         var vm = _windowManagement.SkillBreakdownView.DataContext as SkillBreakdownViewModel;
         Debug.Assert(vm != null, "vm!=null");
 
-        var playerStats = _storage.GetStatistics(fullSession: ScopeTime == ScopeTime.Total);
+        var playerStats = _storage.GetStatistics(ScopeTime == ScopeTime.Total);
         if (!playerStats.TryGetValue(target.Player.Uid, out var stats)) return;
         _logger.LogInformation("Using PlayerStatistics for SkillBreakdown (accurate data)");
 
@@ -849,7 +850,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         // 只在 Current 模式下保存
         if (ScopeTime != ScopeTime.Current)
         {
-            _logger.LogDebug("跳过快照保存: ScopeTime={ScopeTime}, DataCount={Count}", ScopeTime, _storage.GetStatisticsCount(true));
+            _logger.LogDebug("跳过快照保存: ScopeTime={ScopeTime}, DataCount={Count}", ScopeTime,
+                _storage.GetStatisticsCount(true));
             return;
         }
 
@@ -1180,8 +1182,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
         foreach (var playerStats in data.Values)
         {
-            var durationTicks = playerStats.LastTick - (playerStats.StartTick ?? 0);
-
+            var durationTicks = playerStats.ElapsedTicks();
             // Build skill lists once for reuse
             var (totalDmg, totalHeal, totalTaken) = BuildSkillListFromStats(playerStats);
 
@@ -1229,36 +1230,9 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }
 
         _logger.LogDebug(
-            "PreProcess complete (PlayerStatistics path): Damage count = {Count}, NpcTakenDamage count = {I}, IsIncludeNpcData = {IsIncludeNpcData}", result[StatisticType.Damage].Count, result[StatisticType.NpcTakenDamage].Count, IsIncludeNpcData);
+            "PreProcess complete (PlayerStatistics path): Damage count = {Count}, NpcTakenDamage count = {I}, IsIncludeNpcData = {IsIncludeNpcData}",
+            result[StatisticType.Damage].Count, result[StatisticType.NpcTakenDamage].Count, IsIncludeNpcData);
         return result;
-    }
-
-    public record struct Data
-    {
-        public int HitCount { get; set; }
-        public long TotalValue { get; set; }
-        public long NormalValue { get; set; }
-        public double Average { get; set; }
-        public double CritRate { get; set; }
-        public long CritValue { get; set; }
-        public int CritCount { get; set; }
-        public long LuckyValue { get; set; }
-        public int LuckyCount { get; set; }
-
-        public readonly void Deconstruct(out int hitCount, out long totalValue, out long normalValue,
-            out double average, out double critRate, out long critValue, out int critCount, out long luckyValue,
-            out int luckyCount)
-        {
-            hitCount = HitCount;
-            totalValue = TotalValue;
-            normalValue = NormalValue;
-            average = Average;
-            critRate = CritRate;
-            critValue = CritValue;
-            critCount = CritCount;
-            luckyValue = LuckyValue;
-            luckyCount = LuckyCount;
-        }
     }
 
 
@@ -1283,11 +1257,11 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 SkillId = skillId,
                 SkillName = skillName,
                 TotalValue = skillStat.TotalValue,
-                    HitCount = skillStat.UseTimes,
-                    CritCount = skillStat.CritTimes,
-                    LuckyCount = skillStat.LuckyTimes,
-                    Average = skillStat.UseTimes > 0 ? Math.Round((double)skillStat.TotalValue / skillStat.UseTimes) : 0,
-                    CritRate = skillStat.UseTimes > 0 ? (double)skillStat.CritTimes / skillStat.UseTimes : 0,
+                HitCount = skillStat.UseTimes,
+                CritCount = skillStat.CritTimes,
+                LuckyCount = skillStat.LuckyTimes,
+                Average = skillStat.UseTimes > 0 ? Math.Round((double)skillStat.TotalValue / skillStat.UseTimes) : 0,
+                CritRate = skillStat.UseTimes > 0 ? (double)skillStat.CritTimes / skillStat.UseTimes : 0,
                 CritValue = skillStat.CritValue,
                 LuckyValue = skillStat.LuckValue,
             };
@@ -1306,11 +1280,11 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 SkillId = skillId,
                 SkillName = skillName,
                 TotalValue = skillStat.TotalValue,
-                    HitCount = skillStat.UseTimes,
-                    CritCount = skillStat.CritTimes,
-                    LuckyCount = skillStat.LuckyTimes,
-                    Average = skillStat.UseTimes > 0 ? Math.Round((double)skillStat.TotalValue / skillStat.UseTimes) : 0,
-                    CritRate = skillStat.UseTimes > 0 ? (double)skillStat.CritTimes / skillStat.UseTimes : 0,
+                HitCount = skillStat.UseTimes,
+                CritCount = skillStat.CritTimes,
+                LuckyCount = skillStat.LuckyTimes,
+                Average = skillStat.UseTimes > 0 ? Math.Round((double)skillStat.TotalValue / skillStat.UseTimes) : 0,
+                CritRate = skillStat.UseTimes > 0 ? (double)skillStat.CritTimes / skillStat.UseTimes : 0,
                 CritValue = skillStat.CritValue,
                 LuckyValue = skillStat.CritValue
             };
@@ -1332,11 +1306,11 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                     ? def.Name
                     : s.SkillId.ToString(),
                 TotalValue = s.TotalValue,
-                    HitCount = s.UseTimes,
-                    CritCount = s.CritTimes,
-                    LuckyCount = s.LuckyTimes,
-                    Average = s.UseTimes > 0 ? Math.Round((double)s.TotalValue / s.UseTimes) : 0,
-                    CritRate = s.UseTimes > 0 ? (double)s.CritTimes / s.UseTimes : 0,
+                HitCount = s.UseTimes,
+                CritCount = s.CritTimes,
+                LuckyCount = s.LuckyTimes,
+                Average = s.UseTimes > 0 ? Math.Round((double)s.TotalValue / s.UseTimes) : 0,
+                CritRate = s.UseTimes > 0 ? (double)s.CritTimes / s.UseTimes : 0,
                 CritValue = s.CritValue,
                 LuckyValue = s.LuckValue
             })
@@ -1596,6 +1570,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         {
             _dispatcher.BeginInvoke(StorageOnServerChanged, currentServer, prevServer);
         }
+
         _logger.LogInformation("服务器切换: {Prev} -> {Current}", prevServer, currentServer);
 
         // 在全程模式下,服务器切换时保存全程快照
@@ -1696,7 +1671,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                     _dispatcher.Invoke(() =>
                     {
                         subViewModel.Data.Remove(npcSlot);
-                        _logger.LogDebug("Removed NPC slot: UID={PlayerUid}, Name={PlayerName}", npcSlot.Player.Uid, npcSlot.Player.Name);
+                        _logger.LogDebug("Removed NPC slot: UID={PlayerUid}, Name={PlayerName}", npcSlot.Player.Uid,
+                            npcSlot.Player.Name);
                     });
                 }
 
@@ -1826,6 +1802,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _dispatcher.Invoke(ExitSnapshotViewMode);
             return;
         }
+
         _logger.LogInformation("=== 退出快照查看模式 ===");
 
         // 1. 清除快照状态
@@ -2096,6 +2073,34 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         else
         {
             _dispatcher.Invoke(action);
+        }
+    }
+
+    public record struct Data
+    {
+        public int HitCount { get; set; }
+        public long TotalValue { get; set; }
+        public long NormalValue { get; set; }
+        public double Average { get; set; }
+        public double CritRate { get; set; }
+        public long CritValue { get; set; }
+        public int CritCount { get; set; }
+        public long LuckyValue { get; set; }
+        public int LuckyCount { get; set; }
+
+        public readonly void Deconstruct(out int hitCount, out long totalValue, out long normalValue,
+            out double average, out double critRate, out long critValue, out int critCount, out long luckyValue,
+            out int luckyCount)
+        {
+            hitCount = HitCount;
+            totalValue = TotalValue;
+            normalValue = NormalValue;
+            average = Average;
+            critRate = CritRate;
+            critValue = CritValue;
+            critCount = CritCount;
+            luckyValue = LuckyValue;
+            luckyCount = LuckyCount;
         }
     }
 }

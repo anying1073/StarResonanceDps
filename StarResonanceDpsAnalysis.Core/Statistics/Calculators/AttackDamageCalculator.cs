@@ -40,7 +40,6 @@ public sealed class AttackDamageCalculator : IStatisticsCalculator
         var values = stats.AttackDamage;
         values.Total += log.Value;
         values.ValuePerSecond = ticks > 0 ? (double)values.Total * TimeSpan.TicksPerMillisecond / ticks : double.NaN;
-        values.HitCount++;
 
         // Update skill breakdown
         var skill = stats.GetOrCreateSkill(log.SkillID);
@@ -76,6 +75,11 @@ public sealed class AttackDamageCalculator : IStatisticsCalculator
         {
             // Normal hit
             values.NormalValue += log.Value;
+        }
+
+        if (!log.IsLucky)
+        {
+            values.HitCount++;
         }
     }
 }

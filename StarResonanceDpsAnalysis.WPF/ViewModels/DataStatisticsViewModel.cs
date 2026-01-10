@@ -20,8 +20,8 @@ public partial class DataStatisticsViewModel : BaseViewModel
     public double LuckyRate => Hits > 0 ? (double)LuckyCount / Hits : double.NaN;
 
     public double CritRate => Hits > 0 ? (double)CritCount / Hits : double.NaN;
-    
-    public int NormalCount => Hits - CritCount - LuckyCount;
+
+    public int NormalCount => Hits - CritCount;
     
     public double NormalRate => Hits > 0 ? (double)NormalCount / Hits : double.NaN;
 

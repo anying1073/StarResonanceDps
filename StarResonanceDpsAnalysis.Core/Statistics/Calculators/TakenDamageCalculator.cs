@@ -47,7 +47,6 @@ public sealed class TakenDamageCalculator : IStatisticsCalculator
         var values = stats.TakenDamage;
         values.Total += log.Value;
         values.ValuePerSecond = ticks > 0 ? (double)values.Total * TimeSpan.TicksPerMillisecond / ticks : double.NaN;
-        values.HitCount++;
 
         // Update skill breakdown
         var skill = stats.GetOrCreateTakenSkill(log.SkillID);
@@ -83,6 +82,11 @@ public sealed class TakenDamageCalculator : IStatisticsCalculator
         {
             // Normal hit
             values.NormalValue += log.Value;
+        }
+
+        if (!log.IsLucky)
+        {
+            values.HitCount++;
         }
     }
 
@@ -94,7 +98,6 @@ public sealed class TakenDamageCalculator : IStatisticsCalculator
 
         var values = stats.AttackDamage;
         values.Total += log.Value;
-        values.HitCount++;
 
         // Update skill breakdown
         var skill = stats.GetOrCreateTakenSkill(log.SkillID);
@@ -130,6 +133,11 @@ public sealed class TakenDamageCalculator : IStatisticsCalculator
         {
             // Normal hit
             values.NormalValue += log.Value;
+        }
+
+        if (!log.IsLucky)
+        {
+            values.HitCount++;
         }
     }
 }
