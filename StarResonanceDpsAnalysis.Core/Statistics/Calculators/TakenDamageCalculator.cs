@@ -50,7 +50,7 @@ public sealed class TakenDamageCalculator : IStatisticsCalculator
         values.HitCount++;
 
         // Update skill breakdown
-        var skill = stats.GetOrCreateSkill(log.SkillID);
+        var skill = stats.GetOrCreateTakenSkill(log.SkillID);
         skill.TotalValue += log.Value;
         skill.UseTimes++;
 
@@ -97,7 +97,7 @@ public sealed class TakenDamageCalculator : IStatisticsCalculator
         values.HitCount++;
 
         // Update skill breakdown
-        var skill = stats.GetOrCreateSkill(log.SkillID);
+        var skill = stats.GetOrCreateTakenSkill(log.SkillID);
         skill.TotalValue += log.Value;
         skill.UseTimes++;
 

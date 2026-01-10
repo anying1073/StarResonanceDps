@@ -1,7 +1,6 @@
 using StarResonanceDpsAnalysis.Core;
 using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
-using System.Collections.ObjectModel;
 
 namespace StarResonanceDpsAnalysis.WPF.Extensions;
 
@@ -25,30 +24,27 @@ public static class StatisticsToViewModelConverter
             Average = durationSeconds > 0 ? stats.Total / durationSeconds : double.NaN,
             NormalValue = stats.NormalValue,
             CritValue = stats.CritValue,
-            LuckyValue = stats.LuckyValue + stats.CritAndLuckyValue,
+            LuckyValue = stats.LuckyValue + stats.CritAndLuckyValue
         };
     }
 
     /// <summary>
     /// Build skill lists directly from PlayerStatistics (no battle log iteration needed!)
     /// </summary>
-    public static (List<SkillItemViewModel> damage, List<SkillItemViewModel> healing, List<SkillItemViewModel> takenDamage)
+    public static (List<SkillItemViewModel> damage, List<SkillItemViewModel> healing, List<SkillItemViewModel> taken)
         BuildSkillListsFromPlayerStats(PlayerStatistics playerStats)
     {
         var damageSkills = BuildSkillList(
             playerStats.AttackDamage.Skills,
-            playerStats.AttackDamage.Total,
-            (vm, value) => vm.Damage = value);
+            playerStats.AttackDamage.Total);
 
         var healingSkills = BuildSkillList(
             playerStats.Healing.Skills,
-            playerStats.Healing.Total,
-            (vm, value) => vm.Heal = value);
+            playerStats.Healing.Total);
 
         var takenSkills = BuildSkillList(
             playerStats.TakenDamage.Skills,
-            playerStats.TakenDamage.Total,
-            (vm, value) => vm.TakenDamage = value);
+            playerStats.TakenDamage.Total);
 
         return (damageSkills, healingSkills, takenSkills);
     }
@@ -58,62 +54,61 @@ public static class StatisticsToViewModelConverter
     /// </summary>
     private static List<SkillItemViewModel> BuildSkillList(
         IReadOnlyDictionary<long, SkillStatistics> skills,
-        long totalValue,
-        Action<SkillItemViewModel, SkillItemViewModel.SkillValue> setProperty)
+        long totalValue)
     {
         var result = new List<SkillItemViewModel>(skills.Count);
 
         foreach (var (skillId, skillStats) in skills)
         {
+            var totalLucky = skillStats.LuckyTimes + skillStats.CritAndLuckyTimes;
+            var luckyValue = skillStats.LuckValue + skillStats.CritAndLuckyValue;
+            var normalValue = skillStats.TotalValue - skillStats.CritValue - luckyValue;
             var skillVm = new SkillItemViewModel
             {
                 SkillId = skillId,
-                SkillName = EmbeddedSkillConfig.GetName((int)skillId)
+                SkillName = EmbeddedSkillConfig.GetName((int)skillId),
+                TotalValue = skillStats.TotalValue,
+                HitCount = skillStats.UseTimes,
+                CritCount = skillStats.CritTimes,
+                LuckyCount = totalLucky,
+                Average = skillStats.UseTimes > 0 ? skillStats.TotalValue / (double)skillStats.UseTimes : 0,
+                CritRate = GetRate(skillStats.CritTimes, skillStats.UseTimes),
+                LuckyRate = GetRate(totalLucky, skillStats.UseTimes),
+                CritValue = skillStats.CritValue,
+                LuckyValue = luckyValue,
+                NormalValue = normalValue,
+                PercentToTotal = GetRate(skillStats.TotalValue, totalValue)
             };
-
-            var skillValue = CreateSkillValue(skillStats, totalValue);
-            setProperty(skillVm, skillValue);
 
             result.Add(skillVm);
         }
 
-        return result.OrderByDescending(GetTotalValue).ToList();
-    }
-
-    /// <summary>
-    /// Create SkillValue from SkillStatistics
-    /// </summary>
-    private static SkillItemViewModel.SkillValue CreateSkillValue(SkillStatistics stats, long parentTotal)
-    {
-        var totalLucky = stats.LuckyTimes + stats.CritAndLuckyTimes;
-        var luckyValue = stats.LuckValue + stats.CritAndLuckyValue;
-        var normalValue = stats.TotalValue - stats.CritValue - luckyValue;
-
-        return new SkillItemViewModel.SkillValue
+        var ret = result.OrderByDescending(vm => vm.TotalValue).ToList();
+        var count = ret.Count();
+        switch (count)
         {
-            TotalValue = stats.TotalValue,
-            HitCount = stats.UseTimes,
-            CritCount = stats.CritTimes,
-            LuckyCount = totalLucky,
-            Average = stats.UseTimes > 0 ? stats.TotalValue / (double)stats.UseTimes : 0,
-            CritRate = GetRate(stats.CritTimes, stats.UseTimes),
-            LuckyRate = GetRate(totalLucky, stats.UseTimes),
-            CritValue = stats.CritValue,
-            LuckyValue = luckyValue,
-            NormalValue = normalValue,
-            PercentToTotal = GetRate(stats.TotalValue, parentTotal)
-        };
+            case 1:
+                ret[0].PercentToMax = 100;
+                break;
+            case > 1:
+            {
+                for (var i = count - 1; i > 0; i--)
+                {
+                    ret[i].PercentToMax = GetRate(ret[i].TotalValue, ret[0].TotalValue) * 100;
+                }
+
+                break;
+            }
+        }
+
+        return ret;
     }
 
     /// <summary>
     /// Calculate rate (returns 0 if divider is 0)
     /// </summary>
-    private static double GetRate(double value, double divider) => 
-        divider > 0 ? value / divider : 0;
-
-    /// <summary>
-    /// Get total value from skill view model based on which property is set
-    /// </summary>
-    private static long GetTotalValue(SkillItemViewModel vm) =>
-        vm.Damage?.TotalValue ?? vm.Heal?.TotalValue ?? vm.TakenDamage?.TotalValue ?? 0;
+    private static double GetRate(double value, double divider)
+    {
+        return divider > 0 ? value / divider : 0;
+    }
 }

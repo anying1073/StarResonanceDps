@@ -34,7 +34,6 @@
     <converters:StatisticTypeToSkillListConverter x:Key="StatisticTypeToSkillListConverter" />
     <converters:MultiBoolToVisibilityConverter x:Key="MultiBoolToVisibilityConverter" />
     <converters:PlayerNameMaskConverter x:Key="PlayerNameMaskConverter" />
-    <converters:SkillValueByStatisticConverter x:Key="SkillValueByStatisticConverter" />
     <converters:EqualityToVisibilityConverter x:Key="EqualityToVisibilityConverter" />
     <converters:ColorStringToBrushConverter x:Key="ColorStringToBrushConverter" />
     <converters:ThemeColorWithOpacityConverter x:Key="ThemeColorWithOpacityConverter" />

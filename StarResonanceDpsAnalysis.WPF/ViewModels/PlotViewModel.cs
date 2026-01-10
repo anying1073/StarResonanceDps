@@ -120,15 +120,7 @@ public partial class PlotViewModel : BaseViewModel
         for (var i = 0; i < skills.Count; i++)
         {
             var skill = skills[i];
-            var value = _statisticType switch
-            {
-                StatisticType.Damage => skill.Damage,
-                StatisticType.Healing => skill.Heal,
-                StatisticType.TakenDamage => skill.TakenDamage,
-                StatisticType.NpcTakenDamage => skill.TakenDamage,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-            PieSeriesData.Slices.Add(new PieSlice(skill.SkillName, value.TotalValue)
+            PieSeriesData.Slices.Add(new PieSlice(skill.SkillName, skill.TotalValue)
             {
                 IsExploded = false,
                 Fill = colors[i]

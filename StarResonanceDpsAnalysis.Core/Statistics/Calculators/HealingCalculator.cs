@@ -40,7 +40,7 @@ public sealed class HealingCalculator : IStatisticsCalculator
         values.HitCount++;
 
         // Update skill breakdown
-        var skill = stats.GetOrCreateSkill(log.SkillID);
+        var skill = stats.GetOrCreateHealingSkill(log.SkillID);
         skill.TotalValue += log.Value;
         skill.UseTimes++;
 

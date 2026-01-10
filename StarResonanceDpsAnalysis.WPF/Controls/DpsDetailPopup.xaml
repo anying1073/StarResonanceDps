@@ -96,14 +96,8 @@
                                 FontSize="12"
                                 Style="{StaticResource FooterTextContent}">
                                 <Run Foreground="#CCCCCC" Text="总伤害：" />
-                                <Run Foreground="White" FontWeight="SemiBold">
-                                    <Run.Text>
-                                        <MultiBinding Converter="{StaticResource SkillValueByStatisticConverter}" ConverterParameter="TotalValue" Mode="OneWay">
-                                            <Binding Path="DataContext.StatisticIndex" RelativeSource="{RelativeSource AncestorType=Window}" Mode="OneWay" />
-                                            <Binding Mode="OneWay" />
-                                        </MultiBinding>
-                                    </Run.Text>
-                                </Run>
+                                <Run Foreground="White" FontWeight="SemiBold"
+                                     Text="{Binding TotalValue}" />
                             </TextBlock>
 
                             <!--  详细数据 (11px)  -->
@@ -112,32 +106,11 @@
                                 FontSize="11"
                                 Style="{StaticResource FooterTextContent}">
                                 <Run Foreground="#AAAAAA" Text="命中：" />
-                                <Run Foreground="#DDDDDD">
-                                    <Run.Text>
-                                        <MultiBinding Converter="{StaticResource SkillValueByStatisticConverter}" ConverterParameter="HitCount" Mode="OneWay">
-                                            <Binding Path="DataContext.StatisticIndex" RelativeSource="{RelativeSource AncestorType=Window}" Mode="OneWay" />
-                                            <Binding Mode="OneWay" />
-                                        </MultiBinding>
-                                    </Run.Text>
-                                </Run>
+                                <Run Foreground="#DDDDDD" Text="{Binding HitCount}" />
                                 <Run Foreground="#AAAAAA" Text="  暴击：" />
-                                <Run Foreground="#DDDDDD">
-                                    <Run.Text>
-                                        <MultiBinding Converter="{StaticResource SkillValueByStatisticConverter}" ConverterParameter="CritCount" Mode="OneWay">
-                                            <Binding Path="DataContext.StatisticIndex" RelativeSource="{RelativeSource AncestorType=Window}" Mode="OneWay" />
-                                            <Binding Mode="OneWay" />
-                                        </MultiBinding>
-                                    </Run.Text>
-                                </Run>
+                                <Run Foreground="#DDDDDD" Text="{Binding CritCount}" />
                                 <Run Foreground="#AAAAAA" Text="  平均：" />
-                                <Run Foreground="#DDDDDD">
-                                    <Run.Text>
-                                        <MultiBinding Converter="{StaticResource SkillValueByStatisticConverter}" ConverterParameter="Average" Mode="OneWay">
-                                            <Binding Path="DataContext.StatisticIndex" RelativeSource="{RelativeSource AncestorType=Window}" Mode="OneWay" />
-                                            <Binding Mode="OneWay" />
-                                        </MultiBinding>
-                                    </Run.Text>
-                                </Run>
+                                <Run Foreground="#DDDDDD" Text="{Binding Average}" />
                             </TextBlock>
                         </StackPanel>
                     </DataTemplate>

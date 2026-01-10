@@ -37,6 +37,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
     private readonly DpsStatisticsViewModel _parent;
     private readonly IDataStorage _storage;
     private readonly StatisticType _type;
+    [ObservableProperty] private int? _currentPlayerRank;
     [ObservableProperty] private StatisticDataViewModel? _currentPlayerSlot;
     [ObservableProperty] private BulkObservableCollection<StatisticDataViewModel> _data = new();
     [ObservableProperty] private ScopeTime _scopeTime;
@@ -45,7 +46,6 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
     [ObservableProperty] private SortDirectionEnum _sortDirection = SortDirectionEnum.Descending;
     [ObservableProperty] private string _sortMemberPath = "Value";
     [ObservableProperty] private bool _suppressSorting;
-    [ObservableProperty] private int? _currentPlayerRank = null;
 
     public DpsStatisticsSubViewModel(ILogger<DpsStatisticsViewModel> logger, Dispatcher dispatcher, StatisticType type,
         IDataStorage storage,
@@ -267,6 +267,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             Data.Count,
             _type);
     }
+
     /// <summary>
     /// Updates data with pre-computed values for efficient batch processing
     /// </summary>
@@ -377,45 +378,47 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             new SkillItemViewModel
             {
                 SkillName = "Test Skill A",
-                Damage = new SkillItemViewModel.SkillValue { TotalValue = 15000, HitCount = 25, CritCount = 8, Average = 600 } },
+                TotalValue = 15000, HitCount = 25, CritCount = 8, Average = 600
+            },
             new SkillItemViewModel
             {
                 SkillName = "Test Skill B",
-                Damage = new SkillItemViewModel.SkillValue { TotalValue = 8500, HitCount = 15, CritCount = 4, Average = 567 }
+                TotalValue = 8500, HitCount = 15, CritCount = 4, Average = 567
             },
             new SkillItemViewModel
             {
                 SkillName = "Test Skill C",
-                Damage = new SkillItemViewModel.SkillValue { TotalValue = 12300, HitCount = 30, CritCount = 12, Average = 410 } }
+                TotalValue = 12300, HitCount = 30, CritCount = 12, Average = 410
+            }
         ];
         newItem.Heal.FilteredSkillList =
         [
             new SkillItemViewModel
             {
-                SkillName = "Test Heal Skill A", Heal = new() { TotalValue = 15000, HitCount = 25, CritCount = 8, Average = 600 }
+                SkillName = "Test Heal Skill A", TotalValue = 15000, HitCount = 25, CritCount = 8, Average = 600
             },
             new SkillItemViewModel
             {
-                SkillName = "Test Heal Skill B", Heal = new() { TotalValue = 8500, HitCount = 15, CritCount = 4, Average = 567 }
+                SkillName = "Test Heal Skill B", TotalValue = 8500, HitCount = 15, CritCount = 4, Average = 567
             },
             new SkillItemViewModel
             {
-                SkillName = "Test Heal Skill C",Heal = new() { TotalValue = 12300, HitCount = 30, CritCount = 12, Average = 410 }
+                SkillName = "Test Heal Skill C", TotalValue = 12300, HitCount = 30, CritCount = 12, Average = 410
             }
         ];
         newItem.TakenDamage.FilteredSkillList =
         [
             new SkillItemViewModel
             {
-                SkillName = "Test Taken Skill A", TakenDamage = new() { TotalValue = 15000, HitCount = 25, CritCount = 8, Average = 600 }
+                SkillName = "Test Taken Skill A", TotalValue = 15000, HitCount = 25, CritCount = 8, Average = 600
             },
             new SkillItemViewModel
             {
-                SkillName = "Test Taken Skill B", TakenDamage =new() { TotalValue = 8500, HitCount = 15, CritCount = 4, Average = 567 }
+                SkillName = "Test Taken Skill B", TotalValue = 8500, HitCount = 15, CritCount = 4, Average = 567
             },
             new SkillItemViewModel
             {
-                SkillName = "Test Taken Skill C", TakenDamage = new() { TotalValue = 12300, HitCount = 30, CritCount = 12, Average = 410 }
+                SkillName = "Test Taken Skill C", TotalValue = 12300, HitCount = 30, CritCount = 12, Average = 410
             }
         ];
 

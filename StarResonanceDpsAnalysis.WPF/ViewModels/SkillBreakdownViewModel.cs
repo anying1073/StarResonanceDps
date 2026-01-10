@@ -200,20 +200,19 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         }
 
         var duration = TimeSpan.FromTicks(_playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0));
-        var (damageSkills, healingSkills, takenSkills) =
-            StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(_playerStatistics);
+        var skillLists = StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(_playerStatistics);
 
         // Update damage statistics
         UpdateStatisticSet(DpsTabViewModel,
-            _playerStatistics.AttackDamage, damageSkills, duration, _playerStatistics.GetDeltaDpsSamples());
+            _playerStatistics.AttackDamage, skillLists.damage, duration, _playerStatistics.GetDeltaDpsSamples());
 
         // Update healing statistics
         UpdateStatisticSet(HealingTabViewModel,
-            _playerStatistics.Healing, healingSkills, duration, _playerStatistics.GetDeltaHpsSamples());
+            _playerStatistics.Healing, skillLists.healing, duration, _playerStatistics.GetDeltaHpsSamples());
 
         // Update taken damage statistics
         UpdateStatisticSet(TankingTabViewModel,
-            _playerStatistics.TakenDamage, takenSkills, duration, _playerStatistics.GetDeltaDtpsSamples());
+            _playerStatistics.TakenDamage, skillLists.taken, duration, _playerStatistics.GetDeltaDtpsSamples());
     }
 
     /// <summary>

@@ -1282,17 +1282,14 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             {
                 SkillId = skillId,
                 SkillName = skillName,
-                Damage = new SkillItemViewModel.SkillValue
-                {
-                    TotalValue = (long)skillStat.TotalValue,
+                TotalValue = skillStat.TotalValue,
                     HitCount = skillStat.UseTimes,
                     CritCount = skillStat.CritTimes,
                     LuckyCount = skillStat.LuckyTimes,
                     Average = skillStat.UseTimes > 0 ? Math.Round((double)skillStat.TotalValue / skillStat.UseTimes) : 0,
                     CritRate = skillStat.UseTimes > 0 ? (double)skillStat.CritTimes / skillStat.UseTimes : 0,
-                    CritValue = 0,  // Not available in PlayerStatistics
-                    LuckyValue = 0  // Not available in PlayerStatistics
-                }
+                CritValue = skillStat.CritValue,
+                LuckyValue = skillStat.LuckValue,
             };
 
             damageSkills.Add(vm);
@@ -1308,25 +1305,22 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             {
                 SkillId = skillId,
                 SkillName = skillName,
-                Heal = new SkillItemViewModel.SkillValue
-                {
-                    TotalValue = (long)skillStat.TotalValue,
+                TotalValue = skillStat.TotalValue,
                     HitCount = skillStat.UseTimes,
                     CritCount = skillStat.CritTimes,
                     LuckyCount = skillStat.LuckyTimes,
                     Average = skillStat.UseTimes > 0 ? Math.Round((double)skillStat.TotalValue / skillStat.UseTimes) : 0,
                     CritRate = skillStat.UseTimes > 0 ? (double)skillStat.CritTimes / skillStat.UseTimes : 0,
-                    CritValue = 0,  // Not available in PlayerStatistics
-                    LuckyValue = 0  // Not available in PlayerStatistics
-                }
+                CritValue = skillStat.CritValue,
+                LuckyValue = skillStat.CritValue
             };
 
             healingSkills.Add(vm);
         }
 
         // Sort by total value descending
-        damageSkills = damageSkills.OrderByDescending(s => s.Damage?.TotalValue ?? 0).ToList();
-        healingSkills = healingSkills.OrderByDescending(s => s.Heal?.TotalValue ?? 0).ToList();
+        damageSkills = damageSkills.OrderByDescending(s => s.TotalValue).ToList();
+        healingSkills = healingSkills.OrderByDescending(s => s.TotalValue).ToList();
 
         // ✅ Taken damage skills: Direct from PlayerStatistics.TakenDamageSkills
         var takenSkills = playerStats.TakenDamage.Skills.Values
@@ -1337,17 +1331,14 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 SkillName = EmbeddedSkillConfig.TryGet(s.SkillId.ToString(), out var def)
                     ? def.Name
                     : s.SkillId.ToString(),
-                TakenDamage = new SkillItemViewModel.SkillValue
-                {
-                    TotalValue = (long)s.TotalValue,
+                TotalValue = s.TotalValue,
                     HitCount = s.UseTimes,
                     CritCount = s.CritTimes,
                     LuckyCount = s.LuckyTimes,
                     Average = s.UseTimes > 0 ? Math.Round((double)s.TotalValue / s.UseTimes) : 0,
                     CritRate = s.UseTimes > 0 ? (double)s.CritTimes / s.UseTimes : 0,
-                    CritValue = 0,
-                    LuckyValue = 0
-                }
+                CritValue = s.CritValue,
+                LuckyValue = s.LuckValue
             })
             .ToList();
 
@@ -2009,8 +2000,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             var avgValue = average > int.MaxValue ? int.MaxValue : (int)average;
             var critRate = s.UseTimes > 0 ? (double)s.CritTimes / s.UseTimes : 0d;
 
-            var value = new SkillItemViewModel.SkillValue
+            var vm = new SkillItemViewModel
             {
+                SkillId = s.SkillId,
+                SkillName = s.SkillName,
                 TotalValue = (long)s.TotalValue,
                 HitCount = s.UseTimes,
                 CritCount = s.CritTimes,
@@ -2018,26 +2011,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 Average = avgValue,
                 CritRate = critRate
             };
-
-            var vm = new SkillItemViewModel
-            {
-                SkillId = s.SkillId,
-                SkillName = s.SkillName
-            };
-
-            switch (statisticType)
-            {
-                case StatisticType.Healing:
-                    vm.Heal = value;
-                    break;
-                case StatisticType.TakenDamage:
-                case StatisticType.NpcTakenDamage:
-                    vm.TakenDamage = value;
-                    break;
-                default:
-                    vm.Damage = value;
-                    break;
-            }
 
             return vm;
         }).ToList();
