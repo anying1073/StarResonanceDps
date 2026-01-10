@@ -22,17 +22,15 @@ public class EnumToBooleanConverter : IValueConverter
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value == null || parameter == null)
+        if (value is not bool boolValue || parameter?.ToString() is not { } param)
             return Binding.DoNothing;
 
-        var boolValue = (bool)value;
-        if (!boolValue)
-            return Binding.DoNothing;
+        var targetEnum = Enum.Parse(targetType, param, true);
+        if (boolValue) return targetEnum;
 
-        var parameterString = parameter.ToString();
-        if (string.IsNullOrEmpty(parameterString))
-            return Binding.DoNothing;
-
-        return Enum.Parse(targetType, parameterString, true);
+        var values = Enum.GetValues(targetType);
+        return values.Length == 2 
+            ? values.Cast<object>().First(v => !v.Equals(targetEnum)) 
+            : Binding.DoNothing;
     }
 }
