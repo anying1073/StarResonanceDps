@@ -77,24 +77,24 @@ public static class StatisticsToViewModelConverter
                 CritValue = skillStats.CritValue,
                 LuckyValue = luckyValue,
                 NormalValue = normalValue,
-                PercentToTotal = GetRate(skillStats.TotalValue, totalValue)
+                RateToTotal = GetRate(skillStats.TotalValue, totalValue)
             };
 
             result.Add(skillVm);
         }
 
         var ret = result.OrderByDescending(vm => vm.TotalValue).ToList();
-        var count = ret.Count();
+        var count = ret.Count;
         switch (count)
         {
             case 1:
-                ret[0].PercentToMax = 100;
+                ret[0].RateToMax = 1;
                 break;
             case > 1:
             {
-                for (var i = count - 1; i > 0; i--)
+                for (var i = count - 1; i >= 0; i--)
                 {
-                    ret[i].PercentToMax = GetRate(ret[i].TotalValue, ret[0].TotalValue) * 100;
+                    ret[i].RateToMax = GetRate(ret[i].TotalValue, ret[0].TotalValue) * 1;
                 }
 
                 break;
@@ -110,5 +110,16 @@ public static class StatisticsToViewModelConverter
     private static double GetRate(double value, double divider)
     {
         return divider > 0 ? value / divider : 0;
+    }
+
+    /// <summary>
+    /// Calculate percentage (returns 0 if divider is 0)
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="divider"></param>
+    /// <returns></returns>
+    private static double GetPercentage(double value , double divider)
+    {
+        return GetRate(value, divider) * 100;
     }
 }
