@@ -216,9 +216,8 @@
                                         <RadioButton
                                             Content="{lex:Loc Key=SkillBreakdown_Label_Total}"
                                             GroupName="SortGroup"
-                                            IsChecked="{Binding DataContext.SelectedSortOption, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModels:SkillSortOption.Total}}"
-                                            Style="{StaticResource SortRadioButtonStyle}"
-                                            Command="{Binding DataContext.SortSkillListCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            IsChecked="{Binding SortMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Total}"
+                                            Style="{StaticResource SortRadioButtonStyle}" />
 
                                         <Border
                                             Width="1"
@@ -231,9 +230,8 @@
                                         <RadioButton
                                             Content="{lex:Loc Key=SkillBreakdown_Label_AverageDps}"
                                             GroupName="SortGroup"
-                                            IsChecked="{Binding DataContext.SelectedSortOption, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModels:SkillSortOption.AverageDps}}"
-                                            Style="{StaticResource SortRadioButtonStyle}"
-                                            Command="{Binding DataContext.SortSkillListCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            IsChecked="{Binding SortMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=AverageDps}"
+                                            Style="{StaticResource SortRadioButtonStyle}" />
                                     </StackPanel>
                                 </Border>
                             </Grid>
