@@ -1,20 +1,176 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:skillBreakdown="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls.SkillBreakdown"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:viewModels="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
-                    xmlns:lex="http://wpflocalizeextension.codeplex.com">
+                    xmlns:properties="clr-namespace:StarResonanceDpsAnalysis.WPF.Properties">
+
+    <!-- DataGridColumnHeader Style -->
+    <Style x:Key="SkillListColumnHeaderStyle" TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="#F9FAFB" />
+        <Setter Property="Foreground" Value="#B0B0B0" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontFamily" Value="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderBrush" Value="#E8E8E8" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridColumnHeader">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter 
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#F0F0F0" />
+                            <Setter Property="Foreground" Value="#1890FF" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#E8E8E8" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- DataGrid Style for Skill List -->
+    <Style x:Key="SkillListDataGridStyle" TargetType="DataGrid">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="CanUserResizeColumns" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="CanUserSortColumns" Value="False" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource SkillListColumnHeaderStyle}" />
+        <Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="DataGridRow">
+                                <Border x:Name="DGR_Border"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        SnapsToDevicePixels="True">
+                                    <Grid>
+                                        <!-- Progress Bar Background Layer (behind cells) -->
+                                        <Grid Height="48" VerticalAlignment="Top" Margin="4">
+                                            <Border HorizontalAlignment="Left" 
+                                                    Background="SkyBlue" 
+                                                    Height="48"
+                                                    VerticalAlignment="Stretch"
+                                                    CornerRadius="4">
+                                                <Border.Width>
+                                                    <MultiBinding Converter="{StaticResource RateToWidthConverter}">
+                                                        <Binding Path="RateToMax" />
+                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Grid}" />
+                                                    </MultiBinding>
+                                                </Border.Width>
+                                            </Border>
+                                        </Grid>
+                                        
+                                        <!-- Cell Content Layer (on top of progress bar) -->
+                                        <SelectiveScrollingGrid>
+                                            <SelectiveScrollingGrid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </SelectiveScrollingGrid.ColumnDefinitions>
+                                            <SelectiveScrollingGrid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </SelectiveScrollingGrid.RowDefinitions>
+
+                                            <DataGridCellsPresenter Grid.Column="1"
+                                                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+
+                                            <DataGridDetailsPresenter Grid.Column="1" Grid.Row="1"
+                                                                      SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                                                      Visibility="{TemplateBinding DetailsVisibility}"/>
+
+                                            <DataGridRowHeader Grid.RowSpan="2"
+                                                               SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
+                                                               Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                        </SelectiveScrollingGrid>
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="DGR_Border" Property="Background" Value="#FAFAFA" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="DGR_Border" Property="Background" Value="#E6F4FF" />
+                                        <Setter TargetName="DGR_Border" Property="BorderBrush" Value="#1890FF" />
+                                        <Setter TargetName="DGR_Border" Property="BorderThickness" Value="0,0,3,0" />
+                                    </Trigger>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsSelected" Value="True" />
+                                            <Condition Property="IsMouseOver" Value="True" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="DGR_Border" Property="Background" Value="#D6EBFF" />
+                                    </MultiTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="DataGridCell">
+                                <Border Background="{TemplateBinding Background}" 
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style TargetType="skillBreakdown:SkillListPanel">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="skillBreakdown:SkillListPanel">
-                    <Grid Grid.IsSharedSizeScope="True">
+                    <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
+                        <!-- Header Section -->
                         <Border Grid.Row="0" Style="{StaticResource SectionHeaderBorder}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -83,89 +239,152 @@
                             </Grid>
                         </Border>
 
-                        <Border Grid.Row="1" Background="#F9FAFB" BorderBrush="#E8E8E8" BorderThickness="0,1,0,1">
-                            <Border Padding="16,8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2.5*" SharedSizeGroup="ColSkill" />
-                                        <ColumnDefinition Width="1.2*" SharedSizeGroup="ColTotal" />
-                                        <ColumnDefinition Width="1*" SharedSizeGroup="ColHits" />
-                                        <ColumnDefinition Width="1*" SharedSizeGroup="ColCrit" />
-                                        <ColumnDefinition Width="1*" SharedSizeGroup="ColAvg" />
-                                        <ColumnDefinition Width="1*" SharedSizeGroup="ColPercentage" />
-                                    </Grid.ColumnDefinitions>
+                        <!-- DataGrid for Skill Items -->
+                        <Border Grid.Row="1" Style="{StaticResource SkillListBorder}">
+                            <DataGrid
+                                x:Name="SkillDataGrid"
+                                ItemsSource="{Binding SkillItems, RelativeSource={RelativeSource TemplatedParent}}"
+                                Style="{StaticResource SkillListDataGridStyle}">
+                                <DataGrid.Columns>
+                                    <!-- Skill Name Column with Star Sizing -->
+                                    <DataGridTemplateColumn Width="*" Header="SKILL (NAME)">
+                                        <DataGridTemplateColumn.HeaderStyle>
+                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                            </Style>
+                                        </DataGridTemplateColumn.HeaderStyle>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
+                                                <Border Padding="16,8" Background="Transparent">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Border Style="{StaticResource SkillIconBorder}" Tag="{Binding SkillName}">
+                                                            <Border.Background>
+                                                                <MultiBinding Converter="{StaticResource SkillNameToRandomGradientConverter}">
+                                                                    <Binding Path="SkillName" />
+                                                                    <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                                                                </MultiBinding>
+                                                            </Border.Background>
+                                                            <TextBlock Style="{StaticResource SkillIconText}" 
+                                                                       Text="{Binding SkillName, Converter={StaticResource StringFirstCharConverter}}" />
+                                                        </Border>
+                                                        <TextBlock x:Name="SkillNameText" Style="{StaticResource SkillNameText}" Text="{Binding SkillName}" />
+                                                    </StackPanel>
+                                                </Border>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                        <Setter TargetName="SkillNameText" Property="Foreground" Value="#1890FF" />
+                                                        <Setter TargetName="SkillNameText" Property="FontWeight" Value="SemiBold" />
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                    <TextBlock
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        FontSize="11"
-                                        FontWeight="Bold"
-                                        Foreground="#B0B0B0"
-                                        VerticalAlignment="Center"
-                                        FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
-                                        Text="SKILL (NAME)" />
+                                    <!-- Total Column -->
+                                    <DataGridTemplateColumn Width="120">
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock Text="{lex:Loc Key=SkillBreakdown_Label_Total}" />
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.HeaderStyle>
+                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                            </Style>
+                                        </DataGridTemplateColumn.HeaderStyle>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
+                                                <Border Padding="16,8">
+                                                    <TextBlock HorizontalAlignment="Right" Style="{StaticResource StatColumnText}" FontWeight="Bold"
+                                                               Text="{Binding TotalValue, StringFormat={}{0:N0}}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Right"
-                                        FontSize="11"
-                                        FontWeight="Bold"
-                                        Foreground="#B0B0B0"
-                                        VerticalAlignment="Center"
-                                        FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
-                                        Text="{lex:Loc Key=SkillBreakdown_Label_Total}" />
+                                    <!-- Hit Count Column -->
+                                    <DataGridTemplateColumn Width="100">
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock Text="{lex:Loc Key=SkillBreakdown_Label_HitCount}" />
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.HeaderStyle>
+                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                            </Style>
+                                        </DataGridTemplateColumn.HeaderStyle>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
+                                                <Border Padding="16,8">
+                                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                        <TextBlock Style="{StaticResource StatColumnText}" Text="{Binding HitCount, StringFormat={}{0:N0}}" />
+                                                        <TextBlock Style="{StaticResource StatColumnLightText}" Text="{lex:Loc Key=SkillBreakdown_Unit_Hits}" />
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                    <TextBlock
-                                        Grid.Column="2"
-                                        HorizontalAlignment="Right"
-                                        FontSize="11"
-                                        FontWeight="Bold"
-                                        Foreground="#B0B0B0"
-                                        VerticalAlignment="Center"
-                                        FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
-                                        Text="{lex:Loc Key=SkillBreakdown_Label_HitCount}" />
+                                    <!-- Crit Rate Column -->
+                                    <DataGridTemplateColumn Width="120">
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock Text="{lex:Loc Key=SkillBreakdown_Label_CritRate}" />
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.HeaderStyle>
+                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                            </Style>
+                                        </DataGridTemplateColumn.HeaderStyle>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
+                                                <Border Padding="16,8">
+                                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                        <TextBlock Style="{StaticResource StatColumnText}" Text="{Binding CritRate, StringFormat={}{0:P1}}" />
+                                                        <TextBlock Style="{StaticResource StatColumnLightText}"
+                                                                   Text="{Binding CritCount, StringFormat={}({0})}" />
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                    <TextBlock
-                                        Grid.Column="3"
-                                        HorizontalAlignment="Right"
-                                        FontSize="11"
-                                        FontWeight="Bold"
-                                        Foreground="#B0B0B0"
-                                        VerticalAlignment="Center"
-                                        FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
-                                        Text="{lex:Loc Key=SkillBreakdown_Label_CritRate}" />
-
-                                    <TextBlock
-                                        Grid.Column="4"
-                                        HorizontalAlignment="Right"
-                                        FontSize="11"
-                                        FontWeight="Bold"
-                                        Foreground="#B0B0B0"
-                                        VerticalAlignment="Center"
-                                        FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
-                                        Text="{lex:Loc Key=SkillBreakdown_Label_AverageDamage}" />
-
-                                    <TextBlock
-                                        Grid.Column="5"
-                                        HorizontalAlignment="Right"
-                                        FontSize="11"
-                                        FontWeight="Bold"
-                                        Foreground="#B0B0B0"
-                                        VerticalAlignment="Center"
-                                        FontFamily="pack://application:,,,/Assets/Fonts/#HarmonyOS Sans SC"
-                                        Text="{lex:Loc Key=SkillBreakdown_Label_Percentage}" />
-                                </Grid>
-                            </Border>
-                        </Border>
-
-                        <Border Grid.Row="2" Style="{StaticResource SkillListBorder}">
-                            <ScrollViewer VerticalScrollBarVisibility="Visible" Padding="0">
-                                <ItemsControl
-                                    x:Name="SkillItemsControl"
-                                    ItemsSource="{Binding SkillItems, RelativeSource={RelativeSource TemplatedParent}}"
-                                    ItemTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Tag="{Binding IconColor, RelativeSource={RelativeSource TemplatedParent}}" />
-                            </ScrollViewer>
+                                    <!-- Average Column -->
+                                    <DataGridTemplateColumn Width="100">
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock Text="{lex:Loc Key=SkillBreakdown_Label_AverageDamage}" />
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.HeaderStyle>
+                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                            </Style>
+                                        </DataGridTemplateColumn.HeaderStyle>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
+                                                <Border Padding="16,8">
+                                                    <TextBlock x:Name="AverageText" HorizontalAlignment="Right" Style="{StaticResource StatColumnText}"
+                                                               Text="{Binding Average, StringFormat={}{0:N0}}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <!--Percent To Max Column-->
+                                    <DataGridTemplateColumn Width="100">
+                                        <DataGridTemplateColumn.Header>
+                                            <TextBlock Text="{lex:Loc Key={x:Static properties:ResourcesKeys.SkillBreakdown_Label_ValuePercentToTotal}}" />
+                                        </DataGridTemplateColumn.Header>
+                                        <DataGridTemplateColumn.HeaderStyle>
+                                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                            </Style>
+                                        </DataGridTemplateColumn.HeaderStyle>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
+                                                <Border Padding="16,8">
+                                                    <TextBlock x:Name="PercentToTotalText" HorizontalAlignment="Right" Style="{StaticResource StatColumnText}"
+                                                               Text="{Binding RateToTotal, StringFormat={}{0:P1}}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </Border>
                     </Grid>
                 </ControlTemplate>

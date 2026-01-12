@@ -2,9 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
-    xmlns:viewModels="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
-    xmlns:skillBreakdown="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls.SkillBreakdown"
-    xmlns:oxy="http://oxyplot.org/wpf">
+    xmlns:viewModels="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels">
 
     <!--  Section Header Styles (used by SkillListPanel template)  -->
     <Style x:Key="SectionHeaderBorder" TargetType="Border">
@@ -123,7 +121,8 @@
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Margin" Value="4,0,0,0" />
-        <Setter Property="FontWeight" Value="Light" /></Style>
+        <Setter Property="FontWeight" Value="Light" />
+    </Style>
 
     <!--  Skill List Item Template for Damage  -->
     <DataTemplate x:Key="SkillListItemTemplateDamage" DataType="{x:Type viewModels:SkillItemViewModel}">
@@ -136,7 +135,7 @@
                 <Border HorizontalAlignment="Left" Background="#F0F7FF" Opacity="1.0">
                     <Border.Width>
                         <MultiBinding Converter="{StaticResource PercentToWidthConverter}">
-                            <Binding Path="Percentage" />
+                            <Binding Path="RateToMax" />
                             <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Grid}" />
                         </MultiBinding>
                     </Border.Width>
@@ -153,52 +152,46 @@
 
                     <!--  Skill Name with Icon  -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Border Style="{StaticResource SkillIconBorder}" Tag="{Binding SkillName}"><Border.Background><MultiBinding Converter="{StaticResource SkillNameToRandomGradientConverter}"><Binding Path="SkillName" /><Binding Path="Tag" RelativeSource="{RelativeSource Self}" /></MultiBinding></Border.Background>
-                            <TextBlock Style="{StaticResource SkillIconText}" Text="{Binding SkillName, Converter={StaticResource StringFirstCharConverter}}" />
+                        <Border Style="{StaticResource SkillIconBorder}" Tag="{Binding SkillName}">
+                            <Border.Background>
+                                <MultiBinding Converter="{StaticResource SkillNameToRandomGradientConverter}">
+                                    <Binding Path="SkillName" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </Border.Background>
+                            <TextBlock Style="{StaticResource SkillIconText}"
+                                       Text="{Binding SkillName, Converter={StaticResource StringFirstCharConverter}}" />
                         </Border>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock x:Name="SkillNameText" Style="{StaticResource SkillNameText}" Text="{Binding SkillName}" />
-                            <StackPanel x:Name="DetailsPanel" Orientation="Horizontal" Visibility="Collapsed" Margin="0,2,0,0">
-                                <TextBlock 
-                                    FontFamily="Segoe MDL2 Assets" 
-                                    Text="&#xE946;" 
-                                    FontSize="10" 
-                                    Foreground="#8C8C8C" 
-                                    VerticalAlignment="Center" 
-                                    Margin="0,0,4,0"/>
-                                <TextBlock 
-                                    Text="Click for details" 
-                                    FontSize="10" 
-                                    Foreground="#8C8C8C" 
-                                    VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </StackPanel>
+                        <TextBlock x:Name="SkillNameText" Style="{StaticResource SkillNameText}"
+                                   Text="{Binding SkillName}" />
                     </StackPanel>
 
                     <!--  Total Value  -->
-                    <TextBlock Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource StatColumnText}" FontWeight="Bold"
-                        Text="{Binding Damage.TotalValue, StringFormat={}{0:N0}}" />
+                    <TextBlock Grid.Column="1" Style="{StaticResource StatColumnText}"
+                               Text="{Binding TotalValue, StringFormat={}{0:N0}}" />
 
                     <!--  Hit Count  -->
                     <StackPanel Grid.Column="2" HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource StatColumnText}" Text="{Binding Damage.HitCount, StringFormat={}{0:N0}}" />
-                        <TextBlock Style="{StaticResource StatColumnLightText}" Text="{lex:Loc Key=SkillBreakdown_Unit_Hits}" />
+                                Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource StatColumnText}"
+                                   Text="{Binding HitCount, StringFormat={}{0:N0}}" />
+                        <TextBlock Style="{StaticResource StatColumnLightText}"
+                                   Text="{lex:Loc Key=SkillBreakdown_Unit_Hits}" />
                     </StackPanel>
 
                     <!--  Crit Rate  -->
                     <StackPanel Grid.Column="3" HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource StatColumnText}" Text="{Binding Damage.CritRate, StringFormat={}{0:P1}}" />
+                                Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource StatColumnText}"
+                                   Text="{Binding CritRate, StringFormat={}{0:P1}}" />
                         <TextBlock
-                            Margin="4,0,0,0"
                             Style="{StaticResource StatColumnLightText}"
-                            Text="{Binding Damage.CritCount, StringFormat={}({0})}" />
+                            Text="{Binding CritCount, StringFormat={}({0})}" />
                     </StackPanel>
 
                     <!--  Average  -->
-                    <TextBlock x:Name="AverageText" Grid.Column="4" HorizontalAlignment="Right" Style="{StaticResource StatColumnText}"
-                        Text="{Binding Damage.Average, StringFormat={}{0:N0}}" />
+                    <TextBlock x:Name="AverageText" Grid.Column="4" Style="{StaticResource StatColumnText}"
+                               Text="{Binding Average, StringFormat={}{0:N0}}" />
                 </Grid>
             </Grid>
         </Border>
@@ -206,8 +199,6 @@
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=CardBorder}" Value="True">
                 <Setter TargetName="SkillNameText" Property="Foreground" Value="#1890FF" />
                 <Setter TargetName="SkillNameText" Property="FontWeight" Value="SemiBold" />
-                <Setter TargetName="AverageText" Property="Foreground" Value="#1890FF" />
-                <Setter TargetName="DetailsPanel" Property="Visibility" Value="Visible" />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
@@ -220,7 +211,7 @@
                 <Border HorizontalAlignment="Left" Background="#F0FFF4" Opacity="1.0">
                     <Border.Width>
                         <MultiBinding Converter="{StaticResource PercentToWidthConverter}">
-                            <Binding Path="Percentage" />
+                            <Binding Path="RateToMax" />
                             <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Grid}" />
                         </MultiBinding>
                     </Border.Width>
@@ -237,52 +228,46 @@
 
                     <!--  Skill Name with Icon  -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Border Style="{StaticResource SkillIconBorder}" Tag="{Binding SkillName}"><Border.Background><MultiBinding Converter="{StaticResource SkillNameToRandomGradientConverter}"><Binding Path="SkillName" /><Binding Path="Tag" RelativeSource="{RelativeSource Self}" /></MultiBinding></Border.Background>
-                            <TextBlock Style="{StaticResource SkillIconText}" Text="{Binding SkillName, Converter={StaticResource StringFirstCharConverter}}" />
+                        <Border Style="{StaticResource SkillIconBorder}" Tag="{Binding SkillName}">
+                            <Border.Background>
+                                <MultiBinding Converter="{StaticResource SkillNameToRandomGradientConverter}">
+                                    <Binding Path="SkillName" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </Border.Background>
+                            <TextBlock Style="{StaticResource SkillIconText}"
+                                       Text="{Binding SkillName, Converter={StaticResource StringFirstCharConverter}}" />
                         </Border>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock x:Name="SkillNameText" Style="{StaticResource SkillNameText}" Text="{Binding SkillName}" />
-                            <StackPanel x:Name="DetailsPanel" Orientation="Horizontal" Visibility="Collapsed" Margin="0,2,0,0">
-                                <TextBlock 
-                                    FontFamily="Segoe MDL2 Assets" 
-                                    Text="&#xE946;" 
-                                    FontSize="10" 
-                                    Foreground="#8C8C8C" 
-                                    VerticalAlignment="Center" 
-                                    Margin="0,0,4,0"/>
-                                <TextBlock 
-                                    Text="Click for details" 
-                                    FontSize="10" 
-                                    Foreground="#8C8C8C" 
-                                    VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </StackPanel>
+                        <TextBlock x:Name="SkillNameText" Style="{StaticResource SkillNameText}"
+                                   Text="{Binding SkillName}" />
                     </StackPanel>
 
                     <!--  Total Value  -->
-                    <TextBlock Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource StatColumnText}" FontWeight="Bold"
-                        Text="{Binding Heal.TotalValue, StringFormat={}{0:N0}}" />
+                    <TextBlock Grid.Column="1" Style="{StaticResource StatColumnText}"
+                               Text="{Binding TotalValue, StringFormat={}{0:N0}}" />
 
                     <!--  Hit Count  -->
                     <StackPanel Grid.Column="2" HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource StatColumnText}" Text="{Binding Heal.HitCount, StringFormat={}{0:N0}}" />
-                        <TextBlock Style="{StaticResource StatColumnLightText}" Text="{lex:Loc Key=SkillBreakdown_Unit_Hits}" />
+                                Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource StatColumnText}"
+                                   Text="{Binding HitCount, StringFormat={}{0:N0}}" />
+                        <TextBlock Style="{StaticResource StatColumnLightText}"
+                                   Text="{lex:Loc Key=SkillBreakdown_Unit_Hits}" />
                     </StackPanel>
 
                     <!--  Crit Rate  -->
                     <StackPanel Grid.Column="3" HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource StatColumnText}" Text="{Binding Heal.CritRate, StringFormat={}{0:P1}}" />
+                                Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource StatColumnText}"
+                                   Text="{Binding CritRate, StringFormat={}{0:P1}}" />
                         <TextBlock
-                            Margin="4,0,0,0"
                             Style="{StaticResource StatColumnLightText}"
-                            Text="{Binding Heal.CritCount, StringFormat={}({0})}" />
+                            Text="{Binding CritCount, StringFormat={}({0})}" />
                     </StackPanel>
 
                     <!--  Average  -->
-                    <TextBlock x:Name="AverageText" Grid.Column="4" HorizontalAlignment="Right" Style="{StaticResource StatColumnText}"
-                        Text="{Binding Heal.Average, StringFormat={}{0:N0}}" />
+                    <TextBlock x:Name="AverageText" Grid.Column="4" Style="{StaticResource StatColumnText}"
+                               Text="{Binding Average, StringFormat={}{0:N0}}" />
                 </Grid>
             </Grid>
         </Border>
@@ -290,8 +275,6 @@
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=CardBorder}" Value="True">
                 <Setter TargetName="SkillNameText" Property="Foreground" Value="#1890FF" />
                 <Setter TargetName="SkillNameText" Property="FontWeight" Value="SemiBold" />
-                <Setter TargetName="AverageText" Property="Foreground" Value="#1890FF" />
-                <Setter TargetName="DetailsPanel" Property="Visibility" Value="Visible" />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
@@ -304,7 +287,7 @@
                 <Border HorizontalAlignment="Left" Background="#FFF0F0" Opacity="1.0">
                     <Border.Width>
                         <MultiBinding Converter="{StaticResource PercentToWidthConverter}">
-                            <Binding Path="Percentage" />
+                            <Binding Path="RateToMax" />
                             <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Grid}" />
                         </MultiBinding>
                     </Border.Width>
@@ -321,52 +304,46 @@
 
                     <!--  Skill Name with Icon  -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Border Style="{StaticResource SkillIconBorder}" Tag="{Binding SkillName}"><Border.Background><MultiBinding Converter="{StaticResource SkillNameToRandomGradientConverter}"><Binding Path="SkillName" /><Binding Path="Tag" RelativeSource="{RelativeSource Self}" /></MultiBinding></Border.Background>
-                            <TextBlock Style="{StaticResource SkillIconText}" Text="{Binding SkillName, Converter={StaticResource StringFirstCharConverter}}" />
+                        <Border Style="{StaticResource SkillIconBorder}" Tag="{Binding SkillName}">
+                            <Border.Background>
+                                <MultiBinding Converter="{StaticResource SkillNameToRandomGradientConverter}">
+                                    <Binding Path="SkillName" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </Border.Background>
+                            <TextBlock Style="{StaticResource SkillIconText}"
+                                       Text="{Binding SkillName, Converter={StaticResource StringFirstCharConverter}}" />
                         </Border>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock x:Name="SkillNameText" Style="{StaticResource SkillNameText}" Text="{Binding SkillName}" />
-                            <StackPanel x:Name="DetailsPanel" Orientation="Horizontal" Visibility="Collapsed" Margin="0,2,0,0">
-                                <TextBlock 
-                                    FontFamily="Segoe MDL2 Assets" 
-                                    Text="&#xE946;" 
-                                    FontSize="10" 
-                                    Foreground="#8C8C8C" 
-                                    VerticalAlignment="Center" 
-                                    Margin="0,0,4,0"/>
-                                <TextBlock 
-                                    Text="Click for details" 
-                                    FontSize="10" 
-                                    Foreground="#8C8C8C" 
-                                    VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </StackPanel>
+                        <TextBlock x:Name="SkillNameText" Style="{StaticResource SkillNameText}"
+                                   Text="{Binding SkillName}" />
                     </StackPanel>
 
                     <!--  Total Value  -->
-                    <TextBlock Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource StatColumnText}" FontWeight="Bold"
-                        Text="{Binding TakenDamage.TotalValue, StringFormat={}{0:N0}}" />
+                    <TextBlock Grid.Column="1" Style="{StaticResource StatColumnText}"
+                               Text="{Binding TotalValue, StringFormat={}{0:N0}}" />
 
                     <!--  Hit Count  -->
                     <StackPanel Grid.Column="2" HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource StatColumnText}" Text="{Binding TakenDamage.HitCount, StringFormat={}{0:N0}}" />
-                        <TextBlock Style="{StaticResource StatColumnLightText}" Text="{lex:Loc Key=SkillBreakdown_Unit_Hits}" />
+                                Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource StatColumnText}"
+                                   Text="{Binding HitCount, StringFormat={}{0:N0}}" />
+                        <TextBlock Style="{StaticResource StatColumnLightText}"
+                                   Text="{lex:Loc Key=SkillBreakdown_Unit_Hits}" />
                     </StackPanel>
 
                     <!--  Crit Rate  -->
                     <StackPanel Grid.Column="3" HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource StatColumnText}" Text="{Binding TakenDamage.CritRate, StringFormat={}{0:P1}}" />
+                                Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource StatColumnText}"
+                                   Text="{Binding CritRate, StringFormat={}{0:P1}}" />
                         <TextBlock
-                            Margin="4,0,0,0"
                             Style="{StaticResource StatColumnLightText}"
-                            Text="{Binding TakenDamage.CritCount, StringFormat={}({0})}" />
+                            Text="{Binding CritCount, StringFormat={}({0})}" />
                     </StackPanel>
 
                     <!--  Average  -->
-                    <TextBlock x:Name="AverageText" Grid.Column="4" HorizontalAlignment="Right" Style="{StaticResource StatColumnText}"
-                        Text="{Binding TakenDamage.Average, StringFormat={}{0:N0}}" />
+                    <TextBlock x:Name="AverageText" Grid.Column="4" Style="{StaticResource StatColumnText}"
+                               Text="{Binding Average, StringFormat={}{0:N0}}" />
                 </Grid>
             </Grid>
         </Border>
@@ -374,7 +351,6 @@
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=CardBorder}" Value="True">
                 <Setter TargetName="SkillNameText" Property="Foreground" Value="#1890FF" />
                 <Setter TargetName="SkillNameText" Property="FontWeight" Value="SemiBold" />
-                <Setter TargetName="DetailsPanel" Property="Visibility" Value="Visible" />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
@@ -645,7 +621,9 @@
                                             Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
                                             Fill="#4C83FF"
                                             Style="{StaticResource ChartIcon}" />
-                                        --><!--<TextBlock Style="{StaticResource ChartTitle}" Text="{Binding TimeSeriesTitle}" />--><!--
+                                        -->
+    <!--<TextBlock Style="{StaticResource ChartTitle}" Text="{Binding TimeSeriesTitle}" />-->
+    <!--
                                         <TextBlock Style="{StaticResource ChartTitle}" Text="{Binding ChartTitle}" />
                                     </StackPanel>
                                     <StackPanel
