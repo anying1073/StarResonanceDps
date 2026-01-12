@@ -232,9 +232,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 
         // Update charts
         UpdateChartsForStatistic(skills, timeSeries, stats, tabViewModel.Plot);
-        
-        // ? 刷新后按当前排序选项重新排序
-        tabViewModel.SortSkillListCommand.Execute(null);
     }
 
     /// <summary>
