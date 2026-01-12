@@ -1097,8 +1097,10 @@
   <data name="SkillBreakdown_Label_Average" xml:space="preserve">
     <value>평균</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="SkillLog_Title" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
+  </data>
+  <data name="SkillBreakdown_Label_ValuePercentToTotal" xml:space="preserve">
+    <value>퍼센트</value>
   </data>
 </root>

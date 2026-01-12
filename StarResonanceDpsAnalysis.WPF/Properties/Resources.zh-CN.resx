@@ -1148,4 +1148,7 @@
   <data name="SkillBreakdown_Label_Percentage" xml:space="preserve">
     <value>占比</value>
   </data>
+  <data name="SkillBreakdown_Label_ValuePercentToTotal" xml:space="preserve">
+    <value>百分比</value>
+  </data>
 </root>

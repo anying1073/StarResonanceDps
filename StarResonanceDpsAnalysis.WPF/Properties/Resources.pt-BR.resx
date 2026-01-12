@@ -1096,6 +1096,9 @@ Como obter: Após uma luta, seu personagem aparecerá automaticamente na janela 
     <value>Pré-visualização ao vivo</value>
   </data>
   <data name="SkillBreakdown_Label_Average" xml:space="preserve">
+    <value>Média</value>
+  </data>
+  <data name="SkillBreakdown_Label_Average" xml:space="preserve">
     <value>média</value>
   </data>
   <data name="SkillLog_Title" xml:space="preserve">
@@ -1154,6 +1157,9 @@ Como obter: Após uma luta, seu personagem aparecerá automaticamente na janela 
   </data>
   <data name="Menu_Training_Extreme" xml:space="preserve">
     <value>Treino Extremo</value>
+  </data>
+  <data name="SkillBreakdown_Label_ValuePercentToTotal" xml:space="preserve">
+    <value>Por cento</value>
   </data>
   <data name="SkillBreakdown_Label_Percentage" xml:space="preserve">
     <value>Proporção</value>
