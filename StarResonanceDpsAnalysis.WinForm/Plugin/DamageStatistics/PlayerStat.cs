@@ -1095,7 +1095,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin.DamageStatistics
         private DateTime _lastAddTime = DateTime.MinValue;
 
         /// <summary>标记：已超时，等待下次战斗开始时清空上一场数据。</summary>
-        private bool _pendingClearOnNextCombat = false;
+        private bool _pendingClearOnNextCombat;
 
         #endregion
 
