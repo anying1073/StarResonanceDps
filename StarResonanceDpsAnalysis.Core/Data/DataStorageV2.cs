@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Analyze;
@@ -69,7 +70,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     /// <summary>
     /// 玩家信息字典 (Key: UID)
     /// </summary>
-    private Dictionary<long, PlayerInfo> PlayerInfoData { get; } = [];
+    private ConcurrentDictionary<long, PlayerInfo> PlayerInfoData { get; } = [];
 
     /// <summary>
     /// 最后一次战斗日志
