@@ -174,6 +174,21 @@
   <data name="Menu_ExitSnapshotMode" xml:space="preserve">
     <value>Exit Snapshot Mode</value>
   </data>
+  <data name="DpsStatistics_Snapshot_ViewFull_Title" xml:space="preserve">
+    <value>View full snapshot</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewFull_EmptyMessage" xml:space="preserve">
+    <value>No full snapshot data available.</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewCurrent_Title" xml:space="preserve">
+    <value>View battle snapshot</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewCurrent_EmptyMessage" xml:space="preserve">
+    <value>No battle snapshot data available.</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_Label" xml:space="preserve">
+    <value>[Snapshot]</value>
+  </data>
   <data name="Menu_Exit" xml:space="preserve">
     <value>Exit</value>
   </data>
@@ -747,6 +762,32 @@
   <data name="DpsStatistics_TestButton_Tooltip" xml:space="preserve">
     <value>Add Test Item</value>
   </data>
+  <data name="Common_SkillDisplayLimitChanged" xml:space="preserve">
+    <value>Skill display limit set to</value>
+  </data>
+  <data name="Common_SkillDisplayLimitSaved" xml:space="preserve">
+    <value>Skill display limit saved to config:</value>
+  </data>
+  <data name="Common_SkillListRefreshed" xml:space="preserve">
+    <value>Skill list refreshed for all slots</value>
+  </data>
+  <data name="Command_OpenSkillLog" xml:space="preserve">
+    <value>Open skill log window</value>
+  </data>
+  <data name="Warning_UidNotConfigured" xml:space="preserve">
+    <value>Tried to open personal training mode without UID configured</value>
+  </data>
+  <data name="Dialog_UidRequired_Title" xml:space="preserve">
+    <value>Character UID required</value>
+  </data>
+  <data name="Dialog_UidRequired_Message" xml:space="preserve">
+    <value>Please configure your character UID in Settings before using personal training mode.
+
+How to get UID: in game, the bottom-left player number is your UID.</value>
+  </data>
+  <data name="Info_OpeningPersonalDps" xml:space="preserve">
+    <value>Opening personal training mode</value>
+  </data>
   <data name="Common_Dash" xml:space="preserve">
     <value>-</value>
   </data>
@@ -764,6 +805,18 @@
   </data>
   <data name="StatisticType_NpcTakenDamage" xml:space="preserve">
     <value>NPC Dmg In</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_Damage" xml:space="preserve">
+    <value>Team DPS</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_Healing" xml:space="preserve">
+    <value>Team Healing</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_TakenDamage" xml:space="preserve">
+    <value>Team Damage Taken</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_NpcTakenDamage" xml:space="preserve">
+    <value>NPC Damage Taken</value>
   </data>
   <data name="ScopeTime_Current" xml:space="preserve">
     <value>Current</value>

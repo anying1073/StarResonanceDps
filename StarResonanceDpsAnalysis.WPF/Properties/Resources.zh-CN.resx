@@ -174,6 +174,21 @@
   <data name="Menu_ExitSnapshotMode" xml:space="preserve">
     <value>退出快照模式</value>
   </data>
+  <data name="DpsStatistics_Snapshot_Label" xml:space="preserve">
+    <value>[快照]</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewFull_Title" xml:space="preserve">
+    <value>查看全程快照</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewFull_EmptyMessage" xml:space="preserve">
+    <value>当前没有可用的全程快照数据。</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewCurrent_Title" xml:space="preserve">
+    <value>查看战斗快照</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewCurrent_EmptyMessage" xml:space="preserve">
+    <value>当前没有可用的战斗快照数据。</value>
+  </data>
   <data name="Menu_Exit" xml:space="preserve">
     <value>退出</value>
   </data>
@@ -747,6 +762,32 @@
   <data name="DpsStatistics_TestButton_Tooltip" xml:space="preserve">
     <value>添加测试数据</value>
   </data>
+  <data name="Common_SkillDisplayLimitChanged" xml:space="preserve">
+    <value>修改技能显示条数为</value>
+  </data>
+  <data name="Common_SkillDisplayLimitSaved" xml:space="preserve">
+    <value>技能显示数量已保存到配置:</value>
+  </data>
+  <data name="Common_SkillListRefreshed" xml:space="preserve">
+    <value>技能显示条数已更新,所有slot的FilteredSkillList已刷新</value>
+  </data>
+  <data name="Command_OpenSkillLog" xml:space="preserve">
+    <value>打开技能日记窗口</value>
+  </data>
+  <data name="Warning_UidNotConfigured" xml:space="preserve">
+    <value>尝试打开个人打桩模式但UID未设置</value>
+  </data>
+  <data name="Dialog_UidRequired_Title" xml:space="preserve">
+    <value>需要设置角色UID</value>
+  </data>
+  <data name="Dialog_UidRequired_Message" xml:space="preserve">
+    <value>请先在设置中配置您的角色UID，才能使用个人打桩模式。
+
+如何获取UID：进入游戏后，左下角玩家编号就是UID</value>
+  </data>
+  <data name="Info_OpeningPersonalDps" xml:space="preserve">
+    <value>打开个人打桩模式</value>
+  </data>
   <data name="Common_Dash" xml:space="preserve">
     <value>-</value>
   </data>
@@ -763,6 +804,18 @@
     <value>承伤</value>
   </data>
   <data name="StatisticType_NpcTakenDamage" xml:space="preserve">
+    <value>NPC承伤</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_Damage" xml:space="preserve">
+    <value>团队DPS</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_Healing" xml:space="preserve">
+    <value>团队治疗</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_TakenDamage" xml:space="preserve">
+    <value>团队承伤</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_NpcTakenDamage" xml:space="preserve">
     <value>NPC承伤</value>
   </data>
   <data name="ScopeTime_Current" xml:space="preserve">

@@ -7,6 +7,7 @@ using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Models;
+using StarResonanceDpsAnalysis.WPF.Properties;
 using StarResonanceDpsAnalysis.WPF.Services;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -37,7 +38,10 @@ public partial class DpsStatisticsViewModel
         // 只在当前有战斗数据时允许
         if (_storage.GetStatisticsCount(true) == 0)
         {
-            _messageDialogService.Show("查看全程快照", "当前没有可用的全程快照数据。", _windowManagement.DpsStatisticsView);
+            _messageDialogService.Show(
+                _localizationManager.GetString(ResourcesKeys.DpsStatistics_Snapshot_ViewFull_Title, defaultValue: "View full snapshot"),
+                _localizationManager.GetString(ResourcesKeys.DpsStatistics_Snapshot_ViewFull_EmptyMessage, defaultValue: "No full snapshot data available."),
+                _windowManagement.DpsStatisticsView);
             return;
         }
 
@@ -56,7 +60,10 @@ public partial class DpsStatisticsViewModel
         // 只在有分段数据时允许
         if (_storage.GetStatisticsCount(false) == 0)
         {
-            _messageDialogService.Show("查看战斗快照", "当前没有可用的战斗快照数据。", _windowManagement.DpsStatisticsView);
+            _messageDialogService.Show(
+                _localizationManager.GetString(ResourcesKeys.DpsStatistics_Snapshot_ViewCurrent_Title, defaultValue: "View battle snapshot"),
+                _localizationManager.GetString(ResourcesKeys.DpsStatistics_Snapshot_ViewCurrent_EmptyMessage, defaultValue: "No battle snapshot data available."),
+                _windowManagement.DpsStatisticsView);
             return;
         }
 

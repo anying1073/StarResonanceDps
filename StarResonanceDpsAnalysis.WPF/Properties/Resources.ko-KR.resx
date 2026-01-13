@@ -174,6 +174,21 @@
   <data name="Menu_ExitSnapshotMode" xml:space="preserve">
     <value>스냅샷 모드 종료</value>
   </data>
+  <data name="DpsStatistics_Snapshot_Label" xml:space="preserve">
+    <value>[스냅샷]</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewFull_Title" xml:space="preserve">
+    <value>전체 스냅샷 보기</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewFull_EmptyMessage" xml:space="preserve">
+    <value>사용 가능한 전체 스냅샷 데이터가 없습니다.</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewCurrent_Title" xml:space="preserve">
+    <value>전투 스냅샷 보기</value>
+  </data>
+  <data name="DpsStatistics_Snapshot_ViewCurrent_EmptyMessage" xml:space="preserve">
+    <value>사용 가능한 전투 스냅샷 데이터가 없습니다.</value>
+  </data>
   <data name="Menu_Exit" xml:space="preserve">
     <value>종료</value>
   </data>
@@ -747,6 +762,32 @@
   <data name="DpsStatistics_TestButton_Tooltip" xml:space="preserve">
     <value>테스트 데이터 추가</value>
   </data>
+  <data name="Common_SkillDisplayLimitChanged" xml:space="preserve">
+    <value>스킬 표시 개수 변경:</value>
+  </data>
+  <data name="Common_SkillDisplayLimitSaved" xml:space="preserve">
+    <value>스킬 표시 개수가 설정에 저장됨:</value>
+  </data>
+  <data name="Common_SkillListRefreshed" xml:space="preserve">
+    <value>모든 슬롯의 스킬 목록이 새로고침됨</value>
+  </data>
+  <data name="Command_OpenSkillLog" xml:space="preserve">
+    <value>스킬 로그 창 열기</value>
+  </data>
+  <data name="Warning_UidNotConfigured" xml:space="preserve">
+    <value>UID가 설정되지 않아 개인 훈련 모드를 열 수 없습니다</value>
+  </data>
+  <data name="Dialog_UidRequired_Title" xml:space="preserve">
+    <value>캐릭터 UID 필요</value>
+  </data>
+  <data name="Dialog_UidRequired_Message" xml:space="preserve">
+    <value>설정에서 캐릭터 UID를 먼저 설정해야 개인 훈련 모드를 사용할 수 있습니다.
+
+UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value>
+  </data>
+  <data name="Info_OpeningPersonalDps" xml:space="preserve">
+    <value>개인 훈련 모드 여는 중</value>
+  </data>
   <data name="Common_Dash" xml:space="preserve">
     <value>-</value>
   </data>
@@ -763,6 +804,18 @@
     <value>받은 피해</value>
   </data>
   <data name="StatisticType_NpcTakenDamage" xml:space="preserve">
+    <value>NPC 받은 피해</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_Damage" xml:space="preserve">
+    <value>팀 DPS</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_Healing" xml:space="preserve">
+    <value>팀 치유</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_TakenDamage" xml:space="preserve">
+    <value>팀 받은 피해</value>
+  </data>
+  <data name="DpsStatistics_TeamTotal_NpcTakenDamage" xml:space="preserve">
     <value>NPC 받은 피해</value>
   </data>
   <data name="ScopeTime_Current" xml:space="preserve">

@@ -3,8 +3,8 @@ using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.WPF.Extensions;
-using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Logging;
+using StarResonanceDpsAnalysis.WPF.Properties;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -79,7 +79,7 @@ public partial class DpsStatisticsViewModel
     {
         var clampedLimit = Math.Max(0, limit);
         _logger.LogDebug("SetSkillDisplayLimit: {Message} {Limit}", 
-            _localizationManager.GetString("Common_SkillDisplayLimitChanged", defaultValue: "修改技能显示条数为"), 
+            _localizationManager.GetString(ResourcesKeys.Common_SkillDisplayLimitChanged, defaultValue: "Skill display limit set to"),
             clampedLimit);
 
         foreach (var vm in StatisticData.Values)
@@ -91,14 +91,14 @@ public partial class DpsStatisticsViewModel
         _configManager.CurrentConfig.SkillDisplayLimit = clampedLimit;
         _ = _configManager.SaveAsync();
         _logger.LogDebug("{Message} {Limit}", 
-            _localizationManager.GetString("Common_SkillDisplayLimitSaved", defaultValue: "技能显示数量已保存到配置:"), 
+            _localizationManager.GetString(ResourcesKeys.Common_SkillDisplayLimitSaved, defaultValue: "Skill display limit saved to config:"),
             clampedLimit);
 
         // Notify that current data's SkillDisplayLimit changed
         OnPropertyChanged(nameof(CurrentStatisticData));
 
         _logger.LogDebug("SetSkillDisplayLimit: {Message}", 
-            _localizationManager.GetString("Common_SkillListRefreshed", defaultValue: "技能显示条数已更新,所有slot的FilteredSkillList已刷新"));
+            _localizationManager.GetString(ResourcesKeys.Common_SkillListRefreshed, defaultValue: "Skill list refreshed for all slots"));
     }
 
     [RelayCommand]
@@ -137,7 +137,7 @@ public partial class DpsStatisticsViewModel
     [RelayCommand]
     private void OpenSkillLog()
     {
-        _logger.LogInformation(_localizationManager.GetString("Command_OpenSkillLog", defaultValue: "打开技能日记窗口"));
+        _logger.LogInformation(_localizationManager.GetString(ResourcesKeys.Command_OpenSkillLog, defaultValue: "Open skill log window"));
         _windowManagement.SkillLogView.Show();
         _windowManagement.SkillLogView.Activate();
     }
@@ -151,12 +151,12 @@ public partial class DpsStatisticsViewModel
         if (userUid <= 0)
         {
             // UID not configured, show prompt and open settings
-            _logger.LogWarning(_localizationManager.GetString("Warning_UidNotConfigured", defaultValue: "尝试打开个人打桩模式但UID未设置"));
+            _logger.LogWarning(_localizationManager.GetString(ResourcesKeys.Warning_UidNotConfigured, defaultValue: "Tried to open personal training mode without UID configured"));
 
             _messageDialogService.Show(
-                _localizationManager.GetString("Dialog_UidRequired_Title", defaultValue: "需要设置角色UID"),
-                _localizationManager.GetString("Dialog_UidRequired_Message", 
-                    defaultValue: "请先在设置中配置您的角色UID，才能使用个人打桩模式。\n\n如何获取UID：进入游戏后，左下角玩家编号就是UID"),
+                _localizationManager.GetString(ResourcesKeys.Dialog_UidRequired_Title, defaultValue: "Character UID required"),
+                _localizationManager.GetString(ResourcesKeys.Dialog_UidRequired_Message,
+                    defaultValue: "Please configure your character UID in Settings before using personal training mode.\n\nHow to get UID: in game, the bottom-left player number is your UID."),
                 _windowManagement.DpsStatisticsView);
 
             // Open settings page (character settings area)
@@ -168,7 +168,7 @@ public partial class DpsStatisticsViewModel
 
         // UID is configured, open personal DPS window normally
         _logger.LogInformation("{Message}, UID={Uid}", 
-            _localizationManager.GetString("Info_OpeningPersonalDps", defaultValue: "打开个人打桩模式"), 
+            _localizationManager.GetString(ResourcesKeys.Info_OpeningPersonalDps, defaultValue: "Opening personal training mode"),
             userUid);
         _windowManagement.PersonalDpsView.Show();
         _windowManagement.DpsStatisticsView.Hide();

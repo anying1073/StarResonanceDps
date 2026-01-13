@@ -8,6 +8,7 @@ using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
+using StarResonanceDpsAnalysis.WPF.Properties;
 using StarResonanceDpsAnalysis.WPF.Services;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -57,7 +58,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     [ObservableProperty] private StatisticType _statisticIndex;
     [ObservableProperty] private ulong _teamTotalDamage;
     [ObservableProperty] private double _teamTotalDps;
-    [ObservableProperty] private string _teamTotalLabel = "团队DPS";
+    [ObservableProperty] private string _teamTotalLabel = string.Empty;
     [ObservableProperty] private bool _temporaryMaskPlayerName;
 
     // ===== Private State Fields =====
@@ -139,6 +140,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         // Bind team stats manager to show team total setting
         _teamStatsManager.ShowTeamTotal = ShowTeamTotalDamage;
         _teamStatsManager.TeamStatsUpdated += OnTeamStatsUpdated;
+        TeamTotalLabel = GetTeamTotalLabel(StatisticType.Damage);
 
         _logger.LogDebug("DpsStatisticsViewModel constructor completed");
     }
@@ -329,8 +331,30 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         {
             TeamTotalDamage = e.TotalDamage;
             TeamTotalDps = e.TotalDps;
-            TeamTotalLabel = e.Label;
+            TeamTotalLabel = GetTeamTotalLabel(e.StatisticType);
         });
+    }
+    
+    private string GetTeamTotalLabel(StatisticType statisticType)
+    {
+        return statisticType switch
+        {
+            StatisticType.Damage => _localizationManager.GetString(
+                ResourcesKeys.DpsStatistics_TeamTotal_Damage,
+                defaultValue: "Team DPS"),
+            StatisticType.Healing => _localizationManager.GetString(
+                ResourcesKeys.DpsStatistics_TeamTotal_Healing,
+                defaultValue: "Team Healing"),
+            StatisticType.TakenDamage => _localizationManager.GetString(
+                ResourcesKeys.DpsStatistics_TeamTotal_TakenDamage,
+                defaultValue: "Team Damage Taken"),
+            StatisticType.NpcTakenDamage => _localizationManager.GetString(
+                ResourcesKeys.DpsStatistics_TeamTotal_NpcTakenDamage,
+                defaultValue: "NPC Damage Taken"),
+            _ => _localizationManager.GetString(
+                ResourcesKeys.DpsStatistics_TeamTotal_Damage,
+                defaultValue: "Team DPS")
+        };
     }
 
     private void DpsUpdateTimerOnTick(object? sender, EventArgs e)

@@ -143,9 +143,8 @@ public class DpsUpdateCoordinatorTests
         var coordinator = new DpsUpdateCoordinator(
             NullLogger<DpsUpdateCoordinator>.Instance,
             _dispatcher);
-        
-        var eventFired = false;
-        coordinator.UpdateRequested += (sender, e) => eventFired = true;
+
+        coordinator.UpdateRequested += (sender, e) => _ = true;
         
         coordinator.Configure(DpsUpdateMode.Active, 50); // Short interval for testing
         
