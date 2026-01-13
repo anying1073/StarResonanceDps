@@ -205,20 +205,19 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         }
 
         var duration = TimeSpan.FromTicks(_playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0));
-        var skillLists = StatisticsToViewModelConverter.BuildSkillListsFromPlayerStats(_playerStatistics);
+        var skillLists = _playerStatistics.ToSkillItemVmList();
 
-        // ? 关键修复：分别更新三个Tab，每个Tab使用对应的技能列表
-        // Update damage statistics (使用damageSkills)
+        // Update damage statistics 
         UpdateStatisticSet(DpsTabViewModel,
-            _playerStatistics.AttackDamage, skillLists.damage, duration, _playerStatistics.GetDeltaDpsSamples());
+            _playerStatistics.AttackDamage, skillLists.Damage, duration, _playerStatistics.GetDeltaDpsSamples());
 
-        // Update healing statistics (使用healingSkills)
+        // Update healing statistics 
         UpdateStatisticSet(HealingTabViewModel,
-            _playerStatistics.Healing, skillLists.healing, duration, _playerStatistics.GetDeltaHpsSamples());
+            _playerStatistics.Healing, skillLists.Healing, duration, _playerStatistics.GetDeltaHpsSamples());
 
-        // Update taken damage statistics (使用takenSkills)
+        // Update taken damage statistics 
         UpdateStatisticSet(TankingTabViewModel,
-            _playerStatistics.TakenDamage, skillLists.taken, duration, _playerStatistics.GetDeltaDtpsSamples());
+            _playerStatistics.TakenDamage, skillLists.Taken, duration, _playerStatistics.GetDeltaDtpsSamples());
     }
 
     /// <summary>

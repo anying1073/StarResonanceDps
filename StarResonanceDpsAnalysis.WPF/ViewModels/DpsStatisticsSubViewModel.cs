@@ -315,13 +315,10 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             var maxValue = Data.Max(d => d.Value);
             var totalValue = Data.Sum(d => Convert.ToDouble(d.Value));
 
-            var hasMaxValue = maxValue > 0;
-            var hasTotalValue = totalValue > 0;
-
             foreach (var slot in Data)
             {
-                slot.PercentOfMax = hasMaxValue ? slot.Value / (double)maxValue * 100 : 0;
-                slot.Percent = hasTotalValue ? slot.Value / totalValue : 0;
+                slot.PercentOfMax = MathExtension.Percentage(slot.Value, maxValue);
+                slot.Percent = MathExtension.Percentage(slot.Value, totalValue);
             }
         }
 

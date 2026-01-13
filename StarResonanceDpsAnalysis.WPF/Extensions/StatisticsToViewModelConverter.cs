@@ -28,34 +28,24 @@ public static class StatisticsToViewModelConverter
         };
     }
 
-    /// <summary>
-    /// Build skill lists directly from PlayerStatistics (no battle log iteration needed!)
-    /// </summary>
-    public static (List<SkillItemViewModel> damage, List<SkillItemViewModel> healing, List<SkillItemViewModel> taken)
-        BuildSkillListsFromPlayerStats(PlayerStatistics playerStats)
+    public static SkillViewModelCollection
+        ToSkillItemVmList(this PlayerStatistics playerStats)
     {
-        var damageSkills = BuildSkillList(
-            playerStats.AttackDamage.Skills,
-            playerStats.AttackDamage.Total);
+        var damageSkills = BuildSkillList(playerStats.AttackDamage);
+        var healingSkills = BuildSkillList(playerStats.Healing);
+        var takenSkills = BuildSkillList(playerStats.TakenDamage);
 
-        var healingSkills = BuildSkillList(
-            playerStats.Healing.Skills,
-            playerStats.Healing.Total);
-
-        var takenSkills = BuildSkillList(
-            playerStats.TakenDamage.Skills,
-            playerStats.TakenDamage.Total);
-
-        return (damageSkills, healingSkills, takenSkills);
+        return new SkillViewModelCollection(damageSkills, healingSkills, takenSkills);
     }
 
     /// <summary>
     /// Generic method to build skill list from skill statistics
     /// </summary>
     private static List<SkillItemViewModel> BuildSkillList(
-        IReadOnlyDictionary<long, SkillStatistics> skills,
-        long totalValue)
+        StatisticValues stat)
     {
+        var skills = stat.Skills;
+        var totalValue = stat.Total;
         var result = new List<SkillItemViewModel>(skills.Count);
 
         foreach (var (skillId, skillStats) in skills)
@@ -72,12 +62,12 @@ public static class StatisticsToViewModelConverter
                 CritCount = skillStats.CritTimes,
                 LuckyCount = totalLucky,
                 Average = skillStats.UseTimes > 0 ? skillStats.TotalValue / (double)skillStats.UseTimes : 0,
-                CritRate = GetRate(skillStats.CritTimes, skillStats.UseTimes),
-                LuckyRate = GetRate(totalLucky, skillStats.UseTimes),
+                CritRate = MathExtension.Rate(skillStats.CritTimes, skillStats.UseTimes),
+                LuckyRate = MathExtension.Rate(totalLucky, skillStats.UseTimes),
                 CritValue = skillStats.CritValue,
                 LuckyValue = luckyValue,
                 NormalValue = normalValue,
-                RateToTotal = GetRate(skillStats.TotalValue, totalValue)
+                RateToTotal = MathExtension.Rate(skillStats.TotalValue, totalValue)
             };
 
             result.Add(skillVm);
@@ -94,7 +84,7 @@ public static class StatisticsToViewModelConverter
             {
                 for (var i = count - 1; i >= 0; i--)
                 {
-                    ret[i].RateToMax = GetRate(ret[i].TotalValue, ret[0].TotalValue) * 1;
+                    ret[i].RateToMax = MathExtension.Rate(ret[i].TotalValue, ret[0].TotalValue);
                 }
 
                 break;
@@ -102,24 +92,5 @@ public static class StatisticsToViewModelConverter
         }
 
         return ret;
-    }
-
-    /// <summary>
-    /// Calculate rate (returns 0 if divider is 0)
-    /// </summary>
-    private static double GetRate(double value, double divider)
-    {
-        return divider > 0 ? value / divider : 0;
-    }
-
-    /// <summary>
-    /// Calculate percentage (returns 0 if divider is 0)
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="divider"></param>
-    /// <returns></returns>
-    private static double GetPercentage(double value , double divider)
-    {
-        return GetRate(value, divider) * 100;
     }
 }
