@@ -10,7 +10,7 @@ public sealed class SnapshotOrRankConverter : IMultiValueConverter
     {
         if (values == null || values.Length < 2)
         {
-            return "[--]";
+            return null;
         }
 
         // 第一个参数: IsViewingSnapshot (是否在快照模式)

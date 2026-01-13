@@ -157,7 +157,7 @@ public sealed class SyncToMeDeltaInfoProcessor(IDataStorage storage, ILogger? lo
         _logger?.LogDebug(CoreLogEvents.SyncToMeDelta, nameof(SyncToMeDeltaInfoProcessor));
         var syncToMeDeltaInfo = SyncToMeDeltaInfo.Parser.ParseFrom(payload);
         var aoiSyncToMeDelta = syncToMeDeltaInfo.DeltaInfo;
-        var uuid = aoiSyncToMeDelta.Uuid;
+        var uuid = aoiSyncToMeDelta.Uuid.ShiftRight16();
         if (uuid != 0 && _storage.CurrentPlayerUUID != uuid)
         {
             _storage.CurrentPlayerUUID = uuid;

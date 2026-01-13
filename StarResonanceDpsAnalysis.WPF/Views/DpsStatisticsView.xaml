@@ -358,7 +358,7 @@
             <!-- ⭐ 新增：背景图片 -->
             <Grid.Background>
                 <ImageBrush 
-              ImageSource="{Binding BackgroundImagePath}"
+              ImageSource="{Binding AppConfig.BackgroundImagePath}"
               Stretch="Uniform"
               Opacity="{Binding AppConfig.Opacity, Converter={StaticResource PercentToOpacityConverter}}" />
             </Grid.Background>
@@ -385,7 +385,7 @@
                     <SolidColorBrush>
                         <SolidColorBrush.Color>
                             <MultiBinding Converter="{StaticResource ThemeColorWithOpacityConverter}">
-                                <Binding Path="ThemeColor" />
+                                <Binding Path="AppConfig.ThemeColor" />
                                 <Binding Path="AppConfig.Opacity" />
                                 <Binding Path="AppConfig.MouseThroughEnabled" />
                             </MultiBinding>
@@ -830,7 +830,7 @@
                     <SolidColorBrush>
                         <SolidColorBrush.Color>
                             <MultiBinding Converter="{StaticResource ThemeColorWithOpacityConverter}">
-                                <Binding Path="ThemeColor" />
+                                <Binding Path="AppConfig.ThemeColor" />
                                 <Binding Path="AppConfig.Opacity" />
                                 <Binding Path="AppConfig.MouseThroughEnabled" />
                             </MultiBinding>
@@ -852,7 +852,7 @@
                         Style="{StaticResource FooterTextContent}">
                         <!-- 快照模式下显示[快照],战斗模式下显示排名 -->
                         <TextBlock.Text>
-                            <MultiBinding Converter="{StaticResource SnapshotOrRankConverter}" FallbackValue="[--]" StringFormat="{}[{0}]">
+                            <MultiBinding Converter="{StaticResource SnapshotOrRankConverter}" StringFormat="{}[{0}]">
                                 <Binding Path="IsViewingSnapshot" />
                                 <Binding Path="CurrentStatisticData.CurrentPlayerRank" />
                             </MultiBinding>
