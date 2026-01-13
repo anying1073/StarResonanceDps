@@ -3,6 +3,7 @@ using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.WPF.Extensions;
+using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Logging;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -77,7 +78,9 @@ public partial class DpsStatisticsViewModel
     private void SetSkillDisplayLimit(int limit)
     {
         var clampedLimit = Math.Max(0, limit);
-        _logger.LogDebug("SetSkillDisplayLimit: 修改技能显示条数为 {Limit}", clampedLimit);
+        _logger.LogDebug("SetSkillDisplayLimit: {Message} {Limit}", 
+            _localizationManager.GetString("Common_SkillDisplayLimitChanged", defaultValue: "修改技能显示条数为"), 
+            clampedLimit);
 
         foreach (var vm in StatisticData.Values)
         {
@@ -87,12 +90,15 @@ public partial class DpsStatisticsViewModel
 
         _configManager.CurrentConfig.SkillDisplayLimit = clampedLimit;
         _ = _configManager.SaveAsync();
-        _logger.LogDebug("技能显示数量已保存到配置: {Limit}", clampedLimit);
+        _logger.LogDebug("{Message} {Limit}", 
+            _localizationManager.GetString("Common_SkillDisplayLimitSaved", defaultValue: "技能显示数量已保存到配置:"), 
+            clampedLimit);
 
         // Notify that current data's SkillDisplayLimit changed
         OnPropertyChanged(nameof(CurrentStatisticData));
 
-        _logger.LogDebug("SetSkillDisplayLimit: 技能显示条数已更新,所有slot的FilteredSkillList已刷新");
+        _logger.LogDebug("SetSkillDisplayLimit: {Message}", 
+            _localizationManager.GetString("Common_SkillListRefreshed", defaultValue: "技能显示条数已更新,所有slot的FilteredSkillList已刷新"));
     }
 
     [RelayCommand]
@@ -131,7 +137,7 @@ public partial class DpsStatisticsViewModel
     [RelayCommand]
     private void OpenSkillLog()
     {
-        _logger.LogInformation("打开技能日记窗口");
+        _logger.LogInformation(_localizationManager.GetString("Command_OpenSkillLog", defaultValue: "打开技能日记窗口"));
         _windowManagement.SkillLogView.Show();
         _windowManagement.SkillLogView.Activate();
     }
@@ -139,35 +145,38 @@ public partial class DpsStatisticsViewModel
     [RelayCommand]
     private void OpenPersonalDpsView()
     {
-        // 检查用户是否设置了UID
+        // Check if user has configured UID
         var userUid = _storage.CurrentPlayerUUID > 0 ? _storage.CurrentPlayerUUID : _configManager.CurrentConfig.Uid;
 
         if (userUid <= 0)
         {
-            // UID未设置,弹出提示并打开设置页面
-            _logger.LogWarning("尝试打开个人打桩模式但UID未设置");
+            // UID not configured, show prompt and open settings
+            _logger.LogWarning(_localizationManager.GetString("Warning_UidNotConfigured", defaultValue: "尝试打开个人打桩模式但UID未设置"));
 
             _messageDialogService.Show(
-                "需要设置角色UID",
-                "请先在设置中配置您的角色UID，才能使用个人打桩模式。\n\n如何获取UID：进入游戏后，左下角玩家编号就是UID",
+                _localizationManager.GetString("Dialog_UidRequired_Title", defaultValue: "需要设置角色UID"),
+                _localizationManager.GetString("Dialog_UidRequired_Message", 
+                    defaultValue: "请先在设置中配置您的角色UID，才能使用个人打桩模式。\n\n如何获取UID：进入游戏后，左下角玩家编号就是UID"),
                 _windowManagement.DpsStatisticsView);
 
-            // 打开设置页面(角色设置区域)
+            // Open settings page (character settings area)
             _windowManagement.SettingsView.Show();
-            _windowManagement.SettingsView.Activate(); // 确保窗口激活到前台
+            _windowManagement.SettingsView.Activate(); // Ensure window is brought to front
 
-            return; // 不打开个人打桩窗口
+            return; // Don't open personal DPS window
         }
 
-        // UID已设置,正常打开个人打桩窗口
-        _logger.LogInformation("打开个人打桩模式, UID={Uid}", userUid);
+        // UID is configured, open personal DPS window normally
+        _logger.LogInformation("{Message}, UID={Uid}", 
+            _localizationManager.GetString("Info_OpeningPersonalDps", defaultValue: "打开个人打桩模式"), 
+            userUid);
         _windowManagement.PersonalDpsView.Show();
         _windowManagement.DpsStatisticsView.Hide();
     }
 
     /// <summary>
-    /// 切换窗口置顶状态（命令）。
-    /// 通过绑定 Window.Topmost 到 AppConfig.TopmostEnabled 实现。
+    /// Toggle window topmost state (command).
+    /// Implemented by binding Window.Topmost to AppConfig.TopmostEnabled.
     /// </summary>
     [RelayCommand]
     private async Task ToggleTopmost()

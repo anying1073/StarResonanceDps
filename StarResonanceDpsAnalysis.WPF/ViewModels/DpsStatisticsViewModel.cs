@@ -31,6 +31,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     private readonly IConfigManager _configManager;
     private readonly IDpsDataProcessor _dataProcessor;
     private readonly Dispatcher _dispatcher;
+    private readonly LocalizationManager _localizationManager;
     private readonly ILogger<DpsStatisticsViewModel> _logger;
     private readonly IMessageDialogService _messageDialogService;
     private readonly IResetCoordinator _resetCoordinator;
@@ -100,6 +101,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         _windowManagement = windowManagement;
         _appControlService = appControlService;
         _dispatcher = dispatcher;
+        _localizationManager = localizationManager;
         _messageDialogService = messageDialogService;
         DebugFunctions = debugFunctions;
         SnapshotService = snapshotService;
