@@ -118,6 +118,9 @@ public partial class App : Application
                 services.AddWindowManagementService();
                 services.AddMessageDialogService();
 
+                // ? Register new DPS services (SOLID refactoring)
+                services.AddDpsServices();
+
                 services.AddSingleton<BattleSnapshotService>();
                 services.AddSingleton<ISkillLogService, SkillLogService>();
 

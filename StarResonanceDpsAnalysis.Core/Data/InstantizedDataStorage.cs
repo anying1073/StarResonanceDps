@@ -539,6 +539,8 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         throw new NotSupportedException();
     }
 
+    public event Action? BeforeSectionCleared;
+
     public void RecordSamples(TimeSpan sectionDuration)
     {
         // InstantizedDataStorage forwards to static DataStorage which doesn't support this

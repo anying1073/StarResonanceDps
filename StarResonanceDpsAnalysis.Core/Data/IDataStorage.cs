@@ -86,6 +86,8 @@ public interface IDataStorage : IDisposable
     /// segment.</param>
     /// <returns>The total number of statistics records. Returns 0 if no statistics are available.</returns>
     int GetStatisticsCount(bool fullSession);
+
+    event Action? BeforeSectionCleared;
 }
 
 public delegate void ServerConnectionStateChangedEventHandler(bool serverConnectionState);
