@@ -140,7 +140,7 @@ public partial class DpsStatisticsViewModel
     private void OpenPersonalDpsView()
     {
         // 检查用户是否设置了UID
-        var userUid = _configManager.CurrentConfig.Uid;
+        var userUid = _storage.CurrentPlayerUUID > 0 ? _storage.CurrentPlayerUUID : _configManager.CurrentConfig.Uid;
 
         if (userUid <= 0)
         {
