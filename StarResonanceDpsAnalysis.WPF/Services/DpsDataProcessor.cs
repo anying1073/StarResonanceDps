@@ -131,7 +131,7 @@ public class DpsDataProcessor : IDpsDataProcessor
         static List<SkillItemViewModel> BuildSkillList(IReadOnlyDictionary<long, SkillStatistics> skills)
         {
             return skills.Values
-                .OrderByDescending(s => s.TotalValue)
+                //.OrderByDescending(s => s.TotalValue)
                 .Select(s => new SkillItemViewModel
                 {
                     SkillId = s.SkillId,

@@ -60,15 +60,24 @@ public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationMa
         SkillListRefreshTrigger++;
     }
 
+    public void SortSkillList()
+    {
+        Damage.SortSkillList();
+        Heal.SortSkillList();
+        TakenDamage.SortSkillList();
+        SkillListRefreshTrigger++;
+    }
+
     [RelayCommand]
-    private void MouseEnter(int limit)
+    private void MouseEnterItem(int limit)
     {
         SetHoverStateAction?.Invoke(true);
+        SortSkillList();
         RefreshSkillLists(limit);
     }
 
     [RelayCommand]
-    private void MouseLeave()
+    private void MouseLeaveItem()
     {
         SetHoverStateAction?.Invoke(false);
     }
@@ -101,6 +110,14 @@ public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationMa
              : TotalSkillList.ToList();
 
             FilteredSkillList = newFiltered;
+        }
+
+        /// <summary>
+        /// Sort TotalSkillList by TotalValue descending<br/>
+        /// </summary>
+        public void SortSkillList()
+        {
+            TotalSkillList = TotalSkillList.OrderByDescending(s => s.TotalValue).ToList();
         }
 
         public event Action<IReadOnlyList<SkillItemViewModel>?>? SkillChanged;
