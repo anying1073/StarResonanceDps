@@ -23,9 +23,6 @@ public readonly record struct DpsDataProcessed(
     PlayerStatistics OriginalData,
     ulong Value,
     long DurationTicks,
-    List<SkillItemViewModel> DamageSkillList,
-    List<SkillItemViewModel> HealSkillList,
-    List<SkillItemViewModel> TakenDamageSkillList,
     long Uid);
 
 public partial class DpsStatisticsSubViewModel : BaseViewModel
@@ -190,7 +187,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             return slot;
 
         var ret = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(playerStats.Uid, out var playerInfo);
-        slot = new StatisticDataViewModel(_debugFunctions, _localizationManager)
+        slot = new StatisticDataViewModel(_debugFunctions, _localizationManager, FetchSkillList)
         {
             Index = 999,
             Value = 0,
@@ -211,9 +208,20 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             SetHoverStateAction = isHovering => _parent.SetIndicatorHover(isHovering)
         };
 
+
         _dispatcher.Invoke(() => { Data.Add(slot); });
 
         return slot;
+    }
+
+    private SkillViewModelCollection FetchSkillList(long playerUid)
+    {
+        var ret = _storage.GetStatistics(ScopeTime == ScopeTime.Total);
+        var found = ret.TryGetValue(playerUid, out var value);
+        Debug.Assert(found, $"PlayerNotFound with {playerUid}");
+        Debug.Assert(value != null, nameof(value) + " != null");
+        var list = value.ToSkillItemVmList();
+        return list;
     }
 
     private void UpdatePlayerInfo(StatisticDataViewModel slot, PlayerInfo? playerInfo)
@@ -293,15 +301,6 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             slot.Value = processed.Value;
             slot.DurationTicks = processed.DurationTicks;
 
-            slot.Damage.TotalSkillList = processed.DamageSkillList;
-            slot.Damage.RefreshFilteredList(SkillDisplayLimit);
-
-            slot.Heal.TotalSkillList = processed.HealSkillList;
-            slot.Heal.RefreshFilteredList(SkillDisplayLimit);
-
-            slot.TakenDamage.TotalSkillList = processed.TakenDamageSkillList;
-            slot.TakenDamage.RefreshFilteredList(SkillDisplayLimit);
-
             // Set current player slot if this is the current player
             if (hasCurrentPlayer && uid == currentPlayerUid)
             {
@@ -358,7 +357,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
     public void AddTestItem()
     {
         var slots = Data;
-        var newItem = new StatisticDataViewModel(_debugFunctions, _localizationManager)
+        var newItem = new StatisticDataViewModel(_debugFunctions, _localizationManager, FetchSkillListFunc)
         {
             Index = slots.Count + 1,
             Value = (ulong)Random.Shared.Next(100, 2000),
@@ -373,6 +372,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
                 PowerLevel = Random.Shared.Next(5000, 39000)
             }
         };
+
         newItem.Damage.FilteredSkillList =
         [
             new SkillItemViewModel
@@ -447,6 +447,15 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
 
         slots.Add(newItem);
         SortSlotsInPlace();
+        return;
+
+        static SkillViewModelCollection FetchSkillListFunc(long uid)
+        {
+            List<SkillItemViewModel> damage = [new SkillItemViewModel()];
+            List<SkillItemViewModel> healing = [new SkillItemViewModel()];
+            List<SkillItemViewModel> taken = [new SkillItemViewModel()];
+            return new SkillViewModelCollection(damage, healing, taken);
+        }
     }
 
     private Classes RandomClass()
@@ -474,7 +483,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
     {
         foreach (var vm in Data)
         {
-            vm.RefreshSkillLists(SkillDisplayLimit);
+            vm.RefreshFilterLists(SkillDisplayLimit);
         }
     }
 

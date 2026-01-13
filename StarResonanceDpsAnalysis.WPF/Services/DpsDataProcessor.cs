@@ -33,7 +33,6 @@ public class DpsDataProcessor : IDpsDataProcessor
         foreach (var playerStats in data.Values)
         {
             var durationTicks = playerStats.ElapsedTicks();
-            var (totalDmg, totalHeal, totalTaken) = BuildSkillListFromStats(playerStats);
 
             // Process Damage
             var damageValue = (ulong)Math.Max(0, playerStats.AttackDamage.Total);
@@ -43,7 +42,7 @@ public class DpsDataProcessor : IDpsDataProcessor
                 if (shouldShowInDamageList)
                 {
                     result[StatisticType.Damage][playerStats.Uid] = new DpsDataProcessed(
-                        playerStats, damageValue, durationTicks, totalDmg, totalHeal, totalTaken, playerStats.Uid);
+                        playerStats, damageValue, durationTicks, playerStats.Uid);
                 }
             }
 
@@ -52,7 +51,7 @@ public class DpsDataProcessor : IDpsDataProcessor
             if (healingValue > 0 && !playerStats.IsNpc)
             {
                 result[StatisticType.Healing][playerStats.Uid] = new DpsDataProcessed(
-                    playerStats, healingValue, durationTicks, totalDmg, totalHeal, totalTaken, playerStats.Uid);
+                    playerStats, healingValue, durationTicks, playerStats.Uid);
             }
 
             // Process TakenDamage
@@ -62,12 +61,12 @@ public class DpsDataProcessor : IDpsDataProcessor
                 if (playerStats.IsNpc)
                 {
                     result[StatisticType.NpcTakenDamage][playerStats.Uid] = new DpsDataProcessed(
-                        playerStats, takenDamageValue, durationTicks, totalDmg, totalHeal, totalTaken, playerStats.Uid);
+                        playerStats, takenDamageValue, durationTicks, playerStats.Uid);
                 }
                 else
                 {
                     result[StatisticType.TakenDamage][playerStats.Uid] = new DpsDataProcessed(
-                        playerStats, takenDamageValue, durationTicks, totalDmg, totalHeal, totalTaken, playerStats.Uid);
+                        playerStats, takenDamageValue, durationTicks, playerStats.Uid);
                 }
             }
         }
@@ -117,37 +116,5 @@ public class DpsDataProcessor : IDpsDataProcessor
 
         var totalDps = maxDuration > 0 ? totalValue / maxDuration : 0;
         return new TeamTotalStats(totalValue, totalDps, playerCount, npcCount, maxDuration);
-    }
-
-    private static (List<SkillItemViewModel> damage, List<SkillItemViewModel> healing, List<SkillItemViewModel> taken)
-        BuildSkillListFromStats(PlayerStatistics playerStats)
-    {
-        var damageSkills = BuildSkillList(playerStats.AttackDamage.Skills);
-        var healingSkills = BuildSkillList(playerStats.Healing.Skills);
-        var takenSkills = BuildSkillList(playerStats.TakenDamage.Skills);
-
-        return (damageSkills, healingSkills, takenSkills);
-
-        static List<SkillItemViewModel> BuildSkillList(IReadOnlyDictionary<long, SkillStatistics> skills)
-        {
-            return skills.Values
-                //.OrderByDescending(s => s.TotalValue)
-                .Select(s => new SkillItemViewModel
-                {
-                    SkillId = s.SkillId,
-                    SkillName = EmbeddedSkillConfig.TryGet(s.SkillId.ToString(), out var def)
-                        ? def.Name
-                        : s.SkillId.ToString(),
-                    TotalValue = s.TotalValue,
-                    HitCount = s.UseTimes,
-                    CritCount = s.CritTimes,
-                    LuckyCount = s.LuckyTimes,
-                    Average = s.UseTimes > 0 ? Math.Round((double)s.TotalValue / s.UseTimes) : 0,
-                    CritRate = s.UseTimes > 0 ? (double)s.CritTimes / s.UseTimes : 0,
-                    CritValue = s.CritValue,
-                    LuckyValue = s.LuckValue
-                })
-                .ToList();
-        }
     }
 }

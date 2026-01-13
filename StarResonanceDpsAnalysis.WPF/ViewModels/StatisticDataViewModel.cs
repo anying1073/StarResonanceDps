@@ -6,8 +6,10 @@ using StarResonanceDpsAnalysis.WPF.Localization;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
+public record struct SkillViewModelCollection(List<SkillItemViewModel> Damage, List<SkillItemViewModel> Healing, List<SkillItemViewModel> Taken);
+
 [DebuggerDisplay("Name:{Player?.Name};Value:{Value}")]
-public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationManager localizationManager) : BaseViewModel, IComparable<StatisticDataViewModel>
+public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationManager localizationManager, Func<long , SkillViewModelCollection> fetchSkillListFunc) : BaseViewModel, IComparable<StatisticDataViewModel>
 {
     [ObservableProperty] private long _durationTicks;
     [ObservableProperty] private long _index;
@@ -52,7 +54,7 @@ public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationMa
     /// and triggers the UI update.
     /// </summary>
     /// <param name="limit">The maximum number of skills to display (0 for all)</param>
-    public void RefreshSkillLists(int limit)
+    public void RefreshFilterLists(int limit)
     {
         Damage.RefreshFilteredList(limit);
         Heal.RefreshFilteredList(limit);
@@ -60,7 +62,7 @@ public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationMa
         SkillListRefreshTrigger++;
     }
 
-    public void SortSkillList()
+    private void SortSkillList()
     {
         Damage.SortSkillList();
         Heal.SortSkillList();
@@ -68,12 +70,21 @@ public partial class StatisticDataViewModel(DebugFunctions debug, LocalizationMa
         SkillListRefreshTrigger++;
     }
 
+    private void FetchSkillList()
+    {
+        var (damage, healing, taken) = fetchSkillListFunc.Invoke(Player.Uid);
+        Damage.TotalSkillList = damage;
+        Heal.TotalSkillList = healing;
+        TakenDamage.TotalSkillList = taken;
+    }
+
     [RelayCommand]
     private void MouseEnterItem(int limit)
     {
         SetHoverStateAction?.Invoke(true);
+        FetchSkillList();
         SortSkillList();
-        RefreshSkillLists(limit);
+        RefreshFilterLists(limit);
     }
 
     [RelayCommand]

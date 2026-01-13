@@ -266,7 +266,7 @@ public partial class DpsStatisticsViewModel
                     damageData[uid] = new DpsDataProcessed(
                         dummyDpsData,
                         playerData.TotalDamage,
-                        0, damageSkills, healingSkills, takenSkills,
+                        0, 
                         playerData.Uid
                     );
                 }
@@ -279,7 +279,7 @@ public partial class DpsStatisticsViewModel
                 healingData[uid] = new DpsDataProcessed(
                     dummyDpsData,
                     playerData.TotalHealing,
-                    0, damageSkills, healingSkills, takenSkills,
+                    0, 
                     playerData.Uid
                 );
             }
@@ -294,7 +294,7 @@ public partial class DpsStatisticsViewModel
                     npcTakenData[uid] = new DpsDataProcessed(
                         dummyDpsData,
                         playerData.TakenDamage,
-                        0, damageSkills, healingSkills, takenSkills,
+                        0, 
                         playerData.Uid
                     );
                 }
@@ -304,7 +304,7 @@ public partial class DpsStatisticsViewModel
                     takenData[uid] = new DpsDataProcessed(
                         dummyDpsData,
                         playerData.TakenDamage,
-                        0, damageSkills, healingSkills, takenSkills,
+                        0, 
                         playerData.Uid
                     );
                 }
