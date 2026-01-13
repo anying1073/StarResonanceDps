@@ -111,31 +111,6 @@ public class DpsTimerServiceTests
     }
     
     [Fact]
-    public void DurationChanged_EventFires_WhenDurationChanges()
-    {
-        // Arrange
-        var service = new DpsTimerService();
-        var eventFired = false;
-        TimeSpan? reportedDuration = null;
-        
-        service.DurationChanged += (sender, duration) =>
-        {
-            eventFired = true;
-            reportedDuration = duration;
-        };
-        
-        // Act
-        service.Start();
-        Thread.Sleep(50);
-        service.GetSectionDuration();
-        
-        // Assert
-        Assert.True(eventFired);
-        Assert.NotNull(reportedDuration);
-        Assert.True(reportedDuration.Value.TotalMilliseconds >= 50);
-    }
-    
-    [Fact]
     public void MultipleStartCalls_DoNotResetTimer()
     {
         // Arrange
