@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message BackgroundTableBase {
+  int32 id = 1463;
+  int32 sequence = 831;
+  string res = 1275;
+}
+
+message BackgroundTableMgr {
+  map<int32, bokura.BackgroundTableBase> datas = 1;
+}
+

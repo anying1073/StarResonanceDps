@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyInstructionInfoRequest {
+  int32 type = 1;
+  string title = 2;
+  string msg = 3;
+  string url = 4;
+  string data = 5;
+  int32 logout_time = 6;
+  string rule_name = 7;
+  string trace_id = 8;
+  int32 modal = 9;
+  int32 logout_type = 10;
+}
+

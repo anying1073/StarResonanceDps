@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EEntityFilterType {
+  EntityFilterType_None = 0;
+  EntityFilterType_Dodge = 1;
+  EntityFilterType_Range = 2;
+  EntityFilterType_Camp = 3;
+  EntityFilterType_Buff = 4;
+  EntityFilterType_Tag = 5;
+  EntityFilterType_EntityType = 6;
+  EntityFilterType_State = 7;
+  EntityFilterType_HpRate = 8;
+  EntityFilterType_Profession = 9;
+  EntityFilterType_Hate = 10;
+  EntityFilterType_Summon = 11;
+  EntityFilterType_TeamActor = 12;
+  EntityFilterType_CombatState = 13;
+  EntityFilterType_CantHit = 14;
+  EntityFilterType_ProfessionRange = 15;
+  EntityFilterType_Summoner = 16;
+  EntityFilterType_Dead = 100;
+  EntityFilterType_Hit = 101;
+  EntityFilterType_Self = 102;
+}
+

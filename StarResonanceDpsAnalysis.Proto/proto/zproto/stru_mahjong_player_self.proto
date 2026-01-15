@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mahjong_player_show.proto";
+
+message MahjongPlayerSelf {
+  zproto.MahjongPlayerShow player_show = 1;
+  int32 can_do = 2;
+  int64 operation_time = 3;
+  int32 left_thinking_time = 4;
+}
+

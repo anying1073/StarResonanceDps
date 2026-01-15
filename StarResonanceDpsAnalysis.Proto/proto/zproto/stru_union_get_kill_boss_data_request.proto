@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionGetKillBossDataRequest {
+  int64 union_id = 1;
+  int32 boss_id = 2;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message WeeklyTowerRecord {
+  int64 begin_time = 1;
+  int32 max_climb_up_id = 2;
+  repeated int32 award_climb_up_ids = 3;
+  int32 rule_id = 4;
+  int32 max_jump_award_climb_up_id = 5;
+  int32 last_max_climb_up_id = 6;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetFlagInfo {
+  int32 monster_id = 1;
+  bool is_flag = 2;
+}
+

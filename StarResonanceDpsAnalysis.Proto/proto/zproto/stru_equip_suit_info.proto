@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message EquipSuitInfo {
+  map<int32, int32> suit_attr = 3;
+  int32 attr_type = 4;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_user_activity_info.proto";
+import "stru_dirty_mask.proto";
+
+message UserActivityList {
+  map<int64, zproto.UserActivityInfo> activities = 1;
+}
+

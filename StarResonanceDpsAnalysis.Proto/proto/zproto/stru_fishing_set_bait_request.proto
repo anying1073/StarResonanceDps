@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message FishingSetBaitRequest {
+  int32 bait_id = 1;
+}
+

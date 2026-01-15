@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_scene_record.proto";
+import "stru_dirty_mask.proto";
+
+message StatRecord {
+  uint64 cnt = 1;
+  map<int32, uint64> group_cnts = 2;
+  map<int32, zproto.SceneRecord> scene_records = 3;
+}
+

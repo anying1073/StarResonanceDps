@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_buy_shop_item_info.proto";
+
+message BuyShopItemRequest {
+  map<int32, zproto.BuyShopItemInfo> buy_shop_item_info = 2;
+  string ext_data = 6;
+}
+

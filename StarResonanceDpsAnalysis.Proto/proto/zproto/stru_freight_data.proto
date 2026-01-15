@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message FreightData {
+  int64 refresh_time = 1;
+  int32 goods_value = 2;
+  bool set_off = 3;
+  bool can_receive = 4;
+  repeated int32 up_goods_list = 5;
+  repeated int32 keep_goods_list = 6;
+  repeated int32 down_goods_list = 7;
+  int64 can_reward_time = 8;
+}
+

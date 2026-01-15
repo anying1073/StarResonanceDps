@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBodySize {
+  BodySizeNull = 0;
+  BodySizeS = 1;
+  BodySizeM = 2;
+  BodySizeL = 3;
+}
+

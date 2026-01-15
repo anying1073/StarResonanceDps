@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message SwitchProjectRequest {
+  int32 old_project_id = 1;
+  int32 new_project_id = 2;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message WarehouseGrid {
+  int32 pos = 1;
+  int64 owner_char_id = 2;
+  zproto.Item item_info = 3;
+}
+

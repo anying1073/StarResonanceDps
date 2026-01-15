@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_level_proficiency.proto";
+import "stru_dirty_mask.proto";
+
+message RoleLevel {
+  int32 level = 1;
+  int64 cur_level_exp = 2;
+  map<int32, bool> received_level_list = 3;
+  zproto.LevelProficiency proficiency_info = 4;
+  map<int32, int64> active_exp_map = 5;
+  int32 last_season_day = 6;
+  int64 bless_exp_pool = 7;
+  int64 grant_bless_exp = 8;
+  int64 accumulate_bless_exp = 9;
+  int64 accumulate_exp = 10;
+  int32 prev_season_max_lv = 11;
+}
+

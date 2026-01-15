@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PlayerLevelSkillTableBase {
+  int32 buff_id = 674;
+  string buff_name = 1105;
+  int32 active_level = 1815;
+  int32 style = 1874;
+  int_table lock_item = 1936;
+}
+
+message PlayerLevelSkillTableMgr {
+  map<int32, bokura.PlayerLevelSkillTableBase> datas = 1;
+}
+

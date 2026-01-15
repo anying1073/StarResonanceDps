@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetPhotoSchemeNameRequest {
+  uint64 scheme_id = 1;
+  string scheme_name = 2;
+}
+

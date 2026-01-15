@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EDamageType {
+  Normal = 0;
+  Miss = 1;
+  Heal = 2;
+  Immune = 3;
+  Fall = 4;
+  Absorbed = 5;
+}
+

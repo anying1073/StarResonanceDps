@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EQuestTargetType {
+  QuestTargetUnknown = 0;
+  QuestTargetSingle = 1;
+  QuestTargetSerial = 2;
+  QuestTargetConcurrent = 3;
+  QuestTargetNum = 4;
+  QuestTargetSelect = 5;
+}
+

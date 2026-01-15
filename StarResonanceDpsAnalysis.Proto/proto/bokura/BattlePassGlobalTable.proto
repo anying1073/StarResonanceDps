@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BattlePassGlobalTableBase {
+  int32 id = 1463;
+  int32 weekly_exp_limit = 1308;
+  mlstring normal_pass_name = 2042;
+  mlstring prime_pass_name = 547;
+  int_table fashion = 1901;
+  int32 fashion_level = 1423;
+  int_array award_preview = 1161;
+  int32 prime_pass_add_level = 658;
+  int_array prime_extra_award = 952;
+  int_array level_cost = 883;
+  int32 normal_pass_payment_id = 123;
+  int32 prime_pass_payment_id = 180;
+  int32 pass_price_diff_payment_id = 522;
+}
+
+message BattlePassGlobalTableMgr {
+  map<int32, bokura.BattlePassGlobalTableBase> datas = 1;
+}
+

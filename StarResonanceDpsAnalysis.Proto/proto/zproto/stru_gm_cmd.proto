@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_gm_parsing_type.proto";
+
+message GmCmd {
+  string command = 1;
+  int64 target_char_id = 2;
+  zproto.EGmParsingType parsing_type = 3;
+  string parameter = 4;
+}
+

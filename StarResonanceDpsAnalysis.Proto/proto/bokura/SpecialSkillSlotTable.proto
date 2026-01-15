@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SpecialSkillSlotTableBase {
+  int32 id = 1463;
+  int_array tag_ids = 1393;
+}
+
+message SpecialSkillSlotTableMgr {
+  map<int32, bokura.SpecialSkillSlotTableBase> datas = 1;
+}
+

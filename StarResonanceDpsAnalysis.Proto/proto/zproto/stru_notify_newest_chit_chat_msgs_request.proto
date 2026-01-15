@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_chit_chat_channel_type.proto";
+import "stru_chit_chat_msg.proto";
+
+message NotifyNewestChitChatMsgsRequest {
+  zproto.ChitChatChannelType channel_type = 1;
+  zproto.ChitChatMsg chat_msg = 2;
+}
+

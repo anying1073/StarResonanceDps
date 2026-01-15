@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_battle_pass.proto";
+import "stru_dirty_mask.proto";
+
+message BattlePassData {
+  map<int32, zproto.BattlePass> battle_map = 1;
+}
+

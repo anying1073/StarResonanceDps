@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BDTAGRootTableBase {
+  int32 id = 1463;
+  string name = 439;
+  int32 root_type = 1799;
+  int32 root_type_id = 163;
+  int32 skill_level = 1667;
+  string_array tag_path = 488;
+}
+
+message BDTAGRootTableMgr {
+  map<int32, bokura.BDTAGRootTableBase> datas = 1;
+}
+

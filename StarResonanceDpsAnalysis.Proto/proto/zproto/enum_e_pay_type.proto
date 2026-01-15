@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EPayType {
+  PayTypeNull = 0;
+  PayTypeSelf = 1;
+  PayTypeHaoPlay = 2;
+  PayTypeMPay = 3;
+  PayTypeHaoPlayWeb = 4;
+  PayTypeExplore = 5;
+  PayTypeApjIos = 6;
+  PayTypeApjAndroid = 7;
+  PayTypeApjPc = 8;
+  PayTypeApjWeb = 9;
+  PayTypeApjStream = 10;
+  PayTypeApjEpic = 11;
+  PayTypeXd = 12;
+  PayTypeSoutheastAsia = 13;
+}
+

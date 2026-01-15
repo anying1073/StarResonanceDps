@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBehitType {
+  BehitNormal = 0;
+  BehitStiff = 1;
+  BehitStiffBack = 2;
+  BehitStiffDown = 3;
+  BehitStiffAir = 4;
+  BehitStiffFall = 5;
+  BehitStiffFlow = 6;
+  BehitStiffAction = 7;
+  BehitStiffThrowMove = 8;
+  BehitStiffThrowEnd = 9;
+  BehitStiffBackBlocked = 10;
+}
+

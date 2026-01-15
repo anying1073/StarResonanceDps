@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionOfficial {
+  int32 official_id = 1;
+  map<uint32, bool> power = 2;
+  string name = 3;
+}
+

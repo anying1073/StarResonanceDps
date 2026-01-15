@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_notify_build_furniture_op.proto";
+
+message NotifyHomelandBuildFurnitureOpRequest {
+  int64 community_id = 1;
+  int64 homeland_id = 2;
+  bool is_outer = 3;
+  string scene_guid = 4;
+  repeated zproto.NotifyBuildFurnitureOp build_furniture_infos = 5;
+}
+

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EnumUnionAuthority {
+  UnionAuthorityNull = 0;
+  UnionAuthoritySit = 500201;
+  UnionAuthorityPass = 500202;
+  UnionAuthorityLeave = 500203;
+  UnionAuthorityName = 500204;
+  UnionAuthorityIcon = 500205;
+  UnionAuthorityNotice = 500206;
+  UnionAuthoritySitMemberTitle = 500207;
+  UnionAuthoritySitPower = 500208;
+  UnionAuthorityEditRecruitInfo = 500209;
+  UnionAuthorityEditTags = 500211;
+  UnionAuthorityEditUpgradeBuilding = 500212;
+  UnionActiveTypeSetBuildingEffect = 500213;
+  UnionAuthoritySetUnionCover = 500219;
+  UnionAuthoritySetEScreenPhoto = 500220;
+  UnionAuthorityEditAlbum = 500221;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_friendliness_exp_level.proto";
+
+message NotifyFriendlinessExpLvRequest {
+  repeated zproto.FriendlinessExpLevel change_list = 1;
+  int32 total_level = 2;
+  int32 total_exp = 3;
+  int32 today_total_add_exps = 4;
+  int64 update_time_stamp = 5;
+}
+

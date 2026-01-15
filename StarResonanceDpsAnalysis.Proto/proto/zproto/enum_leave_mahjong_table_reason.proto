@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum LeaveMahjongTableReason {
+  LeaveMahjongTableReasonNull = 0;
+  LeaveMahjongTableReasonIdipKickout = 1;
+  LeaveMahjongTableReasonRequest = 2;
+}
+

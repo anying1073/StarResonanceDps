@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_dirty_mask.proto";
+
+message PioneerInfo {
+  uint32 current_total = 1;
+  map<uint32, uint32> targets = 2;
+  map<int32, bool> awards = 3;
+  map<uint32, bool> entered_zones = 4;
+  uint32 id = 5;
+  zproto.EErrorCode err_code = 6;
+}
+

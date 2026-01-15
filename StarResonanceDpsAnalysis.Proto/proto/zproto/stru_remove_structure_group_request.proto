@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message RemoveStructureGroupRequest {
+  int64 group_id = 1;
+  repeated int64 structure_ids = 2;
+  bool is_outer = 3;
+}
+

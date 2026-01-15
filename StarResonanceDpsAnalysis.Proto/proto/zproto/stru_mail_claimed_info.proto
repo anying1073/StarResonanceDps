@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message MailClaimedInfo {
+  repeated int64 attachment_mail_list = 1;
+  map<int64, int64> claimed_mails = 2;
+}
+

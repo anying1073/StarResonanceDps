@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EMoveType {
+  MoveIdle = 0;
+  MoveWalk = 1;
+  MoveRun = 2;
+  MoveDash = 3;
+  MoveDashEnd = 4;
+  MoveAlert = 5;
+  MoveFly = 6;
+  MovePatrol = 7;
+  MovePatrolRun = 8;
+  MoveFlyDash = 9;
+  MoveCustom = 10;
+  MoveParkourRun = 11;
+  MoveSelfPhoto = 12;
+  MoveRotate = 13;
+  MoveDashTurn = 14;
+  MoveWalkEnd = 15;
+  MoveRunEnd = 16;
+  MoveWalkEndToIdle = 17;
+  MoveRunEndToIdle = 18;
+  MoveEightDir = 19;
+  MoveByForce = 20;
+  MoveSitRotate = 21;
+  MoveJumpEndToIdle = 22;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message UpdateTeamGroupRequest {
+  int32 group_id = 1;
+  int64 char_id = 2;
+  int32 group_index = 3;
+}
+

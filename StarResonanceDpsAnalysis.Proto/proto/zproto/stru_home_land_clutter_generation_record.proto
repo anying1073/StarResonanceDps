@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_clutter_generation_record.proto";
+
+message HomeLandClutterGenerationRecord {
+  map<int32, zproto.ClutterGenerationRecord> home_land_clutter_record = 1;
+}
+

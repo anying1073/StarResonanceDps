@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_player_info.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonPlayerList {
+  map<uint32, zproto.DungeonPlayerInfo> player_infos = 1;
+}
+

@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package zproto;
+
+enum TextCheckSceneType {
+  TextCheckError = 0;
+  TextCheckCreateRoleName = 101;
+  TextCheckCreateUnionName = 102;
+  TextCheckUnionManifesto = 103;
+  TextCheckUnionJobName = 104;
+  TextCheckUnionRecruit = 105;
+  TextCheckUnionRecruitDescription = 106;
+  TextCheckMapCustomFlag = 108;
+  TextCheckAlbumName = 109;
+  TextCheckChangeName = 110;
+  TextCheckUnionChangeName = 111;
+  TextCheckAlbumUploadTmp = 112;
+  TextCheckAlbumPhotoEditText = 113;
+  TextCheckAlbumPhotoEditUpload = 114;
+  TextCheckAlbumUploadPhoto = 115;
+  TextCheckUnionUploadHead = 116;
+  TextCheckUnionUploadCard = 117;
+  TextCheckAlbumChangeName = 118;
+  TextCheckCommunityCheckIntroduce = 119;
+  TextCheckCommunityCheckInvite = 120;
+  TextCheckCommunityCheckLightingName = 121;
+  TextCheckCommunityCheckCombinationFurnitureName = 122;
+  TextCheckCommunityCheckPhotoName = 123;
+  TextCheckCommunityCheckName = 124;
+  TextCheckUnionAlbumName = 125;
+  TextCheckChangeUnionAlbumName = 126;
+  TextCheckChangeMapCustomFlag = 127;
+  TextCheckChangeUnionRecruit = 128;
+  TextCheckChangeUnionRecruitDescription = 129;
+  TextCheckUnionAlbumUploadPhoto = 130;
+  TextCheckProfessionProjectCustomName = 131;
+  TextCheckActionGroupCustomName = 132;
+  TextCheckChatWorldChannel = 1001;
+  TextCheckChatUnionChannel = 1002;
+  TextCheckChatTeamChannel = 1003;
+  TextCheckChatPrivateChannel = 1005;
+  TextCheckChatSceneChannel = 1006;
+  TextCheckFriendRemark = 2001;
+  TextCheckTeamTargetInfo = 2002;
+  TextCheckFriendGroupNameCreate = 2003;
+  TextCheckFriendGroupNameChange = 2004;
+  TextCheckTeamTargetQuickSay = 2005;
+  TextCheckSearchFriend = 4001;
+  TextCheckSearchUnionMember = 4002;
+  TextCheckSearchUnion = 4003;
+  TextCheckHomelandOuterStructures = 5201;
+  TextCheckHomelandInnerStructures = 5202;
+}
+

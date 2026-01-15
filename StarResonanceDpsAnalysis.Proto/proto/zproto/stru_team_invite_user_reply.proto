@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_invite_user_data.proto";
+
+message TeamInviteUserReply {
+  repeated zproto.InviteUserData users = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

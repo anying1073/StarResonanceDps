@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_player_record_info.proto";
+import "stru_dirty_mask.proto";
+
+message PlayerRecord {
+  map<int32, zproto.PlayerRecordInfo> player_record_infos = 1;
+}
+

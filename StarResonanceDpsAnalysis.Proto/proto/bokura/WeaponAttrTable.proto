@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message WeaponAttrTableBase {
+  int32 id = 1463;
+  int32 weapon_id = 1694;
+  int32 level = 1120;
+  int_table base_attr = 965;
+  int_table extra_attr = 1462;
+}
+
+message WeaponAttrTableMgr {
+  map<int32, bokura.WeaponAttrTableBase> datas = 1;
+}
+

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AchievementSeasonClassTableBase {
+  int32 id = 1463;
+  mlstring class_name = 1286;
+  string class_background = 1637;
+  string class_des = 1765;
+  int_array entry_list = 343;
+  int32 sort_id = 504;
+}
+
+message AchievementSeasonClassTableMgr {
+  map<int32, bokura.AchievementSeasonClassTableBase> datas = 1;
+}
+

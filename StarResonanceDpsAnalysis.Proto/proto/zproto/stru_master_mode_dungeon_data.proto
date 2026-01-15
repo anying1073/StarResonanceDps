@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message MasterModeDungeonData {
+  int32 season_score = 1;
+  bool is_show = 2;
+}
+

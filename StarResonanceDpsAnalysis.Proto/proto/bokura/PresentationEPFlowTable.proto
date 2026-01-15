@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PresentationEPFlowTableBase {
+  int32 id = 1463;
+  string res_path = 548;
+  string flow_name = 1523;
+  string flow_type = 16;
+  bool get_option = 63;
+  bool is_save_play_state = 1541;
+  int32 check_play_key_index = 565;
+  int32 check_play_type = 1918;
+  bool is_default_camera_disabled = 200;
+  int32 content_hiding = 1154;
+  int_array ignore_hiding_npc = 955;
+  bool is_model_dialogue = 1706;
+  int_array black_mask = 911;
+}
+
+message PresentationEPFlowTableMgr {
+  map<int32, bokura.PresentationEPFlowTableBase> datas = 1;
+}
+

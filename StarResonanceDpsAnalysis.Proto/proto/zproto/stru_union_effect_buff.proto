@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionEffectBuff {
+  int32 buff_pos = 1;
+  int32 effect_buff_id = 2;
+  int64 end_time = 3;
+}
+

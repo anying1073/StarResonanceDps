@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_user_union_target_info.proto";
+import "stru_dirty_mask.proto";
+
+message UserUnionTarget {
+  int32 is_init = 1;
+  map<int32, zproto.UserUnionTargetInfo> user_union_target_info = 2;
+  map<int32, int32> week_target_reward_ids = 3;
+  int64 week_target_refresh_time = 4;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESkillCostType {
+  SkillCostRes = 0;
+  SkillCostAttr = 1;
+  SkillCostBuff = 2;
+  SkillCostProp = 3;
+  SkillCostResPercent = 4;
+}
+

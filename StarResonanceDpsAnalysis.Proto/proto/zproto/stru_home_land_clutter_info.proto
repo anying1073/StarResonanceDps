@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_clutter.proto";
+
+message HomeLandClutterInfo {
+  map<int64, zproto.Clutter> home_land_clutter = 1;
+}
+

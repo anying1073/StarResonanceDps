@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_mail_importance.proto";
+
+message SyncNewMailRequest {
+  int64 mail_uuid = 1;
+  zproto.MailImportance importance = 2;
+}
+

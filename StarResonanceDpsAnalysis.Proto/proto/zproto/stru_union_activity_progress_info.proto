@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionActivityProgressInfo {
+  int32 activity_id = 1;
+  int32 progress = 2;
+  repeated uint32 award = 3;
+}
+

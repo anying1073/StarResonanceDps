@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+enum LoginSdkType {
+  LoginSdkTypeNull = 0;
+  LoginSdkTypeIntl = 1;
+  LoginSdkTypeMSdk = 2;
+  LoginSdkTypeWeGame = 3;
+  LoginSdkTypeGLauncher = 4;
+  LoginSdkTypeHaoPlay = 5;
+  LoginSdkTypeApj = 6;
+  LoginSdkTypeAPJSteam = 7;
+  LoginSdkTypeAPJEpic = 8;
+  LoginSdkTypeXDG = 9;
+  LoginSdkTypeHaoplaySEA = 10;
+}
+

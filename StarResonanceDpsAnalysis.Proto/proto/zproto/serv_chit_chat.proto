@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_ark_share_with_tencent_request.proto";
+import "stru_create_private_chat_session_reply.proto";
+import "stru_create_private_chat_session_request.proto";
+import "stru_delete_private_chat_session_reply.proto";
+import "stru_delete_private_chat_session_request.proto";
+import "stru_get_ark_json_with_tencent_reply.proto";
+import "stru_get_ark_json_with_tencent_request.proto";
+import "stru_get_chip_chat_records_reply.proto";
+import "stru_get_chip_chat_records_request.proto";
+import "stru_get_private_chat_targets_reply.proto";
+import "stru_get_private_chat_targets_request.proto";
+import "stru_get_world_chat_channel_id_reply.proto";
+import "stru_get_world_chat_channel_id_request.proto";
+import "stru_private_chat_block_list_reply.proto";
+import "stru_private_chat_block_list_request.proto";
+import "stru_private_chat_target_block_reply.proto";
+import "stru_private_chat_target_block_request.proto";
+import "stru_private_chat_target_top_reply.proto";
+import "stru_private_chat_target_top_request.proto";
+import "stru_query_chat_mute_reply.proto";
+import "stru_query_chat_mute_request.proto";
+import "stru_send_chit_chat_msg_reply.proto";
+import "stru_send_chit_chat_msg_request.proto";
+import "stru_set_private_chat_has_read_reply.proto";
+import "stru_set_private_chat_has_read_request.proto";
+import "stru_set_world_chat_channel_id_reply.proto";
+import "stru_set_world_chat_channel_id_request.proto";
+
+message ChitChat {
+
+  message SendChitChatMsg_Ret {
+    zproto.SendChitChatMsgReply ret = 1;
+  }
+
+  message SendChitChatMsg {
+    zproto.SendChitChatMsgRequest v_request = 1;
+  }
+
+  message GetChipChatRecords_Ret {
+    zproto.GetChipChatRecordsReply ret = 1;
+  }
+
+  message GetChipChatRecords {
+    zproto.GetChipChatRecordsRequest v_request = 1;
+  }
+
+  message GetPrivateChatTargets_Ret {
+    zproto.GetPrivateChatTargetsReply ret = 1;
+  }
+
+  message GetPrivateChatTargets {
+    zproto.GetPrivateChatTargetsRequest v_request = 1;
+  }
+
+  message CreatePrivateChatSession_Ret {
+    zproto.CreatePrivateChatSessionReply ret = 1;
+  }
+
+  message CreatePrivateChatSession {
+    zproto.CreatePrivateChatSessionRequest v_request = 1;
+  }
+
+  message DeletePrivateChatSession_Ret {
+    zproto.DeletePrivateChatSessionReply ret = 1;
+  }
+
+  message DeletePrivateChatSession {
+    zproto.DeletePrivateChatSessionRequest v_request = 1;
+  }
+
+  message SetPrivateChatHasRead_Ret {
+    zproto.SetPrivateChatHasReadReply ret = 1;
+  }
+
+  message SetPrivateChatHasRead {
+    zproto.SetPrivateChatHasReadRequest v_request = 1;
+  }
+
+  message PrivateChatTargetTop_Ret {
+    zproto.PrivateChatTargetTopReply ret = 1;
+  }
+
+  message PrivateChatTargetTop {
+    zproto.PrivateChatTargetTopRequest v_request = 1;
+  }
+
+  message PrivateChatTargetBlock_Ret {
+    zproto.PrivateChatTargetBlockReply ret = 1;
+  }
+
+  message PrivateChatTargetBlock {
+    zproto.PrivateChatTargetBlockRequest v_request = 1;
+  }
+
+  message PrivateChatBlockList_Ret {
+    zproto.PrivateChatBlockListReply ret = 1;
+  }
+
+  message PrivateChatBlockList {
+    zproto.PrivateChatBlockListRequest v_request = 1;
+  }
+
+  message SetWorldChatChannelId_Ret {
+    zproto.SetWorldChatChannelIdReply ret = 1;
+  }
+
+  message SetWorldChatChannelId {
+    zproto.SetWorldChatChannelIdRequest v_request = 1;
+  }
+
+  message GetWorldChatChannelId_Ret {
+    zproto.GetWorldChatChannelIdReply ret = 1;
+  }
+
+  message GetWorldChatChannelId {
+    zproto.GetWorldChatChannelIdRequest v_request = 1;
+  }
+
+  message QueryChatMute_Ret {
+    zproto.QueryChatMuteReply ret = 1;
+  }
+
+  message QueryChatMute {
+    zproto.QueryChatMuteRequest v_request = 1;
+  }
+
+  message ArkShareWithTencent_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ArkShareWithTencent {
+    zproto.ArkShareWithTencentRequest v_request = 1;
+  }
+
+  message GetArkJsonWithTencent_Ret {
+    zproto.GetArkJsonWithTencentReply ret = 1;
+  }
+
+  message GetArkJsonWithTencent {
+    zproto.GetArkJsonWithTencentRequest v_request = 1;
+  }
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_slot_info.proto";
+import "stru_dirty_mask.proto";
+
+message Slot {
+  map<int32, zproto.SlotInfo> slots = 1;
+}
+

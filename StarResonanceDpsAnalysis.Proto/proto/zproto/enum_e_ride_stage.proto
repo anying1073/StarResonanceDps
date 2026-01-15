@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ERideStage {
+  ERideNone = 0;
+  ERideUp = 1;
+  ERiding = 2;
+  ERideDown = 3;
+}
+

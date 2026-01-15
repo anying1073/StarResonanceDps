@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SettingOffTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int32 pivot_id = 1300;
+  mlstring button = 1927;
+  string setting_off_anim = 2041;
+  float remind_radius = 2013;
+}
+
+message SettingOffTableMgr {
+  map<int32, bokura.SettingOffTableBase> datas = 1;
+}
+

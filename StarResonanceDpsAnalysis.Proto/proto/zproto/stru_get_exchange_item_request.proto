@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_exchange_filter.proto";
+
+message GetExchangeItemRequest {
+  int32 config_id = 2;
+  repeated zproto.ExchangeFilter filter = 3;
+  int32 page = 5;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BasicAttrGrowTableBase {
+  int32 id = 1463;
+  int_table attr_grow_range = 1630;
+}
+
+message BasicAttrGrowTableMgr {
+  map<int32, bokura.BasicAttrGrowTableBase> datas = 1;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_tips_info.proto";
+
+message NotifyShowTipsRequest {
+  zproto.TipsInfo tips_info = 1;
+}
+

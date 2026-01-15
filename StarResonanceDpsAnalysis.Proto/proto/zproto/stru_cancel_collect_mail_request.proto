@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message CancelCollectMailRequest {
+  repeated int64 mails = 1;
+}
+

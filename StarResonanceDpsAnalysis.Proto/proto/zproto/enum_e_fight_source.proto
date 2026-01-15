@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EFightSource {
+  EFightSourceSkill = 0;
+  EFightSourceBuff = 1;
+  EFightSourceBullet = 2;
+  EFightSourceTask = 4;
+  EFightSourceTalent = 6;
+  EFightSourceSeasonMedal = 7;
+  EFightSourceUnionEffect = 8;
+  EFightSourceMod = 9;
+  EFightSourceEquip = 10;
+  EFightSourceEquipSlotRefine = 11;
+  EFightSourceVehicle = 12;
+  EFightSourceSeasonTalent = 13;
+  EFightSourceSceneBegin = 1000;
+  EFightSourceScene = 1001;
+  EFightSourceAffix = 1002;
+  EFightSourceOther = 10000;
+}
+

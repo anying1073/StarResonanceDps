@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionActivityTarget {
+  int32 cur_num = 1;
+  bool has_finished = 2;
+  int64 last_refresh_time = 3;
+  int64 next_refresh_time = 4;
+  int32 target_id = 5;
+}
+

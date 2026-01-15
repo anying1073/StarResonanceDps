@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyInviteJoinDungeonsRequest {
+  string group_key = 1;
+  int32 dungeon_id = 2;
+  int64 sender_id = 3;
+}
+

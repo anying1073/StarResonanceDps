@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EInstructionType {
+  InstructionType_Undefined = 0;
+  InstructionType_Tips = 1;
+  InstructionType_Logout = 2;
+  InstructionType_OpenUrl = 3;
+  InstructionType_UserDefined = 4;
+  InstructionType_Stop = 7;
+  InstructionType_PreLogout = 8;
+}
+

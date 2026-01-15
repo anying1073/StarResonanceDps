@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+message UnionIconTableBase {
+  int32 id = 1463;
+  int32 type = 673;
+  string show_icon_route = 711;
+  string resource_route = 399;
+  int32 show_sort = 1506;
+  int32 colour = 1759;
+  int32 limit = 640;
+  int32 is_hide = 1851;
+}
+
+message UnionIconTableMgr {
+  map<int32, bokura.UnionIconTableBase> datas = 1;
+}
+

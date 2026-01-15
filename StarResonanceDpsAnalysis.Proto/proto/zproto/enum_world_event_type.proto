@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package zproto;
+
+enum WorldEventType {
+  ChangeBgm = 0;
+  NoticeTip = 1;
+  BossFightCam = 2;
+  ExitBossFightCam = 3;
+  PlayCutScene = 4;
+  ScreenEffect = 5;
+  NpcBubbleChat = 6;
+  SetCamPitch = 7;
+  PauseCam = 8;
+  ShowEntryUI = 10;
+  WorldEventSwitchLayer = 11;
+  PlayLightAnimation = 12;
+  SwitchPayPointMove = 13;
+  SetMoveDirLimit = 14;
+  PlayFlow = 15;
+  DungeonTip = 16;
+  CameraConfigReplace = 17;
+  NpcHandInHand = 18;
+  VolumeCtrl = 19;
+  SetCamLookAtPoint = 20;
+  CameraInvoke = 21;
+  ScreenFade = 22;
+  SwitchCameraTemplate = 23;
+  CreateClientEntitiesByGroup = 24;
+  DeleteClientEntitiesByGroup = 25;
+  SetEntityShadowDark = 26;
+  PlayLevelEffect = 27;
+  NextDungeonCountDown = 28;
+  BossDBM = 29;
+  InvokeCameraTemplate = 30;
+}
+

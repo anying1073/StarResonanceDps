@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_text_check_item_result.proto";
+
+message TextCheckDataResult {
+  zproto.EErrorCode err_code = 1;
+  string err_msg = 2;
+  repeated zproto.TextCheckItemResult item_results = 3;
+}
+

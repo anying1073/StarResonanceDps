@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_show_piece_pair.proto";
+
+message ShowPieceAttr {
+  zproto.ShowPiecePair piece_info = 1;
+  int64 begin_time = 2;
+  int64 end_time = 3;
+}
+

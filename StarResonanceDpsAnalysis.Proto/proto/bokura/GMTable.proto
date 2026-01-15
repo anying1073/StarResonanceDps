@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message GMTableBase {
+  int32 id = 1463;
+  int32 gm_group = 602;
+  int32 type = 673;
+  string command = 2030;
+  string_array parameter_or_content = 412;
+  string_array optional_parameter = 1321;
+  string_array parameter_check = 1880;
+  mlstring button_show = 174;
+  mlstring_array command_or_parameter_remark = 1184;
+  bool au_to_close = 898;
+}
+
+message GMTableMgr {
+  map<int32, bokura.GMTableBase> datas = 1;
+}
+

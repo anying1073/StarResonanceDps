@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_user_summary_data.proto";
+
+message GrowFundMemInfo {
+  int32 fund_pos = 1;
+  zproto.UserSummaryData basic_avatar_data = 2;
+}
+

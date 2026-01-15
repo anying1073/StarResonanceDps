@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+message PassiveSkillInfo {
+    optional int32 Uuid = 1;
+    optional int64 TargetUuid = 2;
+    optional int64 StageBeginTime = 3;
+    optional int64 BeginTime = 4;
+    optional int32 StagePlayNum = 5;
+    optional int32 SkillId = 6;
+    optional int32 SkillLevel = 7;
+    optional int32 SkillStage = 8;
+}

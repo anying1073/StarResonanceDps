@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_fish_rank_list.proto";
+
+message GetRankInfoReply {
+  int32 fish_id = 1;
+  int32 fish_rank_type = 2;
+  zproto.FishRankList rank_list = 3;
+  zproto.EErrorCode err_code = 4;
+}
+

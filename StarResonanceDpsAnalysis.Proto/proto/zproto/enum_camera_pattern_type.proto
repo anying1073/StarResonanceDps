@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum CameraPatternType {
+  Default = 0;
+  SelfPhoto = 1;
+  AR = 2;
+}
+

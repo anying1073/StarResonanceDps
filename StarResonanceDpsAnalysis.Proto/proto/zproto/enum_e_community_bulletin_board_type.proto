@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECommunityBulletinBoardType {
+  CommunityBulletinBoardTransfer = 0;
+  CommunityBulletinBoardTransferAgree = 1;
+  CommunityBulletinBoardTransferCancel = 2;
+  CommunityBulletinBoardTransferRefusal = 3;
+  CommunityBulletinCohabitantJoin = 4;
+  CommunityBulletinCohabitantExit = 5;
+  CommunityBulletinAuthority = 7;
+  CommunityBulletinPlayerAuthority = 8;
+  CommunityBulletinCreate = 9;
+}
+

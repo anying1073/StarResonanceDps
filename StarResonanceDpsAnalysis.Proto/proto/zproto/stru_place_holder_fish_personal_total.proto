@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+message PlaceHolderFishPersonalTotal {
+  int64 total = 1;
+  int64 myth_total = 2;
+  int32 sum_fish_type = 3;
+  int32 sum_sea_life_type = 4;
+  int32 sum_trash_type = 5;
+  int32 most_fish_id = 6;
+  int32 favour_zero = 7;
+  string user_name = 8;
+  string union_name = 9;
+  bool is_newbie = 10;
+  int32 fish_lv = 11;
+  bool is_backflow = 12;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_disappear_type.proto";
+
+message DisappearEntity {
+  int64 uuid = 1;
+  EDisappearType type = 2;
+}

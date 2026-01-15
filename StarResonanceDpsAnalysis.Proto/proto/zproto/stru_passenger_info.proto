@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message PassengerInfo {
+  int32 seat_num = 1;
+  int64 uuid = 2;
+}
+

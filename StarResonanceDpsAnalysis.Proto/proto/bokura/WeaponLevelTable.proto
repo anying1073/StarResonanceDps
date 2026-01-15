@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message WeaponLevelTableBase {
+  int32 id = 1463;
+  int32 exp = 970;
+  bool broke = 1739;
+  int_table item_price = 1450;
+  int_table extr_cost = 1404;
+  int32 skill_max_level = 111;
+}
+
+message WeaponLevelTableMgr {
+  map<int32, bokura.WeaponLevelTableBase> datas = 1;
+}
+

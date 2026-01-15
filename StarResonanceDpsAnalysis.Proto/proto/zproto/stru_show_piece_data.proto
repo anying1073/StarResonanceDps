@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_show_piece_id_list.proto";
+import "stru_show_piece_pair.proto";
+import "stru_dirty_mask.proto";
+
+message ShowPieceData {
+  map<int32, zproto.ShowPieceIdList> often_use_type_list = 1;
+  map<int32, zproto.ShowPieceIdList> unlock_type_list = 2;
+  map<int32, zproto.ShowPiecePair> roulette_pos_piece_info = 3;
+}
+

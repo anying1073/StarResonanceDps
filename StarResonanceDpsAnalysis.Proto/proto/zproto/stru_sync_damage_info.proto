@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_damage_source.proto";
+import "enum_e_damage_type.proto";
+import "enum_e_damage_property.proto";
+import "enum_e_damage_mode.proto";
+import "stru_vec3.proto";
+import "stru_vec2.proto";
+import "stru_client_hit_part_info.proto";
+
+message SyncDamageInfo {
+    optional EDamageSource DamageSource = 1;
+    optional bool IsMiss = 2;
+    optional bool IsCrit = 3;
+    optional EDamageType Type = 4;
+    optional int32 TypeFlag = 5;
+    optional int64 Value = 6;
+    optional int64 ActualValue = 7;
+    optional int64 LuckyValue = 8;
+    optional int64 HpLessenValue = 9;
+    optional int64 ShieldLessenValue = 10;
+    optional int64 AttackerUuid = 11;
+    optional int32 OwnerId = 12;
+    optional int32 OwnerLevel = 13;
+    optional int32 OwnerStage = 14;
+    optional int32 HitEventId = 15;
+    optional bool IsNormal = 16;
+    optional bool IsDead = 17;
+    optional EDamageProperty Property = 18;
+    optional Vec3 DamagePos = 19;
+    repeated ClientHitPartInfo PartInfos = 20;
+    optional int64 TopSummonerId = 21;
+    optional Vec2 DamageWeight = 22;
+    optional uint32 PassiveUuid = 23;
+    optional bool IsRainbow = 24;
+    optional EDamageMode DamageMode = 25;
+}

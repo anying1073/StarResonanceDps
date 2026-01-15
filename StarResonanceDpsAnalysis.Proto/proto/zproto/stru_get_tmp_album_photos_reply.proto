@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_photo_graph_show.proto";
+
+message GetTmpAlbumPhotosReply {
+  repeated zproto.PhotoGraphShow photo_graphs = 1;
+  int32 cur_upload_times = 2;
+  int32 max_upload_times = 3;
+  zproto.EErrorCode err_code = 4;
+}
+

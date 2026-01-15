@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityBuildLifeProfessionRequest {
+  int32 recipe_id = 1;
+  uint32 count = 2;
+}
+

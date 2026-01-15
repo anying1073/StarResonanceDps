@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+message Friendliness {
+  int32 level = 1;
+  int32 cur_exp = 2;
+  int64 update_time_stamp = 3;
+  int32 today_total_add_exps = 4;
+  map<int32, int32> today_part_add_exps = 5;
+  repeated int32 got_level_awards = 6;
+}
+

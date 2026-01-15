@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETeamCallStatus {
+  ETeamCallStatus_Null = 0;
+  ETeamCallStatus_Wait = 1;
+  ETeamCallStatus_Agree = 2;
+  ETeamCallStatus_Refuse = 3;
+}
+

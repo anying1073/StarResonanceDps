@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message PayReply {
+  string server_id = 2;
+  int32 product_id = 3;
+  string extra_data = 4;
+  zproto.EErrorCode err_code = 5;
+}
+

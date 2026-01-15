@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EFarmlandState {
+  EFarmlandStateEmpty = 0;
+  EFarmlandStateGrow = 1;
+  EFarmlandStatePollen = 2;
+  EFarmlandStateHarvest = 3;
+  EFarmlandStateOver = 4;
+}
+

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_picture_type.proto";
+import "stru_dirty_mask.proto";
+
+message ImageInfo {
+  zproto.EPictureType type = 1;
+  uint32 size = 2;
+  uint32 version = 3;
+  string cos_url = 4;
+  string extra_info = 5;
+  uint32 review_start_time = 6;
+}
+

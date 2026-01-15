@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message DungeonVarData {
+  string name = 1;
+  int32 value = 2;
+}
+

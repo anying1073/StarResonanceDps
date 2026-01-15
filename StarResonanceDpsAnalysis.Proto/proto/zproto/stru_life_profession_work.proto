@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_life_profession_work_info.proto";
+import "stru_dirty_mask.proto";
+
+message LifeProfessionWork {
+  zproto.LifeProfessionWorkInfo life_profession_work_info = 1;
+  repeated zproto.LifeProfessionWorkInfo life_profession_work_history_info = 2;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReBeInitiateWarehouseRequest {
+  int64 warehouse_id = 1;
+  bool agree = 2;
+  int64 president_id = 3;
+}
+

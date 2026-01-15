@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ExploreTableBase {
+  int32 id = 1463;
+  int32 type = 673;
+  int32 target_id = 856;
+  int32 exploration = 229;
+  mlstring param = 1207;
+}
+
+message ExploreTableMgr {
+  map<int32, bokura.ExploreTableBase> datas = 1;
+}
+

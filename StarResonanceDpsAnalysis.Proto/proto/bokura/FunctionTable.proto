@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FunctionTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string note = 453;
+  string atlas = 1702;
+  string dialog_icon = 407;
+  string icon = 1153;
+  string_array function_order = 1467;
+  int32 parent_id = 1361;
+  int32 level = 1120;
+  int32 role_level = 567;
+  int32 quest_id = 874;
+  int_array quest_step_id = 481;
+  int32 timer_id = 190;
+  int32 on_off = 1716;
+  int32 preview = 719;
+  mlstring preview_text = 826;
+  int32 open_tips = 1023;
+}
+
+message FunctionTableMgr {
+  map<int32, bokura.FunctionTableBase> datas = 1;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_fish_record.proto";
+import "stru_dirty_mask.proto";
+
+message FishSocialData {
+  map<int32, zproto.FishRecord> fish_records = 1;
+}
+

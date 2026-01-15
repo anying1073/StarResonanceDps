@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message RandomRogueEntryParam {
+  int64 obj_uuid = 1;
+}
+

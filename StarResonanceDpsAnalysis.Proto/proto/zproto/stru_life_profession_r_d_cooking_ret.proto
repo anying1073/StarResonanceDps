@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_item.proto";
+
+message LifeProfessionRDCookingRet {
+  bool is_unlock_recipe = 1;
+  uint32 unlock_recipe_id = 2;
+  repeated zproto.Item items = 3;
+  zproto.EErrorCode err_code = 4;
+}
+

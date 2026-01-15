@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_receive_reward_status.proto";
+import "stru_dirty_mask.proto";
+
+message CommonAwardInfo {
+  int32 id = 1;
+  zproto.EReceiveRewardStatus award_status = 2;
+}
+

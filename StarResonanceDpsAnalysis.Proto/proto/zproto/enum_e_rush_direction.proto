@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ERushDirection {
+  ERushQueen = 0;
+  ERushFront = 1;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+message EmoClipsTableBase {
+  int32 id = 1463;
+  string soure_key = 1443;
+  int32 layer = 1035;
+  string address = 989;
+}
+
+message EmoClipsTableMgr {
+  map<int32, bokura.EmoClipsTableBase> datas = 1;
+}
+

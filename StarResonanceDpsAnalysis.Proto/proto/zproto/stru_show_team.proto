@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_apply_time.proto";
+import "enum_e_team_member_type.proto";
+import "stru_team_mem_data.proto";
+
+message ShowTeam {
+  int64 team_id = 1;
+  int64 leader_id = 2;
+  uint32 target_id = 3;
+  bool matching = 4;
+  string desc = 5;
+  repeated zproto.TeamMemData mems = 6;
+  uint64 set_target_time = 7;
+  repeated zproto.ApplyTime apply_time_list = 8;
+  zproto.ETeamMemberType team_member_type = 9;
+}
+

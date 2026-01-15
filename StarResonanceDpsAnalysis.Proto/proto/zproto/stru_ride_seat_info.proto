@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_passenger_info.proto";
+
+message RideSeatInfo {
+  int64 controller_id = 1;
+  repeated zproto.PassengerInfo passengers = 2;
+}
+

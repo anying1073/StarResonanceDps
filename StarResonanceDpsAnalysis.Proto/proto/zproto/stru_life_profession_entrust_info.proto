@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message LifeProfessionEntrustInfo {
+  uint32 life_profession_id = 1;
+  uint32 begin_time = 2;
+  uint32 end_time = 3;
+  uint32 base_id = 4;
+  uint32 count = 5;
+  uint32 cost_id = 6;
+  uint32 cost = 7;
+}
+

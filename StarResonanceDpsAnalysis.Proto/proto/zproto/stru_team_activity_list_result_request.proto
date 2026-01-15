@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_team_dungeon_check_result.proto";
+
+message TeamActivityListResultRequest {
+  zproto.TeamDungeonCheckResult result = 1;
+}
+

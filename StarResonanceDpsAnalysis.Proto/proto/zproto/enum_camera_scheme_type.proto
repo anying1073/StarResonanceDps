@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum CameraSchemeType {
+  DefaultScheme = 0;
+  CustomScheme = 1;
+}
+

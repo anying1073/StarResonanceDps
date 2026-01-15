@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ProcessAddRequestRequest {
+  int64 char_id = 2;
+  bool is_agree = 3;
+}
+

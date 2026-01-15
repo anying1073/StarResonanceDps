@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_apply_info.proto";
+import "enum_e_error_code.proto";
+
+message LeaderGetApplyListReply {
+  repeated zproto.ApplyInfo apply = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

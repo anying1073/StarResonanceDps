@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SceneEventTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int_array target_list = 360;
+  int32 difficult = 1602;
+  int_table complete_action = 559;
+  int32 time = 601;
+}
+
+message SceneEventTableMgr {
+  map<int32, bokura.SceneEventTableBase> datas = 1;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message CampRelationshipTableBase {
+  int32 map_id = 838;
+  int_table relationship_id = 1484;
+}
+
+message CampRelationshipTableMgr {
+  map<int32, bokura.CampRelationshipTableBase> datas = 1;
+}
+

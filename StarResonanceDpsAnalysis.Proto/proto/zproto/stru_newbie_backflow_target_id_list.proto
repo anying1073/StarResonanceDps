@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message NewbieBackflowTargetIdList {
+  repeated uint32 target_id_list = 1;
+}
+

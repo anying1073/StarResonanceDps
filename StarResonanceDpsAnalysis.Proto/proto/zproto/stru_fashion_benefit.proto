@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_fashion_benefit_collection_history.proto";
+import "stru_fashion_benefit_task_info.proto";
+import "stru_dirty_mask.proto";
+
+message FashionBenefit {
+  int32 last_reward_id = 1;
+  int32 level = 2;
+  int32 points_task = 3;
+  int32 points_cycle = 4;
+  int32 points_collection = 5;
+  map<int32, zproto.FashionBenefitTaskInfo> task_list = 6;
+  repeated zproto.FashionBenefitCollectionHistory collection_history = 7;
+  int64 next_refresh_time = 8;
+  int32 max_points = 9;
+  int64 last_add_time = 10;
+  int32 cur_day_max_points = 11;
+  int32 expire_cycle = 12;
+  int32 last_level = 13;
+  int64 firt_expire_time = 14;
+  repeated int32 last_reward_ids = 15;
+}
+

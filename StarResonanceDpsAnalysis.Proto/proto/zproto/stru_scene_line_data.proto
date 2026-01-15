@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_scene_line_status.proto";
+
+message SceneLineData {
+  uint32 line_id = 1;
+  zproto.ESceneLineStatus status = 2;
+  string scene_guid = 3;
+}
+

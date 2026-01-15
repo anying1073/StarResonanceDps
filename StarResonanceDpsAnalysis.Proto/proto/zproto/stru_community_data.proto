@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message CommunityData {
+  int64 community_id = 1;
+  int64 homeland_id = 2;
+  repeated int64 cohabitant_ids = 3;
+  int64 last_exit_cohabitation_time = 4;
+  int32 buy_count = 5;
+  int32 level = 6;
+}
+

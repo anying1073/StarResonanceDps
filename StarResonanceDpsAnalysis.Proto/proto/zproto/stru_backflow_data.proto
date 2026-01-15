@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_backflow_act_data.proto";
+import "stru_dirty_mask.proto";
+
+message BackflowData {
+  int64 begin_time = 1;
+  bool is_backflow = 2;
+  int32 season_id = 3;
+  int32 activate_times = 4;
+  bool is_not_show_tag = 5;
+  zproto.BackflowActData act_data = 6;
+}
+

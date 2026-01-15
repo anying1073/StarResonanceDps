@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECollideType {
+  CollideSphere = 0;
+  CollidePlane = 1;
+  CollideCylinder = 2;
+  CollideCube = 3;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_homeland_decoration_info.proto";
+import "stru_structure.proto";
+
+message InitHomeLandInfo {
+  bool is_outer = 1;
+  map<int64, zproto.Structure> structures = 2;
+  zproto.HomelandDecorationInfo decoration_info = 3;
+}
+

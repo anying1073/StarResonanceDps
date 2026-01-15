@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message GlobalWorldEventTableBase {
+  int32 index = 1400;
+  string id = 1463;
+  int_array value = 616;
+}
+
+message GlobalWorldEventTableMgr {
+  map<int32, bokura.GlobalWorldEventTableBase> datas = 1;
+}
+

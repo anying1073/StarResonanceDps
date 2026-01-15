@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+import "stru_basic_data.proto";
+import "stru_char_team.proto";
+import "stru_community_summary_data.proto";
+import "stru_privilege_data.proto";
+import "stru_profession_data.proto";
+import "stru_union_data.proto";
+
+message UserSummaryData {
+  zproto.BasicData basic_data = 1;
+  zproto.AvatarInfo avatar_info = 2;
+  zproto.ProfessionData profession_data = 4;
+  int64 fight_point = 5;
+  zproto.CharTeam team_data = 6;
+  zproto.UnionData union_data = 7;
+  zproto.CommunitySummaryData community_data = 8;
+  zproto.PrivilegeData privilege_data = 9;
+}
+

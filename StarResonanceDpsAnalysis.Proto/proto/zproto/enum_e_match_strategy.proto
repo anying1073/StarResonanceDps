@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EMatchStrategy {
+  EMatchStrategyNull = 0;
+  EMatchStrategyTeam = 1;
+  EMatchStrategyFreeFrom = 2;
+}
+

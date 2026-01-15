@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ItemPackageTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string icon = 1153;
+  int32 capacity = 197;
+  int32 show = 183;
+  mlstring_table classify = 746;
+  string consume = 1838;
+  int32 capacity_extra = 1638;
+}
+
+message ItemPackageTableMgr {
+  map<int32, bokura.ItemPackageTableBase> datas = 1;
+}
+

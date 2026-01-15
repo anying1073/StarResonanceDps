@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_match_cancel_type.proto";
+import "stru_match_info.proto";
+
+message CancelMatchResultNtfRequest {
+  zproto.EMatchCancelType cancel_type = 1;
+  zproto.MatchInfo match_info = 2;
+}
+

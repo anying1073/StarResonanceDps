@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_profession_project_list.proto";
+import "stru_project_extra_sync_data.proto";
+
+message SyncProjectListReply {
+  zproto.ProfessionProjectList sync_data = 1;
+  zproto.ProjectExtraSyncData current_project_sync_data = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

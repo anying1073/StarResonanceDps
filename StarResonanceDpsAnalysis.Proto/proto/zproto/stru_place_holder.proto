@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_place_holder_type.proto";
+
+message PlaceHolder {
+  zproto.PlaceHolderType type = 1;
+  bytes bytes_content = 2;
+}
+

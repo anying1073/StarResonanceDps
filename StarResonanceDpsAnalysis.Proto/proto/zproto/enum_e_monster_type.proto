@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EMonsterType {
+  Monster = 0;
+  Elite = 1;
+  Boss = 2;
+}
+

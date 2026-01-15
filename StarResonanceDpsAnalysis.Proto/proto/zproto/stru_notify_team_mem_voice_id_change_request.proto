@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_session_info.proto";
+
+message NotifyTeamMemVoiceIdChangeRequest {
+  zproto.SessionInfo session = 1;
+  int64 member_id = 2;
+  int32 voice_id = 3;
+}
+

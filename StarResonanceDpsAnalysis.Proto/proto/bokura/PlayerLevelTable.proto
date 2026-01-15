@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PlayerLevelTableBase {
+  int32 level = 1120;
+  int32 exp = 970;
+  int_table level_up_attr = 958;
+  int32 level_award_id = 560;
+  string icon = 1153;
+  mlstring explain_text = 323;
+}
+
+message PlayerLevelTableMgr {
+  map<int32, bokura.PlayerLevelTableBase> datas = 1;
+}
+

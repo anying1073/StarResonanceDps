@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+message mlstring {
+  int64 id = 1;
+}
+
+message mlstring_array {
+  repeated mlstring array = 1;
+}
+
+message mlstring_table {
+  repeated mlstring_array array = 1;
+}
+
+message string_array {
+  repeated string array = 1;
+}
+
+message string_table {
+  repeated string_array array = 1;
+}
+
+message int_array {
+  repeated int32 array = 1;
+}
+
+message int64_array {
+  repeated int64 array = 1;
+}
+
+message int_table {
+  repeated int_array array = 1;
+}
+
+message int64_table {
+  repeated int64_array array = 1;
+}
+
+message number_array {
+  repeated float array = 1;
+}
+
+message number_table {
+  repeated number_array array = 1;
+}
+
+message string_index {
+  map<int64, string> index = 1;
+}
+
+message vector2 {
+  float x = 1;
+  float y = 2;
+}
+
+message vector3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+message vector2_array {
+  repeated vector2 array = 1;
+}
+
+message vector3_array {
+  repeated vector3 array = 1;
+}
+
+message vector2_table {
+  repeated vector2_array array = 1;
+}
+
+message vector3_table {
+  repeated vector3_array array = 1;
+}
+

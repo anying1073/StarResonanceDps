@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message FunctionTimeData {
+  uint32 times = 1;
+  uint32 timestamp = 2;
+}
+

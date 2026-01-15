@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_session_info.proto";
+
+message SetVoiceIdReply {
+  zproto.SessionInfo session = 1;
+  int32 voice_id = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message BuffEffectTeleportBelt {
+  float dir = 1;
+  float strength = 2;
+  bool is_impact_hover = 3;
+  bool is_use_weight_factor = 4;
+}
+

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EquipEffectDetileTableBase {
+  int32 id = 1463;
+  int32 effect_lib_id = 672;
+  int32 lib_type = 908;
+  int_array equip_part = 1740;
+  int32 effect_type = 527;
+  int32 effect_config = 110;
+  int_table value_range = 1881;
+  int_table random_range = 1236;
+}
+
+message EquipEffectDetileTableMgr {
+  map<int32, bokura.EquipEffectDetileTableBase> datas = 1;
+}
+

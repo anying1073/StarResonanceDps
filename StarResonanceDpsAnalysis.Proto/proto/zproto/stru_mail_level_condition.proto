@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message MailLevelCondition {
+  int32 min = 1;
+  int32 max = 2;
+  bool include_level_up = 3;
+}
+

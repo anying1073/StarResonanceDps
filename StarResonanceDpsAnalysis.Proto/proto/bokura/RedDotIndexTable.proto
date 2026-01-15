@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message RedDotIndexTableBase {
+  int32 id = 1463;
+  string red_sign_key = 1816;
+  int32 function_id = 149;
+  int_array close_check = 1875;
+  int_array lose_check = 588;
+  int_array children_id = 1155;
+  int_array show_type = 1131;
+  string picture_path = 1204;
+  string effect_path = 1536;
+  int_array off_set = 509;
+  int_array size = 1135;
+  int32 server_type = 718;
+}
+
+message RedDotIndexTableMgr {
+  map<int32, bokura.RedDotIndexTableBase> datas = 1;
+}
+

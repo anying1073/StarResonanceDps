@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_chit_chat_msg.proto";
+import "enum_e_error_code.proto";
+
+message SendChitChatMsgReply {
+  zproto.ChitChatMsg show_msg = 3;
+  int64 cd_end_time = 4;
+  zproto.EErrorCode err_code = 5;
+}
+

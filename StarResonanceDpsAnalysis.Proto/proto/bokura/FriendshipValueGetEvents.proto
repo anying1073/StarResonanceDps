@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FriendshipValueGetEventsBase {
+  int32 id = 1463;
+  int_table event_parameter = 1467;
+  int32 once_value = 1018;
+  int32 day_max_value = 1875;
+}
+
+message FriendshipValueGetEventsMgr {
+  map<int32, bokura.FriendshipValueGetEventsBase> datas = 1;
+}
+

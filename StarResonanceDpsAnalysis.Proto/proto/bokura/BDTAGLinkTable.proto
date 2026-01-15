@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BDTAGLinkTableBase {
+  int32 id = 1463;
+  string note = 453;
+  int32 note_type = 256;
+  int32 find_type = 830;
+  string find_body = 1554;
+  string_table find_conditions = 1892;
+  string target_para = 1655;
+  int32 skill_level_type = 1660;
+  int32 target_node_type = 1957;
+}
+
+message BDTAGLinkTableMgr {
+  map<int32, bokura.BDTAGLinkTableBase> datas = 1;
+}
+

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message FasionWearRequest {
+  map<int32, int32> fasion_type_to_fasion_id_map = 1;
+}
+

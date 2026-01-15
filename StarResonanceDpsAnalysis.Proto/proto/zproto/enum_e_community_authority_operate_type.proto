@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECommunityAuthorityOperateType {
+  CommunityAuthorityOperateType = 0;
+  CommunityAuthorityOperateTypeSwitch = 1;
+  CommunityAuthorityOperateTypeSelect = 2;
+  CommunityAuthorityOperateTypeMultiSelect = 3;
+}
+

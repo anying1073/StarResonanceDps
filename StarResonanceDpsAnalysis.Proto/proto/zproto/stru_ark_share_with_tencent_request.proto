@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message ArkShareWithTencentRequest {
+  uint64 target_char_id = 1;
+  string selef_open_id = 2;
+  string selef_token = 3;
+}
+

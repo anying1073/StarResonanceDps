@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message TargetTableBase {
+  int32 id = 1463;
+  int32 target_type = 736;
+  int32 num = 947;
+  int32 scene_id = 1506;
+  int_array param = 1207;
+  string target_pos = 1118;
+  bool is_team_share = 1925;
+  mlstring target_des = 1279;
+  bool is_show_progress = 56;
+  mlstring_array sp_variable = 280;
+  mlstring_array sp_variable_limit = 315;
+  mlstring_array sp_variable_name = 2006;
+  int_array is_show_sp_variable_progress = 800;
+}
+
+message TargetTableMgr {
+  map<int32, bokura.TargetTableBase> datas = 1;
+}
+

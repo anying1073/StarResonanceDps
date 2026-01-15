@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_private_chat_target_info.proto";
+
+message GetPrivateChatTargetsReply {
+  repeated zproto.PrivateChatTargetInfo target_list = 3;
+  zproto.EErrorCode err_code = 4;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_picture_info.proto";
+import "stru_dirty_mask.proto";
+
+message AvatarInfo {
+  int32 avatar_id = 1;
+  zproto.PictureInfo profile = 2;
+  zproto.PictureInfo half_body = 3;
+  int32 business_card_style_id = 4;
+  int32 avatar_frame_id = 5;
+}
+

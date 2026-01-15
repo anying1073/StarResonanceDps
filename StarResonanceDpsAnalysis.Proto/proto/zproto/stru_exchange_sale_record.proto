@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message ExchangeSaleRecord {
+  uint32 num = 1;
+  uint32 rate = 2;
+  uint32 money = 3;
+  int64 time = 4;
+  zproto.Item item_info = 5;
+}
+

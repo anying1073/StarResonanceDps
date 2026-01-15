@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message SeasonQuestData {
+  uint32 id = 1;
+  int32 target_num = 2;
+  int32 award = 3;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EActivityObtainStatus {
+  ActivityObtainStatusNone = 0;
+  ActivityObtainStatusCan = 1;
+  ActivityObtainStatusAlready = 2;
+}
+

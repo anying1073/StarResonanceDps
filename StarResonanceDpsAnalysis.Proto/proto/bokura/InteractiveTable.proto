@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message InteractiveTableBase {
+  int32 id = 1463;
+  int32 trigger_mode = 730;
+  int32 trigger_btn_id = 482;
+  int32 trigger_type = 1894;
+  number_array trigger_range = 360;
+  int32 trigger_angle = 1636;
+  int_table trigger_condition = 1709;
+  int32 is_more = 1258;
+  int32 trigger_time = 1115;
+  int32 insightusable = 71;
+  int32 model_invisible = 391;
+  int_table condition = 1634;
+  string action = 1280;
+  string_array action_param = 1533;
+  int32 sort_id = 1586;
+  int32 tips_group = 1901;
+}
+
+message InteractiveTableMgr {
+  map<int32, bokura.InteractiveTableBase> datas = 1;
+}
+

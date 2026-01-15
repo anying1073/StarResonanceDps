@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_fight_source_info.proto";
+import "stru_buff_effect_logic_info.proto";
+
+message BuffInfo {
+    optional int32 BuffUuid = 1;
+    optional int32 BaseId = 2;
+    optional int32 Level = 3;
+    optional int64 HostUuid = 4;
+    optional int32 TableUuid = 5;
+    optional int64 CreateTime = 6;
+    optional int64 FireUuid = 7;
+    optional int32 Layer = 8;
+    optional int32 PartId = 9;
+    optional int32 Count = 10;
+    optional int32 Duration = 11;
+    optional FightSourceInfo FightSourceInfo = 12;
+    optional BuffEffectLogicInfo LogicEffect = 13;
+}

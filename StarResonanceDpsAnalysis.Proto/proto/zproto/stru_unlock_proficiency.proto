@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message UnlockProficiency {
+  repeated int32 unlock_buffer_id = 1;
+}
+

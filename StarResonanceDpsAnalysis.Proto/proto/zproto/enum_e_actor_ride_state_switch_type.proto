@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EActorRideStateSwitchType {
+  ActorRideStateSwitchTypeParallel = 0;
+  ActorRideStateSwitchTypeSwitch = 1;
+  ActorRideStateSwitchTypeStopAction = 2;
+}
+

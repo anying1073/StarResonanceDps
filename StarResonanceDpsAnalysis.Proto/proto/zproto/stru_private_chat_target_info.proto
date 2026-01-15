@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_chit_chat_msg.proto";
+
+message PrivateChatTargetInfo {
+  int64 char_id = 1;
+  int64 max_read_msg_id = 2;
+  bool is_top = 3;
+  zproto.ChitChatMsg latest_msg = 4;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_drop_award_history.proto";
+import "stru_drop_container_single.proto";
+import "stru_dirty_mask.proto";
+
+message DropContainerInfo {
+  map<int32, zproto.DropContainerSingle> drop_containers = 1;
+  map<int32, zproto.DropAwardHistory> drop_award_histories = 2;
+}
+

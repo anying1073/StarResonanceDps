@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+enum MahjongSettleType {
+  MahjongSettleTypeNone = 0;
+  Draw = 1;
+  DrawFull = 2;
+  Ronghe = 3;
+  Zimo = 4;
+  SettleCoin = 5;
+  NineDraw = 10;
+  FourWindDraw = 11;
+  FourKanDraw = 12;
+  FourLizhi = 13;
+}
+

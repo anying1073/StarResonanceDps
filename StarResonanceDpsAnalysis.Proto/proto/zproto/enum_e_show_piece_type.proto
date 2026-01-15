@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EShowPieceType {
+  ShowPieceNull = 0;
+  ShowPieceNormalAction = 1;
+  ShowPieceEmote = 2;
+  ShowPieceDoubleAction = 3;
+  ShowPieceSticker = 4;
+}
+

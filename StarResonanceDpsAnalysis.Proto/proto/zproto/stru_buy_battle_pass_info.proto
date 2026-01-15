@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message BuyBattlePassInfo {
+  int32 level = 1;
+  int32 id = 2;
+}
+

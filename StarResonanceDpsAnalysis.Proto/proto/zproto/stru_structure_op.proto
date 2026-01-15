@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_structure.proto";
+import "enum_structure_op_type.proto";
+
+message StructureOp {
+  zproto.StructureOpType op_type = 1;
+  zproto.Structure structure = 2;
+}
+

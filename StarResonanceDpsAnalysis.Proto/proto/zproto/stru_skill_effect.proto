@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_sync_damage_info.proto";
+
+message SkillEffect {
+    optional int64 Uuid = 1;
+    repeated SyncDamageInfo Damages = 2;
+    optional int64 TotalDamage = 3;
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_int_vec3.proto";
+import "stru_dirty_mask.proto";
+
+message FaceData {
+  map<int32, int32> face_info = 1;
+  map<int32, zproto.IntVec3> color_info = 2;
+  float height = 3;
+  int32 body_size = 4;
+  int32 voice_id = 5;
+}
+

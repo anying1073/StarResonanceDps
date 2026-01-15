@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_photo_graph_show.proto";
+
+message UnionBaseData {
+  int64 id = 1;
+  repeated uint32 icon = 2;
+  string name = 3;
+  uint32 level = 4;
+  uint32 num = 5;
+  uint32 max_num = 6;
+  repeated uint32 tags = 7;
+  string declaration = 8;
+  int64 president_id = 9;
+  uint32 online_num = 10;
+  string slogan = 11;
+  zproto.PhotoGraphShow cover_photo_info = 12;
+  uint32 cover_photo_id = 13;
+}
+

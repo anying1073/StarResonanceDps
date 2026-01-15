@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message LifeProfessionCookingReq {
+  int32 recipe_id = 1;
+  int32 count = 2;
+  repeated int32 materials = 3;
+}
+

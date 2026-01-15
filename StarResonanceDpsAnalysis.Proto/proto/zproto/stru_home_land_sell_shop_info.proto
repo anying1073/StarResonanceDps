@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_collecting_item.proto";
+
+message HomeLandSellShopInfo {
+  bool is_init = 1;
+  int64 next_reflush_time = 2;
+  map<int32, zproto.CollectingItem> collecting_items = 3;
+  int64 new_next_reflush_sec = 4;
+}
+

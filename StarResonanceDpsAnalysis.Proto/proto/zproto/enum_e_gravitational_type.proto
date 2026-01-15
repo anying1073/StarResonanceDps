@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EGravitationalType {
+  Gravitational = 0;
+  Repulsion = 1;
+  LinearGravitational = 2;
+}
+

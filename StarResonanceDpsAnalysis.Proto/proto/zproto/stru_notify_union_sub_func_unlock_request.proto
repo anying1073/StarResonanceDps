@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_union_sub_func.proto";
+
+message NotifyUnionSubFuncUnlockRequest {
+  zproto.UnionSubFunc sub_func_type = 1;
+}
+

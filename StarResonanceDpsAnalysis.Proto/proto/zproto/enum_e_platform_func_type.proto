@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EPlatformFuncType {
+  EFuncTypeDefault = 0;
+  EHeadProfile = 1;
+  EPhotograph = 2;
+  EUnionPhoto = 3;
+  EIdIpUnionFormalPhoto = 4;
+}
+

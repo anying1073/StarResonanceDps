@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetFriendRemarksRequest {
+  int64 char_id = 2;
+  string remark = 3;
+}
+

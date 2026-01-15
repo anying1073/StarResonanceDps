@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum CommunityWarehouseOpType {
+  CommunityWarehouseOpTypeAdd = 0;
+  CommunityWarehouseOpTypeUpdate = 1;
+  CommunityWarehouseOpTypeDelete = 2;
+}
+

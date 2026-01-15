@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESkillLogicState {
+  ESkillLogicNone = 0;
+  ESkillCombo = 1;
+  ESkillAfterCache = 2;
+  ESkillAfter = 3;
+  ESkillHang = 4;
+  ESkillSpecialBreakOff = 5;
+  ERushCanInterrupt = 6;
+  EChangeProfession = 7;
+}
+

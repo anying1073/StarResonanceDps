@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package bokura;
+
+message EntityDynAttrPeopleNumTableBase {
+  int32 id = 1463;
+}
+
+message EntityDynAttrPeopleNumTableMgr {
+  map<int32, bokura.EntityDynAttrPeopleNumTableBase> datas = 1;
+}
+

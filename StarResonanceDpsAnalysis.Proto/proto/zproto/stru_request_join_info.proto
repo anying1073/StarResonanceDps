@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_apply_join_info.proto";
+import "stru_user_summary_data.proto";
+
+message RequestJoinInfo {
+  zproto.UserSummaryData social_data = 1;
+  zproto.ApplyJoinInfo apply_info = 2;
+}
+

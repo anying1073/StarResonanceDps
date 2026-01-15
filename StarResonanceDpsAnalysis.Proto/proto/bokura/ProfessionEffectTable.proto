@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ProfessionEffectTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  mlstring short_description = 1271;
+  mlstring description = 75;
+  int_array arrtr_id = 1648;
+  int_array value_range = 1881;
+  int_table sign_id = 1578;
+  int32 res_type = 39;
+  int_array buffs = 3;
+  int_table arrtrs = 558;
+  int32 normal_lib_id = 1543;
+  int32 pro_lib_id = 586;
+  bool if_close = 838;
+}
+
+message ProfessionEffectTableMgr {
+  map<int32, bokura.ProfessionEffectTableBase> datas = 1;
+}
+

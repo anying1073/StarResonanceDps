@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message WeaponSkinTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string icon = 1153;
+  mlstring intro = 740;
+  int_array weapon_model_id = 173;
+  int32 weapon_id = 952;
+  int32 original = 522;
+  int32 unlock = 1666;
+  mlstring unlock_des = 1991;
+}
+
+message WeaponSkinTableMgr {
+  map<int32, bokura.WeaponSkinTableBase> datas = 1;
+}
+

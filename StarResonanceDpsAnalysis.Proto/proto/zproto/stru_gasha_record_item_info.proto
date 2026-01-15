@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message GashaRecordItemInfo {
+  int32 config_id = 1;
+  uint32 count = 2;
+  int64 time = 3;
+  int32 quality = 4;
+}
+

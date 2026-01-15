@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_server_state_object_interaction_param.proto";
+import "stru_dirty_mask.proto";
+
+message ScenePersonalObject {
+  map<int64, zproto.ServerStateObjectInteractionParam> personal_obj_data = 1;
+}
+

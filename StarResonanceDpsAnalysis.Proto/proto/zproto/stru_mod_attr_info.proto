@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ModAttrInfo {
+  int32 type = 1;
+  int32 id = 2;
+  int32 value = 3;
+  map<uint32, string> effect_parameter = 4;
+}
+

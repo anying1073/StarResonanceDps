@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_life_profession_alchemy_info.proto";
+import "stru_life_profession_basic.proto";
+import "stru_life_profession_recipe.proto";
+import "stru_life_profession_target_info.proto";
+import "stru_dirty_mask.proto";
+
+message LifeProfession {
+  map<int32, zproto.LifeProfessionBasic> profession_info = 1;
+  map<int32, zproto.LifeProfessionTargetInfo> life_target_info = 2;
+  map<int32, zproto.LifeProfessionRecipe> life_profession_recipe = 3;
+  zproto.LifeProfessionAlchemyInfo life_profession_alchemy_info = 4;
+  map<int32, int32> spare_energy = 5;
+  int32 point = 6;
+}
+

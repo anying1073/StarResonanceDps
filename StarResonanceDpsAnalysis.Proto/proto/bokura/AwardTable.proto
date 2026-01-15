@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AwardTableBase {
+  int32 award_id = 1636;
+  int32 award_type = 286;
+  int_table group_content = 1304;
+  int_table group_num = 1180;
+  number_array group_rates = 1603;
+  int_array group_weight = 1949;
+  int32 award_time = 953;
+  int_array bind_info = 1890;
+  int_table pro_item = 765;
+  number_table pro_rule = 656;
+  int32 level_up_conditions = 1210;
+  int_table level_up_config = 195;
+  int_array level_up_package = 1896;
+  int_table preview_item = 1527;
+  int_table preview_item_info = 1522;
+  int_array limit_type = 92;
+  string_table limit_params = 1714;
+  int_array equip_lv_limit = 1752;
+  int_array attr_fix_ratio = 925;
+  int32 preview_use_limite = 1454;
+  int_array sign_para = 2813;
+  int32 hide_preview = 2019;
+}
+
+message AwardTableMgr {
+  map<int32, bokura.AwardTableBase> datas = 1;
+}
+

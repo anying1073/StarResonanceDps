@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message WorldEventTableBase {
+  int32 event_id = 1932;
+  string name = 439;
+  int32 event_type = 1355;
+  int32 score = 1699;
+  int32 timer_id = 190;
+  int32 notice_time = 857;
+  int32 cycle = 954;
+  int32 last_time = 999;
+  int_array event_form = 988;
+  int32 count = 2025;
+  int32 alert = 1863;
+  int32 award = 187;
+  int_table full_award = 352;
+  int32 start_message = 518;
+  string phase_time = 1605;
+}
+
+message WorldEventTableMgr {
+  map<int32, bokura.WorldEventTableBase> datas = 1;
+}
+

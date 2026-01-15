@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message StartPlayingDungeonInfo {
+  bool is_use_key = 1;
+}
+

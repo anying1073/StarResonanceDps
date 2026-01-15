@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBuffAbnormalSubType {
+  EAbnormalSubNone = 0;
+  EAbnormalTypeStun = 101;
+  EAbnormalTypeFrozen = 201;
+  EAbnormalTypePetrochemical = 202;
+  EAbnormalTypeParalysis = 203;
+  EAbnormalTypeProvoke = 301;
+  EAbnormalTypeFear = 302;
+  EAbnormalTypeSilence = 401;
+  EAbnormalTypeSlow = 402;
+  EAbnormalTypeSlowdown = 403;
+  EAbnormalTypeWounded = 501;
+  EAbnormalTypePoisoning = 502;
+  EAbnormalTypeBleed = 503;
+  EAbnormalTypeFiring = 504;
+  EAbnormalTypeGeneralOverlay = 505;
+  EAbnormalTypeGeneral = 506;
+}
+

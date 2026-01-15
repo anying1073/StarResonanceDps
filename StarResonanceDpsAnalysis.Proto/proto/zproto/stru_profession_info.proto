@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_profession_skill_info.proto";
+import "stru_dirty_mask.proto";
+
+message ProfessionInfo {
+  int32 profession_id = 1;
+  int32 level = 2;
+  int64 experience = 3;
+  map<int32, zproto.ProfessionSkillInfo> skill_info_map = 4;
+  repeated int32 active_skill_ids = 6;
+  map<int32, int32> slot_skill_info_map = 7;
+  int32 use_skin_id = 8;
+}
+

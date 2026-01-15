@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityTransferOwnershipAgreeRequest {
+  int64 homeland_id = 1;
+  bool is_agree = 2;
+}
+

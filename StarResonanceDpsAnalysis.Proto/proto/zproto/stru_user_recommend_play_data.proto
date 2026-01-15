@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message UserRecommendPlayData {
+  map<int32, int64> play_mail = 1;
+}
+

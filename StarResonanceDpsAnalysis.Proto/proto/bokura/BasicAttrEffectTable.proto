@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BasicAttrEffectTableBase {
+  int32 id = 1463;
+  number_table attr_strength_table = 1040;
+  int32 attr_strength_max = 1502;
+  number_table attr_vitality_table = 847;
+  int32 attr_vitality_max = 406;
+  number_table attr_dexterity_table = 1100;
+  int32 attr_dexterity_max = 1989;
+  number_table attr_intelligence_table = 944;
+  int32 attr_intelligence_max = 2021;
+  number_table attr_mind_table = 637;
+  int32 attr_mind_max = 1971;
+  number_table attr_observe_table = 385;
+  int32 attr_observe_max = 1690;
+  mlstring attr_introduction = 1417;
+}
+
+message BasicAttrEffectTableMgr {
+  map<int32, bokura.BasicAttrEffectTableBase> datas = 1;
+}
+

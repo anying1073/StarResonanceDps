@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_master_mode_diff_dungeon_info.proto";
+
+message PlaceHolderMasterMode {
+  map<int32, zproto.MasterModeDiffDungeonInfo> master_mode_info = 1;
+  string user_name = 2;
+  int32 season_id = 3;
+}
+

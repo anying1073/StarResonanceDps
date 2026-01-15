@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message FightResCD {
+    optional int32 ResId = 1;
+    optional int64 BeginTime = 2;
+    optional int32 Duration = 3;
+    optional int32 ValidCDTime = 4;
+}

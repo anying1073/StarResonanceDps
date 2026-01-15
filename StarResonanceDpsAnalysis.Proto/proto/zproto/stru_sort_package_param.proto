@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_sort_item_param.proto";
+
+message SortPackageParam {
+  int32 package_type = 1;
+  repeated zproto.SortItemParam item_params = 2;
+}
+

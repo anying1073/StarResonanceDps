@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_profession_project_common_sync_data.proto";
+
+message UnlockProjectReply {
+  zproto.ProfessionProjectCommonSyncData sync_data = 1;
+  int32 current_project_id = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

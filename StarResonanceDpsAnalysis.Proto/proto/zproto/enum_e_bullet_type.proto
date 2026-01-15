@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBulletType {
+  BulletTypeServer = 0;
+  BulletTypeFake = 1;
+  BulletTypeClient = 2;
+}
+

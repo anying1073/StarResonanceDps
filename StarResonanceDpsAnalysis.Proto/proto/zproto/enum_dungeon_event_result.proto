@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum DungeonEventResult {
+  DungeonEventResultNull = 0;
+  DungeonEventResultSuccess = 1;
+  DungeonEventResultTimeOut = 2;
+  DungeonEventResultFailed = 3;
+  DungeonEventResultEnd = 4;
+}
+

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_device_info.proto";
+import "stru_launch_param.proto";
+
+message LoginRequest {
+  string open_id = 2;
+  string token = 3;
+  int32 sdk_type = 4;
+  int32 channel_id = 5;
+  int32 os = 6;
+  int32 platform_type = 7;
+  zproto.DeviceInfo device_info = 8;
+  string client_version = 9;
+  string protocol_version = 10;
+  string config_version = 11;
+  int32 area_id = 12;
+  string i_os_ad_service_token = 13;
+  string pay_ext_data = 14;
+  string client_resource_version = 15;
+  zproto.LaunchParam launch_param = 18;
+  string area_id_token = 19;
+  bool is_cloud_game = 20;
+  string distinct_id = 21;
+  repeated string bound_providers = 22;
+  int32 language = 23;
+  string gclid = 24;
+}
+

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_camera_pattern_type.proto";
+import "enum_camera_scheme_type.proto";
+
+message cameraSchemeInfo {
+  zproto.CameraPatternType camera_pattern_type = 1;
+  zproto.CameraSchemeType camera_scheme_type = 2;
+  string scheme_key = 3;
+  string scheme_name = 4;
+  uint64 scheme_time = 5;
+  float exposure = 6;
+  float contrast = 7;
+  float saturation = 8;
+  float horizontal = 9;
+  float vertical = 10;
+  float angle = 11;
+  bool depth_tag = 12;
+  float aperture = 13;
+  float near_blend = 14;
+  float far_blend = 15;
+  bool focus_tag = 16;
+  float focus = 17;
+  float world_time = 18;
+  bool is_head_follow = 19;
+  bool is_eye_follow = 20;
+  map<uint64, bool> show_entity_dicts = 21;
+  map<uint64, bool> show_ui_dicts = 22;
+  string filter_path = 23;
+  uint64 id = 24;
+}
+

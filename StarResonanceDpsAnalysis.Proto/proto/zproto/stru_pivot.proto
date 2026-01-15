@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_pivot_info.proto";
+import "stru_dirty_mask.proto";
+
+message Pivot {
+  map<int32, zproto.PivotInfo> pivots = 1;
+  map<int32, zproto.PivotInfo> map_pivots = 2;
+}
+

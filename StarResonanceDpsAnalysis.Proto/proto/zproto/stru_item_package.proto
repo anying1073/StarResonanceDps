@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_package.proto";
+import "stru_dirty_mask.proto";
+
+message ItemPackage {
+  map<int32, zproto.Package> packages = 1;
+  map<int32, int32> unlock_items = 2;
+  int32 quick_bar = 3;
+  int32 item_uuid = 4;
+  map<int32, int64> use_group_cd = 5;
+}
+

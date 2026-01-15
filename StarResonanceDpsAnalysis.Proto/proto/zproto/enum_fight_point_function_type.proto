@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+enum FightPointFunctionType {
+  FightPointFunctionTypeNone = 0;
+  FightPointFunctionType_RoleBasic = 100;
+  FightPointFunctionType_RoleLevel = 101;
+  FightPointFunctionType_Equip = 200;
+  FIghtPointFunctionType_Weapon = 201;
+  FightPointFunctionType_EquipRefine = 202;
+  FightPointFunctionType_Mod = 300;
+  FightPointFunctionType_Skill = 400;
+  FightPointFunctionType_Aoyi = 401;
+  FightPointFunctionType_SlotSkill = 402;
+  FightPointFunctionType_Medal = 500;
+  FightPointFunctionType_Talent = 600;
+  FightPointFunctionType_SeasonTalent = 700;
+}
+

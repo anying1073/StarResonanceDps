@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EFantasyType {
+  EFantasyType_None = 0;
+  EFantasyType_Attack = 1;
+  EFantasyType_Auxiliary = 2;
+  EFantasyType_Defense = 3;
+  EFantasyType_Universal = 4;
+}
+

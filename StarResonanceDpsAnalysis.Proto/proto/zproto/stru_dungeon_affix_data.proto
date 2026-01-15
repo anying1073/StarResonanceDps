@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message DungeonAffixData {
+  repeated uint32 affix_data = 1;
+}
+

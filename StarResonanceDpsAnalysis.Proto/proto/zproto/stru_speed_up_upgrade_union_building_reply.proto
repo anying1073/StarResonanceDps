@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_building.proto";
+
+message SpeedUpUpgradeUnionBuildingReply {
+  zproto.UnionBuilding upgrade_build_info = 1;
+  int32 self_speed_times = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

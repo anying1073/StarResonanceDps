@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_team_base_info.proto";
+import "stru_team_mem_data.proto";
+
+message TeamInfo {
+  int64 team_id = 1;
+  map<int64, zproto.TeamMemData> members = 2;
+  zproto.TeamBaseInfo base_info = 3;
+}
+

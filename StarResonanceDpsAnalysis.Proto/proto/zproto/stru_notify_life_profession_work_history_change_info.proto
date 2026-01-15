@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_life_profession_work_info.proto";
+
+message NotifyLifeProfessionWorkHistoryChangeInfo {
+  repeated zproto.LifeProfessionWorkInfo work_infos = 1;
+}
+

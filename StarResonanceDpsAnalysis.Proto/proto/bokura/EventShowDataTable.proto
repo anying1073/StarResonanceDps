@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EventShowDataTableBase {
+  int64 id = 1463;
+  float start = 678;
+  float duration = 544;
+  float end = 1415;
+  bool is_attacker = 920;
+  int32 state_id = 308;
+  int32 group_id = 196;
+  int32 event_type = 1355;
+  string_table param_list = 1310;
+}
+
+message EventShowDataTableMgr {
+  map<int64, bokura.EventShowDataTableBase> datas = 1;
+}
+

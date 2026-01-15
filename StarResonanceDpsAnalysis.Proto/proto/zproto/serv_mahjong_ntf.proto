@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_notify_mahjong_action_request.proto";
+
+message MahjongNtf {
+
+  message NotifyMahjongAction {
+    zproto.NotifyMahjongActionRequest v_request = 1;
+  }
+}
+

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_equip_attr.proto";
+import "stru_equip_enchant_info.proto";
+import "stru_equip_info.proto";
+import "stru_equip_suit_info.proto";
+import "stru_dirty_mask.proto";
+
+message EquipList {
+  map<int32, zproto.EquipInfo> equip_list = 1;
+  zproto.EquipAttr equip_attr = 2;
+  map<uint64, zproto.EquipAttr> equip_recast_info = 4;
+  map<int64, zproto.EquipEnchantInfo> equip_enchant = 5;
+  map<int32, zproto.EquipSuitInfo> suit_info_dict = 6;
+}
+

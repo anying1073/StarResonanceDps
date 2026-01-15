@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_mail_base.proto";
+
+message GetMailListReply {
+  map<int64, zproto.MailBase> mail_list = 2;
+  int32 size = 3;
+  zproto.EErrorCode err_code = 4;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_exchange_price_item_data.proto";
+
+message GetExchangeItemReply {
+  repeated zproto.ExchangePriceItemData items = 2;
+  int32 total_page = 3;
+  int32 cur_page = 4;
+  zproto.EErrorCode err_code = 5;
+}
+

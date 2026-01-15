@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EQuestStatusType {
+  QuestDefault = 0;
+  QuestCanAccept = 1;
+  QuestAccept = 2;
+  QuestFinish = 3;
+  QuestEnd = 4;
+  QuestNotEnough = 5;
+}
+

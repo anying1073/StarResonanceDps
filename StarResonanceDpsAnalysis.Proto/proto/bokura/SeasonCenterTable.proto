@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message SeasonCenterTableBase {
+  int32 function_id = 149;
+  string name_remark = 1535;
+  int32 sort = 1643;
+}
+
+message SeasonCenterTableMgr {
+  map<int32, bokura.SeasonCenterTableBase> datas = 1;
+}
+

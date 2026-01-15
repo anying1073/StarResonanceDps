@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_cancel_match_result_ntf_request.proto";
+import "stru_enter_match_result_ntf_request.proto";
+import "stru_match_ready_status_ntf_request.proto";
+
+message MatchNtf {
+
+  message EnterMatchResultNtf {
+    zproto.EnterMatchResultNtfRequest v_request = 1;
+  }
+
+  message CancelMatchResultNtf {
+    zproto.CancelMatchResultNtfRequest v_request = 1;
+  }
+
+  message MatchReadyStatusNtf {
+    zproto.MatchReadyStatusNtfRequest v_request = 1;
+  }
+}
+

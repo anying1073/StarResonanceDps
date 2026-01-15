@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message ProfessionSkillResetRequest {
+  int32 profession_id = 1;
+}
+

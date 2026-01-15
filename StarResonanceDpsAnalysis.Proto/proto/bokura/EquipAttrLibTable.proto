@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EquipAttrLibTableBase {
+  int32 id = 1463;
+  int32 attr_lib_id = 819;
+  int_array equip_level_range = 178;
+  int_array equip_part = 1740;
+  int_array attr = 889;
+  number_table value_cal = 605;
+}
+
+message EquipAttrLibTableMgr {
+  map<int32, bokura.EquipAttrLibTableBase> datas = 1;
+}
+

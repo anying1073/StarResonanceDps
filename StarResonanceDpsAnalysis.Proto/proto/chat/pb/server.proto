@@ -1,0 +1,462 @@
+syntax = "proto3";
+
+package chat.pb;
+
+enum CHAT_SERVER_CMD {
+  CHAT_SERVER_CMD_INVALID = 0;
+  CHAT_SERVER_REGISTER_REQ = 201;
+  CHAT_SERVER_REGISTER_RSP = 202;
+  CHAT_SERVER_GET_CLIENT_TOKEN_REQ = 203;
+  CHAT_SERVER_GET_CLIENT_TOKEN_RSP = 204;
+  CHAT_SERVER_CREATE_CHANNEL_REQ = 205;
+  CHAT_SERVER_CREATE_CHANNEL_RSP = 206;
+  CHAT_SERVER_DEL_CHANNEL_REQ = 207;
+  CHAT_SERVER_DEL_CHANNEL_RSP = 208;
+  CHAT_SERVER_JOIN_CHANNEL_REQ = 209;
+  CHAT_SERVER_JOIN_CHANNEL_RSP = 210;
+  CHAT_SERVER_OUT_CHANNEL_REQ = 211;
+  CHAT_SERVER_OUT_CHANNEL_RSP = 212;
+  CHAT_SERVER_GET_CHANNEL_MEMBER_REQ = 213;
+  CHAT_SERVER_GET_CHANNEL_MEMBER_RSP = 214;
+  CHAT_SERVER_SYNC_CHANNEL_MEMBER_REQ = 215;
+  CHAT_SERVER_SYNC_CHANNEL_MEMBER_RSP = 216;
+  CHAT_SERVER_ADD_BLACKLIST_REQ = 217;
+  CHAT_SERVER_ADD_BLACKLIST_RSP = 218;
+  CHAT_SERVER_REMOVE_BLACKLIST_REQ = 219;
+  CHAT_SERVER_REMOVE_BLACKLIST_RSP = 220;
+  CHAT_SERVER_GET_BLACKLIST_REQ = 221;
+  CHAT_SERVER_GET_BLACKLIST_RSP = 222;
+  CHAT_SERVER_SYNC_BLACKLIST_REQ = 223;
+  CHAT_SERVER_SYNC_BLACKLIST_RSP = 224;
+  CHAT_SERVER_CHANNEL_BAN_REQ = 225;
+  CHAT_SERVER_CHANNEL_BAN_RSP = 226;
+  CHAT_SERVER_CHANNEL_GROUP_BAN_REQ = 227;
+  CHAT_SERVER_CHANNEL_GROUP_BAN_RSP = 228;
+  CHAT_SERVER_PERSONAL_BAN_REQ = 229;
+  CHAT_SERVER_PERSONAL_BAN_RSP = 230;
+  CHAT_SERVER_GET_PERSONAL_BAN_INFO_REQ = 231;
+  CHAT_SERVER_GET_PERSONAL_BAN_INFO_RSP = 232;
+  CHAT_SERVER_GET_PERSONAL_CHANNEL_LEVEL_REQ = 233;
+  CHAT_SERVER_GET_PERSONAL_CHANNEL_LEVEL_RSP = 234;
+  CHAT_SERVER_UPDATE_PERSONAL_CHANNEL_LEVEL_REQ = 235;
+  CHAT_SERVER_UPDATE_PERSONAL_CHANNEL_LEVEL_RSP = 236;
+  CHAT_SERVER_SYNC_USER_CHANNEL_REQ = 237;
+  CHAT_SERVER_SYNC_USER_CHANNEL_RSP = 238;
+  CHAT_SERVER_SYSTEM_PRIVATE_CHAT_REQ = 239;
+  CHAT_SERVER_SYSTEM_PRIVATE_CHAT_RSP = 240;
+  CHAT_SERVER_SYSTEM_CHANNEL_CHAT_REQ = 241;
+  CHAT_SERVER_SYSTEM_CHANNEL_CHAT_RSP = 242;
+  CHAT_SERVER_SYSTEM_WORLD_CHAT_REQ = 243;
+  CHAT_SERVER_SYSTEM_WORLD_CHAT_RSP = 244;
+  CHAT_SERVER_CREATE_CHANNEL_GROUP_REQ = 245;
+  CHAT_SERVER_CREATE_CHANNEL_GROUP_RSP = 246;
+  CHAT_SERVER_DEL_CHANNEL_GROUP_REQ = 247;
+  CHAT_SERVER_DEL_CHANNEL_GROUP_RSP = 248;
+  CHAT_SERVER_GET_CHANNEL_GROUP_INFO_REQ = 249;
+  CHAT_SERVER_GET_CHANNEL_GROUP_INFO_RSP = 250;
+  CHAT_SERVER_CHANNEL_GROUP_SWITCH_REQ = 251;
+  CHAT_SERVER_CHANNEL_GROUP_SWITCH_RSP = 252;
+  CHAT_SERVER_DEL_PRIVATE_CHAT_RECORD_REQ = 253;
+  CHAT_SERVER_DEL_PRIVATE_CHAT_RECORD_RSP = 254;
+  CHAT_SERVER_DEL_CHANNEL_CHAT_RECORD_REQ = 255;
+  CHAT_SERVER_DEL_CHANNEL_CHAT_RECORD_RSP = 256;
+  CHAT_SERVER_DEL_WORLD_CHAT_RECORD_REQ = 257;
+  CHAT_SERVER_DEL_WORLD_CHAT_RECORD_RSP = 258;
+  CHAT_SERVER_CLEAR_USER_REQ = 259;
+  CHAT_SERVER_CLEAR_USER_RSP = 260;
+  CHAT_SERVER_USERID_REGISTER_REQ = 261;
+  CHAT_SERVER_USERID_REGISTER_RSP = 262;
+  CHAT_SERVER_CROSS_PRIVATE_CHAT_REQ = 263;
+  CHAT_SERVER_CROSS_PRIVATE_CHAT_RSP = 264;
+}
+
+message ServerRegisterReq {
+  string server_id = 1;
+  string server_token = 2;
+}
+
+message ServerRegisterRsp {
+  chat.pb.ServerRegisterRsp.ServerRegisterCode code = 1;
+  string msg = 2;
+  string server_id = 3;
+
+  enum ServerRegisterCode {
+    SUCCESS = 0;
+    TOKEN_INVALID = 1;
+    ALREADY_REGISTER = 2;
+  }
+}
+
+message GetClientTokenReq {
+  string client_id = 1;
+}
+
+message GetClientTokenRsp {
+  chat.pb.GetClientTokenRsp.GetClientTokenCode code = 1;
+  string msg = 2;
+  string client_token = 3;
+  string client_id = 4;
+
+  enum GetClientTokenCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+  }
+}
+
+message CreateChannelReq {
+  string channel_id = 1;
+}
+
+message CreateChannelRsp {
+  chat.pb.CreateChannelRsp.CreateChannelCode code = 1;
+  string msg = 2;
+  string channel_id = 3;
+
+  enum CreateChannelCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    ALREADY_CREATE = 2;
+  }
+}
+
+message DelChannelReq {
+  string channel_id = 1;
+}
+
+message DelChannelRsp {
+  chat.pb.DelChannelRsp.DelChannelCode code = 1;
+  string msg = 2;
+  string channel_id = 3;
+
+  enum DelChannelCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    CHANNEL_ID_INVALID = 2;
+  }
+}
+
+message JoinChannelReq {
+  string channel_id = 1;
+  string client_id = 2;
+}
+
+message JoinChannelRsp {
+  chat.pb.JoinChannelRsp.JoinChannelCode code = 1;
+  string msg = 2;
+  string channel_id = 3;
+  string client_id = 4;
+
+  enum JoinChannelCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    CHANNEL_ID_INVALID = 2;
+    JOIN_ALREADY = 3;
+    JOIN_GROUP_CHANNEL_FAILED = 4;
+  }
+}
+
+message OutChannelReq {
+  string channel_id = 1;
+  string client_id = 2;
+}
+
+message OutChannelRsp {
+  chat.pb.OutChannelRsp.OutChannelCode code = 1;
+  string msg = 2;
+  string channel_id = 3;
+  string client_id = 4;
+
+  enum OutChannelCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    CHANNEL_ID_INVALID = 2;
+    NOT_IN_CHANNEL = 3;
+  }
+}
+
+message GetChannelMemberReq {
+  string channel_id = 1;
+}
+
+message GetChannelMemberRsp {
+  chat.pb.GetChannelMemberRsp.GetChannelMemberCode code = 1;
+  string msg = 2;
+  repeated string member_list = 3;
+  string channel_id = 4;
+
+  enum GetChannelMemberCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    CHANNEL_ID_INVALID = 2;
+  }
+}
+
+message SyncChannelMemberReq {
+  string channel_id = 1;
+  repeated string member_list = 2;
+}
+
+message SyncChannelMemberRsp {
+  chat.pb.SyncChannelMemberRsp.SyncChannelMember code = 1;
+  string msg = 2;
+  string channel_id = 3;
+
+  enum SyncChannelMember {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    CHANNEL_ID_INVALID = 2;
+  }
+}
+
+message ChannelBanReq {
+  string channel_id = 1;
+  bool is_ban = 2;
+  repeated string black_list = 3;
+  repeated string white_list = 4;
+}
+
+message ChannelBanRsp {
+  chat.pb.ChannelBanRsp.ChannelBanCode code = 1;
+  string msg = 2;
+  string channel_id = 3;
+
+  enum ChannelBanCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    CHANNEL_ID_INVALID = 2;
+  }
+}
+
+message ChannelGroupBanReq {
+  string group_id = 1;
+  string client_id = 2;
+  bool is_ban = 3;
+}
+
+message ChannelGroupBanRsp {
+  chat.pb.ChannelGroupBanRsp.ChannelGroupBan code = 1;
+  string msg = 2;
+  string group_id = 3;
+  string client_id = 4;
+
+  enum ChannelGroupBan {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    GROUP_ID_INVALID = 2;
+  }
+}
+
+message PersonalBanReq {
+  string client_id = 1;
+  bool is_ban = 2;
+  uint32 ban_time = 3;
+}
+
+message PersonalBanRsp {
+  chat.pb.PersonalBanRsp.PersonalBanCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+
+  enum PersonalBanCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+  }
+}
+
+message GetPersonalChannelLevelReq {
+  string channel_id = 1;
+  string client_id = 2;
+}
+
+message GetPersonalChannelLevelRsp {
+  chat.pb.GetPersonalChannelLevelRsp.GetPersonalChannelLevelCode code = 1;
+  string msg = 2;
+  uint32 level = 3;
+  string channel_id = 4;
+  string client_id = 5;
+
+  enum GetPersonalChannelLevelCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    CHANNEL_ID_INVALID = 2;
+  }
+}
+
+message UpdatePersonalChannelLevelReq {
+  string channel_id = 1;
+  string client_id = 2;
+  uint32 level = 3;
+}
+
+message UpdatePersonalChannelLevelRsp {
+  chat.pb.UpdatePersonalChannelLevelRsp.UpdatePersonalChannelLevelCode code = 1;
+  string msg = 2;
+  string channel_id = 3;
+  string client_id = 4;
+
+  enum UpdatePersonalChannelLevelCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+    CHANNEL_ID_INVALID = 2;
+  }
+}
+
+message SyncUserChannelReq {
+  string client_id = 1;
+  repeated string channel_id_list = 2;
+}
+
+message SyncUserChannelRsp {
+  chat.pb.SyncUserChannelRsp.SyncUserChannelCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+
+  enum SyncUserChannelCode {
+    SUCCESS = 0;
+    NOT_REGISTER = 1;
+  }
+}
+
+message SystemPrivateChatReq {
+  string to_client_id = 1;
+  string msg = 2;
+}
+
+message SystemPrivateChatRsp {
+  chat.pb.SystemPrivateChatRsp.PrivateChatCode code = 1;
+  string msg = 2;
+  string to_client_id = 3;
+
+  enum PrivateChatCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+  }
+}
+
+message SystemChannelChatReq {
+  string channel_id = 1;
+  string msg = 2;
+}
+
+message SystemChannelChatRsp {
+  chat.pb.SystemChannelChatRsp.ChannelChatCode code = 1;
+  string msg = 2;
+  string channel_id = 3;
+
+  enum ChannelChatCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    CHANNEL_ID_INVALID = 3;
+  }
+}
+
+message SystemWorldChatReq {
+  string msg = 1;
+}
+
+message SystemWorldChatRsp {
+  chat.pb.SystemWorldChatRsp.WorldChatCode code = 1;
+  string msg = 2;
+
+  enum WorldChatCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+  }
+}
+
+message CreateChannelGroupReq {
+  string group_id = 1;
+  uint32 default_channel_count = 2;
+  uint32 max_channel_member_count = 3;
+}
+
+message CreateChannelGroupRsp {
+  chat.pb.CreateChannelGroupRsp.CreateChannelCode code = 1;
+  string msg = 2;
+  string group_id = 3;
+
+  enum CreateChannelCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    ALREADY_CREATE = 3;
+  }
+}
+
+message DelChannelGroupReq {
+  string group_id = 1;
+}
+
+message DelChannelGroupRsp {
+  chat.pb.DelChannelGroupRsp.CreateChannelCode code = 1;
+  string msg = 2;
+  string group_id = 3;
+
+  enum CreateChannelCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    GROUP_ID_INVALID = 3;
+  }
+}
+
+message ClearUserReq {
+  string user_id = 1;
+}
+
+message ClearUserRsp {
+  chat.pb.ClearUserRsp.ClearUserCode code = 1;
+  string msg = 2;
+  string user_id = 3;
+
+  enum ClearUserCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    USER_ID_INVALID = 3;
+  }
+}
+
+message UserIDRegisterReq {
+  repeated string user_id_list = 1;
+}
+
+message UserIDRegisterRsp {
+  chat.pb.UserIDRegisterRsp.UserIDRegisterCode code = 1;
+  string msg = 2;
+
+  enum UserIDRegisterCode {
+    SUCCESS = 0;
+    SERVER_NOT_REGISTER = 1;
+  }
+}
+
+message CrossPrivateChatReq {
+  string from_client_id = 1;
+  bytes baseinfo = 2;
+  string to_group_id = 3;
+  string to_client_id = 4;
+  string msg = 5;
+}
+
+message CrossPrivateChatRsp {
+  chat.pb.CrossPrivateChatRsp.CrossPrivateChatCode code = 1;
+  string msg = 2;
+  string from_client_id = 3;
+  string to_group_id = 4;
+  string to_client_id = 5;
+  uint32 left_cd_time = 6;
+
+  enum CrossPrivateChatCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    IN_BAN = 3;
+    CD_LIMIT = 4;
+  }
+}
+

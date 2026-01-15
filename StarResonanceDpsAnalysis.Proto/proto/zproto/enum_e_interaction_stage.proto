@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EInteractionStage {
+  EStageDefault = 0;
+  EStageRequest = 1;
+  EStageResponse = 2;
+  EStageInteracting = 3;
+}
+

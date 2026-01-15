@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EnvironmentResonanceTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  mlstring desc = 1953;
+  int32 pivot_id = 1300;
+  mlstring button = 1927;
+  int_array skill = 655;
+  int32 position = 1863;
+  int32 scene_tag = 131;
+  int32 time = 601;
+  int_array trigger_buff_ids = 1397;
+  int32 slot_type = 517;
+}
+
+message EnvironmentResonanceTableMgr {
+  map<int32, bokura.EnvironmentResonanceTableBase> datas = 1;
+}
+

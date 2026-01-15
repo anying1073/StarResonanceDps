@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBulletDirectionType {
+  ESummonerDir = 0;
+  ETargetPos = 1;
+  ETargetEnt = 2;
+}
+

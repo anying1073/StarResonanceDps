@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message ExchangeLowestPriceReply {
+  int32 config_id = 1;
+  int64 lowest_price = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_buff_attr_show_info.proto";
+
+message BuffAttrEffect {
+  repeated zproto.BuffAttrShowInfo attr_show_info = 1;
+}
+

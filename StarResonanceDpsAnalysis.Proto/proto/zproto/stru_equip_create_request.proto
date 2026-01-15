@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message EquipCreateRequest {
+  int32 equip_config_id = 1;
+  int64 consume_equip_uuid = 2;
+  int32 function_id = 3;
+}
+

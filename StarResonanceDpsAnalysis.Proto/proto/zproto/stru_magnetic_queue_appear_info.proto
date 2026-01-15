@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message MagneticQueueAppearInfo {
+    repeated int64 PassengerUuidList = 1;
+    optional bool IsCircle = 2;
+    optional float PathLength = 3;
+}

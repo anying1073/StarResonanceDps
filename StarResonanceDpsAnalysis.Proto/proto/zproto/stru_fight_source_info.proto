@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message FightSourceInfo {
+  int32 fight_source_type = 1;
+  int32 source_config_id = 2;
+}
+

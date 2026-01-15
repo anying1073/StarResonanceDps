@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_attr.proto";
+import "stru_map_attr.proto";
+
+message AttrCollection {
+    optional int64 Uuid = 1;
+    repeated Attr Attrs = 2;
+    repeated MapAttr MapAttrs = 3;
+}

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message MonsterAwardInfo {
+  int32 monster_id = 1;
+}
+

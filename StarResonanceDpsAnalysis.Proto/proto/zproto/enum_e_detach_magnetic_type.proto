@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EDetachMagneticType {
+  EOperate = 0;
+  EFall = 1;
+}
+

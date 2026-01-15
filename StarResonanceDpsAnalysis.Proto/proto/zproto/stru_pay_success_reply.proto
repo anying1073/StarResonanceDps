@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message PaySuccessReply {
+  zproto.EErrorCode err_code = 1;
+}
+

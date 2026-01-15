@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_ret.proto";
+
+message ReqJoinUnionsReply {
+  repeated zproto.UnionRet unions_ret = 1;
+  int64 next_join_time = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

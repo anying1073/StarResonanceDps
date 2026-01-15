@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message LinkingInfo {
+  bool is_delete = 1;
+  int32 effectid = 2;
+  int32 buff_uuid = 3;
+  repeated int64 target_uuids = 4;
+}
+

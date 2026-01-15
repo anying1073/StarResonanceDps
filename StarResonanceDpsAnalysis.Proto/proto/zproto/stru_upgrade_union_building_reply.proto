@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_building.proto";
+
+message UpgradeUnionBuildingReply {
+  zproto.UnionBuilding upgrade_build_info = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

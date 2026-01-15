@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SceneAreaTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int_array station = 569;
+  int32 region = 12;
+  string bgm_event = 515;
+  number_array name_position = 1735;
+}
+
+message SceneAreaTableMgr {
+  map<int32, bokura.SceneAreaTableBase> datas = 1;
+}
+

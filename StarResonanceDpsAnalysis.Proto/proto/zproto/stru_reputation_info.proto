@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ReputationInfo {
+  uint64 reputation_exp = 1;
+  int32 reputation_level = 2;
+  map<int32, bool> award_map = 3;
+}
+

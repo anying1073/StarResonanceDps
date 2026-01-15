@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_single_authority_info.proto";
+
+message CommunityAuthorityInfo {
+  map<int32, bool> authority = 1;
+  map<int32, zproto.CommunitySingleAuthorityInfo> authority_data = 2;
+}
+

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_item.proto";
+
+message ReceiveUnionActivityAwardReply {
+  repeated int32 received_point_award_ids = 1;
+  repeated zproto.Item items = 2;
+  int64 union_last_refresh_time = 3;
+  int64 union_current_refresh_time = 4;
+  int64 last_point = 5;
+  int64 current_point = 6;
+  zproto.EErrorCode err_code = 7;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message CommonTargetActivityInfo {
+  uint32 finish_num = 1;
+  bool has_received = 2;
+}
+

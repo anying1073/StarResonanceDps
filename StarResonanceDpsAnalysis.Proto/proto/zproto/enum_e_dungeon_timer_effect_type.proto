@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EDungeonTimerEffectType {
+  EDungeonTimerEffectTypeNull = 0;
+  EDungeonTimerEffectTypeAdd = 1;
+  EDungeonTimerEffectTypeSub = 2;
+  EDungeonTimerEffectTypeChange = 3;
+}
+

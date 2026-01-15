@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BeHitEffectTableBase {
+  int32 id = 1463;
+  int32 weapon_hit_type = 1337;
+  int32 fleshy_type = 1419;
+  string_array effect_array = 137;
+  float frame_ratio = 373;
+}
+
+message BeHitEffectTableMgr {
+  map<int32, bokura.BeHitEffectTableBase> datas = 1;
+}
+

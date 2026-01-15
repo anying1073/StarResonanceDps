@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package bokura;
+
+message ModelWpNpcTableBase {
+  int32 model_prefab_id = 5;
+  string model_prefab_desc = 1152;
+  int32 sex = 1062;
+  string skeleton = 1130;
+  string anim_template = 1244;
+  string emo_prefix = 857;
+  string head = 664;
+  string anim_head_template = 139;
+  string hair = 574;
+  string anim_hair_template = 128;
+  string headwear = 709;
+  string back = 251;
+  string weaponl = 1310;
+  string weaponr = 1690;
+  string tail = 1292;
+  string weapon_idle_anim = 102;
+  string pinch_config = 832;
+}
+
+message ModelWpNpcTableMgr {
+  map<int32, bokura.ModelWpNpcTableBase> datas = 1;
+}
+

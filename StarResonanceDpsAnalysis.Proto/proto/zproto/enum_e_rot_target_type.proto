@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ERotTargetType {
+  RotTargetDefault = 0;
+  RotTargetTargetRot = 1;
+  RotTargetTarget = 2;
+  RotTargetInputDir = 3;
+  RotTargetReverseInputDir = 4;
+}
+

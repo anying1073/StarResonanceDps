@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EEntitySortType {
+  EntitySortType_None = 0;
+  EntitySortType_Distance = 1;
+  EntitySortType_Camp = 2;
+  EntitySortType_Buff = 3;
+  EntitySortType_Profession = 5;
+  EntitySortType_Hate = 6;
+  EntitySortType_HpValue = 7;
+  EntitySortType_HpRate = 8;
+  EntitySortType_TeamActor = 9;
+  EntitySortType_ProfessionRange = 10;
+  EEntitySortType_Attribute = 11;
+  EntitySortType_RandWeight = 12;
+}
+

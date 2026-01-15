@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_dance_history.proto";
+import "stru_union_history_active.proto";
+import "stru_user_union_hunt_info.proto";
+import "stru_dirty_mask.proto";
+
+message UserUnion {
+  int64 union_id = 1;
+  uint64 next_join_time = 2;
+  map<int64, uint64> req_union_times = 3;
+  bool join_flag = 4;
+  repeated int64 collected_ids = 5;
+  int64 active_award_reset_time = 6;
+  repeated int32 received_award_ids = 7;
+  repeated zproto.UnionHistoryActive history_active_points = 8;
+  int64 active_last_refresh_time = 9;
+  repeated int32 finish_daily_active_ids = 10;
+  uint64 leave_time = 11;
+  zproto.UnionDanceHistory dance_record = 13;
+  zproto.UserUnionHuntInfo user_union_hunt_info = 14;
+}
+

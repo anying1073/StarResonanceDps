@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SeasonDungeonAffix {
+  repeated int32 affixes = 1;
+}
+

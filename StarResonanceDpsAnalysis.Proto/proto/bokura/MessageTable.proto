@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MessageTableBase {
+  int32 id = 1463;
+  mlstring content = 783;
+  int32 type = 673;
+  float duration_time = 584;
+  mlstring chat_name = 1341;
+  float delay = 399;
+  int_array repeat_play = 1037;
+  int_array show_channel = 619;
+  bool filter_rule = 1567;
+  bool is_show_in_chat = 1135;
+  bool typewriter_effect = 1435;
+  int32 interrupt = 1764;
+  string audio = 1970;
+}
+
+message MessageTableMgr {
+  map<int32, bokura.MessageTableBase> datas = 1;
+}
+

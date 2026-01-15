@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mahjong_operation.proto";
+import "stru_mahjong_player_self.proto";
+import "stru_mahjong_player_show.proto";
+
+message MahjongSyncMessage {
+  int32 dealer_index = 1;
+  int32 wind = 2;
+  int32 wait_time = 3;
+  repeated int32 doras = 4;
+  repeated zproto.MahjongOperation operations = 5;
+  int32 current_index = 6;
+  int32 card_index = 7;
+  repeated zproto.MahjongPlayerShow players = 8;
+  zproto.MahjongPlayerSelf player_self = 9;
+  int32 lizhi_count = 10;
+  int32 honba_counter = 11;
+  int32 zhuang_counter = 12;
+  bool force_refresh = 13;
+  string mahjong_table_guid = 14;
+}
+

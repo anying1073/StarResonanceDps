@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_monster_hunt_target.proto";
+import "stru_dirty_mask.proto";
+
+message MonsterHuntInfo {
+  map<int32, zproto.MonsterHuntTarget> monster_hunt_list = 1;
+  int32 cur_level = 2;
+  int32 cur_exp = 3;
+  map<int32, int32> level_award_flag = 4;
+  map<int32, int64> monster_hunt_refrsh_time = 6;
+}
+

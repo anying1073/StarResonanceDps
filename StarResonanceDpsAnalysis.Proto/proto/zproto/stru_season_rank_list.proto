@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_season_rank_info.proto";
+import "stru_dirty_mask.proto";
+
+message SeasonRankList {
+  map<uint32, zproto.SeasonRankInfo> season_rank_list = 1;
+  uint32 show_armband_id = 2;
+}
+

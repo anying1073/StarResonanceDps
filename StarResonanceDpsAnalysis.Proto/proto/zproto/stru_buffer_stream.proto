@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package zproto;
+
+message BufferStream {
+  bytes Buffer = 1; // exposes as Buffer[] in generated code
+}

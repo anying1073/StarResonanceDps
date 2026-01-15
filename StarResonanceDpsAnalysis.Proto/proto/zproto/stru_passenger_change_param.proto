@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message PassengerChangeParam {
+    optional bool IsAddPassenger = 1;
+    optional int64 AddOrRemoveUuid = 2;
+}

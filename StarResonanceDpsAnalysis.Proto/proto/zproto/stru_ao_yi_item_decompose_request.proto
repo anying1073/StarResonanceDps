@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message AoYiItemDecomposeRequest {
+  map<uint64, uint32> ao_yi_items = 2;
+}
+

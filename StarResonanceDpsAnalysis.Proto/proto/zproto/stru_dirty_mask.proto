@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message DirtyMask {
+  repeated int64 dirty_key = 1;
+}
+

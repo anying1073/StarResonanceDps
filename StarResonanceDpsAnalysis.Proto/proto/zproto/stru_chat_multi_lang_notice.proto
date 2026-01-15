@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ChatMultiLangNotice {
+  uint32 config_id = 1;
+  repeated string args = 2;
+}
+

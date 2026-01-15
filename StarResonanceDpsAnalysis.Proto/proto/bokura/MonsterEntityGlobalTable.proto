@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MonsterEntityGlobalTableBase {
+  int32 u_id = 2028;
+  number_array position = 686;
+}
+
+message MonsterEntityGlobalTableMgr {
+  map<int32, bokura.MonsterEntityGlobalTableBase> datas = 1;
+}
+

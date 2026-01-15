@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ParkourRecord {
+  uint32 time = 1;
+  uint32 state = 2;
+  uint32 perfect_time = 3;
+}
+

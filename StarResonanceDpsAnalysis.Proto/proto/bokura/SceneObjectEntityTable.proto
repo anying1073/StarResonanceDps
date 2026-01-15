@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SceneObjectEntityTableBase {
+  int32 u_id = 2028;
+  int32 id = 1463;
+  int32 group_id = 196;
+  number_array position = 686;
+  float rotation = 783;
+  float rotationx = 1044;
+  float rotationz = 23;
+  int32 refresh_mode = 1638;
+  bool refresh_after_died = 459;
+  bool const_point_refresh = 811;
+  float refresh_range_min = 1556;
+  float refresh_range_max = 1572;
+  bool multi_points_refresh = 1408;
+  number_array refresh_points = 1121;
+  float refresh_time_min = 514;
+  float refresh_time_max = 895;
+  int32 camp_id = 261;
+  int32 visible = 788;
+  int32 usable = 1633;
+  int32 data_mask = 1460;
+  int32 state_type = 1966;
+  int32 space_layer_index = 1039;
+  string option_data = 853;
+  float override_scale = 1301;
+  int32 ent_mask = 1865;
+  float alert_range = 181;
+  int_table refresh_condition = 1476;
+  bool ignore_visual_layer = 1863;
+  bool is_not_ground = 1489;
+  bool is_static = 1021;
+  int32 default_state = 1528;
+  int32 visual_layer_id = 755;
+  int32 source_type = 380;
+  int_table interaction_template = 1682;
+  string_array interaction_event = 1343;
+}
+
+message SceneObjectEntityTableMgr {
+  map<int32, bokura.SceneObjectEntityTableBase> datas = 1;
+}
+

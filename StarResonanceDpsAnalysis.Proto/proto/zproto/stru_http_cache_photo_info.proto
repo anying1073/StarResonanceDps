@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message httpCachePhotoInfo {
+  map<string, string> http_cache_photo_info_dict = 1;
+}
+

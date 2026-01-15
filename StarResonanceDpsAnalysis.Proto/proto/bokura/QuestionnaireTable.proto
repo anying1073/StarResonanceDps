@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message QuestionnaireTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string link = 105;
+  int32 level_limit = 1507;
+  int32 day_limit = 927;
+  int32 mail_id = 265;
+  int_table award = 187;
+}
+
+message QuestionnaireTableMgr {
+  map<int32, bokura.QuestionnaireTableBase> datas = 1;
+}
+

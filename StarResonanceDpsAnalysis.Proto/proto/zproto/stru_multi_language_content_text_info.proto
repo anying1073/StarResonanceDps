@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message MultiLanguageContentTextInfo {
+  int32 language = 1;
+  string content_text = 2;
+}
+

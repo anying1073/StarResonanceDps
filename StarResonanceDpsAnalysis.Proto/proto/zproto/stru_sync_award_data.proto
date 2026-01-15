@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_level_up_award.proto";
+import "stru_dirty_mask.proto";
+
+message SyncAwardData {
+  map<uint32, zproto.LevelUpAward> level_up_award_infos = 1;
+}
+

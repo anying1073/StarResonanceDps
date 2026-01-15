@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ActionGroupFaceClip {
+  float begin_time = 1;
+  float end_time = 2;
+  float fade_time = 3;
+  int32 face_id = 4;
+}
+

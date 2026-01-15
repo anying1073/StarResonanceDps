@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReqKickOutRequest {
+  int64 union_id = 2;
+  repeated int64 v_kick_ids = 3;
+}
+

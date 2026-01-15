@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_authority_info.proto";
+
+message NotifyCommunityGlobalAuthorityChangeRequest {
+  zproto.CommunityAuthorityInfo authority_info = 1;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message BindGroupWithTencentRequest {
+  int64 union_id = 1;
+  int32 group_type = 2;
+  string group_id = 3;
+}
+

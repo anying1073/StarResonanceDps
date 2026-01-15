@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETimerType {
+  TimerTypeNull = 0;
+  TimerType_Point = 1;
+  TimerType_Day = 2;
+  TimerType_Month = 3;
+  TimerType_Week = 4;
+  TimerType_Interval = 5;
+}
+

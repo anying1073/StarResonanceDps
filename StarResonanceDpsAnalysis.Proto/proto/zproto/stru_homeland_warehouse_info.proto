@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_warehouse_grid.proto";
+
+message HomelandWarehouseInfo {
+  map<int32, zproto.CommunityWarehouseGrid> warehouse_grids = 1;
+}
+

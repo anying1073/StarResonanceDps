@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message LockRogueEntryParam {
+  int64 obj_uuid = 1;
+  bool unlock = 2;
+  int32 index = 3;
+}
+

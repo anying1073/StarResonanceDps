@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+import "stru_dirty_mask.proto";
+
+message LifeProfessionWorkInfo {
+  uint32 life_profession_id = 1;
+  uint32 begin_time = 2;
+  uint32 end_time = 3;
+  uint32 count = 4;
+  uint32 cost = 5;
+  repeated zproto.Item reward = 6;
+  uint32 cost_id = 7;
+}
+

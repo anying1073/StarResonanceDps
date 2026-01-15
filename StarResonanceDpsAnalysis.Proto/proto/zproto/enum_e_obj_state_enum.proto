@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EObjStateEnum {
+  EObjStateInteractive = 0;
+  EObjStateInvalid = 1;
+  EObjStateDead = 2;
+  EObjStateNotInteractive = 3;
+  EObjStateBattle = 4;
+  EObjStateNotVisible = 5;
+}
+

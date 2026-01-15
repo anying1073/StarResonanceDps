@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message DeleteUnionPhotoRequest {
+  int64 union_id = 1;
+  uint32 photo_id = 2;
+}
+

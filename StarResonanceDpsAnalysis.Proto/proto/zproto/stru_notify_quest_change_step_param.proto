@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyQuestChangeStepParam {
+  int32 quest_id = 1;
+  int32 last_step = 2;
+  int32 last_step_status = 3;
+  int32 curr_setp = 4;
+  int32 last_quest_status = 5;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_match_player_show_info.proto";
+
+message PlayerMahjongData {
+  int64 player_id = 1;
+  bool is_robot = 2;
+  zproto.MatchPlayerShowInfo match_player_show_info = 3;
+}
+

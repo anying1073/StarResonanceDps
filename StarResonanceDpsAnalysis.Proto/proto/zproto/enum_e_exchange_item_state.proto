@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EExchangeItemState {
+  ExchangeItemStateNone = 0;
+  ExchangeItemStatePublic = 1;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_world_activity_param.proto";
+
+message WorldActivityNtf {
+
+  message WorldActivityInfoNtf {
+    zproto.WorldActivityParam info = 1;
+  }
+}
+

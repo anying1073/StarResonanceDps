@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message InviteJoinUnionRequest {
+  int64 invite_id = 2;
+  string invite_name = 3;
+  string union_name = 4;
+  int64 union_id = 5;
+  int64 charid = 6;
+}
+

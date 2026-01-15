@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_buff_effect_logic_pb_type.proto";
+
+message BuffEffectLogicInfo {
+    optional EBuffEffectLogicPbType EffectType = 1;
+    optional bytes RawData = 2;
+    optional bool IsLoop = 3;
+}

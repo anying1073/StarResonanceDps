@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_multi_language_content_text_info.proto";
+
+message NoticeMultiLanguageInfo {
+  uint64 send_time = 2;
+  bool is_loop = 3;
+  int32 loop_number = 4;
+  uint32 loop_time_interval = 5;
+  int64 end_time = 6;
+  repeated zproto.MultiLanguageContentTextInfo content_text_info = 7;
+}
+

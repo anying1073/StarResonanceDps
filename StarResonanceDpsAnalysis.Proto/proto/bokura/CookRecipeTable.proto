@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message CookRecipeTableBase {
+  int32 id = 1463;
+  mlstring recipe_name = 2026;
+  int_table consumable_id = 1714;
+  int32 bad_dish_id = 1988;
+  mlstring bad_dish_name = 471;
+  int32 bad_dish_condition = 614;
+  int32 unlock_condition = 1014;
+}
+
+message CookRecipeTableMgr {
+  map<int32, bokura.CookRecipeTableBase> datas = 1;
+}
+

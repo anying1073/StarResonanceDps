@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_user_activity_reward_info.proto";
+import "stru_dirty_mask.proto";
+
+message UserActivityInfo {
+  uint64 start_time = 2;
+  uint64 end_time = 3;
+  map<uint32, zproto.UserActivityRewardInfo> rewards = 4;
+}
+

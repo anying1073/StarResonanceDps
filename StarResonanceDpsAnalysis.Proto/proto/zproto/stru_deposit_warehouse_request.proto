@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message DepositWarehouseRequest {
+  int64 item_uuid = 1;
+  int64 item_num = 3;
+}
+

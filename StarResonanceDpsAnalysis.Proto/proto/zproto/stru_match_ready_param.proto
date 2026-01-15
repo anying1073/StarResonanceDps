@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message MatchReadyParam {
+  bool is_ready = 1;
+  string match_token = 2;
+}
+

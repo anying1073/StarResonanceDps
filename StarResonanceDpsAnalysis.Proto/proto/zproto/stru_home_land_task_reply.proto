@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_home_land_player_task_info.proto";
+
+message HomeLandTaskReply {
+  zproto.EErrorCode err_code = 1;
+  zproto.HomeLandPlayerTaskInfo task_info = 2;
+}
+

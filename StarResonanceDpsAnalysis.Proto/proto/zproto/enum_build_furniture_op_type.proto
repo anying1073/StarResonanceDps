@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum BuildFurnitureOpType {
+  BuildFurnitureOpAdd = 0;
+  BuildFurnitureOpUpdate = 1;
+  BuildFurnitureOpDelete = 2;
+}
+

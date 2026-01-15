@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+
+message ReviewAvatarInfoNtfRequest {
+  zproto.AvatarInfo avatar_info = 2;
+}
+

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EFunctionType {
+  FunctionTypeNull = 0;
+  FunctionTypeMonsterHunt = 100804;
+  FunctionTypeTeamVoice = 101008;
+  FunctionTypeTeamVoiceSpeak = 101009;
+  FunctionTypeChat = 102100;
+  FunctionTypeRide = 102800;
+  FunctionTypeProfessionLv = 104201;
+  FunctionTypeLinearDungeon = 300100;
+  FunctionTypeHeroDungeonNormal = 300201;
+  FunctionTypeHeroDungeonChallenge = 300202;
+  FunctionTypePlanetMemory = 300301;
+  FunctionTypeUnionHunt = 500151;
+  FunctionTypeJumpClimbUp = 500889;
+  FunctionTypeTreasure = 501201;
+  FunctionTypeChangeName = 700102;
+  FunctionTypeWorldEvent = 800100;
+  FunctionTypeSeasonQuest = 800501;
+  FunctionTypeSeasonRank = 800503;
+  FunctionTypeSeasonAchievement = 800504;
+  FunctionTypeSeasonActivation = 800505;
+  FunctionTypeExchangeDiamondToSilverCoin = 800701;
+  FunctionTypeExchangeDiamondToCopperCoin = 800702;
+}
+

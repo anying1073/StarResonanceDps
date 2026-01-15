@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_affix_data.proto";
+import "enum_e_item_bind_flag.proto";
+import "stru_equip_attr.proto";
+import "stru_item_extend_data.proto";
+import "stru_mod_attr.proto";
+import "stru_mod_new_attr.proto";
+import "stru_dirty_mask.proto";
+
+message Item {
+  int64 uuid = 1;
+  int32 config_id = 2;
+  int64 count = 3;
+  int32 invalid = 4;
+  zproto.EItemBindFlag bind_flag = 5;
+  int64 create_time = 6;
+  int64 expire_time = 7;
+  int32 opt_src = 8;
+  int32 quality = 9;
+  zproto.EquipAttr equip_attr = 10;
+  zproto.ModAttr mod_attr = 11;
+  int64 cool_down_expire_time = 12;
+  zproto.ModNewAttr mod_new_attr = 13;
+  zproto.AffixData affix_data = 14;
+  map<int32, zproto.ItemExtendData> extend_attr = 15;
+  int32 reward_id = 16;
+  map<int32, int32> gene_sequence = 17;
+  int32 gene_source = 18;
+  bool locked = 19;
+}
+

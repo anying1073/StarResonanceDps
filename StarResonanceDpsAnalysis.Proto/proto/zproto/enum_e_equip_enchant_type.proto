@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EEquipEnchantType {
+  EEquipEnchantNone = 0;
+  EEquipEnchantOrdinary = 1;
+  EEquipEnchantIntermediate = 2;
+  EEquipEnchantAdvanced = 3;
+}
+

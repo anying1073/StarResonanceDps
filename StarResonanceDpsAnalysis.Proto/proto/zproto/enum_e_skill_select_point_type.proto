@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESkillSelectPointType {
+  ENouseStrategy = 0;
+  EHorizontalRayCast = 1;
+  EFittedGroundPoint = 2;
+}
+

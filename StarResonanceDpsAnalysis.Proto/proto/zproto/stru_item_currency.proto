@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_currency_data.proto";
+import "stru_dirty_mask.proto";
+
+message ItemCurrency {
+  bool is_init = 1;
+  map<int32, zproto.CurrencyData> currency_datas = 2;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_official.proto";
+
+message ReqChangeOfficialsRequest {
+  int64 union_id = 2;
+  repeated zproto.UnionOfficial change_officials = 3;
+  int32 change_type = 4;
+}
+

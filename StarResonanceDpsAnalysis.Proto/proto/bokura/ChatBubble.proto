@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ChatBubbleBase {
+  int32 id = 1463;
+  mlstring content = 783;
+  int32 plot_characters_id = 1282;
+}
+
+message ChatBubbleMgr {
+  map<int32, bokura.ChatBubbleBase> datas = 1;
+}
+

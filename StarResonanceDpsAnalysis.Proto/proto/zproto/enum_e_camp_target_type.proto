@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECampTargetType {
+  ECampSelf = 0;
+  ECampEnemy = 1;
+  ECampNeutral = 2;
+  ECampFriendly = 3;
+  ECampTeam = 4;
+  ECampAll = 99;
+}
+

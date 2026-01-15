@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package bokura;
+
+message EntityDynAttrCoeTableBase {
+  int32 id = 1463;
+}
+
+message EntityDynAttrCoeTableMgr {
+  map<int32, bokura.EntityDynAttrCoeTableBase> datas = 1;
+}
+

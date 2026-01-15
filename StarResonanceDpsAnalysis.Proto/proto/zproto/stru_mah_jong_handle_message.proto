@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message MahJongHandleMessage {
+  int32 Handle_ = 1;
+  int32 handle_card = 2;
+  repeated int32 cards = 3;
+  int32 discard_index = 4;
+}
+

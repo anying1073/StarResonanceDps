@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_award.proto";
+import "stru_dungeon_world_boss_settlement.proto";
+import "stru_settlement_position.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonSettlement {
+  int32 pass_time = 1;
+  map<int64, zproto.DungeonAward> award = 2;
+  map<uint32, zproto.SettlementPosition> settlement_pos = 3;
+  zproto.DungeonWorldBossSettlement world_boss_settlement = 4;
+  int32 master_mode_score = 5;
+}
+

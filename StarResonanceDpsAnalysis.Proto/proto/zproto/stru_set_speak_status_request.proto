@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_speak_status.proto";
+
+message SetSpeakStatusRequest {
+  zproto.ESpeakStatus speak_status = 2;
+}
+

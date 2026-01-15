@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EDungeonState {
+  DungeonStateNull = 0;
+  DungeonStateActive = 1;
+  DungeonStateReady = 2;
+  DungeonStatePlaying = 3;
+  DungeonStateEnd = 4;
+  DungeonStateSettlement = 5;
+  DungeonStateVote = 6;
+}
+

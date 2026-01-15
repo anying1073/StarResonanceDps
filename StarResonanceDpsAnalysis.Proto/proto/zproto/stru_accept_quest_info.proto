@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message AcceptQuestInfo {
+  int32 quest_id = 1;
+  repeated int32 param_list = 2;
+}
+

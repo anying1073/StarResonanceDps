@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+import "stru_dirty_mask.proto";
+
+message TreasureItem {
+  repeated zproto.Item items = 1;
+  int32 type = 2;
+}
+

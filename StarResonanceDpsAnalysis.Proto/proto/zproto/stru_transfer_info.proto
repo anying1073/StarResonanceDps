@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message TransferInfo {
+  uint32 target_scene_id = 1;
+  uint32 target_pos_id = 2;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message DungeonReadyBufferInfo {
+  int32 buff_id = 1;
+  int32 buff_time = 2;
+}
+

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message GashaInfo {
+  uint32 id = 1;
+  uint32 draw_count = 4;
+  int64 refresh_time = 5;
+  uint32 wish_id = 8;
+  uint32 wish_value = 9;
+  uint32 wish_finish_count = 10;
+  int64 wish_reset_time = 11;
+  uint32 wish_limit = 12;
+}
+

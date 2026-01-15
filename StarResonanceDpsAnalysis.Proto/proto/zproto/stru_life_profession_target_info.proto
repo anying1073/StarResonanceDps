@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message LifeProfessionTargetInfo {
+  int32 id = 1;
+  int32 value = 2;
+  int32 level = 3;
+  repeated uint32 life_target_reward_states = 4;
+}
+

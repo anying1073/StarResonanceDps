@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AITableBase {
+  int32 id = 1463;
+  string remarks = 803;
+  string normal_sub_tree = 1572;
+  bool is_recover_normal = 1494;
+  bool is_patrol = 643;
+  bool is_play_action = 1507;
+  int32 play_action_probability = 269;
+  int32 play_action_mode = 497;
+  int_array play_action_id = 947;
+  bool is_random_move = 1558;
+  int32 random_move_probability = 1498;
+  float random_move_radius = 761;
+  bool is_alert_normal_patrol = 1515;
+  bool is_walking_around = 591;
+  string way_point_name = 620;
+  string alert_normal_patrol_path = 1506;
+  bool is_alert_action = 1551;
+  int_array alert_action_list = 354;
+  string normal_play_sub_tree = 1438;
+  string_array battle_action_id_array = 1985;
+  int32 battle_action_release_probability = 379;
+  bool is_play_action_when_into_battle = 1069;
+  bool is_play_action_only_normal_into_battle = 1738;
+  int32 in_battle_action_id = 1185;
+  int32 alert_in_battle_action_id = 2032;
+  bool is_have_battle_action = 16;
+  int32 battle_skill_release_probability = 1224;
+  int32 battle_skill_id = 326;
+  string normal_battle_sub_tree = 244;
+  int32 skill_release_probability = 218;
+  bool is_not_move = 1006;
+  bool is_skill_release_close = 1078;
+  bool is_release_skill_when_into_battle = 932;
+  int32 normal_into_battle_skill_id = 2000;
+  string battle_alert_sub_tree = 390;
+  bool is_alert_move_require = 2015;
+  int32 chase_and_alert_move_probability = 1274;
+  bool is_chase_monster = 415;
+  bool is_have_back_skill = 850;
+  int32 back_skill_id = 617;
+  bool is_need_translation_alert_move = 270;
+  int32 alert_move_probability = 979;
+  float alert_speed = 1159;
+  float min_alert_dis = 607;
+  float max_alert_dis = 500;
+  int32 min_alert_move_time = 430;
+  int32 max_alert_move_time = 608;
+  int32 min_alert_back_time = 1261;
+  int32 max_alert_back_time = 606;
+  string to_battle_action_json_name = 106;
+  bool is_play_vigilance_action = 149;
+  string vigilance_action_json_name = 1933;
+}
+
+message AITableMgr {
+  map<int32, bokura.AITableBase> datas = 1;
+}
+

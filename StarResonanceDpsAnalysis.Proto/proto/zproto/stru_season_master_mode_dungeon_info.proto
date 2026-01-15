@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_master_mode_diff_dungeon_info.proto";
+import "stru_dirty_mask.proto";
+
+message SeasonMasterModeDungeonInfo {
+  map<int32, zproto.MasterModeDiffDungeonInfo> master_mode_diff_info = 1;
+  int64 dungeon_info_update_time = 2;
+  map<int32, int32> season_awards = 3;
+}
+

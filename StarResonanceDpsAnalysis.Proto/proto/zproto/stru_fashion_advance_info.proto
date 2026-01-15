@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message FashionAdvanceInfo {
+  int32 fashion_id = 1;
+  int32 using_advance_id = 2;
+  repeated int32 advance_ids = 3;
+}
+

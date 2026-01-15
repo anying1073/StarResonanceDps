@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EStageType {
+  ENormal = 0;
+  ESinging = 1;
+  EEnergy = 2;
+  EAim = 3;
+  EAimShooting = 4;
+  EBossRotInplace = 5;
+  EBossRotJump = 6;
+  EOnGrounded = 7;
+  EGuideNormal = 8;
+  EGuideTimeUnChanged = 9;
+}
+

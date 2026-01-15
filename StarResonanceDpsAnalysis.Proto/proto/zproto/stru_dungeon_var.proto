@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_var_data.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonVar {
+  repeated zproto.DungeonVarData dungeon_var_data = 1;
+}
+

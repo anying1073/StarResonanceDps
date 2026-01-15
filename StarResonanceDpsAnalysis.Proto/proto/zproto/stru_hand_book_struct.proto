@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message HandBookStruct {
+  int32 id = 1;
+  bool unlock = 2;
+}
+

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESkillEventType {
+  SkillEventNone = 0;
+  SkillEventTimer = 1;
+  SkillEventHit = 2;
+  SkillEventBullet = 3;
+  SkillEventMotion = 4;
+  SkillEventRotation = 5;
+  SkillEventFakeBullet = 6;
+  SkillEventThrowMove = 7;
+  SkillEventBulletHit = 8;
+  SkillEventSkillBegin = 101;
+  SkillEventSingingEnd = 102;
+  SkillEventAccumulateEnd = 103;
+  SkillEventSkillEnd = 104;
+  SkillEventStageBegin = 105;
+}
+

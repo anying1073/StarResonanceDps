@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message EffectLibraryTableBase {
+  int32 id = 1463;
+  string name = 439;
+  string path = 172;
+  string_array tags = 232;
+  string thumbnail = 619;
+}
+
+message EffectLibraryTableMgr {
+  map<int32, bokura.EffectLibraryTableBase> datas = 1;
+}
+

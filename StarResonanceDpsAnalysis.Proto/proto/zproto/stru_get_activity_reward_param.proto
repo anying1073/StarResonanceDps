@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetActivityRewardParam {
+  int64 activity_uuid = 1;
+  int32 reward_id = 2;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_social_data.proto";
+
+message GetSocialDataReply {
+  int64 mask = 1;
+  zproto.SocialData data = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

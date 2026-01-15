@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_get_face_up_token_ntf_request.proto";
+
+message GrpcCharactorNtf {
+
+  message GetFaceUpTokenNtf {
+    zproto.GetFaceUpTokenNtfRequest v_request = 1;
+  }
+}
+

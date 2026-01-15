@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_leave_mahjong_table_request.proto";
+
+message Mahjong {
+
+  message LeaveMahjongTable {
+    zproto.LeaveMahjongTableRequest v_request = 1;
+  }
+}
+

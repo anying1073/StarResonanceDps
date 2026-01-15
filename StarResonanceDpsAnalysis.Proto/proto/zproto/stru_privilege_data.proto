@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_launch_platform.proto";
+import "stru_dirty_mask.proto";
+
+message PrivilegeData {
+  zproto.LaunchPlatform launch_platform = 1;
+  bool is_privilege = 2;
+  int64 last_update_time = 3;
+}
+

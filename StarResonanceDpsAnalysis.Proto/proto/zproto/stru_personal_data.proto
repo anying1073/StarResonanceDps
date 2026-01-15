@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_personal_info.proto";
+import "stru_user_summary_data.proto";
+
+message PersonalData {
+  int64 char_id = 1;
+  zproto.PersonalInfo info = 2;
+  zproto.UserSummaryData social_data = 3;
+}
+

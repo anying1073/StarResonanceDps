@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EPictureType {
+  ENormalPicture = 0;
+  ECameraOriginal = 1;
+  ECameraRender = 2;
+  ECameraThumbnail = 3;
+  EProfileSnapShot = 4;
+  EProfileHalfBody = 5;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBulletShapeType {
+  BulletShapeBall = 0;
+  BulletShapeRing = 1;
+  BulletShapeCube = 2;
+  BulletShapeCylinder = 3;
+  BulletShapeBallRay = 4;
+  BulletShapePoint = 5;
+}
+

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EStageBehaveType {
+  EStageBehaveType_SetNextStageId = 0;
+  EStageBehaveType_StopStage = 1;
+  EStageBehaveType_SetSkillState = 2;
+  EStageBehaveType_ClearSkillState = 3;
+  EStageBehaveType_SetEnergyCount = 4;
+  EStageBehaveType_CreateQte = 5;
+  EStageBehaveType_TriggerQte = 6;
+  EStageBehaveType_FaceTarget = 7;
+  EStageBehaveType_SelectTarget = 8;
+  EStageBehaveType_FireEvent = 9;
+  EStageBehaveType_PlayClientEffect = 10;
+  EStageBehaveType_PlayClientBuff = 11;
+  EStageBehaveType_EnterCD = 12;
+  EStageBehaveType_ClearAllMove = 13;
+  EStageBehaveType_SetSkillShowState = 14;
+  EStageBehaveType_ClearSkillShowState = 15;
+  EStageBehaveType_DeleteClientBuff = 16;
+  EStageBehaveType_SwitchStage = 17;
+  EStageBehaveType_StopClientEffect = 18;
+  EStageBehaveType_NoTargetFindNewTarget = 19;
+  EStageBehaveType_SetSingGuideInitValue = 20;
+  EStageBehaveType_ChangeEffect = 100;
+  EStageBehaveType_SummonBullet = 101;
+  EStageBehaveType_KillMe = 102;
+  EStageBehaveType_RefreshDuration = 103;
+}
+

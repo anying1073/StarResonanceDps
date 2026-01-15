@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECommunityPlayerAuthorityType {
+  CommunityAuthorityPlayerType = 0;
+  CommunityAuthorityPlayerTypeFurnitureEdit = 1;
+  CommunityAuthorityPlayerTypeFurnitureMake = 2;
+  CommunityAuthorityPlayerTypeProduction = 3;
+  CommunityAuthorityPlayerTypePlant = 4;
+  CommunityAuthorityPlayerTypeWareHouse = 5;
+  CommunityAuthorityPlayerTypeEnterHome = 6;
+  CommunityAuthorityPlayerTypeFurnitureInteraction = 7;
+  CommunityAuthorityPlayerTypeShopSell = 8;
+}
+

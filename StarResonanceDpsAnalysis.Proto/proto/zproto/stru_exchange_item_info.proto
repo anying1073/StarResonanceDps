@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message ExchangeItemInfo {
+  uint32 config_id = 1;
+  uint32 num = 2;
+  uint32 min_price = 3;
+  bool is_care = 4;
+}
+

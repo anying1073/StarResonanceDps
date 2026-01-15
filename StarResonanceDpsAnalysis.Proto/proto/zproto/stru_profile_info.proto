@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ProfileInfo {
+  int32 profile_id = 1;
+  string profile_url = 2;
+  string half_body_url = 3;
+}
+

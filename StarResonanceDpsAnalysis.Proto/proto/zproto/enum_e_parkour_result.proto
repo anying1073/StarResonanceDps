@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EParkourResult {
+  EParkourResult_None = 0;
+  EParkourResult_Success = 1;
+  EParkourResult_Fail = 2;
+}
+

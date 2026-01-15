@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_int_vec3.proto";
+import "stru_structure_farmland_info.proto";
+import "stru_structure_lamplight_info.proto";
+import "stru_structure_material_info.proto";
+import "stru_vec4.proto";
+
+message Structure {
+  int64 uuid = 1;
+  int64 client_uuid = 2;
+  int64 group_id = 3;
+  int32 item_id = 4;
+  int64 char_id = 5;
+  zproto.IntVec3 position = 6;
+  zproto.Vec4 quaternion = 7;
+  int64 operator_char_id = 8;
+  string name = 9;
+  zproto.StructureMaterialInfo material_info = 10;
+  zproto.StructureLamplightInfo lamplight_info = 11;
+  zproto.StructureFarmlandInfo farmland_info = 12;
+}
+

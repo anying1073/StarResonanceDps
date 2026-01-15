@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ELogicTag {
+  LogicTagNone = 0;
+  LogicTagCoreSkill = 3;
+  LogicTagBaseSkill = 4;
+  LogicTagFinalSkill = 5;
+  LogicTagAoyiSkill = 8;
+  LogicTagUP = 15;
+  LogicTagShield = 26;
+  LogicTagHardCrowdControl = 64;
+  LogicTagDamagePhysical = 66;
+  LogicTagDamageMagical = 67;
+  LogicTagDutiesSkill = 103;
+  LogicTagPurifySkill = 104;
+  LogicTagHeal = 1003;
+  LogicTagBuff = 1004;
+  LogicTagDebuff = 1005;
+}
+

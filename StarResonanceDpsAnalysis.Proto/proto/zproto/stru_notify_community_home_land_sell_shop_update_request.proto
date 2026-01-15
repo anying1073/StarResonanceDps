@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_home_land_sell_shop_info.proto";
+
+message NotifyCommunityHomeLandSellShopUpdateRequest {
+  zproto.HomeLandSellShopInfo home_land_sell_shop_info = 1;
+}
+

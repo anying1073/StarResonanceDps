@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BodyPartsTableBase {
+  int32 id = 1463;
+  int32 model_id = 2011;
+  string body_parts_desc = 2014;
+  int32 type = 673;
+  number_array radius = 1839;
+  number_array height = 274;
+  vector3_array direction = 1794;
+  vector3_array rotate = 1421;
+  vector3_array offset = 223;
+  string_array bone = 1833;
+  int32 shader_index = 1441;
+  string be_hit_anim_mask = 826;
+  int32 max_hp = 439;
+  bool not_hit = 591;
+  bool not_choose = 418;
+  float on_can_hit_target_weight = 1363;
+  float on_no_hit_target_weight = 181;
+  int32 basic_fleshy_type = 2041;
+  int32 is_lock_collider_idx = 1361;
+  int_array tags = 232;
+}
+
+message BodyPartsTableMgr {
+  map<int32, bokura.BodyPartsTableBase> datas = 1;
+}
+

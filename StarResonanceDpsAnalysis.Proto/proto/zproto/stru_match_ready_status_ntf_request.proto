@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_match_key_info.proto";
+import "stru_match_player_info.proto";
+
+message MatchReadyStatusNtfRequest {
+  zproto.EErrorCode err_code = 1;
+  int64 leader_char_id = 2;
+  string match_token = 3;
+  zproto.MatchKeyInfo match_key_info = 4;
+  repeated zproto.MatchPlayerInfo match_player_info = 5;
+}
+

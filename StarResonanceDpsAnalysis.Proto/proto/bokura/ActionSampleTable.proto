@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ActionSampleTableBase {
+  int64 id = 1463;
+  string name = 439;
+  number_table motion_info = 264;
+  bool has_motion = 1733;
+}
+
+message ActionSampleTableMgr {
+  map<int64, bokura.ActionSampleTableBase> datas = 1;
+}
+

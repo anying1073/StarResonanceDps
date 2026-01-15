@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_answer_list.proto";
+import "stru_dirty_mask.proto";
+
+message InvestigateStep {
+  repeated int32 clues = 1;
+  map<int32, zproto.AnswerList> reasoning_map = 2;
+}
+

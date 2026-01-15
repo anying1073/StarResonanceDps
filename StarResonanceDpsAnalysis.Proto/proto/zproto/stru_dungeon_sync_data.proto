@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_affix_data.proto";
+import "stru_dungeon_area_info.proto";
+import "stru_dungeon_damage.proto";
+import "stru_dungeon_event.proto";
+import "stru_dungeon_flow_info.proto";
+import "stru_dungeon_hero_key_info.proto";
+import "stru_dungeon_pioneer.proto";
+import "stru_dungeon_planet_memory_room.proto";
+import "stru_dungeon_player_list.proto";
+import "stru_dungeon_raid_info.proto";
+import "stru_dungeon_random_entity_config_id_info.proto";
+import "stru_dungeon_rank_list.proto";
+import "stru_dungeon_revive_info.proto";
+import "stru_dungeon_scene_info.proto";
+import "stru_dungeon_score.proto";
+import "stru_dungeon_settlement.proto";
+import "stru_dungeon_target.proto";
+import "stru_dungeon_timer_info.proto";
+import "stru_dungeon_title.proto";
+import "stru_dungeon_union_info.proto";
+import "stru_dungeon_var.proto";
+import "stru_dungeon_var_all.proto";
+import "stru_dungeon_vote.proto";
+import "enum_e_error_code.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonSyncData {
+  int64 scene_uuid = 1;
+  zproto.DungeonFlowInfo flow_info = 2;
+  zproto.DungeonTitle title = 3;
+  zproto.DungeonTarget target = 4;
+  zproto.DungeonDamage damage = 5;
+  zproto.DungeonVote vote = 6;
+  zproto.DungeonSettlement settlement = 7;
+  zproto.DungeonPioneer dungeon_pioneer = 8;
+  zproto.DungeonPlanetMemoryRoom planet_room_info = 9;
+  zproto.DungeonVar dungeon_var = 10;
+  zproto.DungeonRankList dungeon_rank = 11;
+  zproto.DungeonAffixData dungeon_affix_data = 12;
+  zproto.DungeonEvent dungeon_event = 13;
+  zproto.DungeonScore dungeon_score = 14;
+  zproto.DungeonTimerInfo timer_info = 15;
+  zproto.DungeonHeroKeyInfo hero_key = 16;
+  zproto.DungeonUnionInfo dungeon_union_info = 17;
+  zproto.DungeonPlayerList dungeon_player_list = 18;
+  zproto.DungeonReviveInfo revive_info = 19;
+  zproto.DungeonRandomEntityConfigIdInfo random_entity_config_id_info = 20;
+  zproto.DungeonSceneInfo dungeon_scene_info = 21;
+  zproto.DungeonVarAll dungeon_var_all = 22;
+  zproto.DungeonRaidInfo dungeon_raid_info = 23;
+  zproto.DungeonAreaInfo dungeon_area_info = 24;
+  zproto.EErrorCode err_code = 25;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_clutter.proto";
+
+message NotifyCommunityHomeLandClutterInfoRemoveRequest {
+  int64 community_id = 1;
+  int64 homeland_id = 2;
+  map<int64, zproto.Clutter> remove_home_land_clutter = 3;
+}
+

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message TeamTargetTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  bool has_father_type = 1360;
+  int32 belong_type = 1416;
+  string time_cycle = 647;
+  string time = 601;
+  int32 function_id = 850;
+  int32 relative_dungeon_id = 1344;
+  int32 member_count_stop_match = 326;
+  int32 sort = 1643;
+  string icon = 1153;
+}
+
+message TeamTargetTableMgr {
+  map<int32, bokura.TeamTargetTableBase> datas = 1;
+}
+

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_mem_union_activity.proto";
+import "stru_recruit_info.proto";
+import "stru_union_activity.proto";
+import "stru_union_building.proto";
+import "stru_union_effect_buff.proto";
+import "stru_union_info.proto";
+import "stru_union_resource.proto";
+import "stru_user_summary_data.proto";
+
+message ReqUnionInfoReply {
+  zproto.UnionInfo info = 1;
+  zproto.RecruitInfo recruit_info = 2;
+  zproto.UserSummaryData president_info = 3;
+  map<int32, zproto.UnionBuilding> union_buildings = 4;
+  zproto.UnionActivity union_activity = 5;
+  zproto.MemUnionActivity self_activity = 6;
+  map<int32, zproto.UnionResource> union_resource_lib = 7;
+  int32 self_speed_times = 8;
+  repeated zproto.UnionEffectBuff effect_buffs = 9;
+  repeated int32 received_point_award_ids = 10;
+  zproto.EErrorCode err_code = 11;
+}
+

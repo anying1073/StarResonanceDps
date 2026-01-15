@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_homeland_lamplight_info.proto";
+import "stru_homeland_material_info.proto";
+
+message HomelandDecorationInfo {
+  zproto.HomelandLamplightInfo lamplight_info = 1;
+  map<int32, zproto.HomelandMaterialInfo> material_infos = 2;
+}
+

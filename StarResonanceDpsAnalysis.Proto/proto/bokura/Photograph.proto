@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PhotographBase {
+  int32 id = 1463;
+  string parameter = 893;
+  number_array value = 616;
+}
+
+message PhotographMgr {
+  map<int32, bokura.PhotographBase> datas = 1;
+}
+

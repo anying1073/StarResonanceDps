@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message ActiveRogueNaboParam {
+  int32 id = 1;
+}
+

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ItemTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string icon = 1153;
+  int32 type = 673;
+  int32 group_id = 196;
+  int32 quality = 1961;
+  int32 sort_id = 504;
+  mlstring description = 75;
+  int32 sex_limit = 794;
+  int32 overlap = 291;
+  int32 time_type = 1317;
+  string time_limit = 1722;
+  int32 drop_model = 604;
+  int32 correlation_id = 909;
+  bool is_special_display = 1060;
+  int32 special_display_type = 1207;
+  int32 quick_use = 1109;
+}
+
+message ItemTableMgr {
+  map<int32, bokura.ItemTableBase> datas = 1;
+}
+

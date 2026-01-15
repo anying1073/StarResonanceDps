@@ -1,0 +1,177 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_check_image_request.proto";
+import "stru_create_album_reply.proto";
+import "stru_create_album_request.proto";
+import "stru_del_func_photo_request.proto";
+import "stru_delete_album_reply.proto";
+import "stru_delete_album_request.proto";
+import "stru_delete_photo_reply.proto";
+import "stru_delete_photo_request.proto";
+import "stru_edit_album_name_reply.proto";
+import "stru_edit_album_name_request.proto";
+import "stru_edit_album_right_reply.proto";
+import "stru_edit_album_right_request.proto";
+import "stru_get_album_photos_reply.proto";
+import "stru_get_album_photos_request.proto";
+import "stru_get_all_albums_reply.proto";
+import "stru_get_all_albums_request.proto";
+import "stru_get_avatar_token_request.proto";
+import "stru_get_func_photo_list_reply.proto";
+import "stru_get_func_photo_list_request.proto";
+import "stru_get_photo_reply.proto";
+import "stru_get_photo_request.proto";
+import "stru_get_photo_up_token_request.proto";
+import "stru_get_review_avatar_info_reply.proto";
+import "stru_get_review_avatar_info_request.proto";
+import "stru_move_photo_to_album_reply.proto";
+import "stru_move_photo_to_album_request.proto";
+import "stru_set_album_cover_reply.proto";
+import "stru_set_album_cover_request.proto";
+import "stru_set_photo_scheme_name_reply.proto";
+import "stru_set_photo_scheme_name_request.proto";
+import "stru_upload_photo_successful_reply.proto";
+import "stru_upload_photo_successful_request.proto";
+
+message Photograph {
+
+  message GetPhotoUpToken {
+    zproto.GetPhotoUpTokenRequest v_request = 1;
+  }
+
+  message DeletePhoto_Ret {
+    zproto.DeletePhotoReply ret = 1;
+  }
+
+  message DeletePhoto {
+    zproto.DeletePhotoRequest v_request = 1;
+  }
+
+  message GetAllAlbums_Ret {
+    zproto.GetAllAlbumsReply ret = 1;
+  }
+
+  message GetAllAlbums {
+    zproto.GetAllAlbumsRequest v_request = 1;
+  }
+
+  message GetAlbumPhotos_Ret {
+    zproto.GetAlbumPhotosReply ret = 1;
+  }
+
+  message GetAlbumPhotos {
+    zproto.GetAlbumPhotosRequest v_request = 1;
+  }
+
+  message CreateAlbum_Ret {
+    zproto.CreateAlbumReply ret = 1;
+  }
+
+  message CreateAlbum {
+    zproto.CreateAlbumRequest v_request = 1;
+  }
+
+  message DeleteAlbum_Ret {
+    zproto.DeleteAlbumReply ret = 1;
+  }
+
+  message DeleteAlbum {
+    zproto.DeleteAlbumRequest v_request = 1;
+  }
+
+  message EditAlbumRight_Ret {
+    zproto.EditAlbumRightReply ret = 1;
+  }
+
+  message EditAlbumRight {
+    zproto.EditAlbumRightRequest v_request = 1;
+  }
+
+  message EditAlbumName_Ret {
+    zproto.EditAlbumNameReply ret = 1;
+  }
+
+  message EditAlbumName {
+    zproto.EditAlbumNameRequest v_request = 1;
+  }
+
+  message SetAlbumCover_Ret {
+    zproto.SetAlbumCoverReply ret = 1;
+  }
+
+  message SetAlbumCover {
+    zproto.SetAlbumCoverRequest v_request = 1;
+  }
+
+  message MovePhotoToAlbum_Ret {
+    zproto.MovePhotoToAlbumReply ret = 1;
+  }
+
+  message MovePhotoToAlbum {
+    zproto.MovePhotoToAlbumRequest v_request = 1;
+  }
+
+  message GetAvatarToken {
+    zproto.GetAvatarTokenRequest v_request = 1;
+  }
+
+  message GetPhoto_Ret {
+    zproto.GetPhotoReply ret = 1;
+  }
+
+  message GetPhoto {
+    zproto.GetPhotoRequest v_request = 1;
+  }
+
+  message UploadPhotoSuccessful_Ret {
+    zproto.UploadPhotoSuccessfulReply ret = 1;
+  }
+
+  message UploadPhotoSuccessful {
+    zproto.UploadPhotoSuccessfulRequest v_request = 1;
+  }
+
+  message GetReviewAvatarInfo_Ret {
+    zproto.GetReviewAvatarInfoReply ret = 1;
+  }
+
+  message GetReviewAvatarInfo {
+    zproto.GetReviewAvatarInfoRequest v_request = 1;
+  }
+
+  message GetFuncPhotoList_Ret {
+    zproto.GetFuncPhotoListReply ret = 1;
+  }
+
+  message GetFuncPhotoList {
+    zproto.GetFuncPhotoListRequest v_request = 1;
+  }
+
+  message DelFuncPhoto_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DelFuncPhoto {
+    zproto.DelFuncPhotoRequest v_request = 1;
+  }
+
+  message SetPhotoSchemeName_Ret {
+    zproto.SetPhotoSchemeNameReply ret = 1;
+  }
+
+  message SetPhotoSchemeName {
+    zproto.SetPhotoSchemeNameRequest v_request = 1;
+  }
+
+  message CheckImage_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CheckImage {
+    zproto.CheckImageRequest v_request = 1;
+  }
+}
+

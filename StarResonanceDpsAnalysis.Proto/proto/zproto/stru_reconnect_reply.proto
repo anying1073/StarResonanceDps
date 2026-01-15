@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message ReconnectReply {
+  string account_id = 1;
+  int64 char_id = 2;
+  bool is_privilege = 3;
+  bool is_change_account = 4;
+  zproto.EErrorCode err_code = 5;
+}
+

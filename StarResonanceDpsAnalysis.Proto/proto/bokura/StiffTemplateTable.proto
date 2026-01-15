@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+message StiffTemplateTableBase {
+  int64 id = 1463;
+  string des = 266;
+  int32 behit_type = 1367;
+  float hor_impact_force = 806;
+  float ver_impact_force = 1732;
+  float stiffing_time = 784;
+  float stiff_hang_time = 1600;
+  float stiff_end_time = 1209;
+  float minimum_hor_speed = 607;
+  float skill_flow_offset = 204;
+  float skill_flow_radius = 990;
+}
+
+message StiffTemplateTableMgr {
+  map<int64, bokura.StiffTemplateTableBase> datas = 1;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+message PlaceHolderScenePosition {
+  int32 scene_id = 1;
+  int32 line_id = 2;
+  int32 positionx = 3;
+  int32 positiony = 4;
+  int32 positionz = 5;
+  int32 map_layer_id = 6;
+}
+

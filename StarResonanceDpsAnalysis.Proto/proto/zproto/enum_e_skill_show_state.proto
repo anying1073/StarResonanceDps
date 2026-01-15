@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESkillShowState {
+  ESkillShowNone = 0;
+  ESkillEnableInputMove = 1;
+  ESkillAimState = 2;
+  ESkillAimCameraDir = 3;
+  ESkillAimTarget = 4;
+}
+

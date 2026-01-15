@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BulletRunTableBase {
+  int64 id = 1463;
+  int32 motion_type = 1988;
+  float start_speed = 475;
+  float accelerated_speed = 1871;
+  float max_speed = 818;
+  int32 direction_type = 956;
+  bool is_follow_target = 1689;
+  float max_follow_angle = 221;
+  float ex_start_speed = 1374;
+  float ex_accelerated_speed = 686;
+  float ex_max_speed = 625;
+  string curve_path = 35;
+  int64 curve_id = 431;
+  bool is_random_radian = 314;
+  float random_pos_top = 441;
+  float random_pos_bottom = 417;
+  float random_pos_left = 1923;
+  float random_pos_right = 463;
+  int32 follow_type = 1184;
+  vector3 offset_pos = 1569;
+  float original_dir = 964;
+  float min_zoom = 1209;
+  float max_zoom = 1411;
+  float zoom_speed = 583;
+  bool zoom_is_loop = 832;
+  int32 follow_config_id = 684;
+  bool check_obstacle = 934;
+  bool is_stand = 1391;
+  bool is_lock_target = 804;
+  bool is_can_dodge = 394;
+}
+
+message BulletRunTableMgr {
+  map<int64, bokura.BulletRunTableBase> datas = 1;
+}
+

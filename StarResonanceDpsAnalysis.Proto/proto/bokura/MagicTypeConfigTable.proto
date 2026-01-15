@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MagicTypeConfigTableBase {
+  int32 id = 1463;
+  string name = 439;
+  string enum_type_name = 414;
+  string_array enum_names = 1131;
+  int_array indexs = 1541;
+  string_array descs = 1085;
+}
+
+message MagicTypeConfigTableMgr {
+  map<int32, bokura.MagicTypeConfigTableBase> datas = 1;
+}
+

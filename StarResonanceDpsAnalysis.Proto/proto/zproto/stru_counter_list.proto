@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_counter_info.proto";
+import "stru_dirty_mask.proto";
+
+message CounterList {
+  map<int32, zproto.CounterInfo> counter_map = 1;
+}
+

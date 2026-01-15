@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReceiveBossRewardParam {
+  int32 stage = 1;
+}
+

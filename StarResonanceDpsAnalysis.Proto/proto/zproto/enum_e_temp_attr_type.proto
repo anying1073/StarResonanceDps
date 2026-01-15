@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETempAttrType {
+  TempAttrGlobal = 0;
+  TempAttrSkill = 1;
+  TempAttrFightRes = 2;
+  TempAttrTag = 3;
+  TempAttrBuff = 4;
+  TempAttrFightAttr = 5;
+  TempAttrJob = 6;
+  TempAttrDummy = 7;
+  TempAttrLifeProfession = 8;
+  TempAttrRogueEntry = 9;
+}
+

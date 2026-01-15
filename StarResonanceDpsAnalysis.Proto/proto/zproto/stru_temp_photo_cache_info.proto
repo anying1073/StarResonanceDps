@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+message tempPhotoCacheInfo {
+  string id = 1;
+  string temp_photo = 2;
+  string temp_ori_photo = 3;
+  string temp_thumb_photo = 4;
+  uint64 shot_time = 5;
+  string shot_time_str = 6;
+  string shot_place = 7;
+  string decorate_data = 8;
+  uint32 height = 9;
+  uint32 width = 10;
+}
+

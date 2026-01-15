@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EFriendSyncDataType {
+  DataTypeDefault = 0;
+  DataTypeShowInfo = 1;
+  DataTypeFriendList = 2;
+  DataTypeBlackList = 3;
+  DataTypeGroupList = 4;
+  DataTypeApplicationList = 5;
+  DataTypeProcessedApplication = 6;
+  DataTypeAppearance = 7;
+  DataTypeGroupSort = 8;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message GetMailManagerReply {
+  int32 normal_num = 1;
+  repeated int64 normal_un_read_list = 2;
+  int32 collect_num = 3;
+  repeated int64 collect_un_read_list = 6;
+  zproto.EErrorCode err_code = 7;
+}
+

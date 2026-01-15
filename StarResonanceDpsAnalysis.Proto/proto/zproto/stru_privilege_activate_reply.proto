@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message PrivilegeActivateReply {
+  zproto.EErrorCode err_code = 1;
+  bool is_privilege = 2;
+  bool is_change_account = 3;
+}
+

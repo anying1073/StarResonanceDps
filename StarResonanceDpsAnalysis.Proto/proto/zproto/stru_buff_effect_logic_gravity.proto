@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_gravitational_type.proto";
+
+message BuffEffectLogicGravity {
+  zproto.EGravitationalType type = 1;
+  float strength = 2;
+  float strength_low = 3;
+  float internal_radius = 4;
+  float external_radius = 5;
+  int32 entity_type = 6;
+  int32 camp_target_type = 7;
+  bool is_impact_hover = 8;
+  bool is_use_weight_factor = 9;
+}
+

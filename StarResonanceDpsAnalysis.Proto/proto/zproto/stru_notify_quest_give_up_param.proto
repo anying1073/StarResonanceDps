@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyQuestGiveUpParam {
+  int32 quest_id = 1;
+}
+

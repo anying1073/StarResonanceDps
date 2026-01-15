@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_match_param_context.proto";
+
+message EnterActRequest {
+  int32 act_id = 1;
+  zproto.MatchParamContext match_param_context = 2;
+}
+

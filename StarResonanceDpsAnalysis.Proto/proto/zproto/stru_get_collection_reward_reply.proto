@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_item.proto";
+
+message GetCollectionRewardReply {
+  repeated int32 index = 1;
+  repeated zproto.Item rewards = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

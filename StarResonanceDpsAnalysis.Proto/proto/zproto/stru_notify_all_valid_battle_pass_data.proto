@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_battle_pass.proto";
+
+message NotifyAllValidBattlePassData {
+  map<int32, zproto.BattlePass> all_valid_battle_passs_map = 1;
+}
+

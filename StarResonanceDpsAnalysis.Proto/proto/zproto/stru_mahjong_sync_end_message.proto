@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mahjong_operation.proto";
+import "stru_mahjong_player_show.proto";
+import "stru_mahjong_settle.proto";
+
+message MahjongSyncEndMessage {
+  repeated int32 doras = 1;
+  repeated int32 in_doras = 2;
+  int32 current_index = 3;
+  int32 card_index = 4;
+  repeated zproto.MahjongPlayerShow final_players = 5;
+  repeated zproto.MahjongSettle final_settles = 6;
+  repeated zproto.MahjongOperation operations = 7;
+}
+

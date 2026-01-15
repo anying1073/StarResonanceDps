@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_team_member_fast_sync_data.proto";
+import "stru_team_mem_data.proto";
+
+message NoticeUpdateTeamMemberInfoRequest {
+  repeated zproto.TeamMemberFastSyncData team_member_sync_datas = 5;
+  repeated zproto.TeamMemData team_member_social_datas = 6;
+}
+

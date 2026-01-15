@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message MahjongOperation {
+  int32 handle = 1;
+  int32 index = 2;
+  int32 card = 3;
+  int32 card_index = 4;
+  int32 count_index = 5;
+}
+

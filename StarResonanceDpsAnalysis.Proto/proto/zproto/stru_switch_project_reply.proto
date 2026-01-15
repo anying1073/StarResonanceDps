@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_project_extra_sync_data.proto";
+
+message SwitchProjectReply {
+  zproto.ProjectExtraSyncData current_project_sync_data = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

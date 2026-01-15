@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message WeaponTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string icon = 1153;
+  mlstring story = 1313;
+  mlstring intro = 740;
+  int_array talent = 877;
+  int32 element = 547;
+  int_table weapon_broke_extra_item = 1327;
+  int_table weapon_star_extra_item = 1248;
+  int_table weapon_skill_extra_item = 130;
+  bool is_close = 8;
+  int_array common_skill_ids = 76;
+  bool has_secondary = 3361;
+  int32 model_id = 555;
+  int_array weapon_model_id = 173;
+  int32 timeline_id = 1094;
+  number_table model_pos = 1121;
+  number_table model_rot = 325;
+  string_array model = 421;
+  string anim_template = 1244;
+  string_table mount = 278;
+  number_table mount_offset = 1939;
+  number_table mount_rot = 380;
+  string_table weapon_idle = 292;
+  int_array skill_ids = 1496;
+  int_array acquired_skill_ids = 1670;
+  int_table weared_skill_ids = 1713;
+  string_table skill_ids_video = 539;
+  int_table special_skill_ids = 1882;
+  int32 sky_skill_id = 1405;
+  int32 fight_res_template_id = 1816;
+  int32 whack_skill_id = 1072;
+  float whack_take_effect_time = 565;
+  int32 passive_skill_id = 1740;
+  float spacing_distance = 1847;
+  string_array change_weapon_action = 1612;
+  float st_range = 3292;
+  float st_angle = 29;
+  float st_sphere_range = 1049;
+  float st_distance_weight = 2046;
+  float st_angle_weight = 1702;
+  float st_close_distance_threshold = 1642;
+  float st_cancel_range = 385;
+  float st_check_end_time = 2326;
+  float sup_target_effect_range = 1325;
+  float lock_cancel_range = 756;
+  float focus_cancel_range = 1330;
+  float focus_check_end_time = 25;
+  int32 battle_rush_max_charge_count = 135;
+  float battle_rush_charge_time = 916;
+  number_array dodge_start_time = 448;
+  float dodge_count_down = 990;
+  int32 rush_skill_id = 1296;
+  float rush_break_time = 743;
+  number_array rush_anim_time = 18;
+  int_array rush_performance_buff = 1966;
+  int_array dodge_client_buff = 1720;
+  string_array rush_curve = 1293;
+  bool take_weapon_in_battle = 812;
+  int32 basic_hit_tag = 1958;
+  int_array tags = 232;
+  int_array fightback_skill_ids = 864;
+  int32 passive_id = 834;
+  float dodge_invincible_time = 998;
+  int_table effect_switch = 424;
+  int_array battle_rush_origin_energy_cost = 1130;
+  int32 create = 1640;
+  int32 factor = 828;
+  int32 obtain_tips = 1301;
+  int32 index = 1400;
+}
+
+message WeaponTableMgr {
+  map<int32, bokura.WeaponTableBase> datas = 1;
+}
+

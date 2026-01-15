@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message Achievement {
+  uint32 finish_num = 1;
+  bool has_received = 2;
+  uint64 begin_progress = 3;
+}
+

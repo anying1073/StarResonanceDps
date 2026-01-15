@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_text_check_reply.proto";
+import "stru_text_check_request.proto";
+
+message HttpPlatform {
+
+  message TextCheck_Ret {
+    zproto.TextCheckReply ret = 1;
+  }
+
+  message TextCheck {
+    zproto.TextCheckRequest v_request = 1;
+  }
+}
+

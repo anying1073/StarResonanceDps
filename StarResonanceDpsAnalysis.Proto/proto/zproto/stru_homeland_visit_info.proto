@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_authority_info.proto";
+import "stru_community_player_info.proto";
+import "stru_homeland_decoration_info.proto";
+
+message HomelandVisitInfo {
+  int64 homeland_id = 1;
+  int32 level = 2;
+  int32 cleanliness = 3;
+  int64 house_owner_char_id = 4;
+  string name = 5;
+  string introduction = 6;
+  int32 outer_empty_land = 7;
+  int32 inner_empty_land = 8;
+  int32 flowers_num = 9;
+  map<int32, int32> furniture_state = 10;
+  map<int64, zproto.CommunityPlayerInfo> cohabitant = 11;
+  zproto.CommunityAuthorityInfo authority_info = 12;
+  zproto.HomelandDecorationInfo outer_decoration_info = 13;
+  zproto.HomelandDecorationInfo inner_decoration_info = 14;
+  repeated int32 unlocked_areas = 15;
+  int32 housing_type = 16;
+  int32 field_id = 17;
+  bool is_homeland_friend = 18;
+}
+

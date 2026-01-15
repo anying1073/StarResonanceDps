@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetMailListRequest {
+  int32 page = 2;
+  int32 importance = 3;
+  bool is_collect = 4;
+}
+

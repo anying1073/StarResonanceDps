@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_picture_type.proto";
+import "stru_picture_verify.proto";
+
+message GetAvatarTokenRequest {
+  zproto.PictureVerify verify_info = 2;
+  zproto.EPictureType picture_type = 3;
+  int32 picture_id = 4;
+  string picture_name = 5;
+}
+

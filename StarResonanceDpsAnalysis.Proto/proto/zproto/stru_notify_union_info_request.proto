@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_enum_union_notify_type.proto";
+import "stru_union_info.proto";
+
+message NotifyUnionInfoRequest {
+  zproto.UnionInfo info = 2;
+  zproto.EnumUnionNotifyType type = 3;
+}
+

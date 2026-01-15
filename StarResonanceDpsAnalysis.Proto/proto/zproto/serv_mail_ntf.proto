@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_sync_mail_info_request.proto";
+import "stru_sync_mail_list_num_request.proto";
+import "stru_sync_new_mail_request.proto";
+
+message MailNtf {
+
+  message SyncMailInfo {
+    zproto.SyncMailInfoRequest request = 1;
+  }
+
+  message SyncMailListNum {
+    zproto.SyncMailListNumRequest request = 1;
+  }
+
+  message SyncNewMail {
+    zproto.SyncNewMailRequest request = 1;
+  }
+}
+

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ItemTypeSearchTableBase {
+  int32 id = 1463;
+  int_table function_id = 149;
+  int_table hide_function_id = 389;
+}
+
+message ItemTypeSearchTableMgr {
+  map<int32, bokura.ItemTypeSearchTableBase> datas = 1;
+}
+

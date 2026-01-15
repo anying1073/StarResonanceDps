@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EActorState {
+  ActorStateDefault = 0;
+  ActorStateSinging = 1;
+  ActorStateSkill = 2;
+  ActorStateJump = 3;
+  ActorStateRush = 4;
+  ActorStateClimb = 5;
+  ActorStateSwim = 6;
+  ActorStateFishing = 7;
+  ActorStateAction = 8;
+  ActorStateDead = 9;
+  ActorStateStiff = 10;
+  ActorStateSwimStiff = 11;
+  ActorStateBorn = 12;
+  ActorStateTelePort = 13;
+  ActorStateFall = 14;
+  ActorStateFlow = 16;
+  ActorStateGlide = 17;
+  ActorStatePedalWall = 18;
+  ActorStateFallTelePort = 19;
+  ActorStateSelfPhoto = 20;
+  ActorStateCollection = 21;
+  ActorStateReset = 22;
+  ActorStateBreaking = 23;
+  ActorStateWeakness = 24;
+  ActorStateFracture = 25;
+  ActorStateAbnormal = 26;
+  ActorStateResurrection = 27;
+  ActorStateInteraction = 28;
+  ActorStateSceneInteraction = 29;
+  ActorStateTunnelFly = 30;
+  ActorStateLevitation = 31;
+  ActorStateHomelandEdit = 32;
+  ActorStateRide = 33;
+  ActorStateRideControl = 34;
+  ActorStateAll = 35;
+}
+

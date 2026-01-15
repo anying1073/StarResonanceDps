@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message AwardData {
+  int32 award_id = 1;
+  repeated zproto.Item items = 2;
+}
+

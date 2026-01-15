@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dance_ball.proto";
+import "stru_union_building.proto";
+import "stru_union_e_screen_info.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonUnionInfo {
+  int64 union_id = 1;
+  map<int32, zproto.UnionBuilding> union_buildings = 2;
+  map<int32, zproto.UnionEScreenInfo> e_screen_infos = 3;
+  zproto.DanceBall dance_ball = 4;
+}
+

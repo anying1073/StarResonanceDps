@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EDungeonTimerType {
+  DungeonTimerTypeNull = 0;
+  DungeonTimerTypeRightCommon = 1;
+  DungeonTimerTypeMiddlerCommon = 2;
+  DungeonTimerTypeHero = 3;
+  DungeonTimerTypeWait = 4;
+  DungeonTimerTypePrepare = 5;
+}
+

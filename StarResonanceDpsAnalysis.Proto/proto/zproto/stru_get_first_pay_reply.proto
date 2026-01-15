@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_get_first_pay_info.proto";
+
+message GetFirstPayReply {
+  repeated int32 first_pay_info = 1;
+  map<int32, zproto.GetFirstPayInfo> ladder_pay_info = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

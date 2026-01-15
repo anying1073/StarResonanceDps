@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_account_info.proto";
+import "enum_e_error_code.proto";
+
+message LoginReply {
+  zproto.AccountInfo account_info = 2;
+  int64 begin_time = 3;
+  string protocol_version = 4;
+  string config_version = 5;
+  string time_zone = 6;
+  bool is_privilege = 7;
+  map<int32, string> platform_config = 8;
+  bool is_change_account = 9;
+  int32 install_channel_dis = 10;
+  int32 reg_channel_dis = 11;
+  bool open_ace_check = 12;
+  zproto.EErrorCode err_code = 13;
+}
+

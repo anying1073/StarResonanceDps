@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package bokura;
+
+message WorldEventAwardTableBase {
+  int32 score = 1699;
+  int32 award = 187;
+}
+
+message WorldEventAwardTableMgr {
+  map<int32, bokura.WorldEventAwardTableBase> datas = 1;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EEnterCoolTimeType {
+  EnterCoolTimeSkill = 0;
+  EnterCoolTimeComboBegin = 1;
+  EnterCoolTimeComboEnd = 2;
+  EnterSwitchSkillEnd = 3;
+  EnterCoolTimeWait = 4;
+  EnterCoolTimeSkillEnd = 5;
+  EnterCoolTimeAbortSinging = 6;
+}
+

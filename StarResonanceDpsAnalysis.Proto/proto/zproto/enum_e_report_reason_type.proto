@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EReportReasonType {
+  ReportReasonTypeNone = 0;
+  ReportReasonTypeInsultingAbuse = 101;
+  ReportReasonTypeAdvertisingSpam = 102;
+  ReportReasonTypePornographyVulgar = 103;
+  ReportReasonTypePoliticalSensitive = 104;
+  ReportReasonTypeHarassment = 105;
+  ReportReasonTypeViolenceBloody = 106;
+  ReportReasonTypeFraudInformation = 108;
+  ReportReasonTypeOtherGeneral = 199;
+  ReportReasonTypeOneClickReportHome = 798;
+  ReportReasonTypeOneClickReport = 799;
+  ReportReasonTypeAssociationNameViolation = 801;
+  ReportReasonTypeAssociationManifestoViolation = 802;
+  ReportReasonTypeAssociationTagViolation = 803;
+  ReportReasonTypeOtherAssociation = 899;
+  ReportReasonTypeNicknameViolation = 901;
+  ReportReasonTypePhotoViolation = 903;
+}
+

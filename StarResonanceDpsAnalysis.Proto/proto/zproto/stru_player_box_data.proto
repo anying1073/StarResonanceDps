@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PlayerBoxData {
+  uint64 scene_uuid = 1;
+  map<int64, int64> boxs = 2;
+}
+

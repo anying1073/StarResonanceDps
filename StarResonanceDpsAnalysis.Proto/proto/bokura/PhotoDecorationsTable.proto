@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+message PhotoDecorationsTableBase {
+  int32 id = 1463;
+  int32 type = 673;
+  int32 sequence = 831;
+  string res = 1275;
+}
+
+message PhotoDecorationsTableMgr {
+  map<int32, bokura.PhotoDecorationsTableBase> datas = 1;
+}
+

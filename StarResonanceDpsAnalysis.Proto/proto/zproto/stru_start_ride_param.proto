@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message StartRideParam {
+  int32 ride_type = 1;
+}
+

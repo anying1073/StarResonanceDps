@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message ExchangePutItemRequest {
+  int64 uuid = 2;
+  int32 num = 3;
+  int32 step = 4;
+  bool is_public = 5;
+}
+

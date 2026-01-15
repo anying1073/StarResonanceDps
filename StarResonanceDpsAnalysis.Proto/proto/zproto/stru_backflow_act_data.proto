@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_newbie_backflow_elective.proto";
+import "stru_dirty_mask.proto";
+
+message BackflowActData {
+  int32 login_days = 1;
+  int64 refresh_time_stamp = 2;
+  int32 refresh_season_id = 3;
+  repeated int32 sign_state = 4;
+  bool award_received = 5;
+  map<int32, zproto.NewbieBackflowElective> elective_data = 6;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ERotType {
+  RotNone = 0;
+  RotCurve = 1;
+  RotSpeed = 2;
+}
+

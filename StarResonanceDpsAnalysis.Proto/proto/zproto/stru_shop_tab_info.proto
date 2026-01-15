@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_shop_item_info.proto";
+
+message ShopTabInfo {
+  repeated zproto.ShopItemInfo items = 1;
+}
+

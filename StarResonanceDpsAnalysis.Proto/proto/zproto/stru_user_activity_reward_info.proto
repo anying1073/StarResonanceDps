@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_game_function_data.proto";
+import "stru_dirty_mask.proto";
+
+message UserActivityRewardInfo {
+  uint32 id = 1;
+  uint32 status = 2;
+  map<uint32, zproto.GameFunctionData> functions = 3;
+}
+

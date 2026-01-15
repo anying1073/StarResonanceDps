@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message IgnoreTableBase {
+  int32 id = 1463;
+  int_array function_ids = 28;
+}
+
+message IgnoreTableMgr {
+  map<int32, bokura.IgnoreTableBase> datas = 1;
+}
+

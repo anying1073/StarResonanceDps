@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetPersonalZoneTagsRequest {
+  repeated int32 online_periods = 2;
+  repeated int32 tags = 3;
+}
+

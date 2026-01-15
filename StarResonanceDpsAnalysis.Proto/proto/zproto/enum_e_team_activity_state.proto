@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETeamActivityState {
+  ETeamActivity_No = 0;
+  ETeamActivity_Start = 1;
+  ETeamActivity_Checking = 2;
+  ETeamActivity_Voting = 3;
+  ETeamActivity_Doing = 4;
+  ETeamActivity_End = 5;
+}
+

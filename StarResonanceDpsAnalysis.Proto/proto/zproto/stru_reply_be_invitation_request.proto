@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReplyBeInvitationRequest {
+  int64 team_id = 2;
+  bool agree = 3;
+}
+

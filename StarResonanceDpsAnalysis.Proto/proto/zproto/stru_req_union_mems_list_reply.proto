@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_member.proto";
+import "stru_user_summary_data.proto";
+
+message ReqUnionMemsListReply {
+  repeated zproto.UnionMember mem_list = 1;
+  repeated zproto.UserSummaryData mem_social_list = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message DeletePhotoRequest {
+  uint32 photo_id = 2;
+}
+

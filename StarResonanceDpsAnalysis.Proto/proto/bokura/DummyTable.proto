@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message DummyTableBase {
+  int32 id = 1463;
+  string name = 439;
+  int32 skill_id = 1087;
+  float walk_speed = 601;
+  float run_speed = 82;
+  int_array skill_ids = 1496;
+  int32 ai_table_reference = 995;
+  bool is_initiative = 235;
+  bool is_flying = 1877;
+  string birth_effect = 1264;
+  string dead_effect = 346;
+  string birth_audio = 594;
+  string dead_audio = 535;
+  int_array tags = 232;
+}
+
+message DummyTableMgr {
+  map<int32, bokura.DummyTableBase> datas = 1;
+}
+

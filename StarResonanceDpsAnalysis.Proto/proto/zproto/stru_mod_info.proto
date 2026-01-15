@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mod_part_upgrade_record.proto";
+import "stru_dirty_mask.proto";
+
+message ModInfo {
+  repeated int32 part_ids = 1;
+  repeated zproto.ModPartUpgradeRecord upgrade_records = 2;
+  int32 success_rate = 3;
+  repeated int32 init_link_nums = 4;
+}
+

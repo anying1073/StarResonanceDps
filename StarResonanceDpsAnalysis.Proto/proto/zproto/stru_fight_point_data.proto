@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_fight_point_sub_data.proto";
+import "stru_dirty_mask.proto";
+
+message FightPointData {
+  int32 function_type = 1;
+  int32 total_point = 2;
+  int32 point = 3;
+  map<int32, zproto.FightPointSubData> sub_function_data = 4;
+}
+

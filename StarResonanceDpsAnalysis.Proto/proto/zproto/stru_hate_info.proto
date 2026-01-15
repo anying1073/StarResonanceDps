@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message HateInfo {
+  int64 uuid = 1;
+  uint32 hate_val = 2;
+}
+

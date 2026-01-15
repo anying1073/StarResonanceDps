@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum MailType {
+  MailTypeNull = 0;
+  MailTypePersonal = 1;
+  MailTypeWorld = 2;
+  MailTypeMax = 3;
+}
+

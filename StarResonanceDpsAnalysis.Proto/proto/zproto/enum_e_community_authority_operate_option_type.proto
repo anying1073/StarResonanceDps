@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECommunityAuthorityOperateOptionType {
+  CommunityAuthorityOperateOptionType = 0;
+  CommunityAuthorityOperateOptionTypeFriend = 1;
+  CommunityAuthorityOperateOptionTypeAll = 2;
+  CommunityAuthorityOperateOptionTypeCohabitant = 3;
+  CommunityAuthorityOperateOptionTypeSeedOwner = 4;
+  CommunityAuthorityOperateOptionTypeNonSeedOwner = 5;
+  CommunityAuthorityOperateOptionTypeFurnitureMaker = 6;
+  CommunityAuthorityOperateOptionTypeHomeOwner = 7;
+  CommunityAuthorityOperateOptionTypeFurnitureOwner = 8;
+  CommunityAuthorityOperateOptionTypeNoOne = 9;
+}
+

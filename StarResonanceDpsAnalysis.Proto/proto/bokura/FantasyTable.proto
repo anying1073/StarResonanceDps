@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FantasyTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int32 fantasy_type = 381;
+  string fantasy_art = 868;
+  string fantasy_tips = 1588;
+  int_table res_template_id = 1400;
+  string_table buff_value_key = 668;
+  int_table buff_par = 1688;
+  bool is_only = 175;
+}
+
+message FantasyTableMgr {
+  map<int32, bokura.FantasyTableBase> datas = 1;
+}
+

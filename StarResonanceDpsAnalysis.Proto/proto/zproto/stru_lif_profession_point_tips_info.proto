@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_item_get_opt_src.proto";
+
+message LifProfessionPointTipsInfo {
+  zproto.EItemGetOptSrc get_life_point_type = 1;
+  uint32 life_profession_id = 2;
+  uint32 point_count = 3;
+}
+

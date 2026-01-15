@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FaceOptionTableBase {
+  int32 id = 1463;
+  int32 option = 773;
+  int32 color_group = 68;
+  int32 random = 1636;
+  int_table random_type = 575;
+  int32 tab = 860;
+}
+
+message FaceOptionTableMgr {
+  map<int32, bokura.FaceOptionTableBase> datas = 1;
+}
+

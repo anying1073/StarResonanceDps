@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReceiveScoreRewardParam {
+  int32 score_stage = 1;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message GetHomelandFlowerInfoReply {
+  zproto.EErrorCode err_code = 1;
+  int32 can_get_num = 2;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message HomelandSetFurnitureMaterialRequest {
+  int64 structure_uuid = 1;
+  int32 material_id = 2;
+  bool is_outer = 3;
+}
+

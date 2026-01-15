@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message RogueEntry {
+  int32 id = 1;
+  int32 level = 2;
+}
+

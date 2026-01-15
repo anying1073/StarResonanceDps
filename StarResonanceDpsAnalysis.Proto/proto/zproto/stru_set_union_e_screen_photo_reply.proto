@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message SetUnionEScreenPhotoReply {
+  int32 cur_set_times = 1;
+  int32 max_set_times = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

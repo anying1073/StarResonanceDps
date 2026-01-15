@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_world_boss_rank_info.proto";
+
+message WorldBossRankInfoParam {
+  repeated zproto.WorldBossRankInfo rank_infos = 1;
+}
+

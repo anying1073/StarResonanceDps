@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_home_land_item_instance.proto";
+
+message GetHomelandFurnitureWarehouseInfoReply {
+  map<int64, zproto.HomeLandItemInstance> items = 1;
+  map<int64, int64> slots = 2;
+  map<int64, int64> item_to_slots = 3;
+  zproto.EErrorCode err_code = 4;
+}
+

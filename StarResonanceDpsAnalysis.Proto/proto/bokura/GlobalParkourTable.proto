@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message GlobalParkourTableBase {
+  int32 index = 1400;
+  string id = 1463;
+  mlstring value = 616;
+}
+
+message GlobalParkourTableMgr {
+  map<int32, bokura.GlobalParkourTableBase> datas = 1;
+}
+

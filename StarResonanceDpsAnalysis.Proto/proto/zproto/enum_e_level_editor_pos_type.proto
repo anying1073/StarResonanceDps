@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ELevelEditorPosType {
+  LevelEditorPosTypeBasic = 0;
+  LevelEditorPosTypePointId = 1;
+  LevelEditorPosTypeEntity = 2;
+  LevelEditorPosTypePos = 3;
+  LevelEditorPosTypePointGroup = 4;
+  LevelEditorPosTypePointGroupNonRepet = 5;
+}
+

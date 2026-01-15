@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_ride_skin_data.proto";
+import "stru_dirty_mask.proto";
+
+message RideSkinContainer {
+  int32 ride_skin_id = 1;
+  map<uint32, zproto.RideSkinData> sinks = 2;
+}
+

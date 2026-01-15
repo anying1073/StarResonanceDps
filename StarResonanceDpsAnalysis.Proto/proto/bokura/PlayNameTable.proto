@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+message PlayNameTableBase {
+  int32 id = 1463;
+  string name_cn = 1752;
+  string name_en = 1418;
+  string name_jp = 1498;
+  string name_kr = 1230;
+  int32 sex = 1062;
+}
+
+message PlayNameTableMgr {
+  map<int32, bokura.PlayNameTableBase> datas = 1;
+}
+

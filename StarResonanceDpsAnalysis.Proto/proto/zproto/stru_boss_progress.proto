@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message BossProgress {
+  int32 total_award_cnt = 1;
+}
+

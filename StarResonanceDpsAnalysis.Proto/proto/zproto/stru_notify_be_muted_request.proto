@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyBeMutedRequest {
+  bool is_ban = 1;
+  int64 end_timestamp = 2;
+  int32 ban_reason = 3;
+}
+

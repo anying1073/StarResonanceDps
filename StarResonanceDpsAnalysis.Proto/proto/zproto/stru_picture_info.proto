@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_picture_verify.proto";
+import "stru_dirty_mask.proto";
+
+message PictureInfo {
+  string url = 1;
+  zproto.PictureVerify verify = 2;
+}
+

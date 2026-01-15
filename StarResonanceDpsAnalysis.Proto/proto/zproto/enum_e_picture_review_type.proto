@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EPictureReviewType {
+  EPictureReviewNull = 0;
+  EPictureReviewFail = 1;
+  EPictureReviewed = 2;
+  EPictureReviewing = 3;
+}
+

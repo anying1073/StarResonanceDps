@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message HousingItemsBase {
+  int32 id = 1463;
+  int32 sort_id = 1586;
+  mlstring name = 439;
+  string icon = 1153;
+  int32 type = 673;
+  int32 quality = 1961;
+  string res = 1275;
+}
+
+message HousingItemsMgr {
+  map<int32, bokura.HousingItemsBase> datas = 1;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "enum_e_platform_func_type.proto";
+import "stru_photo_graph_show.proto";
+
+message UploadPhotoResultNtfRequest {
+  zproto.EErrorCode err_code = 2;
+  zproto.PhotoGraphShow photo_info = 3;
+  zproto.EPlatformFuncType func_type = 4;
+}
+

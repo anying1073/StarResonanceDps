@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ChatContactsGroupTableBase {
+  int32 id = 1463;
+  mlstring group_name = 581;
+  int32 sequence = 831;
+}
+
+message ChatContactsGroupTableMgr {
+  map<int32, bokura.ChatContactsGroupTableBase> datas = 1;
+}
+

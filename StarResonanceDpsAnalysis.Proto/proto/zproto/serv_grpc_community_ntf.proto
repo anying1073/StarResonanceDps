@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_notify_community_apply_request.proto";
+import "stru_notify_community_apply_update_request.proto";
+import "stru_notify_community_check_in_change_request.proto";
+import "stru_notify_community_cleanliness_update_request.proto";
+import "stru_notify_community_cohabitant_info_request.proto";
+import "stru_notify_community_furniture_item_update_request.proto";
+import "stru_notify_community_global_authority_change_request.proto";
+import "stru_notify_community_home_land_clutter_info_add_request.proto";
+import "stru_notify_community_home_land_clutter_info_remove_request.proto";
+import "stru_notify_community_home_land_decoration_info_request.proto";
+import "stru_notify_community_home_land_sell_shop_update_request.proto";
+import "stru_notify_community_info_update_request.proto";
+import "stru_notify_community_introduction_change_request.proto";
+import "stru_notify_community_item_update_request.proto";
+import "stru_notify_community_level_update_request.proto";
+import "stru_notify_community_name_change_request.proto";
+import "stru_notify_community_transfer_change_request.proto";
+import "stru_notify_community_transfer_info_update_request.proto";
+import "stru_notify_flower_time_update_request.proto";
+import "stru_notify_home_land_player_task_info_update_request.proto";
+import "stru_notify_homeland_build_furniture_op_request.proto";
+import "stru_notify_homeland_warehouse_grid_change_request.proto";
+
+message GrpcCommunityNtf {
+
+  message NotifyHomelandWarehouseGridChange {
+    zproto.NotifyHomelandWarehouseGridChangeRequest request = 1;
+  }
+
+  message NotifyCommunityApplyUpdate {
+    zproto.NotifyCommunityApplyUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityInfoUpdate {
+    zproto.NotifyCommunityInfoUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityTransferInfoUpdate {
+    zproto.NotifyCommunityTransferInfoUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityNameChange {
+    zproto.NotifyCommunityNameChangeRequest request = 1;
+  }
+
+  message NotifyCommunityIntroductionChange {
+    zproto.NotifyCommunityIntroductionChangeRequest request = 1;
+  }
+
+  message NotifyCommunityCheckInChange {
+    zproto.NotifyCommunityCheckInChangeRequest request = 1;
+  }
+
+  message NotifyHomelandBuildFurnitureOp {
+    zproto.NotifyHomelandBuildFurnitureOpRequest request = 1;
+  }
+
+  message NotifyCommunityCohabitantInfo {
+    zproto.NotifyCommunityCohabitantInfoRequest request = 1;
+  }
+
+  message NotifyCommunityTransferChange {
+    zproto.NotifyCommunityTransferChangeRequest request = 1;
+  }
+
+  message NotifyCommunityGlobalAuthorityChange {
+    zproto.NotifyCommunityGlobalAuthorityChangeRequest request = 1;
+  }
+
+  message NotifyCommunityLevelUpdate {
+    zproto.NotifyCommunityLevelUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityCleanlinessUpdate {
+    zproto.NotifyCommunityCleanlinessUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityHomeLandClutterInfoAdd {
+    zproto.NotifyCommunityHomeLandClutterInfoAddRequest request = 1;
+  }
+
+  message NotifyCommunityHomeLandClutterInfoRemove {
+    zproto.NotifyCommunityHomeLandClutterInfoRemoveRequest request = 1;
+  }
+
+  message NotifyHomeLandPlayerTaskInfoUpdate {
+    zproto.NotifyHomeLandPlayerTaskInfoUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityHomeLandSellShopUpdate {
+    zproto.NotifyCommunityHomeLandSellShopUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityHomeLandDecorationInfo {
+    zproto.NotifyCommunityHomeLandDecorationInfoRequest request = 1;
+  }
+
+  message NotifyCommunityItemUpdate {
+    zproto.NotifyCommunityItemUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityFurnitureItemUpdate {
+    zproto.NotifyCommunityFurnitureItemUpdateRequest request = 1;
+  }
+
+  message NotifyCommunityApply {
+    zproto.NotifyCommunityApplyRequest request = 1;
+  }
+
+  message NotifyFlowerTimeUpdate {
+    zproto.NotifyFlowerTimeUpdateRequest request = 1;
+  }
+}
+

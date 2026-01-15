@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_show_piece_attr.proto";
+
+message ShowPieceAttrList {
+  repeated zproto.ShowPieceAttr show_piece_attrs = 1;
+}
+

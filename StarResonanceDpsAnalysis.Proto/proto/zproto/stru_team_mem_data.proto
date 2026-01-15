@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_team_member_social_data.proto";
+import "stru_dirty_mask.proto";
+
+message TeamMemData {
+  int64 char_id = 1;
+  uint32 enter_time = 2;
+  int32 call_status = 3;
+  int32 talent_id = 4;
+  int32 online_status = 5;
+  int32 scene_id = 6;
+  bool voice_is_open = 7;
+  int32 group_id = 8;
+  zproto.TeamMemberSocialData social_data = 9;
+}
+

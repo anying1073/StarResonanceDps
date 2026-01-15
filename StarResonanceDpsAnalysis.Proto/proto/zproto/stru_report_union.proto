@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReportUnion {
+  string union_id = 1;
+}
+

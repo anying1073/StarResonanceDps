@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_questionnaire_award_item.proto";
+import "enum_questionnaire_status.proto";
+
+message QuestionnaireInfo {
+  int32 id = 1;
+  zproto.QuestionnaireStatus status = 2;
+  bool can_answer = 3;
+  string name = 4;
+  string link = 5;
+  int32 level_limit = 6;
+  int32 day_limit = 7;
+  repeated zproto.QuestionnaireAwardItem awards = 8;
+}
+

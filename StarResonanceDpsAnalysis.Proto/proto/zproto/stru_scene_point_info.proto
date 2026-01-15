@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_position.proto";
+
+message ScenePointInfo {
+  zproto.Position position = 1;
+  int32 camera_id = 2;
+  int32 scene_area_id = 3;
+}
+

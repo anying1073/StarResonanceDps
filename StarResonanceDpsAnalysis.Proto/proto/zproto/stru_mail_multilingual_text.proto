@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message MailMultilingualText {
+  int32 language = 1;
+  string send_name = 2;
+  string mail_title = 3;
+  string mail_content = 4;
+}
+

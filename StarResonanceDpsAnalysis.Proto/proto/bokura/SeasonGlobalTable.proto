@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SeasonGlobalTableBase {
+  int32 season_id = 1669;
+  mlstring season_name = 1905;
+  int32 season_time_id = 1735;
+  int32 min_equip_level = 1395;
+  int32 max_equip_level = 507;
+  int32 max_weapon_level = 1229;
+  int32 battle_pass_card_id = 635;
+}
+
+message SeasonGlobalTableMgr {
+  map<int32, bokura.SeasonGlobalTableBase> datas = 1;
+}
+

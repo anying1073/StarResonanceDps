@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_friendliness.proto";
+import "stru_total_friendliness.proto";
+
+message GetFriendlinessReply {
+  map<int64, zproto.Friendliness> friendliness_list = 1;
+  zproto.TotalFriendliness total_friendliness = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

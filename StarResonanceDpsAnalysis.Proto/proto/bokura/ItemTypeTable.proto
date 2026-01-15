@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ItemTypeTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int32 package = 2016;
+  int32 classify = 746;
+  int32 sort_id = 1586;
+  int32 preview_id = 438;
+}
+
+message ItemTypeTableMgr {
+  map<int32, bokura.ItemTypeTableBase> datas = 1;
+}
+

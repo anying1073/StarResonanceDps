@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message FaceUploadData {
+  string short_guid = 1;
+  string file_suffix = 2;
+}
+

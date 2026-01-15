@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_compensation_record.proto";
+import "stru_dirty_mask.proto";
+
+message CompensationSeasonStatistics {
+  map<uint32, zproto.CompensationRecord> week_data = 1;
+  map<uint32, int32> compensation = 2;
+  int32 max_climb_up_layer_id = 3;
+  repeated int64 raid_boss_ids = 4;
+  map<int64, int64> raid_boss_kill_time = 5;
+}
+

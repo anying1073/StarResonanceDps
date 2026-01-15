@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AchievementDateTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int_array target_id = 1432;
+  int_table condition = 1634;
+  int32 pre_achievement = 327;
+  int32 reward_id = 212;
+  string des = 266;
+  string type_icon = 1596;
+  int32 season_id = 1669;
+}
+
+message AchievementDateTableMgr {
+  map<int32, bokura.AchievementDateTableBase> datas = 1;
+}
+

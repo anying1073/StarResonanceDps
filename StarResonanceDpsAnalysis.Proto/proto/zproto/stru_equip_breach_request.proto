@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message EquipBreachRequest {
+  int64 equip_uid = 1;
+}
+

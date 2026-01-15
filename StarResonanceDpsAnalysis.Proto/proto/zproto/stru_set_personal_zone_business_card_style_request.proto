@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetPersonalZoneBusinessCardStyleRequest {
+  int32 business_card_style_id = 1;
+}
+

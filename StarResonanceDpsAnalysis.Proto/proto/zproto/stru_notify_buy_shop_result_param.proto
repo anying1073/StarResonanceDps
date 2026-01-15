@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_notify_buy_shop_item_info.proto";
+
+message NotifyBuyShopResultParam {
+  int32 err_code = 1;
+  repeated zproto.NotifyBuyShopItemInfo buy_shop_item_info = 2;
+}
+

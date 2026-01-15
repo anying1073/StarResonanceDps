@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message RideSkinData {
+  int64 activate_time = 1;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_int_vec3.proto";
+import "stru_dirty_mask.proto";
+
+message FashionColorInfo {
+  int32 id = 1;
+  map<int32, zproto.IntVec3> colors = 2;
+  map<int32, zproto.IntVec3> attachment_color = 3;
+}
+

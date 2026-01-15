@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message MapEntityIconTableBase {
+  int32 id = 1463;
+  int32 type = 679;
+  string sprite = 840;
+}
+
+message MapEntityIconTableMgr {
+  map<int32, bokura.MapEntityIconTableBase> datas = 1;
+}
+

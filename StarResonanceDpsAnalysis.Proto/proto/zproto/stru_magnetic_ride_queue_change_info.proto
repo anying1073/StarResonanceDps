@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_magnetic_ride_path_point_change_info.proto";
+import "stru_magmetic_ride_passenger_change_info.proto";
+
+message MagneticRideQueueChangeInfo {
+    optional int64 QueueUuid = 1;
+    optional MagneticRidePassengerChangeInfo PassengerChangeInfo = 2;
+    optional MagneticRidePathPointChangeInfo PathPointChangeInfo = 3;
+    optional bool IsCircle = 4;
+    optional bool IsRemove = 5;
+    optional float PathLength = 6;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ChitChatChannelType {
+  ChannelNull = 0;
+  ChannelWorld = 1;
+  ChannelScene = 2;
+  ChannelTeam = 3;
+  ChannelUnion = 4;
+  ChannelPrivate = 5;
+  ChannelGroup = 6;
+  ChannelTopNotice = 7;
+  ChannelSystem = 99;
+}
+

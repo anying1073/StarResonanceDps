@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EInteractionType {
+  EInteractionTypeDefault = 0;
+  EInteractionTypePlayer = 1;
+  EInteractionTypeNotPlayer = 2;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_team_member_type.proto";
+import "stru_user_summary_data.proto";
+
+message NotifyInvitationRequest {
+  int64 teamid = 1;
+  uint32 target_id = 2;
+  uint32 team_num = 3;
+  zproto.UserSummaryData invite_mem_data = 4;
+  zproto.ETeamMemberType team_member_type = 5;
+}
+

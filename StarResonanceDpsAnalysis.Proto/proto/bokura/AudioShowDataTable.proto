@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+message AudioShowDataTableBase {
+  int64 id = 1463;
+  float start = 678;
+  float duration = 544;
+  float end = 1415;
+  bool is_attacker = 920;
+  int32 state_id = 308;
+  int32 group_id = 196;
+  bool loop = 1929;
+  string event_name = 1263;
+}
+
+message AudioShowDataTableMgr {
+  map<int64, bokura.AudioShowDataTableBase> datas = 1;
+}
+

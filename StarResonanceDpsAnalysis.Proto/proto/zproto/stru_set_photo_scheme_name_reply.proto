@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_session_info.proto";
+import "stru_text_check_data_result.proto";
+
+message SetPhotoSchemeNameReply {
+  zproto.SessionInfo session = 1;
+  zproto.TextCheckDataResult check_data_result = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

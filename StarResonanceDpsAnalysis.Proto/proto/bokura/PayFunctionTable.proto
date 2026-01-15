@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PayFunctionTableBase {
+  int32 id = 1463;
+  int_array payment_id = 884;
+  mlstring name = 439;
+  string desc = 1953;
+  int32 show_type = 1131;
+  string icon = 1153;
+  int32 sort = 1643;
+  int_table label = 432;
+  int32 is_sale = 1626;
+}
+
+message PayFunctionTableMgr {
+  map<int32, bokura.PayFunctionTableBase> datas = 1;
+}
+

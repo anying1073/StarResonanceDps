@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESwimStage {
+  EIdle = 0;
+  EDive = 1;
+  EFallInto = 2;
+  ESwimming = 3;
+  ESprint = 4;
+  EAshore = 5;
+  EDrowning = 6;
+}
+

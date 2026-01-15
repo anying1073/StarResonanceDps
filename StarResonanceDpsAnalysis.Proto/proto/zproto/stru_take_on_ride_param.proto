@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_ride_property_type.proto";
+
+message TakeOnRideParam {
+  zproto.ERidePropertyType ride_type = 1;
+  int32 ride_id = 2;
+}
+

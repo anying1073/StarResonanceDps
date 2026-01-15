@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+import "enum_e_hero_key_roll_type.proto";
+import "stru_dirty_mask.proto";
+
+message HeroKeyRollInfo {
+  zproto.EHeroKeyRollType type = 1;
+  int64 char_id = 2;
+  string name = 3;
+  zproto.AvatarInfo avatar = 4;
+  uint32 roll_value = 5;
+}
+

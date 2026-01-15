@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBuffEffectLogicPbType {
+  PlayEffect = 0;
+  Gravity = 1;
+  ParabolaEffect = 2;
+  Linking = 3;
+  ConfusionEffect = 4;
+  ZoomScale = 5;
+  BuffProfessionEffect = 7;
+  TeleportBelt = 8;
+  BuffEffectRainbow = 9;
+  BuffEffectAttrHUD = 11;
+  BuffEffectStop = 12;
+  BuffEffectProgress = 13;
+  BuffEffectEnergyDisplay = 14;
+  BuffEffectStopAll = 15;
+  Tension = 17;
+  BuffEffectAddBuff = 18;
+  BuffEffectBuffChange = 19;
+}
+

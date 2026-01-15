@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum TransferAttrType {
+  TransferAttrTypeNull = 0;
+  TransferAttrTypeCommonLeave = 1;
+  TransferAttrTypeCommonEnter = 2;
+  TransferAttrTypePassLineLeave = 3;
+  TransferAttrTypePassLineEnter = 4;
+}
+

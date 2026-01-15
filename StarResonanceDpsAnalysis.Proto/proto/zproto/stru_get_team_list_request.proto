@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetTeamListRequest {
+  uint32 target_id = 2;
+  bool is_refresh = 3;
+  int32 member_count = 4;
+  bool ignore_self_talent = 5;
+}
+

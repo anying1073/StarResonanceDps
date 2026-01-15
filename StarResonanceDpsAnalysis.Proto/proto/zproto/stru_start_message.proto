@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mahjong_config_info.proto";
+import "stru_player_mahjong_data.proto";
+
+message StartMessage {
+  repeated zproto.PlayerMahjongData players = 1;
+  repeated zproto.MahjongConfigInfo config = 2;
+}
+

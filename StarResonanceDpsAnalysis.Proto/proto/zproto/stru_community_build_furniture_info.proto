@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message CommunityBuildFurnitureInfo {
+  int64 build_uuid = 1;
+  int32 furniture_id = 2;
+  int32 furniture_count = 3;
+  int64 char_id = 4;
+  int64 start_time = 5;
+  int64 end_time = 6;
+  int32 accelerate_count = 7;
+  map<int32, int32> accelerate_items = 8;
+  repeated zproto.Item consume_items = 9;
+}
+

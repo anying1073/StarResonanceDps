@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESceneAssignType {
+  SceneAssignTypeNormal = 0;
+  SceneAssignType_Team = 1;
+  SceneAssignType_Login = 2;
+  SceneAssignTypeCommunity = 3;
+  SceneAssignTypeHomeland = 4;
+  SceneAssignTypeUnion = 5;
+  SceneAssignTypeOwners = 6;
+  SceneAssignRideChangeMap = 7;
+  SceneAssignAllChangeMap = 8;
+  SceneAssignReconnect = 9;
+}
+

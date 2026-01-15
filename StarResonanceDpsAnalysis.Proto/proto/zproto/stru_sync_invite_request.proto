@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message SyncInviteRequest {
+  int64 invite_id = 1;
+  string invite_name = 2;
+  string union_name = 3;
+  uint64 union_id = 4;
+}
+

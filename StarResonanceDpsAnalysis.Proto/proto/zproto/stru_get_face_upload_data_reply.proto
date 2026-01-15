@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_face_upload_data.proto";
+
+message GetFaceUploadDataReply {
+  repeated zproto.FaceUploadData face_cos_data_list = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

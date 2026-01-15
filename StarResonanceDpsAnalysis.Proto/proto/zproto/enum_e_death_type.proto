@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EDeathType {
+  EDeathTypeNull = 0;
+  EDeathTypeSkill = 1;
+  EDeathTypeFall = 2;
+  EDeathTypeDrowning = 3;
+}
+

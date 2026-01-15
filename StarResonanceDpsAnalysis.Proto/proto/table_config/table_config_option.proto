@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package table_config;
+
+import "google/protobuf/descriptor.proto";
+
+message MessageTable {
+  string msg_type = 1;
+  repeated string pbs_path = 2;
+}
+
+message SecondaryKey {
+  int32 id = 1;
+  int32 index = 2;
+}
+
+message TableConfigFieldOption {
+  bool primary_key = 1;
+  bool non_unique = 2;
+  repeated table_config.SecondaryKey secondary_keys = 3;
+}
+

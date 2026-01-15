@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_build_life_profession_info_list.proto";
+
+message CommunityBuildLifeProfessionInfos {
+  map<int64, zproto.CommunityBuildLifeProfessionInfoList> build_life_profession_infos = 1;
+}
+

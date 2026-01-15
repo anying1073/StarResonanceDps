@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SeasonShopTableBase {
+  int32 id = 1463;
+  int32 function_id = 149;
+  mlstring name = 439;
+  string name_remark = 1535;
+  int32 shop_type = 1461;
+  int32 timer_id = 190;
+  int32 sort = 1643;
+  string icon = 1153;
+  int_array currency_display = 1022;
+}
+
+message SeasonShopTableMgr {
+  map<int32, bokura.SeasonShopTableBase> datas = 1;
+}
+

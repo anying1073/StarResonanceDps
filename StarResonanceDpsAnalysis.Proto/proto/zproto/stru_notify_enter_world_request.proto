@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_transfer_param.proto";
+import "stru_scene_line_data.proto";
+
+message NotifyEnterWorldRequest {
+    optional string AccountId = 1;
+    optional string Token = 2;
+    optional string SceneIp = 3;
+    optional int32 ScenePort = 4;
+    optional TransferParam Transform = 5;
+    optional SceneLineData SceneLineData = 6;
+}

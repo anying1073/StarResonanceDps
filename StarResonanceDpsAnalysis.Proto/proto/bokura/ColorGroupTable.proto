@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ColorGroupTableBase {
+  int32 id = 1463;
+  int32 type = 673;
+  string color = 1995;
+  int_table hue = 1531;
+  int32 if_saturation = 1483;
+  int_table saturation = 1234;
+  int32 if_value = 1337;
+  int_table value = 616;
+  int_table ui_color = 26;
+  int_table consumeh = 233;
+  int_table zone = 1971;
+  int_table consume_low = 73;
+  int_table consume_high = 1761;
+  int_table unlock = 1666;
+}
+
+message ColorGroupTableMgr {
+  map<int32, bokura.ColorGroupTableBase> datas = 1;
+}
+

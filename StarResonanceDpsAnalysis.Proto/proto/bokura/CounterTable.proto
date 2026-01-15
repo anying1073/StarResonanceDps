@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message CounterTableBase {
+  int64 id = 1463;
+  string name = 439;
+  int64 time_table_id = 56;
+  int32 refresh_num = 1376;
+  int32 limit = 640;
+}
+
+message CounterTableMgr {
+  map<int64, bokura.CounterTableBase> datas = 1;
+}
+

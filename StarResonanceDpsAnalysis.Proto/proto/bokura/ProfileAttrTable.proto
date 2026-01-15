@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ProfileAttrTableBase {
+  int32 id = 1463;
+  int32 attr_id = 1307;
+  mlstring name = 439;
+  int32 type = 673;
+  mlstring type_display_name = 1876;
+}
+
+message ProfileAttrTableMgr {
+  map<int32, bokura.ProfileAttrTableBase> datas = 1;
+}
+

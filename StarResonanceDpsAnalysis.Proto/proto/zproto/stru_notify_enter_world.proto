@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_notify_enter_world_request.proto";
+
+message NotifyEnterWorld {
+    NotifyEnterWorldRequest VRequest = 1;
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message EquipInfo {
+  int32 equip_slot = 1;
+  uint64 item_uuid = 2;
+  uint32 equip_slot_refine_level = 3;
+  uint32 equip_slot_refine_failed_count = 4;
+}
+

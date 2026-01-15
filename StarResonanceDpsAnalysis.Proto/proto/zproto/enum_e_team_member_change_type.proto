@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETeamMemberChangeType {
+  ChangeTypeNull = 0;
+  ChangeTypeJoin = 1;
+  ChangeTypeLeave = 2;
+  ChangeTypeLeader = 3;
+  ChangeTypeRefuseLeader = 4;
+}
+

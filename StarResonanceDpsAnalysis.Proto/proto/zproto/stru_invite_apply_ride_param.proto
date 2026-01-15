@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message InviteApplyRideParam {
+  int64 driver_id = 1;
+  string driver_name = 2;
+}
+

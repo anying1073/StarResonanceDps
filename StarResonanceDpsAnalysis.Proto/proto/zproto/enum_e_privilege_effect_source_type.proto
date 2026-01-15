@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EPrivilegeEffectSourceType {
+  EPrivilegeEffectSourceTypeNone = 0;
+  EPrivilegeEffectSourceTypeBattlePass = 1;
+  EPrivilegeEffectSourceTypeLaunchPrivilege = 2;
+  EPrivilegeEffectSourceTypeNewbieBackflow = 3;
+}
+

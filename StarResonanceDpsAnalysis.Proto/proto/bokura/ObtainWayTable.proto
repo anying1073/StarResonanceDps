@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ObtainWayTableBase {
+  int32 id = 1463;
+  int_table get_ways = 498;
+}
+
+message ObtainWayTableMgr {
+  map<int32, bokura.ObtainWayTableBase> datas = 1;
+}
+

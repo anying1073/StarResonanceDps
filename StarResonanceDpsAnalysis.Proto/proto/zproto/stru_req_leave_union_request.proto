@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReqLeaveUnionRequest {
+  int64 union_id = 2;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_vec3.proto";
+
+message FakeBulletInfo {
+    optional int32 Uuid = 1;
+    optional int32 BulletId = 2;
+    optional int64 TargetId = 3;
+    optional int32 PartId = 4;
+    optional Vec3 Offset = 5;
+    optional Vec3 Rotate = 6;
+    optional int32 SkinId = 7;
+}

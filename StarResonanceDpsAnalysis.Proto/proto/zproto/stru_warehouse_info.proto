@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_warehouse_grid.proto";
+
+message WarehouseInfo {
+  int64 warehouse_id = 1;
+  int64 president_id = 2;
+  repeated int64 mem_id_list = 3;
+  repeated zproto.WarehouseGrid warehouse_grids = 4;
+}
+

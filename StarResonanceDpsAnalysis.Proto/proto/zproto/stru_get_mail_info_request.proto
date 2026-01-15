@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetMailInfoRequest {
+  int64 mail_uuid = 2;
+  repeated int64 mail_uuid_list = 3;
+}
+

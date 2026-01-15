@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_notify_building_upgrade_end_request.proto";
+import "stru_notify_effect_buf_change_request.proto";
+import "stru_notify_invite_join_union_request.proto";
+import "stru_notify_member_online_request.proto";
+import "stru_notify_official_limit_update_request.proto";
+import "stru_notify_request_list_num_request.proto";
+import "stru_notify_union_activity_progress_request.proto";
+import "stru_notify_union_activity_request.proto";
+import "stru_notify_union_info_request.proto";
+import "stru_notify_union_official_change_request.proto";
+import "stru_notify_union_resource_change_request.proto";
+import "stru_notify_union_sub_func_unlock_request.proto";
+import "stru_notify_update_member_request.proto";
+
+message UnionNtf {
+
+  message NotifyUnionInfo {
+    zproto.NotifyUnionInfoRequest v_request = 1;
+  }
+
+  message NotifyOfficialLimitUpdate {
+    zproto.NotifyOfficialLimitUpdateRequest v_request = 1;
+  }
+
+  message NotifyUpdateMember {
+    zproto.NotifyUpdateMemberRequest v_request = 1;
+  }
+
+  message NotifyRequestListNum {
+    zproto.NotifyRequestListNumRequest v_request = 1;
+  }
+
+  message NotifyInviteJoinUnion {
+    zproto.NotifyInviteJoinUnionRequest v_request = 1;
+  }
+
+  message NotifyUnionActivity {
+    zproto.NotifyUnionActivityRequest v_request = 1;
+  }
+
+  message NotifyUnionActivityProgress {
+    zproto.NotifyUnionActivityProgressRequest v_request = 1;
+  }
+
+  message NotifyUnionResourceChange {
+    zproto.NotifyUnionResourceChangeRequest v_request = 1;
+  }
+
+  message NotifyBuildingUpgradeEnd {
+    zproto.NotifyBuildingUpgradeEndRequest v_request = 1;
+  }
+
+  message NotifyEffectBufChange {
+    zproto.NotifyEffectBufChangeRequest v_request = 1;
+  }
+
+  message NotifyUnionOfficialChange {
+    zproto.NotifyUnionOfficialChangeRequest v_request = 1;
+  }
+
+  message NotifyUnionSubFuncUnlock {
+    zproto.NotifyUnionSubFuncUnlockRequest v_request = 1;
+  }
+
+  message NotifyMemberOnline {
+    zproto.NotifyMemberOnlineRequest v_request = 1;
+  }
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_common_target_activity_info.proto";
+import "stru_dirty_mask.proto";
+
+message CommonTargetActivity {
+  map<uint32, zproto.CommonTargetActivityInfo> common_target_activity_list = 1;
+}
+

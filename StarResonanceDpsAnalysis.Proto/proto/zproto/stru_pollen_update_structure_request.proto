@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_home_land_item_instance.proto";
+import "stru_structure_land_op.proto";
+
+message PollenUpdateStructureRequest {
+  int64 home_id = 1;
+  zproto.StructureLandOp op = 2;
+  zproto.HomeLandItemInstance pollen_instance = 3;
+}
+

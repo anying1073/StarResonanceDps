@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message AnimShortNameTableBase {
+  int32 id = 1463;
+  string name_design = 1649;
+  string anim_short_name = 165;
+}
+
+message AnimShortNameTableMgr {
+  map<int32, bokura.AnimShortNameTableBase> datas = 1;
+}
+

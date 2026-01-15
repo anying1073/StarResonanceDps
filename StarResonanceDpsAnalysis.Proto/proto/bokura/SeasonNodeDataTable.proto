@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SeasonNodeDataTableBase {
+  int32 id = 1463;
+  int32 node_id = 1205;
+  int32 node_level = 1559;
+  mlstring node_name = 830;
+  string node_icon = 1736;
+  int_table node_effect = 1425;
+  string_table buff_value_key = 668;
+  int_table buff_par = 1688;
+}
+
+message SeasonNodeDataTableMgr {
+  map<int32, bokura.SeasonNodeDataTableBase> datas = 1;
+}
+

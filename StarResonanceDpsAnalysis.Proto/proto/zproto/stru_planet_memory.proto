@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PlanetMemory {
+  repeated int32 pass_room = 1;
+}
+

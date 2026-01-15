@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_quest_step_status.proto";
+import "stru_dirty_mask.proto";
+
+message QuestData {
+  uint32 id = 1;
+  uint32 step_id = 2;
+  uint32 state = 3;
+  map<int32, int32> target_num = 4;
+  map<int32, int32> target_max_num = 5;
+  int64 step_limit_time = 6;
+  zproto.EQuestStepStatus step_status = 7;
+  uint32 add_limit_time = 8;
+  map<int32, int32> target_type = 9;
+}
+

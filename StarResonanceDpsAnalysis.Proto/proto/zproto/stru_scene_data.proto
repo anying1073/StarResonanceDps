@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_last_scene_data.proto";
+import "stru_position.proto";
+import "stru_dirty_mask.proto";
+
+message SceneData {
+  uint32 map_id = 1;
+  uint32 channel_id = 2;
+  zproto.Position pos = 3;
+  int64 level_uuid = 4;
+  zproto.Position level_pos = 5;
+  uint32 level_map_id = 6;
+  uint32 level_revive_id = 7;
+  map<uint32, uint32> record_id = 8;
+  uint32 plane_id = 9;
+  uint32 scene_layer = 10;
+  bool can_switch_layer = 11;
+  zproto.Position before_fall_pos = 12;
+  string scene_guid = 13;
+  string dungeon_guid = 14;
+  uint32 line_id = 15;
+  uint32 visual_layer_config_id = 16;
+  zproto.LastSceneData last_scene_data = 17;
+  int32 scene_area_id = 18;
+  int32 level_area_id = 19;
+  int32 before_fall_scene_area_id = 20;
+  int32 static_scene_act_ver = 21;
+}
+

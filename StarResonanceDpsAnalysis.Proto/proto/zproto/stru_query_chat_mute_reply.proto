@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message QueryChatMuteReply {
+  bool is_ban = 1;
+  int64 end_timestamp = 2;
+  int32 ban_reason = 3;
+  zproto.EErrorCode err_code = 4;
+}
+

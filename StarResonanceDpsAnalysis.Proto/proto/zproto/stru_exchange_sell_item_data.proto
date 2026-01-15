@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_exchange_item_state.proto";
+import "stru_item.proto";
+
+message ExchangeSellItemData {
+  zproto.Item item_info = 1;
+  int32 withdraw_type = 2;
+  int64 delay_time = 3;
+  string uuid = 4;
+  int64 end_time = 5;
+  int32 price = 6;
+  zproto.EExchangeItemState state = 7;
+}
+

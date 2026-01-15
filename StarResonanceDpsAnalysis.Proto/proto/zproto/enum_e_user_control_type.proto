@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EUserControlType {
+  EUserControlMoveTo = 0;
+  EUserControlRush = 1;
+  EUserControlJump = 2;
+  EUserControlJumpSync = 3;
+  EUserControlFall = 4;
+  EUserControlFallSync = 5;
+  EUserControlClimb = 6;
+  EUserControlFlow = 7;
+  EUserControlGlide = 8;
+  EUserControlPedalWall = 9;
+  EUserControlSwim = 10;
+  EUserControlTunnelFly = 11;
+  EUserControlLevitation = 12;
+  EUserControlInteractionMoveTo = 13;
+  EUserControlVehicleMove = 14;
+  EUserControlVehicleJump = 15;
+  EUserControlVehicleJumpSync = 16;
+  EUserControlVehicleFall = 17;
+  EUserControlVehicleFallSync = 18;
+}
+

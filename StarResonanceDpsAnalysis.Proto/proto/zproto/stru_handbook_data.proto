@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_hand_book_struct.proto";
+import "stru_dirty_mask.proto";
+
+message HandbookData {
+  map<int32, zproto.HandBookStruct> unlock_note_important_role_map = 1;
+  map<int32, zproto.HandBookStruct> unlock_note_reading_book_map = 2;
+  map<int32, zproto.HandBookStruct> unlock_note_dictionary_map = 3;
+  map<int32, zproto.HandBookStruct> unlock_note_post_card_map = 4;
+  map<int32, zproto.HandBookStruct> unlock_note_month_card_map = 5;
+}
+

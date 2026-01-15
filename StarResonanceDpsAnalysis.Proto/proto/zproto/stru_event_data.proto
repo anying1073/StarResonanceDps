@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message EventData {
+  int32 event_type = 1;
+  repeated int32 int_params = 2;
+  repeated int64 long_params = 3;
+  repeated float float_params = 4;
+  repeated string str_params = 5;
+}
+

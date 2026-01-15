@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message DeleteItemParam {
+  int64 item_uuid = 1;
+  int64 count = 2;
+}
+

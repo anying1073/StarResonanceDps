@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_mahjong_settle_type.proto";
+
+message MahjongSettle {
+  zproto.MahjongSettleType settle_type = 1;
+  int64 player_id = 2;
+  int32 yi = 3;
+  int32 han = 4;
+  int32 fushu = 5;
+  int32 seconds = 6;
+}
+

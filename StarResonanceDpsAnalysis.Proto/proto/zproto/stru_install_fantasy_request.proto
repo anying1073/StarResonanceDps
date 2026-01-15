@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message InstallFantasyRequest {
+  int32 node_id = 1;
+  int32 fantasy_config_id = 2;
+}
+

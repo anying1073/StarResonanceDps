@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message BuffDBData {
+  int64 buff_uuid = 1;
+  int64 firer_id = 2;
+  uint32 buff_config_id = 3;
+  uint32 base_id = 4;
+  uint32 level = 5;
+  uint32 layer = 6;
+  int32 duration = 7;
+  int32 count = 8;
+  int64 create_time = 9;
+  int32 part_id = 10;
+  int32 create_scene_id = 11;
+  repeated string custom_params_key = 12;
+  repeated int32 custom_params = 13;
+}
+

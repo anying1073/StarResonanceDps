@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_microphone_status.proto";
+import "enum_e_speak_status.proto";
+
+message TeamMemRealTimeVoiceInfo {
+  zproto.EMicrophoneStatus microphone_status = 1;
+  zproto.ESpeakStatus speak_status = 2;
+}
+

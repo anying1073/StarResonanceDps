@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message LevelUpAward {
+  uint32 drop_times = 1;
+  int64 last_drop_time = 2;
+}
+

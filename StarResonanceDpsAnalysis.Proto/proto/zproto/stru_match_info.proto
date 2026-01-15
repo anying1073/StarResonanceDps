@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "enum_e_match_status.proto";
+import "stru_match_key_info.proto";
+import "stru_match_player_info.proto";
+
+message MatchInfo {
+  zproto.EMatchStatus match_status = 2;
+  int64 match_time = 3;
+  map<int64, zproto.MatchPlayerInfo> match_player_info = 5;
+  string match_token = 6;
+  int64 match_ready_time = 7;
+  zproto.MatchKeyInfo match_key_info = 8;
+  string match_grain_key = 9;
+  zproto.EErrorCode err_code = 10;
+}
+

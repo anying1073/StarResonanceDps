@@ -1,0 +1,4758 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_actor_state.proto";
+import "enum_e_detach_magnetic_type.proto";
+import "enum_e_error_code.proto";
+import "enum_e_interaction_action.proto";
+import "enum_e_new_back_type.proto";
+import "enum_e_show_piece_type.proto";
+import "stru_accept_profession_quest_request.proto";
+import "stru_accept_quest_info.proto";
+import "stru_accept_transfer_be_leader_request.proto";
+import "stru_activate_profession_skill_skin_request.proto";
+import "stru_active_normal_node_request.proto";
+import "stru_active_profession_talent_request.proto";
+import "stru_active_rogue_nabo_param.proto";
+import "stru_active_rogue_rune_param.proto";
+import "stru_activity_action_reply.proto";
+import "stru_activity_action_request.proto";
+import "stru_add_collect_mail_request.proto";
+import "stru_add_collect_union_id_reply.proto";
+import "stru_add_collect_union_id_request.proto";
+import "stru_add_to_structure_group_request.proto";
+import "stru_ao_yi_item_decompose_reply.proto";
+import "stru_ao_yi_item_decompose_request.proto";
+import "stru_ao_yi_item_fusion_request.proto";
+import "stru_ao_yi_skill_remodel_request.proto";
+import "stru_aoyi_skill_active_request.proto";
+import "stru_aoyi_skill_upgrade_request.proto";
+import "stru_apply_be_leader_request.proto";
+import "stru_apply_join_team_reply.proto";
+import "stru_apply_join_team_request.proto";
+import "stru_apply_to_ride_param.proto";
+import "stru_apply_to_ride_result_param.proto";
+import "stru_approval_request_reply.proto";
+import "stru_approval_request_request.proto";
+import "stru_batch_accept_quest_info.proto";
+import "stru_batch_search_union_list_reply.proto";
+import "stru_batch_search_union_list_request.proto";
+import "stru_begin_match_param.proto";
+import "stru_bind_group_with_tencent_reply.proto";
+import "stru_bind_group_with_tencent_request.proto";
+import "stru_build_life_profession_info_reply.proto";
+import "stru_build_life_profession_info_request.proto";
+import "stru_buy_battle_pass_info.proto";
+import "stru_buy_shop_item_request.proto";
+import "stru_cancel_act_request.proto";
+import "stru_cancel_collect_mail_request.proto";
+import "stru_cancel_collected_union_id_request.proto";
+import "stru_cancel_effect_buff_request.proto";
+import "stru_cancel_match_param.proto";
+import "stru_cancel_red_dot_param.proto";
+import "stru_challenge_affix_param.proto";
+import "stru_challenge_affix.proto";
+import "stru_challenge_dungeon_score_award_param.proto";
+import "stru_change_avatar_reply.proto";
+import "stru_change_avatar_request.proto";
+import "stru_change_group_name_request.proto";
+import "stru_change_group_request.proto";
+import "stru_change_team_member_type_request.proto";
+import "stru_color_data.proto";
+import "stru_community_accept_reject_invitation_reply.proto";
+import "stru_community_accept_reject_invitation_request.proto";
+import "stru_community_build_furniture_accelerate_request.proto";
+import "stru_community_build_furniture_cancel_request.proto";
+import "stru_community_build_furniture_receive_request.proto";
+import "stru_community_build_furniture_request.proto";
+import "stru_community_build_furniture_simple_reply.proto";
+import "stru_community_build_furniture_simple_request.proto";
+import "stru_community_build_life_profession_cancel_request.proto";
+import "stru_community_build_life_profession_receive_request.proto";
+import "stru_community_build_life_profession_reply.proto";
+import "stru_community_build_life_profession_request.proto";
+import "stru_community_enter_homeland_request.proto";
+import "stru_community_enter_request.proto";
+import "stru_community_get_home_land_base_info_reply.proto";
+import "stru_community_get_home_land_base_info_request.proto";
+import "stru_community_grain_fertilizer_update_structure_reply.proto";
+import "stru_community_grain_gain_update_structure_reply.proto";
+import "stru_community_grain_pick_up_update_structure_reply.proto";
+import "stru_community_grain_pollen_update_structure_reply.proto";
+import "stru_community_grain_seeding_update_structure_reply.proto";
+import "stru_community_grain_update_structure_reply.proto";
+import "stru_community_grain_water_update_structure_reply.proto";
+import "stru_community_invitation_cohabitant_request.proto";
+import "stru_community_invitation_reply.proto";
+import "stru_community_invitation_request.proto";
+import "stru_community_kick_player_request.proto";
+import "stru_community_person_data_reply.proto";
+import "stru_community_person_data_request.proto";
+import "stru_community_quit_cohabitant_agree_request.proto";
+import "stru_community_quit_cohabitant_cancel_request.proto";
+import "stru_community_quit_cohabitant_request.proto";
+import "stru_community_remove_structure_reply.proto";
+import "stru_community_remove_structure_request.proto";
+import "stru_community_set_authority_request.proto";
+import "stru_community_set_check_in_content_request.proto";
+import "stru_community_set_introduction_request.proto";
+import "stru_community_set_name_reply.proto";
+import "stru_community_set_name_request.proto";
+import "stru_community_set_player_authority_request.proto";
+import "stru_community_transfer_ownership_agree_request.proto";
+import "stru_community_transfer_ownership_cancel_request.proto";
+import "stru_community_transfer_ownership_request.proto";
+import "stru_community_unlock_furniture_recipe_request.proto";
+import "stru_confirm_recast_equip_request.proto";
+import "stru_copy_self_photo_to_union_tmp_album_reply.proto";
+import "stru_copy_self_photo_to_union_tmp_album_request.proto";
+import "stru_create_group_request.proto";
+import "stru_create_structure_group_reply.proto";
+import "stru_create_structure_group_request.proto";
+import "stru_create_team_reply.proto";
+import "stru_create_team_request.proto";
+import "stru_create_union_album_reply.proto";
+import "stru_create_union_album_request.proto";
+import "stru_create_union_reply.proto";
+import "stru_create_union_request.proto";
+import "stru_create_warehouse_reply.proto";
+import "stru_create_warehouse_request.proto";
+import "stru_dance_active.proto";
+import "stru_dance_begin.proto";
+import "stru_de_compose_factor_item_reply.proto";
+import "stru_de_compose_factor_item_request.proto";
+import "stru_deal_apply_join_request.proto";
+import "stru_decompose_mod_reply.proto";
+import "stru_decompose_mod_request.proto";
+import "stru_delete_action_group_data_request.proto";
+import "stru_delete_friend_request.proto";
+import "stru_delete_group_request.proto";
+import "stru_delete_item_param.proto";
+import "stru_delete_mail_reply.proto";
+import "stru_delete_mail_request.proto";
+import "stru_delete_union_album_request.proto";
+import "stru_delete_union_photo_request.proto";
+import "stru_delete_union_tmp_photo_request.proto";
+import "stru_deny_all_apply_join_request.proto";
+import "stru_deposit_warehouse_request.proto";
+import "stru_disable_cultivate_line_request.proto";
+import "stru_disband_warehouse_request.proto";
+import "stru_dissolve_structure_group_request.proto";
+import "stru_drawn_function_open_award_reply.proto";
+import "stru_dungeon_enter_param.proto";
+import "stru_dungeon_info.proto";
+import "stru_dungeon_ready_info.proto";
+import "stru_dungeon_roll_param.proto";
+import "stru_dungeon_sync_data.proto";
+import "stru_edit_union_album_name_reply.proto";
+import "stru_edit_union_album_name_request.proto";
+import "stru_empty_grpc_msg.proto";
+import "stru_enable_cultivate_line_request.proto";
+import "stru_end_bubble_act_request.proto";
+import "stru_enter_act_reply.proto";
+import "stru_enter_act_request.proto";
+import "stru_enter_edit_state_request.proto";
+import "stru_equip_breach_request.proto";
+import "stru_equip_create_reply.proto";
+import "stru_equip_create_request.proto";
+import "stru_equip_decompose_reply.proto";
+import "stru_equip_enchant_request.proto";
+import "stru_equip_profession_info.proto";
+import "stru_equip_slot_refine_reply.proto";
+import "stru_equip_slot_refine_request.proto";
+import "stru_exchange_buy_item_request.proto";
+import "stru_exchange_care_cancel_request.proto";
+import "stru_exchange_care_list_reply.proto";
+import "stru_exchange_care_list_request.proto";
+import "stru_exchange_care_request.proto";
+import "stru_exchange_list_reply.proto";
+import "stru_exchange_list_request.proto";
+import "stru_exchange_lowest_price_reply.proto";
+import "stru_exchange_lowest_price_request.proto";
+import "stru_exchange_notice_buy_item_request.proto";
+import "stru_exchange_notice_detail_reply.proto";
+import "stru_exchange_notice_detail_request.proto";
+import "stru_exchange_notice_pre_buy_reply.proto";
+import "stru_exchange_notice_pre_buy_request.proto";
+import "stru_exchange_notice_reply.proto";
+import "stru_exchange_notice_request.proto";
+import "stru_exchange_put_item_request.proto";
+import "stru_exchange_record_reply.proto";
+import "stru_exchange_record_request.proto";
+import "stru_exchange_sale_buy_request.proto";
+import "stru_exchange_sale_data_reply.proto";
+import "stru_exchange_sale_data_request.proto";
+import "stru_exchange_sale_rank_reply.proto";
+import "stru_exchange_sale_rank_request.proto";
+import "stru_exchange_sale_record_reply.proto";
+import "stru_exchange_sale_record_request.proto";
+import "stru_exchange_sale_request.proto";
+import "stru_exchange_sale_take_request.proto";
+import "stru_exchange_sell_item_reply.proto";
+import "stru_exchange_sell_item_request.proto";
+import "stru_exchange_take_item_request.proto";
+import "stru_exchange_withdraw_request.proto";
+import "stru_exit_act_request.proto";
+import "stru_exit_edit_state_request.proto";
+import "stru_exit_warehouse_request.proto";
+import "stru_face_data.proto";
+import "stru_fasion_wear_request.proto";
+import "stru_fast_cook_info.proto";
+import "stru_fertilizer_update_structure_request.proto";
+import "stru_fishing_first_show_record_request.proto";
+import "stru_fishing_get_level_reward_reply.proto";
+import "stru_fishing_get_level_reward_request.proto";
+import "stru_fishing_research_request.proto";
+import "stru_fishing_result_report_reply.proto";
+import "stru_fishing_result_report_request.proto";
+import "stru_fishing_rod_reply.proto";
+import "stru_fishing_set_bait_request.proto";
+import "stru_fishing_set_research_fish_request.proto";
+import "stru_fishing_set_rod_request.proto";
+import "stru_fishing_set_stage_request.proto";
+import "stru_gain_update_structure_request.proto";
+import "stru_gasha_draw_reply.proto";
+import "stru_gasha_draw_request.proto";
+import "stru_gasha_record_reply.proto";
+import "stru_gasha_record_request.proto";
+import "stru_gasha_wish_selection_request.proto";
+import "stru_get_activity_list_reply.proto";
+import "stru_get_activity_reward_param.proto";
+import "stru_get_avatar_token_request.proto";
+import "stru_get_battle_pass_award_reply.proto";
+import "stru_get_battle_pass_award_request.proto";
+import "stru_get_collected_union_list_reply.proto";
+import "stru_get_collected_union_list_request.proto";
+import "stru_get_collection_reward_reply.proto";
+import "stru_get_cur_season_reply.proto";
+import "stru_get_dance_ball_award_request.proto";
+import "stru_get_exchange_item_reply.proto";
+import "stru_get_exchange_item_request.proto";
+import "stru_get_fashion_benefit_reward_reply.proto";
+import "stru_get_first_pay_reply.proto";
+import "stru_get_fish_rank_top_reply.proto";
+import "stru_get_fish_rank_top_request.proto";
+import "stru_get_friend_base_info_reply.proto";
+import "stru_get_friend_base_info_request.proto";
+import "stru_get_friendliness_reply.proto";
+import "stru_get_friendliness_request.proto";
+import "stru_get_homeland_build_furniture_info_reply.proto";
+import "stru_get_homeland_build_furniture_info_request.proto";
+import "stru_get_homeland_bulletin_boards_reply.proto";
+import "stru_get_homeland_bulletin_boards_request.proto";
+import "stru_get_homeland_check_in_content_reply.proto";
+import "stru_get_homeland_check_in_content_request.proto";
+import "stru_get_homeland_cohabitant_reply.proto";
+import "stru_get_homeland_cohabitant_request.proto";
+import "stru_get_homeland_flower_info_reply.proto";
+import "stru_get_homeland_flower_info_request.proto";
+import "stru_get_homeland_furniture_warehouse_info_reply.proto";
+import "stru_get_homeland_furniture_warehouse_info_request.proto";
+import "stru_get_homeland_visit_info_reply.proto";
+import "stru_get_homeland_visit_info_request.proto";
+import "stru_get_homeland_warehouse_info_reply.proto";
+import "stru_get_homeland_warehouse_info_request.proto";
+import "stru_get_mahjong_info_request.proto";
+import "stru_get_mail_appendix_reply.proto";
+import "stru_get_mail_appendix_request.proto";
+import "stru_get_mail_info_reply.proto";
+import "stru_get_mail_info_request.proto";
+import "stru_get_mail_list_reply.proto";
+import "stru_get_mail_list_request.proto";
+import "stru_get_mail_manager_reply.proto";
+import "stru_get_mail_manager_request.proto";
+import "stru_get_mail_uuid_list_reply.proto";
+import "stru_get_mail_uuid_list_request.proto";
+import "stru_get_match_info_param.proto";
+import "stru_get_near_team_list_reply.proto";
+import "stru_get_near_team_list_request.proto";
+import "stru_get_personal_info_reply.proto";
+import "stru_get_personal_info_request.proto";
+import "stru_get_personal_zone_target_award_request.proto";
+import "stru_get_questionnaire_list_reply.proto";
+import "stru_get_questionnaire_list_request.proto";
+import "stru_get_rank_info_reply.proto";
+import "stru_get_rank_info_request.proto";
+import "stru_get_recommend_play_data_reply.proto";
+import "stru_get_recommend_play_data_request.proto";
+import "stru_get_reputation_level_award_request.proto";
+import "stru_get_request_list_reply.proto";
+import "stru_get_request_list_request.proto";
+import "stru_get_room_award_param.proto";
+import "stru_get_season_dungeon_list_reply.proto";
+import "stru_get_season_quest_award_reply.proto";
+import "stru_get_shop_item_list_reply.proto";
+import "stru_get_shop_item_list_request.proto";
+import "stru_get_sign_reward_replay.proto";
+import "stru_get_sign_reward_request.proto";
+import "stru_get_social_data_reply.proto";
+import "stru_get_social_data_request.proto";
+import "stru_get_structure_group_info_reply.proto";
+import "stru_get_structure_group_info_request.proto";
+import "stru_get_suggestion_list_reply.proto";
+import "stru_get_suggestion_list_request.proto";
+import "stru_get_team_info_reply.proto";
+import "stru_get_team_info_request.proto";
+import "stru_get_team_list_reply.proto";
+import "stru_get_team_list_request.proto";
+import "stru_get_tmp_album_photos_reply.proto";
+import "stru_get_tmp_album_photos_request.proto";
+import "stru_get_treasure_info_reply.proto";
+import "stru_get_treasure_info_request.proto";
+import "stru_get_trial_road_award_param.proto";
+import "stru_get_union_activity_info_reply.proto";
+import "stru_get_union_activity_info_request.proto";
+import "stru_get_union_album_photos_reply.proto";
+import "stru_get_union_album_photos_request.proto";
+import "stru_get_union_all_album_reply.proto";
+import "stru_get_union_all_album_request.proto";
+import "stru_get_union_e_screen_list_reply.proto";
+import "stru_get_union_e_screen_list_request.proto";
+import "stru_get_union_grow_fund_info_reply.proto";
+import "stru_get_union_grow_fund_info_request.proto";
+import "stru_get_union_resource_lib_reply.proto";
+import "stru_get_union_resource_lib_request.proto";
+import "stru_get_upgrade_reward_reply.proto";
+import "stru_get_warehouse_reply.proto";
+import "stru_get_warehouse_request.proto";
+import "stru_get_world_boss_info_param.proto";
+import "stru_giveup_quest_info.proto";
+import "stru_gm_cmd.proto";
+import "stru_gm_result.proto";
+import "stru_go_to_team_mem_world_request.proto";
+import "stru_goods.proto";
+import "stru_home_land_task_reply.proto";
+import "stru_home_land_task_request.proto";
+import "stru_homeland_set_furniture_material_request.proto";
+import "stru_homeland_set_furniture_name_request.proto";
+import "stru_homeland_set_lamplight_request.proto";
+import "stru_homeland_set_material_info_request.proto";
+import "stru_homeland_switch_all_lamplight_request.proto";
+import "stru_homeland_switch_lamplight_request.proto";
+import "stru_homeland_warehouse_store_request.proto";
+import "stru_homeland_warehouse_take_out_request.proto";
+import "stru_install_fantasy_request.proto";
+import "stru_install_item_to_middle_node_request.proto";
+import "stru_install_mod_request.proto";
+import "stru_interaction_template_data.proto";
+import "stru_invite_join_dungeons_request.proto";
+import "stru_invite_join_group_with_tencent_request.proto";
+import "stru_invite_join_union_request.proto";
+import "stru_invite_to_ride_param.proto";
+import "stru_invite_to_team_request.proto";
+import "stru_invite_to_warehouse_request.proto";
+import "stru_item_recycle.proto";
+import "stru_join_dungeons_request.proto";
+import "stru_join_union_grow_func_reply.proto";
+import "stru_join_union_grow_func_request.proto";
+import "stru_kick_out_request.proto";
+import "stru_kick_out_warehouse_request.proto";
+import "stru_leader_get_apply_list_reply.proto";
+import "stru_leader_get_apply_list_request.proto";
+import "stru_learn_rogue_entry_param.proto";
+import "stru_leave_mahjong_table_request.proto";
+import "stru_level_proficiency.proto";
+import "stru_life_profession_alchemy_reply.proto";
+import "stru_life_profession_alchemy_req.proto";
+import "stru_life_profession_build_reply.proto";
+import "stru_life_profession_build_req.proto";
+import "stru_life_profession_cooking_reply.proto";
+import "stru_life_profession_cooking_req.proto";
+import "stru_life_profession_entrust_reward_reply.proto";
+import "stru_life_profession_r_d_alchemy_req.proto";
+import "stru_life_profession_r_d_alchemy_ret.proto";
+import "stru_life_profession_r_d_cooking_req.proto";
+import "stru_life_profession_r_d_cooking_ret.proto";
+import "stru_life_profession_work_early_end_reply.proto";
+import "stru_life_profession_work_history_info.proto";
+import "stru_life_profession_work_reward_reply.proto";
+import "stru_lock_rogue_entry_param.proto";
+import "stru_lua_scene_attr_reply.proto";
+import "stru_mahjong_action_request.proto";
+import "stru_mahjong_match_request.proto";
+import "stru_mark_info.proto";
+import "stru_master_mode_award.proto";
+import "stru_match_info.proto";
+import "stru_match_ready_param.proto";
+import "stru_materials.proto";
+import "stru_medal_node.proto";
+import "stru_modify_project_name_request.proto";
+import "stru_monster_award_info.proto";
+import "stru_monster_award_param.proto";
+import "stru_monster_hunt_level_award_param.proto";
+import "stru_move_photo_to_union_album_request.proto";
+import "stru_move_tmp_photo_to_album_request.proto";
+import "stru_notice_list.proto";
+import "stru_pay_reply.proto";
+import "stru_pay_request.proto";
+import "stru_pay_success_reply.proto";
+import "stru_pay_success_request.proto";
+import "stru_pick_up_update_structure_request.proto";
+import "stru_pioneer_info.proto";
+import "stru_play_action_param.proto";
+import "stru_pollen_update_structure_request.proto";
+import "stru_process_add_request_request.proto";
+import "stru_profession_skill_active_request.proto";
+import "stru_profession_skill_reset_request.proto";
+import "stru_profession_skill_reset_special_request.proto";
+import "stru_profession_skill_upgrade_request.proto";
+import "stru_query_balance_reply.proto";
+import "stru_query_balance_request.proto";
+import "stru_query_player_furniture_reply.proto";
+import "stru_query_player_furniture_request.proto";
+import "stru_query_product_reply.proto";
+import "stru_query_product_request.proto";
+import "stru_quit_team_reply.proto";
+import "stru_quit_team_request.proto";
+import "stru_random_rogue_entry_param.proto";
+import "stru_rd_cook_reply.proto";
+import "stru_rd_cook_request.proto";
+import "stru_re_be_initiate_warehouse_reply.proto";
+import "stru_re_be_initiate_warehouse_request.proto";
+import "stru_re_ject_union_invite_request.proto";
+import "stru_read_mail_reply.proto";
+import "stru_read_mail_request.proto";
+import "stru_recast_equip_request.proto";
+import "stru_receive_boss_reward_param.proto";
+import "stru_receive_common_target_activity_award_reply.proto";
+import "stru_receive_common_target_activity_award_request.proto";
+import "stru_receive_score_reward_param.proto";
+import "stru_receive_season_activation_award_reply.proto";
+import "stru_receive_season_rank_award_reply.proto";
+import "stru_receive_union_activity_award_reply.proto";
+import "stru_receive_union_activity_award_request.proto";
+import "stru_recommend_play_match_param.proto";
+import "stru_recycle_items_reply.proto";
+import "stru_reforge_key_param.proto";
+import "stru_refresh_shop_request.proto";
+import "stru_refuse_leader_apply_request.proto";
+import "stru_remove_structure_group_request.proto";
+import "stru_rename_structure_group_request.proto";
+import "stru_reply_be_invitation_request.proto";
+import "stru_reply_join_activity_request.proto";
+import "stru_req_change_official_members_request.proto";
+import "stru_req_change_officials_reply.proto";
+import "stru_req_change_officials_request.proto";
+import "stru_req_get_union_activity_award_request.proto";
+import "stru_req_join_unions_reply.proto";
+import "stru_req_join_unions_request.proto";
+import "stru_req_kick_out_request.proto";
+import "stru_req_leave_union_request.proto";
+import "stru_req_scene_line_info_reply.proto";
+import "stru_req_scene_line_info_request.proto";
+import "stru_req_switch_scene_line_request.proto";
+import "stru_req_transfer_president_reply.proto";
+import "stru_req_transfer_president_request.proto";
+import "stru_req_union_activity_progress_info_reply.proto";
+import "stru_req_union_activity_progress_info_request.proto";
+import "stru_req_union_activity_rank_reply.proto";
+import "stru_req_union_activity_rank_request.proto";
+import "stru_req_union_info_reply.proto";
+import "stru_req_union_info_request.proto";
+import "stru_req_union_mems_list_reply.proto";
+import "stru_req_union_mems_list_request.proto";
+import "stru_request_add_friend_request.proto";
+import "stru_reset_all_nodes_request.proto";
+import "stru_reset_profession_talent_by_single_node_request.proto";
+import "stru_reset_profession_talent_request.proto";
+import "stru_reset_talent_mark_item_pop_up_notice_request.proto";
+import "stru_reward_personal_friendliness_lv_reply.proto";
+import "stru_reward_personal_friendliness_lv_request.proto";
+import "stru_reward_total_friendliness_lv_reply.proto";
+import "stru_reward_total_friendliness_lv_request.proto";
+import "stru_save_action_group_request.proto";
+import "stru_save_project_reply.proto";
+import "stru_save_project_request.proto";
+import "stru_search_friend_reply.proto";
+import "stru_search_friend_request.proto";
+import "stru_search_union_list_reply.proto";
+import "stru_search_union_list_request.proto";
+import "stru_season_bp_award_reply.proto";
+import "stru_season_bp_award.proto";
+import "stru_season_center_history_reply.proto";
+import "stru_season_center_history_request.proto";
+import "stru_seeding_update_structure_request.proto";
+import "stru_set_effect_buff_reply.proto";
+import "stru_set_effect_buff_request.proto";
+import "stru_set_flag_info.proto";
+import "stru_set_friend_remarks_request.proto";
+import "stru_set_group_sort_request.proto";
+import "stru_set_hobby_mark_request.proto";
+import "stru_set_microphone_status_request.proto";
+import "stru_set_personal_zone_action_info_request.proto";
+import "stru_set_personal_zone_avatar_frame_request.proto";
+import "stru_set_personal_zone_avatar_request.proto";
+import "stru_set_personal_zone_business_card_style_request.proto";
+import "stru_set_personal_zone_medal_request.proto";
+import "stru_set_personal_zone_photo_request.proto";
+import "stru_set_personal_zone_tags_request.proto";
+import "stru_set_personal_zone_theme_request.proto";
+import "stru_set_personal_zone_title_request.proto";
+import "stru_set_personal_zone_u_i_position_request.proto";
+import "stru_set_recruit_info_request.proto";
+import "stru_set_remind_request.proto";
+import "stru_set_show_hall_request.proto";
+import "stru_set_show_picture_request.proto";
+import "stru_set_signature_request.proto";
+import "stru_set_slot_auto_battle_request.proto";
+import "stru_set_speak_status_request.proto";
+import "stru_set_team_target_info_request.proto";
+import "stru_set_team_target_quick_say_reply.proto";
+import "stru_set_team_target_quick_say_request.proto";
+import "stru_set_time_mark_request.proto";
+import "stru_set_top_request.proto";
+import "stru_set_union_album_cover_request.proto";
+import "stru_set_union_auto_pass_reply.proto";
+import "stru_set_union_auto_pass_request.proto";
+import "stru_set_union_cover_photo_request.proto";
+import "stru_set_union_declaration_reply.proto";
+import "stru_set_union_declaration_request.proto";
+import "stru_set_union_e_screen_photo_reply.proto";
+import "stru_set_union_e_screen_photo_request.proto";
+import "stru_set_union_icon_reply.proto";
+import "stru_set_union_icon_request.proto";
+import "stru_set_union_name_reply.proto";
+import "stru_set_union_name_request.proto";
+import "stru_set_union_tags_reply.proto";
+import "stru_set_union_tags_request.proto";
+import "stru_set_voice_id_reply.proto";
+import "stru_set_voice_id_request.proto";
+import "stru_settlement_position_param.proto";
+import "stru_share_object_in_chat_request.proto";
+import "stru_show_master_mode_score.proto";
+import "stru_sort_package_param.proto";
+import "stru_speed_up_upgrade_union_building_reply.proto";
+import "stru_speed_up_upgrade_union_building_request.proto";
+import "stru_start_playing_dungeon_info.proto";
+import "stru_start_ride_param.proto";
+import "stru_switch_info.proto";
+import "stru_switch_profession_info.proto";
+import "stru_switch_project_reply.proto";
+import "stru_switch_project_request.proto";
+import "stru_sync_project_list_reply.proto";
+import "stru_sync_project_list_request.proto";
+import "stru_take_off_ride_param.proto";
+import "stru_take_on_activate_ride_skin_param.proto";
+import "stru_take_on_ride_param.proto";
+import "stru_take_on_set_ride_skin_param.proto";
+import "stru_take_out_warehouse_request.proto";
+import "stru_team_cancel_activity_request.proto";
+import "stru_team_invite_user_reply.proto";
+import "stru_team_invite_user_request.proto";
+import "stru_team_leader_call_reply.proto";
+import "stru_team_leader_call_request.proto";
+import "stru_team_mem_call_reply.proto";
+import "stru_team_mem_call_request.proto";
+import "stru_team_mem_change_scene_request.proto";
+import "stru_team_tower_layer.proto";
+import "stru_tower_jump_award.proto";
+import "stru_tower_process_award.proto";
+import "stru_transfer_leader_request.proto";
+import "stru_un_bind_group_with_tencent_reply.proto";
+import "stru_un_bind_group_with_tencent_request.proto";
+import "stru_un_install_fantasy_request.proto";
+import "stru_un_install_item_to_middle_node_request.proto";
+import "stru_un_lock_face_voice_info.proto";
+import "stru_uninstall_mod_request.proto";
+import "stru_union_get_all_boss_data_reply.proto";
+import "stru_union_get_all_boss_data_request.proto";
+import "stru_union_get_kill_boss_data_reply.proto";
+import "stru_union_get_kill_boss_data_request.proto";
+import "stru_union_list_reply.proto";
+import "stru_union_list_request.proto";
+import "stru_union_remove_item_request.proto";
+import "stru_union_scene.proto";
+import "stru_unlock_action_group_request.proto";
+import "stru_unlock_info.proto";
+import "stru_unlock_project_reply.proto";
+import "stru_unlock_project_request.proto";
+import "stru_update_structure_request.proto";
+import "stru_update_team_group_request.proto";
+import "stru_upgrade_mod_request.proto";
+import "stru_upgrade_rogue_entry_param.proto";
+import "stru_upgrade_union_building_reply.proto";
+import "stru_upgrade_union_building_request.proto";
+import "stru_use_item_param.proto";
+import "stru_use_profession_skill_skin_request.proto";
+import "stru_use_profession_skin_info.proto";
+import "stru_use_slot_request.proto";
+import "stru_water_update_structure_request.proto";
+import "stru_week_target_param.proto";
+import "stru_world_boss_info.proto";
+import "stru_world_boss_match_param.proto";
+import "stru_world_event_transfer_info.proto";
+
+message World {
+
+  message ChangeCharFunctionState_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ChangeCharFunctionState {
+    zproto.EActorState state_type = 1;
+  }
+
+  message ClientBreakState {
+    int32 v_operator = 1;
+  }
+
+  message GMCommand_Ret {
+    zproto.GmResult ret = 1;
+  }
+
+  message GMCommand {
+    zproto.GmCmd cmd = 1;
+  }
+
+  message PlayEmote {
+    int32 emote_id = 1;
+  }
+
+  message LearnExpressionAction_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message LearnExpressionAction {
+    int32 expression_id = 1;
+  }
+
+  message ChangeName {
+    string v_name = 1;
+  }
+
+  message MonsterCastSkill {
+    int64 self_uuid = 1;
+    int32 skill_id = 2;
+    int64 target_uuid = 3;
+  }
+
+  message ReqInsight_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalState {
+    int32 v_personal_state = 1;
+    bool v_is_remove = 2;
+  }
+
+  message InstallResonanceSkillReq_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InstallResonanceSkillReq {
+    int32 v_position = 1;
+    int32 v_resonance_id = 2;
+  }
+
+  message GetNoticeList_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetNoticeList {
+    zproto.NoticeList v_list = 1;
+  }
+
+  message UnStuck_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ChangeShowId {
+    uint32 v_show_id = 1;
+  }
+
+  message PlayAction {
+    zproto.PlayActionParam play_action_param = 1;
+  }
+
+  message PlayActionGroup {
+    int32 action_group_id = 1;
+  }
+
+  message UserResurrection_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UserResurrection {
+    int32 v_revive_id = 1;
+  }
+
+  message QteEnd {
+    uint32 qte_id = 1;
+    repeated int32 index = 2;
+    bool res = 3;
+  }
+
+  message UseItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UseItem {
+    zproto.UseItemParam v_param = 1;
+  }
+
+  message SortPackage_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SortPackage {
+    zproto.SortPackageParam v_param = 1;
+  }
+
+  message DecomposeItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DecomposeItem {
+    map<int32, uint32> v_items = 1;
+    uint32 v_function_id = 2;
+  }
+
+  message RefineItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RefineItem {
+    uint32 v_queue_index = 1;
+    uint32 v_column_index = 2;
+  }
+
+  message GainItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GainItem {
+    uint32 v_queue_index = 1;
+    uint32 v_column_index = 2;
+  }
+
+  message UnlockItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnlockItem {
+    uint32 v_queue_index = 1;
+    uint32 v_column_index = 2;
+  }
+
+  message AddEnergyLimit_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InstantRefine_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InstantReceive_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetQuickBar_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetQuickBar {
+    int32 item_config_id = 1;
+  }
+
+  message ReforgeKey_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReforgeKey {
+    zproto.ReforgeKeyParam v_param = 1;
+  }
+
+  message RecycleItems_Ret {
+    zproto.RecycleItemsReply ret = 1;
+  }
+
+  message RecycleItems {
+    repeated zproto.ItemRecycle item_list = 1;
+  }
+
+  message DeleteItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DeleteItem {
+    zproto.DeleteItemParam v_param = 1;
+  }
+
+  message LockItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message LockItem {
+    repeated int64 v_lock_uuids = 1;
+    repeated int64 v_unlock_uuids = 2;
+  }
+
+  message LeaveScene_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SwitchSceneLayer_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SwitchSceneLayer {
+    int32 layer = 1;
+  }
+
+  message PickupDropItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message PickupDropItem {
+    int64 v_drop_obj_uuid = 1;
+  }
+
+  message UserDoAction {
+    string v_selected_str = 1;
+  }
+
+  message GetLuaSceneAttr_Ret {
+    zproto.LuaSceneAttrReply ret = 1;
+  }
+
+  message GetLuaSceneAttr {
+    string v_attribute_name = 1;
+  }
+
+  message SaveUserSingleSceneCutsState {
+    int32 cuts_key = 1;
+    int32 cuts_value = 2;
+  }
+
+  message CutScenePlayEnd {
+    uint32 v_cut_scene_id = 1;
+  }
+
+  message FlowPlayEnd {
+    uint32 v_flow_id = 1;
+  }
+
+  message GetPioneerInfo_Ret {
+    zproto.PioneerInfo ret = 1;
+  }
+
+  message GetPioneerInfo {
+    uint32 level_id = 1;
+  }
+
+  message SetQuestTrackingId {
+    uint32 quest_id = 1;
+  }
+
+  message SetTargetFinish {
+    int32 v_target_type = 1;
+    repeated int32 v_other_param = 2;
+  }
+
+  message GetWorldQuestAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetWorldQuestAward {
+    int64 v_time_stamp = 1;
+    int32 v_index = 2;
+  }
+
+  message AcceptQuest_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message AcceptQuest {
+    zproto.AcceptQuestInfo v_accept_quest_info = 1;
+  }
+
+  message SetFollowWorldQuest_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetFollowWorldQuest {
+    int32 v_quest_id = 1;
+  }
+
+  message RemoveFollowWorldQuest_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RemoveFollowWorldQuest {
+    int32 v_quest_id = 1;
+  }
+
+  message SetTrackOptionalQuest {
+    int32 v_index = 1;
+    int32 v_quest_id = 2;
+  }
+
+  message GiveupQuest_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GiveupQuest {
+    zproto.GiveupQuestInfo v_info = 1;
+  }
+
+  message WorldEventTransfer_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message WorldEventTransfer {
+    zproto.WorldEventTransferInfo v_transfer_info = 1;
+  }
+
+  message BatchAcceptQuest_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message BatchAcceptQuest {
+    zproto.BatchAcceptQuestInfo v_accept_quest_info = 1;
+  }
+
+  message SaveSetting {
+    map<int32, string> map = 1;
+  }
+
+  message GetSwitchInfo_Ret {
+    zproto.SwitchInfo ret = 1;
+  }
+
+  message ComposeReq_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ComposeReq {
+    int32 v_consume_item_config_id = 1;
+    int32 v_compose_count = 2;
+    int32 v_not_bind_flg = 3;
+  }
+
+  message ExchangeItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeItem {
+    int32 v_shop_id = 1;
+    int32 v_item_config_id = 2;
+    int32 v_times = 3;
+  }
+
+  message PutOnEquip_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message PutOnEquip {
+    int32 v_slot = 1;
+    uint64 item_uuid = 2;
+  }
+
+  message TakeOffEquip_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeOffEquip {
+    int32 v_slot = 1;
+  }
+
+  message EquipDecompose_Ret {
+    zproto.EquipDecomposeReply ret = 1;
+  }
+
+  message EquipDecompose {
+    repeated uint64 v_item_uuids = 1;
+  }
+
+  message RecastEquip_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RecastEquip {
+    zproto.RecastEquipRequest v_request = 1;
+  }
+
+  message ConfirmRecastEquip_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ConfirmRecastEquip {
+    zproto.ConfirmRecastEquipRequest v_request = 1;
+  }
+
+  message EquipSlotRefine_Ret {
+    zproto.EquipSlotRefineReply ret = 1;
+  }
+
+  message EquipSlotRefine {
+    zproto.EquipSlotRefineRequest v_request = 1;
+  }
+
+  message EquipEnchant_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message EquipEnchant {
+    zproto.EquipEnchantRequest v_request = 1;
+  }
+
+  message EquipCreate_Ret {
+    zproto.EquipCreateReply ret = 1;
+  }
+
+  message EquipCreate {
+    zproto.EquipCreateRequest v_request = 1;
+  }
+
+  message EquipBreach_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message EquipBreach {
+    zproto.EquipBreachRequest v_request = 1;
+  }
+
+  message SetFaceData_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetFaceData {
+    zproto.FaceData v_face_data = 1;
+  }
+
+  message UnLockFaceItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnLockFaceItem {
+    int32 v_config_id = 1;
+  }
+
+  message UnLockFaceVoice_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnLockFaceVoice {
+    zproto.UnLockFaceVoiceInfo v_info = 1;
+  }
+
+  message ShareObjectInChat_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ShareObjectInChat {
+    zproto.ShareObjectInChatRequest v_request = 1;
+  }
+
+  message TransferPointUnlock_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TransferPointUnlock {
+    uint32 v_transfer_point_id = 1;
+  }
+
+  message SetMapMark_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetMapMark {
+    int32 scene_id = 1;
+    zproto.MarkInfo v_mark = 2;
+  }
+
+  message RemoveMapMark_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RemoveMapMark {
+    int32 scene_id = 1;
+    int64 v_mark_id = 2;
+  }
+
+  message GetDungeonContainerData_Ret {
+    zproto.DungeonSyncData ret = 1;
+  }
+
+  message GetSeasonDungeonList_Ret {
+    zproto.GetSeasonDungeonListReply ret = 1;
+  }
+
+  message StartEnterDungeon_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message StartEnterDungeon {
+    zproto.DungeonEnterParam v_param = 1;
+  }
+
+  message DungeonVote_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DungeonVote {
+    int64 v_uuid = 1;
+  }
+
+  message CheckBeforeEnterDungeon_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CheckBeforeEnterDungeon {
+    zproto.DungeonInfo v_dungeon_info = 1;
+  }
+
+  message GetPioneerAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetPioneerAward {
+    zproto.DungeonInfo v_dungeon_info = 1;
+    int32 v_award_id = 2;
+  }
+
+  message UserAction_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UserAction {
+    int64 v_action_id = 1;
+  }
+
+  message EnterPlanetMemoryRoom_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message EnterPlanetMemoryRoom {
+    int32 v_room_id = 1;
+  }
+
+  message Bartending_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message Bartending {
+    int32 v_bartending_id = 1;
+  }
+
+  message GetChallengeDungeonScoreAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetChallengeDungeonScoreAward {
+    zproto.ChallengeDungeonScoreAwardParam v_challenge_dungeon_score_award_param = 1;
+  }
+
+  message StartPlayingDungeon_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message StartPlayingDungeon {
+    zproto.StartPlayingDungeonInfo v_param = 1;
+  }
+
+  message ReportSettlementPosition {
+    zproto.SettlementPositionParam v_user_pos = 1;
+  }
+
+  message DungeonRoll_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DungeonRoll {
+    zproto.DungeonRollParam v_param = 1;
+  }
+
+  message GetDungeonWeekTargetAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetDungeonWeekTargetAward {
+    zproto.WeekTargetParam v_param = 1;
+  }
+
+  message GetTeamTowerLayerInfo_Ret {
+    zproto.TeamTowerLayer ret = 1;
+  }
+
+  message GetWeeklyTowerProcessAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetWeeklyTowerProcessAward {
+    zproto.TowerProcessAward process = 1;
+  }
+
+  message GetChallengeDungeonAffix_Ret {
+    zproto.ChallengeAffix ret = 1;
+  }
+
+  message GetChallengeDungeonAffix {
+    zproto.ChallengeAffixParam param = 1;
+  }
+
+  message TeamLeaderReadyCheck_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TeamMemberReadyCheckReport_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TeamMemberReadyCheckReport {
+    zproto.DungeonReadyInfo v_ready_info = 1;
+  }
+
+  message GetMasterModeAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetMasterModeAward {
+    zproto.MasterModeAward v_ready_info = 1;
+  }
+
+  message SetShowMasterModeScore_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetShowMasterModeScore {
+    zproto.ShowMasterModeScore v_ready_info = 1;
+  }
+
+  message GetWeeklyTowerJumpReward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetWeeklyTowerJumpReward {
+    zproto.TowerJumpAward v_jump_award = 1;
+  }
+
+  message FashionSetColor_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FashionSetColor {
+    int32 fashion_id = 1;
+    zproto.ColorData data = 2;
+  }
+
+  message UnlockColor_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnlockColor {
+    int32 fashion_id = 1;
+    int32 color_id = 2;
+  }
+
+  message GetCollectionReward_Ret {
+    zproto.GetCollectionRewardReply ret = 1;
+  }
+
+  message GetCollectionReward {
+    repeated int32 index = 1;
+  }
+
+  message GetFashionBenefitReward_Ret {
+    zproto.GetFashionBenefitRewardReply ret = 1;
+  }
+
+  message GetFashionBenefitReward {
+    int32 index = 1;
+  }
+
+  message UnlockSvColor_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnlockSvColor {
+    int32 fashion_id = 1;
+    int32 color_index = 2;
+  }
+
+  message UnlockAdvanceFashion_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnlockAdvanceFashion {
+    int32 fashion_id = 1;
+  }
+
+  message SaveFashionTryOn_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SaveFashionTryOn {
+    int32 fashion_id = 1;
+    int32 advance_fashion_id = 2;
+  }
+
+  message FashionWear_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FashionWear {
+    zproto.FasionWearRequest v_request = 1;
+  }
+
+  message SaveDisplayedPlayHelp_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SaveDisplayedPlayHelp {
+    int32 v_play_help_id = 1;
+  }
+
+  message SaveCompletedGuide_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SaveCompletedGuide {
+    int32 v_guide_id = 1;
+  }
+
+  message GetMailList_Ret {
+    zproto.GetMailListReply ret = 1;
+  }
+
+  message GetMailList {
+    zproto.GetMailListRequest v_request = 1;
+  }
+
+  message GetMailInfo_Ret {
+    zproto.GetMailInfoReply ret = 1;
+  }
+
+  message GetMailInfo {
+    zproto.GetMailInfoRequest v_request = 1;
+  }
+
+  message ReadMail_Ret {
+    zproto.ReadMailReply ret = 1;
+  }
+
+  message ReadMail {
+    zproto.ReadMailRequest v_request = 1;
+  }
+
+  message DeleteMail_Ret {
+    zproto.DeleteMailReply ret = 1;
+  }
+
+  message DeleteMail {
+    zproto.DeleteMailRequest v_request = 1;
+  }
+
+  message GetMailUuidList_Ret {
+    zproto.GetMailUuidListReply ret = 1;
+  }
+
+  message GetMailUuidList {
+    zproto.GetMailUuidListRequest v_request = 1;
+  }
+
+  message AddCollectMail_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message AddCollectMail {
+    zproto.AddCollectMailRequest v_request = 1;
+  }
+
+  message CancelCollectMail_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CancelCollectMail {
+    zproto.CancelCollectMailRequest v_request = 1;
+  }
+
+  message GetMailManager_Ret {
+    zproto.GetMailManagerReply ret = 1;
+  }
+
+  message GetMailManager {
+    zproto.GetMailManagerRequest v_request = 1;
+  }
+
+  message GetMailAppendix_Ret {
+    zproto.GetMailAppendixReply ret = 1;
+  }
+
+  message GetMailAppendix {
+    zproto.GetMailAppendixRequest request = 1;
+  }
+
+  message ApplicationInteraction_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ApplicationInteraction {
+    int64 v_invitee_id = 1;
+    int32 v_action_id = 2;
+  }
+
+  message ReplyApplicationResult_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReplyApplicationResult {
+    int64 v_orig_id = 1;
+    int32 v_action_id = 2;
+    bool v_is_agree = 3;
+  }
+
+  message CancelAction_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UpgradeUnionBuilding_Ret {
+    zproto.UpgradeUnionBuildingReply ret = 1;
+  }
+
+  message UpgradeUnionBuilding {
+    zproto.UpgradeUnionBuildingRequest v_request = 1;
+  }
+
+  message SpeedUpUpgradeUnionBuilding_Ret {
+    zproto.SpeedUpUpgradeUnionBuildingReply ret = 1;
+  }
+
+  message SpeedUpUpgradeUnionBuilding {
+    zproto.SpeedUpUpgradeUnionBuildingRequest v_request = 1;
+  }
+
+  message EnterUnionScene_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message EnterUnionScene {
+    zproto.UnionScene request = 1;
+  }
+
+  message ReceiveUnionActivityAward_Ret {
+    zproto.ReceiveUnionActivityAwardReply ret = 1;
+  }
+
+  message ReceiveUnionActivityAward {
+    zproto.ReceiveUnionActivityAwardRequest v_request = 1;
+  }
+
+  message BeginDance_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message BeginDance {
+    zproto.DanceBegin request = 1;
+  }
+
+  message BeginDanceActive_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message BeginDanceActive {
+    zproto.DanceActive request = 1;
+  }
+
+  message ReqLeaveUnion_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReqLeaveUnion {
+    zproto.ReqLeaveUnionRequest v_request = 1;
+  }
+
+  message ReqKickOut_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReqKickOut {
+    zproto.ReqKickOutRequest v_request = 1;
+  }
+
+  message UnionRemoveItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnionRemoveItem {
+    zproto.UnionRemoveItemRequest v_request = 1;
+  }
+
+  message InviteJoinUnion_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InviteJoinUnion {
+    zproto.InviteJoinUnionRequest v_request = 1;
+  }
+
+  message BatchSearchUnionList_Ret {
+    zproto.BatchSearchUnionListReply ret = 1;
+  }
+
+  message BatchSearchUnionList {
+    zproto.BatchSearchUnionListRequest v_request = 1;
+  }
+
+  message SetRecruitInfo_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetRecruitInfo {
+    zproto.SetRecruitInfoRequest v_request = 1;
+  }
+
+  message AddCollectUnionId_Ret {
+    zproto.AddCollectUnionIdReply ret = 1;
+  }
+
+  message AddCollectUnionId {
+    zproto.AddCollectUnionIdRequest v_request = 1;
+  }
+
+  message CancelCollectedUnionId_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CancelCollectedUnionId {
+    zproto.CancelCollectedUnionIdRequest v_request = 1;
+  }
+
+  message GetCollectedUnionList_Ret {
+    zproto.GetCollectedUnionListReply ret = 1;
+  }
+
+  message GetCollectedUnionList {
+    zproto.GetCollectedUnionListRequest v_request = 1;
+  }
+
+  message ReqUnionActivityProgressInfo_Ret {
+    zproto.ReqUnionActivityProgressInfoReply ret = 1;
+  }
+
+  message ReqUnionActivityProgressInfo {
+    zproto.ReqUnionActivityProgressInfoRequest v_request = 1;
+  }
+
+  message ReqUnionActivityRank_Ret {
+    zproto.ReqUnionActivityRankReply ret = 1;
+  }
+
+  message ReqUnionActivityRank {
+    zproto.ReqUnionActivityRankRequest v_request = 1;
+  }
+
+  message ReqGetUnionActivityAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReqGetUnionActivityAward {
+    zproto.ReqGetUnionActivityAwardRequest v_request = 1;
+  }
+
+  message GetUnionActivityInfo_Ret {
+    zproto.GetUnionActivityInfoReply ret = 1;
+  }
+
+  message GetUnionActivityInfo {
+    zproto.GetUnionActivityInfoRequest v_request = 1;
+  }
+
+  message GetUnionResourceLib_Ret {
+    zproto.GetUnionResourceLibReply ret = 1;
+  }
+
+  message GetUnionResourceLib {
+    zproto.GetUnionResourceLibRequest v_request = 1;
+  }
+
+  message GetDanceBallAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetDanceBallAward {
+    zproto.GetDanceBallAwardRequest v_request = 1;
+  }
+
+  message SetEffectBuff_Ret {
+    zproto.SetEffectBuffReply ret = 1;
+  }
+
+  message SetEffectBuff {
+    zproto.SetEffectBuffRequest v_request = 1;
+  }
+
+  message CancelEffectBuff_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CancelEffectBuff {
+    zproto.CancelEffectBuffRequest v_request = 1;
+  }
+
+  message GetTmpAlbumPhotos_Ret {
+    zproto.GetTmpAlbumPhotosReply ret = 1;
+  }
+
+  message GetTmpAlbumPhotos {
+    zproto.GetTmpAlbumPhotosRequest v_request = 1;
+  }
+
+  message GetUnionAllAlbum_Ret {
+    zproto.GetUnionAllAlbumReply ret = 1;
+  }
+
+  message GetUnionAllAlbum {
+    zproto.GetUnionAllAlbumRequest v_request = 1;
+  }
+
+  message GetUnionAlbumPhotos_Ret {
+    zproto.GetUnionAlbumPhotosReply ret = 1;
+  }
+
+  message GetUnionAlbumPhotos {
+    zproto.GetUnionAlbumPhotosRequest v_request = 1;
+  }
+
+  message CopySelfPhotoToUnionTmpAlbum_Ret {
+    zproto.CopySelfPhotoToUnionTmpAlbumReply ret = 1;
+  }
+
+  message CopySelfPhotoToUnionTmpAlbum {
+    zproto.CopySelfPhotoToUnionTmpAlbumRequest v_request = 1;
+  }
+
+  message SetUnionCoverPhoto_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetUnionCoverPhoto {
+    zproto.SetUnionCoverPhotoRequest v_request = 1;
+  }
+
+  message SetUnionAlbumCover_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetUnionAlbumCover {
+    zproto.SetUnionAlbumCoverRequest v_request = 1;
+  }
+
+  message CreateUnionAlbum_Ret {
+    zproto.CreateUnionAlbumReply ret = 1;
+  }
+
+  message CreateUnionAlbum {
+    zproto.CreateUnionAlbumRequest v_request = 1;
+  }
+
+  message MovePhotoToUnionAlbum_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message MovePhotoToUnionAlbum {
+    zproto.MovePhotoToUnionAlbumRequest v_request = 1;
+  }
+
+  message DeleteUnionPhoto_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DeleteUnionPhoto {
+    zproto.DeleteUnionPhotoRequest v_request = 1;
+  }
+
+  message DeleteUnionAlbum_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DeleteUnionAlbum {
+    zproto.DeleteUnionAlbumRequest v_request = 1;
+  }
+
+  message MoveTmpPhotoToAlbum_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message MoveTmpPhotoToAlbum {
+    zproto.MoveTmpPhotoToAlbumRequest v_request = 1;
+  }
+
+  message DeleteUnionTmpPhoto_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DeleteUnionTmpPhoto {
+    zproto.DeleteUnionTmpPhotoRequest v_request = 1;
+  }
+
+  message EditUnionAlbumName_Ret {
+    zproto.EditUnionAlbumNameReply ret = 1;
+  }
+
+  message EditUnionAlbumName {
+    zproto.EditUnionAlbumNameRequest v_request = 1;
+  }
+
+  message GetUnionGrowFundInfo_Ret {
+    zproto.GetUnionGrowFundInfoReply ret = 1;
+  }
+
+  message GetUnionGrowFundInfo {
+    zproto.GetUnionGrowFundInfoRequest v_request = 1;
+  }
+
+  message JoinUnionGrowFunc_Ret {
+    zproto.JoinUnionGrowFuncReply ret = 1;
+  }
+
+  message JoinUnionGrowFunc {
+    zproto.JoinUnionGrowFuncRequest v_request = 1;
+  }
+
+  message GetUnionEScreenList_Ret {
+    zproto.GetUnionEScreenListReply ret = 1;
+  }
+
+  message GetUnionEScreenList {
+    zproto.GetUnionEScreenListRequest v_request = 1;
+  }
+
+  message SetUnionEScreenPhoto_Ret {
+    zproto.SetUnionEScreenPhotoReply ret = 1;
+  }
+
+  message SetUnionEScreenPhoto {
+    zproto.SetUnionEScreenPhotoRequest v_request = 1;
+  }
+
+  message ReJectUnionInvite_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReJectUnionInvite {
+    zproto.ReJectUnionInviteRequest v_request = 1;
+  }
+
+  message BindGroupWithTencent_Ret {
+    zproto.BindGroupWithTencentReply ret = 1;
+  }
+
+  message BindGroupWithTencent {
+    zproto.BindGroupWithTencentRequest v_request = 1;
+  }
+
+  message UnBindGroupWithTencent_Ret {
+    zproto.UnBindGroupWithTencentReply ret = 1;
+  }
+
+  message UnBindGroupWithTencent {
+    zproto.UnBindGroupWithTencentRequest v_request = 1;
+  }
+
+  message InviteJoinGroupWithTencent_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InviteJoinGroupWithTencent {
+    zproto.InviteJoinGroupWithTencentRequest v_request = 1;
+  }
+
+  message UnionGetKillBossData_Ret {
+    zproto.UnionGetKillBossDataReply ret = 1;
+  }
+
+  message UnionGetKillBossData {
+    zproto.UnionGetKillBossDataRequest v_request = 1;
+  }
+
+  message UnionGetAllBossData_Ret {
+    zproto.UnionGetAllBossDataReply ret = 1;
+  }
+
+  message UnionGetAllBossData {
+    zproto.UnionGetAllBossDataRequest v_request = 1;
+  }
+
+  message UnionList_Ret {
+    zproto.UnionListReply ret = 1;
+  }
+
+  message UnionList {
+    zproto.UnionListRequest v_request = 1;
+  }
+
+  message SearchUnionList_Ret {
+    zproto.SearchUnionListReply ret = 1;
+  }
+
+  message SearchUnionList {
+    zproto.SearchUnionListRequest v_request = 1;
+  }
+
+  message CreateUnion_Ret {
+    zproto.CreateUnionReply ret = 1;
+  }
+
+  message CreateUnion {
+    zproto.CreateUnionRequest v_request = 1;
+  }
+
+  message ReqJoinUnions_Ret {
+    zproto.ReqJoinUnionsReply ret = 1;
+  }
+
+  message ReqJoinUnions {
+    zproto.ReqJoinUnionsRequest v_request = 1;
+  }
+
+  message ReqUnionInfo_Ret {
+    zproto.ReqUnionInfoReply ret = 1;
+  }
+
+  message ReqUnionInfo {
+    zproto.ReqUnionInfoRequest v_request = 1;
+  }
+
+  message ReqUnionMemsList_Ret {
+    zproto.ReqUnionMemsListReply ret = 1;
+  }
+
+  message ReqUnionMemsList {
+    zproto.ReqUnionMemsListRequest v_request = 1;
+  }
+
+  message ReqChangeOfficialMembers_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReqChangeOfficialMembers {
+    zproto.ReqChangeOfficialMembersRequest v_request = 1;
+  }
+
+  message ReqChangeOfficials_Ret {
+    zproto.ReqChangeOfficialsReply ret = 1;
+  }
+
+  message ReqChangeOfficials {
+    zproto.ReqChangeOfficialsRequest v_request = 1;
+  }
+
+  message ReqTransferPresident_Ret {
+    zproto.ReqTransferPresidentReply ret = 1;
+  }
+
+  message ReqTransferPresident {
+    zproto.ReqTransferPresidentRequest v_request = 1;
+  }
+
+  message GetRequestList_Ret {
+    zproto.GetRequestListReply ret = 1;
+  }
+
+  message GetRequestList {
+    zproto.GetRequestListRequest v_request = 1;
+  }
+
+  message ApprovalRequest_Ret {
+    zproto.ApprovalRequestReply ret = 1;
+  }
+
+  message ApprovalRequest {
+    zproto.ApprovalRequestRequest v_request = 1;
+  }
+
+  message SetUnionIcon_Ret {
+    zproto.SetUnionIconReply ret = 1;
+  }
+
+  message SetUnionIcon {
+    zproto.SetUnionIconRequest v_request = 1;
+  }
+
+  message SetUnionTags_Ret {
+    zproto.SetUnionTagsReply ret = 1;
+  }
+
+  message SetUnionTags {
+    zproto.SetUnionTagsRequest v_request = 1;
+  }
+
+  message SetUnionDeclaration_Ret {
+    zproto.SetUnionDeclarationReply ret = 1;
+  }
+
+  message SetUnionDeclaration {
+    zproto.SetUnionDeclarationRequest v_request = 1;
+  }
+
+  message SetUnionName_Ret {
+    zproto.SetUnionNameReply ret = 1;
+  }
+
+  message SetUnionName {
+    zproto.SetUnionNameRequest v_request = 1;
+  }
+
+  message SetUnionAutoPass_Ret {
+    zproto.SetUnionAutoPassReply ret = 1;
+  }
+
+  message SetUnionAutoPass {
+    zproto.SetUnionAutoPassRequest v_request = 1;
+  }
+
+  message PersonalObjectAction_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message PersonalObjectAction {
+    int64 v_obj_uuid = 1;
+  }
+
+  message GetLevelAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetLevelAward {
+    int32 v_level = 1;
+    int32 v_award_id = 2;
+  }
+
+  message SetProficiency_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetProficiency {
+    zproto.LevelProficiency v_proficiency = 1;
+  }
+
+  message UnlockProficiency_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnlockProficiency {
+    int32 level = 1;
+    int32 buff_id = 2;
+  }
+
+  message GetAllLevelAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetSeasonTargetAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetSeasonTargetAward {
+    int32 v_target_id = 1;
+  }
+
+  message GetCurSeason_Ret {
+    zproto.GetCurSeasonReply ret = 1;
+  }
+
+  message ActivatePivot_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ActivatePivot {
+    uint64 v_pivot_id = 1;
+  }
+
+  message PivotStateGetReward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message PivotStateGetReward {
+    uint64 v_pivot_id = 1;
+    int32 v_stage = 2;
+  }
+
+  message ScenePivotStageGetReward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ScenePivotStageGetReward {
+    int32 v_scene_id = 1;
+    int32 v_stage = 2;
+  }
+
+  message PermanentCloseRedDot {
+    int32 v_red_dot_id = 1;
+  }
+
+  message CancelRedDot {
+    zproto.CancelRedDotParam v_param = 1;
+  }
+
+  message GetPersonalInfo_Ret {
+    zproto.GetPersonalInfoReply ret = 1;
+  }
+
+  message GetPersonalInfo {
+    zproto.GetPersonalInfoRequest v_request = 1;
+  }
+
+  message GetFriendBaseInfo_Ret {
+    zproto.GetFriendBaseInfoReply ret = 1;
+  }
+
+  message GetFriendBaseInfo {
+    zproto.GetFriendBaseInfoRequest v_request = 1;
+  }
+
+  message RequestAddFriend_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RequestAddFriend {
+    zproto.RequestAddFriendRequest v_request = 1;
+  }
+
+  message ProcessAddRequest_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProcessAddRequest {
+    zproto.ProcessAddRequestRequest v_request = 1;
+  }
+
+  message SetFriendRemarks_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetFriendRemarks {
+    zproto.SetFriendRemarksRequest v_request = 1;
+  }
+
+  message DeleteFriend_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DeleteFriend {
+    zproto.DeleteFriendRequest v_request = 1;
+  }
+
+  message SetShowPicture_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetShowPicture {
+    zproto.SetShowPictureRequest v_request = 1;
+  }
+
+  message SetSignature_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetSignature {
+    zproto.SetSignatureRequest v_request = 1;
+  }
+
+  message SetHobbyMark_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetHobbyMark {
+    zproto.SetHobbyMarkRequest v_request = 1;
+  }
+
+  message SetTimeMark_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetTimeMark {
+    zproto.SetTimeMarkRequest v_request = 1;
+  }
+
+  message SearchFriend_Ret {
+    zproto.SearchFriendReply ret = 1;
+  }
+
+  message SearchFriend {
+    zproto.SearchFriendRequest v_request = 1;
+  }
+
+  message SetRemind_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetRemind {
+    zproto.SetRemindRequest v_request = 1;
+  }
+
+  message SetTop_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetTop {
+    zproto.SetTopRequest v_request = 1;
+  }
+
+  message GetSuggestionList_Ret {
+    zproto.GetSuggestionListReply ret = 1;
+  }
+
+  message GetSuggestionList {
+    zproto.GetSuggestionListRequest v_request = 1;
+  }
+
+  message SetGroupSort_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetGroupSort {
+    zproto.SetGroupSortRequest v_request = 1;
+  }
+
+  message ChangeGroup_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ChangeGroup {
+    zproto.ChangeGroupRequest v_request = 1;
+  }
+
+  message CreateGroup_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CreateGroup {
+    zproto.CreateGroupRequest v_request = 1;
+  }
+
+  message DeleteGroup_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DeleteGroup {
+    zproto.DeleteGroupRequest v_request = 1;
+  }
+
+  message ChangeGroupName_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ChangeGroupName {
+    zproto.ChangeGroupNameRequest v_request = 1;
+  }
+
+  message RewardPersonalFriendlinessLv_Ret {
+    zproto.RewardPersonalFriendlinessLvReply ret = 1;
+  }
+
+  message RewardPersonalFriendlinessLv {
+    zproto.RewardPersonalFriendlinessLvRequest v_request = 1;
+  }
+
+  message RewardTotalFriendlinessLv_Ret {
+    zproto.RewardTotalFriendlinessLvReply ret = 1;
+  }
+
+  message RewardTotalFriendlinessLv {
+    zproto.RewardTotalFriendlinessLvRequest v_request = 1;
+  }
+
+  message GetFriendliness_Ret {
+    zproto.GetFriendlinessReply ret = 1;
+  }
+
+  message GetFriendliness {
+    zproto.GetFriendlinessRequest v_request = 1;
+  }
+
+  message SelectReasoning_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SelectReasoning {
+    uint32 v_investigation_id = 1;
+    uint32 v_step_id = 2;
+    uint32 v_reasoning_id = 3;
+    uint32 v_answer_id = 4;
+  }
+
+  message GetSeasonQuestAward_Ret {
+    zproto.GetSeasonQuestAwardReply ret = 1;
+  }
+
+  message GetSeasonQuestAward {
+    int32 v_target_id = 1;
+  }
+
+  message BuyShopItem {
+    zproto.BuyShopItemRequest v_request = 1;
+  }
+
+  message RefreshShop_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RefreshShop {
+    zproto.RefreshShopRequest v_request = 1;
+  }
+
+  message GetShopItemList_Ret {
+    zproto.GetShopItemListReply ret = 1;
+  }
+
+  message GetShopItemList {
+    zproto.GetShopItemListRequest v_request = 1;
+  }
+
+  message UnlockShowPiece_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnlockShowPiece {
+    zproto.EShowPieceType v_piece_type = 1;
+    int32 v_piece_id = 2;
+  }
+
+  message SetOftenUseShowPieceList_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetOftenUseShowPieceList {
+    zproto.EShowPieceType v_piece_type = 1;
+    int32 v_piece_id = 2;
+    bool v_is_add = 3;
+  }
+
+  message SetShowPieceRoulette_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetShowPieceRoulette {
+    int32 v_position = 1;
+    zproto.EShowPieceType v_piece_type = 2;
+    int32 v_piece_id = 3;
+  }
+
+  message TakeOnShowPiece_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeOnShowPiece {
+    zproto.EShowPieceType v_piece_type = 1;
+    int32 v_piece_id = 2;
+  }
+
+  message TakeOffShowPiece_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeOffShowPiece {
+    zproto.EShowPieceType v_piece_type = 1;
+    int32 v_piece_id = 2;
+  }
+
+  message GetStickerAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetStickerAward {
+    uint32 book_id = 1;
+    uint32 sticker_id = 2;
+  }
+
+  message GetBookAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetBookAward {
+    uint32 book_id = 1;
+  }
+
+  message Interaction_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message Interaction {
+    zproto.InteractionTemplateData v_info = 1;
+  }
+
+  message InteractionActionEnd_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InteractionActionEnd {
+    int32 cur_stage = 1;
+    zproto.EInteractionAction action_type = 2;
+    bool is_success = 3;
+  }
+
+  message MonsterExploreUnlock_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message MonsterExploreUnlock {
+    zproto.UnlockInfo info = 1;
+  }
+
+  message GetAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetAward {
+    zproto.MonsterAwardInfo info = 1;
+  }
+
+  message SetFlag_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetFlag {
+    zproto.SetFlagInfo info = 1;
+  }
+
+  message EquipProfession_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message EquipProfession {
+    zproto.EquipProfessionInfo v_info = 1;
+  }
+
+  message SwitchProfession_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SwitchProfession {
+    zproto.SwitchProfessionInfo v_info = 1;
+  }
+
+  message ProfessionUpgrade_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionUpgrade {
+    int32 v_profession_id = 1;
+    zproto.Materials v_materials = 2;
+  }
+
+  message ProfessionBreakthrough_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionBreakthrough {
+    int32 v_profession_id = 1;
+  }
+
+  message SkillUpgrade_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SkillUpgrade {
+    int32 v_profession_id = 1;
+    int32 v_skill_id = 2;
+    int32 v_skill_final_level = 3;
+  }
+
+  message ProfessionSkillRemodel_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionSkillRemodel {
+    int32 v_profession_node_id = 1;
+  }
+
+  message ProfessionSkillChange_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionSkillChange {
+    int32 v_profession_id = 1;
+    int32 v_skill_group_id = 2;
+    int32 v_change_skill_id = 3;
+  }
+
+  message ProfessionForge_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionForge {
+    int32 v_profession_id = 1;
+  }
+
+  message UseProfessionSkin_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UseProfessionSkin {
+    zproto.UseProfessionSkinInfo v_info = 1;
+  }
+
+  message ProfessionSkillActive_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionSkillActive {
+    zproto.ProfessionSkillActiveRequest v_request = 1;
+  }
+
+  message ProfessionSkillUpgrade_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionSkillUpgrade {
+    zproto.ProfessionSkillUpgradeRequest v_request = 1;
+  }
+
+  message AoYiSkillActive_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message AoYiSkillActive {
+    zproto.AoyiSkillActiveRequest v_request = 1;
+  }
+
+  message AoYiSkillUpgrade_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message AoYiSkillUpgrade {
+    zproto.AoyiSkillUpgradeRequest v_request = 1;
+  }
+
+  message ActiveProfessionTalent_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ActiveProfessionTalent {
+    zproto.ActiveProfessionTalentRequest v_request = 1;
+  }
+
+  message ResetProfessionTalent_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ResetProfessionTalent {
+    zproto.ResetProfessionTalentRequest v_request = 1;
+  }
+
+  message AoYiSkillRemodel_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message AoYiSkillRemodel {
+    zproto.AoYiSkillRemodelRequest v_request = 1;
+  }
+
+  message AoYiItemFusion_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message AoYiItemFusion {
+    zproto.AoYiItemFusionRequest v_request = 1;
+  }
+
+  message AoYiItemDecompose_Ret {
+    zproto.AoYiItemDecomposeReply ret = 1;
+  }
+
+  message AoYiItemDecompose {
+    zproto.AoYiItemDecomposeRequest v_request = 1;
+  }
+
+  message AcceptProfessionQuest_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message AcceptProfessionQuest {
+    zproto.AcceptProfessionQuestRequest v_request = 1;
+  }
+
+  message ActivateProfessionSkillSkin_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ActivateProfessionSkillSkin {
+    zproto.ActivateProfessionSkillSkinRequest v_request = 1;
+  }
+
+  message UseProfessionSkillSkin_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UseProfessionSkillSkin {
+    zproto.UseProfessionSkillSkinRequest v_request = 1;
+  }
+
+  message ResetProfessionTalentBySingleNode_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ResetProfessionTalentBySingleNode {
+    zproto.ResetProfessionTalentBySingleNodeRequest v_request = 1;
+  }
+
+  message ProfessionSkillResetSpecial_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionSkillResetSpecial {
+    zproto.ProfessionSkillResetSpecialRequest v_request = 1;
+  }
+
+  message ProfessionSkillReset_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ProfessionSkillReset {
+    zproto.ProfessionSkillResetRequest v_request = 1;
+  }
+
+  message ResetTalentMarkItemPopUpNotice_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ResetTalentMarkItemPopUpNotice {
+    zproto.ResetTalentMarkItemPopUpNoticeRequest v_request = 1;
+  }
+
+  message FastCook_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FastCook {
+    zproto.FastCookInfo v_info = 1;
+  }
+
+  message RdCook_Ret {
+    zproto.RdCookReply ret = 1;
+  }
+
+  message RdCook {
+    zproto.RdCookRequest v_request = 1;
+  }
+
+  message ReceiveSeasonAchievementAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReceiveSeasonAchievementAward {
+    uint32 achievement_id = 1;
+  }
+
+  message AdvanceSeasonMaxRankStart_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReceiveSeasonRankAward_Ret {
+    zproto.ReceiveSeasonRankAwardReply ret = 1;
+  }
+
+  message ReceiveSeasonRankAward {
+    uint32 rank_start = 1;
+  }
+
+  message SetSeasonRankShowArmband_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetSeasonRankShowArmband {
+    uint32 rank_start = 1;
+  }
+
+  message UploadTLogBody {
+    string t_log_name = 1;
+    string t_log_body = 2;
+  }
+
+  message BuyBattlePassLevel_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message BuyBattlePassLevel {
+    zproto.BuyBattlePassInfo request = 1;
+  }
+
+  message GetBattlePassAward_Ret {
+    zproto.GetBattlePassAwardReply ret = 1;
+  }
+
+  message GetBattlePassAward {
+    zproto.GetBattlePassAwardRequest request = 1;
+  }
+
+  message GetSeasonBpQuestAward_Ret {
+    zproto.SeasonBpAwardReply ret = 1;
+  }
+
+  message GetSeasonBpQuestAward {
+    zproto.SeasonBpAward request = 1;
+  }
+
+  message GetSeasonHistoryData_Ret {
+    zproto.SeasonCenterHistoryReply ret = 1;
+  }
+
+  message GetSeasonHistoryData {
+    zproto.SeasonCenterHistoryRequest request = 1;
+  }
+
+  message ChooseCoreSeasonHoleNode_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ChooseCoreSeasonHoleNode {
+    repeated zproto.MedalNode chosen_node_ids = 1;
+  }
+
+  message ResetNormalSeasonHoles_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ResetNormalSeasonHoles {
+    uint32 hole_id = 1;
+  }
+
+  message UpgradeSeasonCoreMedalHole_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UpgradeSeasonCoreMedalHole {
+    uint32 hole_id = 1;
+  }
+
+  message UpgradeSeasonNormalHole_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UpgradeSeasonNormalHole {
+    uint32 hole_id = 1;
+    map<uint32, uint32> item_id_num = 2;
+  }
+
+  message ActiveNormalNode_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ActiveNormalNode {
+    zproto.ActiveNormalNodeRequest v_request = 1;
+  }
+
+  message ResetAllNodes_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ResetAllNodes {
+    zproto.ResetAllNodesRequest v_request = 1;
+  }
+
+  message InstallFantasyToBigNode_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InstallFantasyToBigNode {
+    zproto.InstallFantasyRequest v_request = 1;
+  }
+
+  message UnInstallFantasyToBigNode_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnInstallFantasyToBigNode {
+    zproto.UnInstallFantasyRequest v_request = 1;
+  }
+
+  message InstallItemToMiddleNode_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InstallItemToMiddleNode {
+    zproto.InstallItemToMiddleNodeRequest v_request = 1;
+  }
+
+  message UnInstallItemToMiddleNode_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnInstallItemToMiddleNode {
+    zproto.UnInstallItemToMiddleNodeRequest v_request = 1;
+  }
+
+  message EnableCultivateLine_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message EnableCultivateLine {
+    zproto.EnableCultivateLineRequest v_request = 1;
+  }
+
+  message DisableCultivateLine_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DisableCultivateLine {
+    zproto.DisableCultivateLineRequest v_request = 1;
+  }
+
+  message DeComposeFactorItem_Ret {
+    zproto.DeComposeFactorItemReply ret = 1;
+  }
+
+  message DeComposeFactorItem {
+    zproto.DeComposeFactorItemRequest v_request = 1;
+  }
+
+  message SetPersonalZoneTags_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZoneTags {
+    zproto.SetPersonalZoneTagsRequest v_request = 1;
+  }
+
+  message SetPersonalZonePhoto_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZonePhoto {
+    zproto.SetPersonalZonePhotoRequest v_request = 1;
+  }
+
+  message SetPersonalZoneMedal_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZoneMedal {
+    zproto.SetPersonalZoneMedalRequest v_request = 1;
+  }
+
+  message SetPersonalZoneTheme_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZoneTheme {
+    zproto.SetPersonalZoneThemeRequest v_request = 1;
+  }
+
+  message SetPersonalZoneBusinessCardStyle_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZoneBusinessCardStyle {
+    zproto.SetPersonalZoneBusinessCardStyleRequest v_request = 1;
+  }
+
+  message SetPersonalZoneAvatar_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZoneAvatar {
+    zproto.SetPersonalZoneAvatarRequest v_request = 1;
+  }
+
+  message SetPersonalZoneAvatarFrame_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZoneAvatarFrame {
+    zproto.SetPersonalZoneAvatarFrameRequest v_request = 1;
+  }
+
+  message SetPersonalZoneActionInfo_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZoneActionInfo {
+    zproto.SetPersonalZoneActionInfoRequest v_request = 1;
+  }
+
+  message SetPersonalZoneUIPosition_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZoneUIPosition {
+    zproto.SetPersonalZoneUIPositionRequest v_request = 1;
+  }
+
+  message SetPersonalZoneTitle_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetPersonalZoneTitle {
+    zproto.SetPersonalZoneTitleRequest v_request = 1;
+  }
+
+  message GetPersonalZoneTargetAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetPersonalZoneTargetAward {
+    zproto.GetPersonalZoneTargetAwardRequest v_request = 1;
+  }
+
+  message BuyHouse_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message BuyHouse {
+    zproto.EmptyGrpcMsg v_request = 1;
+  }
+
+  message CommunitySetCheckInContent_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunitySetCheckInContent {
+    zproto.CommunitySetCheckInContentRequest v_request = 1;
+  }
+
+  message CommunityGetHomeLandBaseInfo_Ret {
+    zproto.CommunityGetHomeLandBaseInfoReply ret = 1;
+  }
+
+  message CommunityGetHomeLandBaseInfo {
+    zproto.CommunityGetHomeLandBaseInfoRequest v_request = 1;
+  }
+
+  message CommunityEnter_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityEnter {
+    zproto.CommunityEnterRequest v_request = 1;
+  }
+
+  message CommunityEnterHomeland_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityEnterHomeland {
+    zproto.CommunityEnterHomelandRequest v_request = 1;
+  }
+
+  message CommunitySetName_Ret {
+    zproto.CommunitySetNameReply ret = 1;
+  }
+
+  message CommunitySetName {
+    zproto.CommunitySetNameRequest v_request = 1;
+  }
+
+  message EnterEditState_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message EnterEditState {
+    zproto.EnterEditStateRequest v_request = 1;
+  }
+
+  message ExitEditState_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExitEditState {
+    zproto.ExitEditStateRequest v_request = 1;
+  }
+
+  message UpdateStructure_Ret {
+    zproto.CommunityGrainUpdateStructureReply ret = 1;
+  }
+
+  message UpdateStructure {
+    zproto.UpdateStructureRequest v_request = 1;
+  }
+
+  message CommunityAcceptRejectInvitation_Ret {
+    zproto.CommunityAcceptRejectInvitationReply ret = 1;
+  }
+
+  message CommunityAcceptRejectInvitation {
+    zproto.CommunityAcceptRejectInvitationRequest v_request = 1;
+  }
+
+  message CommunityPersonData_Ret {
+    zproto.CommunityPersonDataReply ret = 1;
+  }
+
+  message CommunityPersonData {
+    zproto.CommunityPersonDataRequest v_request = 1;
+  }
+
+  message CommunityInvitationCohabitant_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityInvitationCohabitant {
+    zproto.CommunityInvitationCohabitantRequest v_request = 1;
+  }
+
+  message CommunityInvitation_Ret {
+    zproto.CommunityInvitationReply ret = 1;
+  }
+
+  message CommunityInvitation {
+    zproto.CommunityInvitationRequest v_request = 1;
+  }
+
+  message CommunityQuitCohabitant_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityQuitCohabitant {
+    zproto.CommunityQuitCohabitantRequest v_request = 1;
+  }
+
+  message CommunityQuitCohabitantCancel_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityQuitCohabitantCancel {
+    zproto.CommunityQuitCohabitantCancelRequest v_request = 1;
+  }
+
+  message CommunityQuitCohabitantAgree_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityQuitCohabitantAgree {
+    zproto.CommunityQuitCohabitantAgreeRequest v_request = 1;
+  }
+
+  message GetHomelandCohabitant_Ret {
+    zproto.GetHomelandCohabitantReply ret = 1;
+  }
+
+  message GetHomelandCohabitant {
+    zproto.GetHomelandCohabitantRequest v_request = 1;
+  }
+
+  message CommunityTransferOwnership_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityTransferOwnership {
+    zproto.CommunityTransferOwnershipRequest v_request = 1;
+  }
+
+  message CommunityTransferOwnershipCancel_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityTransferOwnershipCancel {
+    zproto.CommunityTransferOwnershipCancelRequest v_request = 1;
+  }
+
+  message CommunityTransferOwnershipAgree_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityTransferOwnershipAgree {
+    zproto.CommunityTransferOwnershipAgreeRequest v_request = 1;
+  }
+
+  message CommunityBuildFurniture_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityBuildFurniture {
+    zproto.CommunityBuildFurnitureRequest v_request = 1;
+  }
+
+  message CommunityBuildFurnitureCancel_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityBuildFurnitureCancel {
+    zproto.CommunityBuildFurnitureCancelRequest v_request = 1;
+  }
+
+  message CommunityBuildFurnitureAccelerate_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityBuildFurnitureAccelerate {
+    zproto.CommunityBuildFurnitureAccelerateRequest v_request = 1;
+  }
+
+  message CommunityBuildFurnitureReceive_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityBuildFurnitureReceive {
+    zproto.CommunityBuildFurnitureReceiveRequest v_request = 1;
+  }
+
+  message CommunityUnlockFurnitureRecipe_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityUnlockFurnitureRecipe {
+    zproto.CommunityUnlockFurnitureRecipeRequest v_request = 1;
+  }
+
+  message GetHomelandBulletinBoards_Ret {
+    zproto.GetHomelandBulletinBoardsReply ret = 1;
+  }
+
+  message GetHomelandBulletinBoards {
+    zproto.GetHomelandBulletinBoardsRequest v_request = 1;
+  }
+
+  message CommunitySetIntroduction_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunitySetIntroduction {
+    zproto.CommunitySetIntroductionRequest v_request = 1;
+  }
+
+  message GetHomelandBuildFurnitureInfo_Ret {
+    zproto.GetHomelandBuildFurnitureInfoReply ret = 1;
+  }
+
+  message GetHomelandBuildFurnitureInfo {
+    zproto.GetHomelandBuildFurnitureInfoRequest v_request = 1;
+  }
+
+  message CommunitySetAuthority_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunitySetAuthority {
+    zproto.CommunitySetAuthorityRequest v_request = 1;
+  }
+
+  message CommunitySetPlayerAuthority_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunitySetPlayerAuthority {
+    zproto.CommunitySetPlayerAuthorityRequest v_request = 1;
+  }
+
+  message HomelandWarehouseStore_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message HomelandWarehouseStore {
+    zproto.HomelandWarehouseStoreRequest v_request = 1;
+  }
+
+  message HomelandWarehouseTakeOut_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message HomelandWarehouseTakeOut {
+    zproto.HomelandWarehouseTakeOutRequest v_request = 1;
+  }
+
+  message GetHomelandWarehouseInfo_Ret {
+    zproto.GetHomelandWarehouseInfoReply ret = 1;
+  }
+
+  message GetHomelandWarehouseInfo {
+    zproto.GetHomelandWarehouseInfoRequest v_request = 1;
+  }
+
+  message CreateStructureGroup_Ret {
+    zproto.CreateStructureGroupReply ret = 1;
+  }
+
+  message CreateStructureGroup {
+    zproto.CreateStructureGroupRequest v_request = 1;
+  }
+
+  message DissolveStructureGroup_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DissolveStructureGroup {
+    zproto.DissolveStructureGroupRequest v_request = 1;
+  }
+
+  message RemoveStructureGroup_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RemoveStructureGroup {
+    zproto.RemoveStructureGroupRequest v_request = 1;
+  }
+
+  message AddToStructureGroup_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message AddToStructureGroup {
+    zproto.AddToStructureGroupRequest v_request = 1;
+  }
+
+  message RenameStructureGroup_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RenameStructureGroup {
+    zproto.RenameStructureGroupRequest v_request = 1;
+  }
+
+  message GetStructureGroupInfo_Ret {
+    zproto.GetStructureGroupInfoReply ret = 1;
+  }
+
+  message GetStructureGroupInfo {
+    zproto.GetStructureGroupInfoRequest v_request = 1;
+  }
+
+  message GetHomelandFurnitureWarehouseInfo_Ret {
+    zproto.GetHomelandFurnitureWarehouseInfoReply ret = 1;
+  }
+
+  message GetHomelandFurnitureWarehouseInfo {
+    zproto.GetHomelandFurnitureWarehouseInfoRequest v_request = 1;
+  }
+
+  message GetHomelandCheckInContent_Ret {
+    zproto.GetHomelandCheckInContentReply ret = 1;
+  }
+
+  message GetHomelandCheckInContent {
+    zproto.GetHomelandCheckInContentRequest v_request = 1;
+  }
+
+  message HomelandSetLamplight_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message HomelandSetLamplight {
+    zproto.HomelandSetLamplightRequest v_request = 1;
+  }
+
+  message HomelandSwitchLamplight_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message HomelandSwitchLamplight {
+    zproto.HomelandSwitchLamplightRequest v_request = 1;
+  }
+
+  message HomelandSwitchAllLamplight_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message HomelandSwitchAllLamplight {
+    zproto.HomelandSwitchAllLamplightRequest v_request = 1;
+  }
+
+  message HomelandSetFurnitureName_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message HomelandSetFurnitureName {
+    zproto.HomelandSetFurnitureNameRequest v_request = 1;
+  }
+
+  message HomelandSetFurnitureMaterial_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message HomelandSetFurnitureMaterial {
+    zproto.HomelandSetFurnitureMaterialRequest v_request = 1;
+  }
+
+  message HomelandSetMaterialInfo_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message HomelandSetMaterialInfo {
+    zproto.HomelandSetMaterialInfoRequest v_request = 1;
+  }
+
+  message LevelUp_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message LevelUp {
+    int32 cur_level = 1;
+  }
+
+  message DestroyClutter_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DestroyClutter {
+    int64 uuid = 1;
+  }
+
+  message SubmitTask_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SubmitTask {
+    int32 task_id = 1;
+  }
+
+  message SellHomeLandItems_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SellHomeLandItems {
+    int32 item_id = 1;
+    int32 item_num = 2;
+  }
+
+  message SeedingUpdateStructure_Ret {
+    zproto.CommunityGrainSeedingUpdateStructureReply ret = 1;
+  }
+
+  message SeedingUpdateStructure {
+    zproto.SeedingUpdateStructureRequest v_request = 1;
+  }
+
+  message WaterUpdateStructure_Ret {
+    zproto.CommunityGrainWaterUpdateStructureReply ret = 1;
+  }
+
+  message WaterUpdateStructure {
+    zproto.WaterUpdateStructureRequest v_request = 1;
+  }
+
+  message FertilizerUpdateStructure_Ret {
+    zproto.CommunityGrainFertilizerUpdateStructureReply ret = 1;
+  }
+
+  message FertilizerUpdateStructure {
+    zproto.FertilizerUpdateStructureRequest v_request = 1;
+  }
+
+  message PollenUpdateStructure_Ret {
+    zproto.CommunityGrainPollenUpdateStructureReply ret = 1;
+  }
+
+  message PollenUpdateStructure {
+    zproto.PollenUpdateStructureRequest v_request = 1;
+  }
+
+  message PickUpUpdateStructure_Ret {
+    zproto.CommunityGrainPickUpUpdateStructureReply ret = 1;
+  }
+
+  message PickUpUpdateStructure {
+    zproto.PickUpUpdateStructureRequest v_request = 1;
+  }
+
+  message GainUpdateStructure_Ret {
+    zproto.CommunityGrainGainUpdateStructureReply ret = 1;
+  }
+
+  message GainUpdateStructure {
+    zproto.GainUpdateStructureRequest v_request = 1;
+  }
+
+  message QueryPlayerFurniture_Ret {
+    zproto.QueryPlayerFurnitureReply ret = 1;
+  }
+
+  message QueryPlayerFurniture {
+    zproto.QueryPlayerFurnitureRequest v_request = 1;
+  }
+
+  message HomeLandTask_Ret {
+    zproto.HomeLandTaskReply ret = 1;
+  }
+
+  message HomeLandTask {
+    zproto.HomeLandTaskRequest v_request = 1;
+  }
+
+  message CommunityBuildFurnitureSimple_Ret {
+    zproto.CommunityBuildFurnitureSimpleReply ret = 1;
+  }
+
+  message CommunityBuildFurnitureSimple {
+    zproto.CommunityBuildFurnitureSimpleRequest v_request = 1;
+  }
+
+  message GetHomelandFlowerInfo_Ret {
+    zproto.GetHomelandFlowerInfoReply ret = 1;
+  }
+
+  message GetHomelandFlowerInfo {
+    zproto.GetHomelandFlowerInfoRequest v_request = 1;
+  }
+
+  message CommunityRemoveStructure_Ret {
+    zproto.CommunityRemoveStructureReply ret = 1;
+  }
+
+  message CommunityRemoveStructure {
+    zproto.CommunityRemoveStructureRequest request = 1;
+  }
+
+  message GetHomelandVisitInfo_Ret {
+    zproto.GetHomelandVisitInfoReply ret = 1;
+  }
+
+  message GetHomelandVisitInfo {
+    zproto.GetHomelandVisitInfoRequest v_request = 1;
+  }
+
+  message CommunityKickPlayer_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityKickPlayer {
+    zproto.CommunityKickPlayerRequest v_request = 1;
+  }
+
+  message CommunityBuildLifeProfession_Ret {
+    zproto.CommunityBuildLifeProfessionReply ret = 1;
+  }
+
+  message CommunityBuildLifeProfession {
+    zproto.CommunityBuildLifeProfessionRequest v_request = 1;
+  }
+
+  message CommunityBuildLifeProfessionCancel_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityBuildLifeProfessionCancel {
+    zproto.CommunityBuildLifeProfessionCancelRequest v_request = 1;
+  }
+
+  message CommunityBuildLifeProfessionReceive_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CommunityBuildLifeProfessionReceive {
+    zproto.CommunityBuildLifeProfessionReceiveRequest v_request = 1;
+  }
+
+  message BuildLifeProfessionInfo_Ret {
+    zproto.BuildLifeProfessionInfoReply ret = 1;
+  }
+
+  message BuildLifeProfessionInfo {
+    zproto.BuildLifeProfessionInfoRequest v_request = 1;
+  }
+
+  message GetSeasonActivationTarget_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RefreshSeasonActivation_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReceiveSeasonActivationAward_Ret {
+    zproto.ReceiveSeasonActivationAwardReply ret = 1;
+  }
+
+  message ReceiveSeasonActivationAward {
+    int32 stage = 1;
+  }
+
+  message InstallSkill_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InstallSkill {
+    int32 v_slot_id = 1;
+    int32 v_skill_id = 2;
+  }
+
+  message UseSlot_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UseSlot {
+    zproto.UseSlotRequest v_request = 1;
+  }
+
+  message SetSlotAutoBattle_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetSlotAutoBattle {
+    zproto.SetSlotAutoBattleRequest v_request = 1;
+  }
+
+  message MonsterHuntUnlockMonster_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message MonsterHuntUnlockMonster {
+    zproto.UnlockInfo info = 1;
+  }
+
+  message GetMonsterAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetMonsterAward {
+    zproto.MonsterAwardParam monster_award_param = 1;
+  }
+
+  message GetMonsterHuntLevelAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetMonsterHuntLevelAward {
+    zproto.MonsterHuntLevelAwardParam monster_hunt_level_award_param = 1;
+  }
+
+  message InstallMod_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InstallMod {
+    zproto.InstallModRequest v_request = 1;
+  }
+
+  message UninstallMod_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UninstallMod {
+    zproto.UninstallModRequest v_request = 1;
+  }
+
+  message UpgradeMod_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UpgradeMod {
+    zproto.UpgradeModRequest v_request = 1;
+  }
+
+  message DecomposeMod_Ret {
+    zproto.DecomposeModReply ret = 1;
+  }
+
+  message DecomposeMod {
+    zproto.DecomposeModRequest v_request = 1;
+  }
+
+  message CreateWarehouse_Ret {
+    zproto.CreateWarehouseReply ret = 1;
+  }
+
+  message CreateWarehouse {
+    zproto.CreateWarehouseRequest v_request = 1;
+  }
+
+  message DepositWarehouse_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DepositWarehouse {
+    zproto.DepositWarehouseRequest v_request = 1;
+  }
+
+  message TakeOutWarehouse_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeOutWarehouse {
+    zproto.TakeOutWarehouseRequest v_request = 1;
+  }
+
+  message ExitWarehouse_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExitWarehouse {
+    zproto.ExitWarehouseRequest v_request = 1;
+  }
+
+  message GetWarehouse_Ret {
+    zproto.GetWarehouseReply ret = 1;
+  }
+
+  message GetWarehouse {
+    zproto.GetWarehouseRequest v_request = 1;
+  }
+
+  message InviteToWarehouse_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InviteToWarehouse {
+    zproto.InviteToWarehouseRequest v_request = 1;
+  }
+
+  message ReBeInitiateWarehouse_Ret {
+    zproto.ReBeInitiateWarehouseReply ret = 1;
+  }
+
+  message ReBeInitiateWarehouse {
+    zproto.ReBeInitiateWarehouseRequest v_request = 1;
+  }
+
+  message KickOutWarehouse_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message KickOutWarehouse {
+    zproto.KickOutWarehouseRequest v_request = 1;
+  }
+
+  message DisbandWarehouse_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DisbandWarehouse {
+    zproto.DisbandWarehouseRequest v_request = 1;
+  }
+
+  message ExchangeBuyItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeBuyItem {
+    zproto.ExchangeBuyItemRequest request = 1;
+  }
+
+  message ExchangePutItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangePutItem {
+    zproto.ExchangePutItemRequest request = 1;
+  }
+
+  message ExchangeTakeItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeTakeItem {
+    zproto.ExchangeTakeItemRequest request = 1;
+  }
+
+  message ExchangeWithdraw_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeWithdraw {
+    zproto.ExchangeWithdrawRequest request = 1;
+  }
+
+  message ExchangeNoticeBuyItem_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeNoticeBuyItem {
+    zproto.ExchangeNoticeBuyItemRequest request = 1;
+  }
+
+  message ExchangeSale_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeSale {
+    zproto.ExchangeSaleRequest v_request = 1;
+  }
+
+  message ExchangeSaleTake_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeSaleTake {
+    zproto.ExchangeSaleTakeRequest v_request = 1;
+  }
+
+  message ExchangeSaleBuy_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeSaleBuy {
+    zproto.ExchangeSaleBuyRequest v_request = 1;
+  }
+
+  message ExchangeList_Ret {
+    zproto.ExchangeListReply ret = 1;
+  }
+
+  message ExchangeList {
+    zproto.ExchangeListRequest v_request = 1;
+  }
+
+  message GetExchangeItem_Ret {
+    zproto.GetExchangeItemReply ret = 1;
+  }
+
+  message GetExchangeItem {
+    zproto.GetExchangeItemRequest v_request = 1;
+  }
+
+  message ExchangeSellItem_Ret {
+    zproto.ExchangeSellItemReply ret = 1;
+  }
+
+  message ExchangeSellItem {
+    zproto.ExchangeSellItemRequest v_request = 1;
+  }
+
+  message ExchangeRecord_Ret {
+    zproto.ExchangeRecordReply ret = 1;
+  }
+
+  message ExchangeRecord {
+    zproto.ExchangeRecordRequest v_request = 1;
+  }
+
+  message ExchangeNotice_Ret {
+    zproto.ExchangeNoticeReply ret = 1;
+  }
+
+  message ExchangeNotice {
+    zproto.ExchangeNoticeRequest v_request = 1;
+  }
+
+  message ExchangeNoticeDetail_Ret {
+    zproto.ExchangeNoticeDetailReply ret = 1;
+  }
+
+  message ExchangeNoticeDetail {
+    zproto.ExchangeNoticeDetailRequest v_request = 1;
+  }
+
+  message ExchangeNoticePreBuy_Ret {
+    zproto.ExchangeNoticePreBuyReply ret = 1;
+  }
+
+  message ExchangeNoticePreBuy {
+    zproto.ExchangeNoticePreBuyRequest v_request = 1;
+  }
+
+  message ExchangeSaleData_Ret {
+    zproto.ExchangeSaleDataReply ret = 1;
+  }
+
+  message ExchangeSaleData {
+    zproto.ExchangeSaleDataRequest v_request = 1;
+  }
+
+  message ExchangeSaleRecord_Ret {
+    zproto.ExchangeSaleRecordReply ret = 1;
+  }
+
+  message ExchangeSaleRecord {
+    zproto.ExchangeSaleRecordRequest v_request = 1;
+  }
+
+  message ExchangeSaleRank_Ret {
+    zproto.ExchangeSaleRankReply ret = 1;
+  }
+
+  message ExchangeSaleRank {
+    zproto.ExchangeSaleRankRequest v_request = 1;
+  }
+
+  message ExchangeCare_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeCare {
+    zproto.ExchangeCareRequest v_request = 1;
+  }
+
+  message ExchangeCareCancel_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExchangeCareCancel {
+    zproto.ExchangeCareCancelRequest v_request = 1;
+  }
+
+  message ExchangeCareList_Ret {
+    zproto.ExchangeCareListReply ret = 1;
+  }
+
+  message ExchangeCareList {
+    zproto.ExchangeCareListRequest v_request = 1;
+  }
+
+  message ExchangeLowestPrice_Ret {
+    zproto.ExchangeLowestPriceReply ret = 1;
+  }
+
+  message ExchangeLowestPrice {
+    zproto.ExchangeLowestPriceRequest v_request = 1;
+  }
+
+  message FishingExit_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FishingSetRod_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FishingSetRod {
+    zproto.FishingSetRodRequest v_request = 1;
+  }
+
+  message FishingSetBait_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FishingSetBait {
+    zproto.FishingSetBaitRequest v_request = 1;
+  }
+
+  message FishingSetStage_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FishingSetStage {
+    zproto.FishingSetStageRequest v_request = 1;
+  }
+
+  message FishingRod_Ret {
+    zproto.FishingRodReply ret = 1;
+  }
+
+  message FishingSetResearchFish_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FishingSetResearchFish {
+    zproto.FishingSetResearchFishRequest v_request = 1;
+  }
+
+  message FishingFirstShowRecord_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FishingFirstShowRecord {
+    zproto.FishingFirstShowRecordRequest v_request = 1;
+  }
+
+  message FishingResearch_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message FishingResearch {
+    zproto.FishingResearchRequest v_request = 1;
+  }
+
+  message FishingResultReport_Ret {
+    zproto.FishingResultReportReply ret = 1;
+  }
+
+  message FishingResultReport {
+    zproto.FishingResultReportRequest v_request = 1;
+  }
+
+  message FishingGetLevelReward_Ret {
+    zproto.FishingGetLevelRewardReply ret = 1;
+  }
+
+  message FishingGetLevelReward {
+    zproto.FishingGetLevelRewardRequest v_request = 1;
+  }
+
+  message GetRankInfo_Ret {
+    zproto.GetRankInfoReply ret = 1;
+  }
+
+  message GetRankInfo {
+    zproto.GetRankInfoRequest v_request = 1;
+  }
+
+  message GetFishRankTop_Ret {
+    zproto.GetFishRankTopReply ret = 1;
+  }
+
+  message GetFishRankTop {
+    zproto.GetFishRankTopRequest v_request = 1;
+  }
+
+  message SubmitGoods_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SubmitGoods {
+    zproto.Goods goods_info = 1;
+  }
+
+  message SetOff_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RewardFreightAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CheckRefreshGoods_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SaveProject_Ret {
+    zproto.SaveProjectReply ret = 1;
+  }
+
+  message SaveProject {
+    zproto.SaveProjectRequest v_request = 1;
+  }
+
+  message SwitchProject_Ret {
+    zproto.SwitchProjectReply ret = 1;
+  }
+
+  message SwitchProject {
+    zproto.SwitchProjectRequest v_request = 1;
+  }
+
+  message ModifyProjectName_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ModifyProjectName {
+    zproto.ModifyProjectNameRequest v_request = 1;
+  }
+
+  message UnlockProject_Ret {
+    zproto.UnlockProjectReply ret = 1;
+  }
+
+  message UnlockProject {
+    zproto.UnlockProjectRequest v_request = 1;
+  }
+
+  message SyncProjectList_Ret {
+    zproto.SyncProjectListReply ret = 1;
+  }
+
+  message SyncProjectList {
+    zproto.SyncProjectListRequest v_request = 1;
+  }
+
+  message GetRoomAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetRoomAward {
+    zproto.GetRoomAwardParam param = 1;
+  }
+
+  message GetTrialRoadAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetTrialRoadAward {
+    zproto.GetTrialRoadAwardParam param = 1;
+  }
+
+  message GashaDraw_Ret {
+    zproto.GashaDrawReply ret = 1;
+  }
+
+  message GashaDraw {
+    zproto.GashaDrawRequest v_request = 1;
+  }
+
+  message GashaWishSelection_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GashaWishSelection {
+    zproto.GashaWishSelectionRequest v_request = 1;
+  }
+
+  message GashaRecord_Ret {
+    zproto.GashaRecordReply ret = 1;
+  }
+
+  message GashaRecord {
+    zproto.GashaRecordRequest v_request = 1;
+  }
+
+  message GetSocialData_Ret {
+    zproto.GetSocialDataReply ret = 1;
+  }
+
+  message GetSocialData {
+    zproto.GetSocialDataRequest v_request = 1;
+  }
+
+  message ChangeAvatar_Ret {
+    zproto.ChangeAvatarReply ret = 1;
+  }
+
+  message ChangeAvatar {
+    zproto.ChangeAvatarRequest v_request = 1;
+  }
+
+  message GetMatchInfo_Ret {
+    zproto.MatchInfo ret = 1;
+  }
+
+  message GetMatchInfo {
+    zproto.GetMatchInfoParam get_match_info_param = 1;
+  }
+
+  message BeginMatch {
+    zproto.BeginMatchParam begin_match_param = 1;
+  }
+
+  message CancelMatch {
+    zproto.CancelMatchParam cancel_match_param = 1;
+  }
+
+  message MatchReady {
+    zproto.MatchReadyParam match_ready_param = 1;
+  }
+
+  message GetWorldBossInfo_Ret {
+    zproto.WorldBossInfo ret = 1;
+  }
+
+  message GetWorldBossInfo {
+    zproto.GetWorldBossInfoParam get_world_boss_info_param = 1;
+  }
+
+  message ReceiveScoreReward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReceiveScoreReward {
+    zproto.ReceiveScoreRewardParam receive_score_reward_param = 1;
+  }
+
+  message ReceiveBossReward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReceiveBossReward {
+    zproto.ReceiveBossRewardParam receive_boss_reward_param = 1;
+  }
+
+  message BeginWorldBossMatch_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message BeginWorldBossMatch {
+    zproto.WorldBossMatchParam world_boss_match_param = 1;
+  }
+
+  message SaveActionGroup_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SaveActionGroup {
+    zproto.SaveActionGroupRequest request = 1;
+  }
+
+  message UnlockActionGroup_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnlockActionGroup {
+    zproto.UnlockActionGroupRequest request = 1;
+  }
+
+  message DeleteActionGroupData_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DeleteActionGroupData {
+    zproto.DeleteActionGroupDataRequest request = 1;
+  }
+
+  message GetAvatarToken {
+    zproto.GetAvatarTokenRequest v_request = 1;
+  }
+
+  message GetTeamList_Ret {
+    zproto.GetTeamListReply ret = 1;
+  }
+
+  message GetTeamList {
+    zproto.GetTeamListRequest v_request = 1;
+  }
+
+  message GetNearTeamList_Ret {
+    zproto.GetNearTeamListReply ret = 1;
+  }
+
+  message GetNearTeamList {
+    zproto.GetNearTeamListRequest v_request = 1;
+  }
+
+  message CreateTeam_Ret {
+    zproto.CreateTeamReply ret = 1;
+  }
+
+  message CreateTeam {
+    zproto.CreateTeamRequest v_request = 1;
+  }
+
+  message ApplyJoinTeam_Ret {
+    zproto.ApplyJoinTeamReply ret = 1;
+  }
+
+  message ApplyJoinTeam {
+    zproto.ApplyJoinTeamRequest v_request = 1;
+  }
+
+  message LeaderGetApplyList_Ret {
+    zproto.LeaderGetApplyListReply ret = 1;
+  }
+
+  message LeaderGetApplyList {
+    zproto.LeaderGetApplyListRequest v_request = 1;
+  }
+
+  message DealApplyJoin_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DealApplyJoin {
+    zproto.DealApplyJoinRequest v_request = 1;
+  }
+
+  message DenyAllApplyJoin_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DenyAllApplyJoin {
+    zproto.DenyAllApplyJoinRequest v_request = 1;
+  }
+
+  message InviteToTeam_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InviteToTeam {
+    zproto.InviteToTeamRequest v_request = 1;
+  }
+
+  message ReplyBeInvitation_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReplyBeInvitation {
+    zproto.ReplyBeInvitationRequest v_request = 1;
+  }
+
+  message ApplyBeLeader_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ApplyBeLeader {
+    zproto.ApplyBeLeaderRequest v_request = 1;
+  }
+
+  message RefuseLeaderApply_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RefuseLeaderApply {
+    zproto.RefuseLeaderApplyRequest v_request = 1;
+  }
+
+  message TransferLeader_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TransferLeader {
+    zproto.TransferLeaderRequest v_request = 1;
+  }
+
+  message AcceptTransferBeLeader_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message AcceptTransferBeLeader {
+    zproto.AcceptTransferBeLeaderRequest v_request = 1;
+  }
+
+  message KickOut_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message KickOut {
+    zproto.KickOutRequest v_request = 1;
+  }
+
+  message QuitTeam_Ret {
+    zproto.QuitTeamReply ret = 1;
+  }
+
+  message QuitTeam {
+    zproto.QuitTeamRequest v_request = 1;
+  }
+
+  message TeamCancelActivity_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TeamCancelActivity {
+    zproto.TeamCancelActivityRequest v_request = 1;
+  }
+
+  message ReplyJoinActivity_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReplyJoinActivity {
+    zproto.ReplyJoinActivityRequest v_request = 1;
+  }
+
+  message SetTeamTargetInfo_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetTeamTargetInfo {
+    zproto.SetTeamTargetInfoRequest v_request = 1;
+  }
+
+  message SetShowHall_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SetShowHall {
+    zproto.SetShowHallRequest v_request = 1;
+  }
+
+  message GoToTeamMemWorld_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GoToTeamMemWorld {
+    zproto.GoToTeamMemWorldRequest v_request = 1;
+  }
+
+  message TeamLeaderCall_Ret {
+    zproto.TeamLeaderCallReply ret = 1;
+  }
+
+  message TeamLeaderCall {
+    zproto.TeamLeaderCallRequest v_request = 1;
+  }
+
+  message TeamMemCall_Ret {
+    zproto.TeamMemCallReply ret = 1;
+  }
+
+  message TeamMemCall {
+    zproto.TeamMemCallRequest v_request = 1;
+  }
+
+  message TeamMemChangeScene_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TeamMemChangeScene {
+    zproto.TeamMemChangeSceneRequest v_request = 1;
+  }
+
+  message GetTeamInfo_Ret {
+    zproto.GetTeamInfoReply ret = 1;
+  }
+
+  message GetTeamInfo {
+    zproto.GetTeamInfoRequest v_request = 1;
+  }
+
+  message TeamInviteUser_Ret {
+    zproto.TeamInviteUserReply ret = 1;
+  }
+
+  message TeamInviteUser {
+    zproto.TeamInviteUserRequest v_request = 1;
+  }
+
+  message SetMicrophoneStatus {
+    zproto.SetMicrophoneStatusRequest v_request = 1;
+  }
+
+  message SetSpeakStatus {
+    zproto.SetSpeakStatusRequest v_request = 1;
+  }
+
+  message SetVoiceId_Ret {
+    zproto.SetVoiceIdReply ret = 1;
+  }
+
+  message SetVoiceId {
+    zproto.SetVoiceIdRequest v_request = 1;
+  }
+
+  message ChangeTeamMemberType {
+    zproto.ChangeTeamMemberTypeRequest v_request = 1;
+  }
+
+  message UpdateTeamGroup {
+    zproto.UpdateTeamGroupRequest v_request = 1;
+  }
+
+  message JoinDungeons_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message JoinDungeons {
+    zproto.JoinDungeonsRequest v_request = 1;
+  }
+
+  message InviteJoinDungeons_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InviteJoinDungeons {
+    zproto.InviteJoinDungeonsRequest v_request = 1;
+  }
+
+  message SetTeamTargetQuickSay_Ret {
+    zproto.SetTeamTargetQuickSayReply ret = 1;
+  }
+
+  message SetTeamTargetQuickSay {
+    zproto.SetTeamTargetQuickSayRequest v_request = 1;
+  }
+
+  message GetRecommendPlayData_Ret {
+    zproto.GetRecommendPlayDataReply ret = 1;
+  }
+
+  message GetRecommendPlayData {
+    zproto.GetRecommendPlayDataRequest v_request = 1;
+  }
+
+  message EnterAct_Ret {
+    zproto.EnterActReply ret = 1;
+  }
+
+  message EnterAct {
+    zproto.EnterActRequest v_request = 1;
+  }
+
+  message CancelAct_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message CancelAct {
+    zproto.CancelActRequest v_request = 1;
+  }
+
+  message ExitAct_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ExitAct {
+    zproto.ExitActRequest v_request = 1;
+  }
+
+  message BeginRecommendPlayMatch {
+    zproto.RecommendPlayMatchParam v_request = 1;
+  }
+
+  message TakeOnRide_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeOnRide {
+    zproto.TakeOnRideParam param = 1;
+  }
+
+  message TakeOffRide_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeOffRide {
+    zproto.TakeOffRideParam param = 1;
+  }
+
+  message StartRide_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message StartRide {
+    zproto.StartRideParam param = 1;
+  }
+
+  message StopRide_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message StopRide {
+    bool is_force = 1;
+  }
+
+  message ApplyToRide_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ApplyToRide {
+    zproto.ApplyToRideParam param = 1;
+  }
+
+  message InviteToRide_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message InviteToRide {
+    zproto.InviteToRideParam param = 1;
+  }
+
+  message ApplyToRideResult_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ApplyToRideResult {
+    zproto.ApplyToRideResultParam param = 1;
+  }
+
+  message RideReconfirm_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RideReconfirm {
+    int64 char_id = 1;
+  }
+
+  message SwitchRideAttach_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SwitchRideMagnetic_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DetachRideMagnetic_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message DetachRideMagnetic {
+    zproto.EDetachMagneticType detach_type = 1;
+  }
+
+  message RideMagneticAttachTo_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RideMagneticAttachTo {
+    int64 target_uuid = 1;
+  }
+
+  message TakeOnActivateRideSkin_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeOnActivateRideSkin {
+    zproto.TakeOnActivateRideSkinParam param = 1;
+  }
+
+  message TakeOnSetRideSkin_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeOnSetRideSkin {
+    zproto.TakeOnSetRideSkinParam param = 1;
+  }
+
+  message SyncCirclePathLength_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message SyncCirclePathLength {
+    float path_length = 1;
+  }
+
+  message DrawnFunctionOpenAward_Ret {
+    zproto.DrawnFunctionOpenAwardReply ret = 1;
+  }
+
+  message DrawnFunctionOpenAward {
+    int32 function_id = 1;
+  }
+
+  message ReqSceneLineInfo_Ret {
+    zproto.ReqSceneLineInfoReply ret = 1;
+  }
+
+  message ReqSceneLineInfo {
+    zproto.ReqSceneLineInfoRequest v_request = 1;
+  }
+
+  message ReqSwitchSceneLine_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReqSwitchSceneLine {
+    zproto.ReqSwitchSceneLineRequest v_request = 1;
+  }
+
+  message Pay_Ret {
+    zproto.PayReply ret = 1;
+  }
+
+  message Pay {
+    zproto.PayRequest v_request = 1;
+  }
+
+  message QueryProduct_Ret {
+    zproto.QueryProductReply ret = 1;
+  }
+
+  message QueryProduct {
+    zproto.QueryProductRequest v_request = 1;
+  }
+
+  message GetFirstPay_Ret {
+    zproto.GetFirstPayReply ret = 1;
+  }
+
+  message PaySuccess_Ret {
+    zproto.PaySuccessReply ret = 1;
+  }
+
+  message PaySuccess {
+    zproto.PaySuccessRequest v_request = 1;
+  }
+
+  message QueryBalance_Ret {
+    zproto.QueryBalanceReply ret = 1;
+  }
+
+  message QueryBalance {
+    zproto.QueryBalanceRequest v_request = 1;
+  }
+
+  message UnLockLifeProfession_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnLockLifeProfession {
+    uint32 life_profession_id = 1;
+  }
+
+  message GetUpgradeReward_Ret {
+    zproto.GetUpgradeRewardReply ret = 1;
+  }
+
+  message GetUpgradeReward {
+    uint32 target_id = 1;
+  }
+
+  message ActivateSpecialization_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ActivateSpecialization {
+    uint32 life_profession_id = 1;
+    uint32 specialization_id = 2;
+  }
+
+  message LifeProfessionBuild_Ret {
+    zproto.LifeProfessionBuildReply ret = 1;
+  }
+
+  message LifeProfessionBuild {
+    zproto.LifeProfessionBuildReq req = 1;
+  }
+
+  message LifeProfessionCooking_Ret {
+    zproto.LifeProfessionCookingReply ret = 1;
+  }
+
+  message LifeProfessionCooking {
+    zproto.LifeProfessionCookingReq cooking_req = 1;
+  }
+
+  message LifeProfessionRDCooking_Ret {
+    zproto.LifeProfessionRDCookingRet ret = 1;
+  }
+
+  message LifeProfessionRDCooking {
+    zproto.LifeProfessionRDCookingReq rd_req = 1;
+  }
+
+  message LifeProfessionAlchemy_Ret {
+    zproto.LifeProfessionAlchemyReply ret = 1;
+  }
+
+  message LifeProfessionAlchemy {
+    zproto.LifeProfessionAlchemyReq req = 1;
+  }
+
+  message LifeProfessionRDAlchemy_Ret {
+    zproto.LifeProfessionRDAlchemyRet ret = 1;
+  }
+
+  message LifeProfessionRDAlchemy {
+    zproto.LifeProfessionRDAlchemyReq req = 1;
+  }
+
+  message LifeProfessionStartWork_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message LifeProfessionStartWork {
+    uint32 life_profession_id = 1;
+    uint32 count = 2;
+  }
+
+  message LifeProfessionStopWork_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message LifeProfessionWorkReward_Ret {
+    zproto.LifeProfessionWorkRewardReply ret = 1;
+  }
+
+  message LifeProfessionWorkEarlyEnd_Ret {
+    zproto.LifeProfessionWorkEarlyEndReply ret = 1;
+  }
+
+  message GetLifeProfessionWorkHistoryInfo_Ret {
+    zproto.LifeProfessionWorkHistoryInfo ret = 1;
+  }
+
+  message ResetSpecialization_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ResetSpecialization {
+    uint32 life_profession_id = 1;
+  }
+
+  message LifeProfessionStartEntrust_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message LifeProfessionStartEntrust {
+    uint32 life_profession_id = 1;
+    uint32 base_id = 2;
+    uint32 count = 3;
+  }
+
+  message LifeProfessionEntrustReward_Ret {
+    zproto.LifeProfessionEntrustRewardReply ret = 1;
+  }
+
+  message GetMonthlyGuideReward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ClickMonthlyCardTips_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnlockEmoji_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UnlockEmoji {
+    int32 v_emoji_id = 1;
+  }
+
+  message GetActivityList_Ret {
+    zproto.GetActivityListReply ret = 1;
+  }
+
+  message GetActivityReward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetActivityReward {
+    zproto.GetActivityRewardParam param = 1;
+  }
+
+  message ActivityAction_Ret {
+    zproto.ActivityActionReply ret = 1;
+  }
+
+  message ActivityAction {
+    zproto.ActivityActionRequest param = 1;
+  }
+
+  message GetTreasureInfo_Ret {
+    zproto.GetTreasureInfoReply ret = 1;
+  }
+
+  message GetTreasureInfo {
+    zproto.GetTreasureInfoRequest v_request = 1;
+  }
+
+  message ForceSettlement_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message EndBubbleAct_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message EndBubbleAct {
+    zproto.EndBubbleActRequest v_request = 1;
+  }
+
+  message GetSignReward_Ret {
+    zproto.GetSignRewardReplay ret = 1;
+  }
+
+  message GetSignReward {
+    zproto.GetSignRewardRequest v_request = 1;
+  }
+
+  message GetQuestionnaireList_Ret {
+    zproto.GetQuestionnaireListReply ret = 1;
+  }
+
+  message GetQuestionnaireList {
+    zproto.GetQuestionnaireListRequest v_request = 1;
+  }
+
+  message JoinParade_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message JoinParade {
+    int64 target_uuid = 1;
+  }
+
+  message QuitParade_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetMahjongInfo {
+    zproto.GetMahjongInfoRequest v_request = 1;
+  }
+
+  message MahjongAction {
+    zproto.MahjongActionRequest v_request = 1;
+  }
+
+  message MahjongMatch {
+    zproto.MahjongMatchRequest v_request = 1;
+  }
+
+  message LeaveMahjongTable {
+    zproto.LeaveMahjongTableRequest v_request = 1;
+  }
+
+  message NewbieBackflowFunctionAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message NewbieBackflowFunctionAward {
+    zproto.ENewBackType v_type = 1;
+  }
+
+  message NewbieBackflowTargetAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message NewbieBackflowTargetAward {
+    zproto.ENewBackType v_type = 1;
+    uint32 v_target_id = 2;
+    int32 v_para = 3;
+  }
+
+  message NewbieBackflowSelectPreference_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message NewbieBackflowSelectPreference {
+    zproto.ENewBackType v_type = 1;
+    repeated int32 v_selection = 2;
+  }
+
+  message BackflowSignAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message BackflowSignAward {
+    int32 v_index = 1;
+  }
+
+  message NewbieBackflowElectiveProgressAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message NewbieBackflowElectiveProgressAward {
+    zproto.ENewBackType v_type = 1;
+    int32 v_day = 2;
+    int32 v_index = 3;
+  }
+
+  message NewbieGraduateAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message NewbieBackflowLevelAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message NewbieBackflowSetTagShow_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message NewbieBackflowSetTagShow {
+    zproto.ENewBackType v_type = 1;
+    bool v_show = 2;
+  }
+
+  message ReceiveCommonTargetActivityAward_Ret {
+    zproto.ReceiveCommonTargetActivityAwardReply ret = 1;
+  }
+
+  message ReceiveCommonTargetActivityAward {
+    zproto.ReceiveCommonTargetActivityAwardRequest v_request = 1;
+  }
+
+  message GetReputationLevelAward_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message GetReputationLevelAward {
+    zproto.GetReputationLevelAwardRequest v_request = 1;
+  }
+
+  message LearnRogueEntry_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message LearnRogueEntry {
+    zproto.LearnRogueEntryParam param = 1;
+  }
+
+  message UpgradeRogueEntry_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UpgradeRogueEntry {
+    zproto.UpgradeRogueEntryParam param = 1;
+  }
+
+  message RandomRogueEntry_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message RandomRogueEntry {
+    zproto.RandomRogueEntryParam param = 1;
+  }
+
+  message LockRogueEntry_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message LockRogueEntry {
+    zproto.LockRogueEntryParam param = 1;
+  }
+
+  message ActiveRogueNabo_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ActiveRogueNabo {
+    zproto.ActiveRogueNaboParam param = 1;
+  }
+
+  message ActiveRogueRune_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ActiveRogueRune {
+    zproto.ActiveRogueRuneParam param = 1;
+  }
+}
+

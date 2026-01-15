@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_shop_item_buy_limit.proto";
+import "enum_shop_limit_buy_type.proto";
+
+message ShopItemInfo {
+  int32 item_id = 1;
+  int64 start_time = 2;
+  int64 end_time = 3;
+  zproto.ShopLimitBuyType limit_buy_type = 4;
+  map<int32, zproto.ShopItemBuyLimit> buy_count = 5;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyCommunityLevelUpdateRequest {
+  int32 new_level = 1;
+  int64 new_exp = 2;
+  int32 old_level = 3;
+  int64 old_exp = 4;
+  int64 old_resource = 5;
+  int64 new_resource = 6;
+}
+

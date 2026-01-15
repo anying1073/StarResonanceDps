@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_update_structure_reply_opt.proto";
+import "enum_e_error_code.proto";
+
+message CommunityGrainUpdateStructureReply {
+  zproto.EErrorCode err_code = 1;
+  repeated zproto.CommunityUpdateStructureReplyOpt structures = 2;
+}
+

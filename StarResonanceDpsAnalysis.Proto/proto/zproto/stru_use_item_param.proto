@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message UseItemParam {
+  int64 item_uuid = 1;
+  string param = 2;
+  map<uint32, uint32> select = 3;
+  int32 use_num = 4;
+}
+

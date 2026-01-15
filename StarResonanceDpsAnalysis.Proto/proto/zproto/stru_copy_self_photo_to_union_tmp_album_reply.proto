@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message CopySelfPhotoToUnionTmpAlbumReply {
+  int32 cur_upload_times = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

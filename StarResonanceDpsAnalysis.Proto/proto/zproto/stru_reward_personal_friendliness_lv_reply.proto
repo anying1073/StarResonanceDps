@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message RewardPersonalFriendlinessLvReply {
+  int64 friend_id = 1;
+  int32 level = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

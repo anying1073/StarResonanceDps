@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message UnionBuilding {
+  int32 building_id = 1;
+  int32 building_level = 2;
+  int64 upgrade_finish_time = 3;
+  int64 has_speed_up_sec = 4;
+}
+

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package zproto;
+
+enum MahjongConfigType {
+  MahjongConfigNull = 0;
+  MahjongConfigPlayerThinkTimeSec = 1;
+  MahjongConfigBaseThinkTimeSec = 2;
+  MahjongConfigStartBaseCoin = 3;
+  MahjongConfigTableWaitClientLoadingTimeSec = 4;
+  MahjongConfigTableInnerSettleWaitTimeSec = 5;
+  MahjongConfigTableSettleYakuAddTime = 6;
+  MahjongConfigScorePoints = 7;
+  MahjongConfigBonusRankPoint = 8;
+  MahjongConfigCoinConversion = 9;
+  MahjongConfigYakumanShowTime = 10;
+  MahjongConfigGmTestFlag = 11;
+  MahjongConfigPlayerExitTime = 12;
+  MahjongConfigPlayerTimelessDelayTimeSec = 13;
+}
+

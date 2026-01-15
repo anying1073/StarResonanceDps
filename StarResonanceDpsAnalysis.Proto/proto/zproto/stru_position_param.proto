@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_cut_scene_point_info.proto";
+import "stru_scene_point_info.proto";
+import "stru_scene_pos_id_info.proto";
+
+message PositionParam {
+  zproto.ScenePointInfo scene_point_info = 2;
+  zproto.ScenePosIdInfo scene_pos_info = 3;
+  zproto.CutScenePointInfo cut_scene_point_info = 4;
+}
+

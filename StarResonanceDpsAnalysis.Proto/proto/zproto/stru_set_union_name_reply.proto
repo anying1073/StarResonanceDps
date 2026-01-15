@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_base_data.proto";
+
+message SetUnionNameReply {
+  int64 pass_time_ms = 1;
+  zproto.UnionBaseData data = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

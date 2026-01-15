@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FashionTableBase {
+  int32 id = 1463;
+  int32 type = 673;
+  int32 sort_id = 504;
+  string model = 421;
+  string_table model2 = 1679;
+  string model_id = 555;
+  int32 fashion_type = 397;
+  int_array hide_part = 471;
+  int_array hair_id = 650;
+  int_table default_color = 1931;
+  int_array color_part = 539;
+  int32 color_group_id = 1091;
+  int32 is_hide = 1851;
+  int32 arm_length = 1431;
+  int32 arm_width = 1263;
+  int32 waist_length = 1949;
+  int32 waist_width = 1480;
+  int32 leg_length = 538;
+  int32 leg_width = 1990;
+  string switch_name = 227;
+  int32 headwear_type = 528;
+}
+
+message FashionTableMgr {
+  map<int32, bokura.FashionTableBase> datas = 1;
+}
+

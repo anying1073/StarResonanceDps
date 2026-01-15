@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message RankData {
+  int32 rank = 1;
+  int64 char_id = 2;
+  int32 score = 3;
+}
+

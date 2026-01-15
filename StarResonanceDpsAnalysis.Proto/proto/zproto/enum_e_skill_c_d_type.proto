@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESkillCDType {
+  ESkillCDNormal = 0;
+  ESkillCDCharge = 1;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EQuestFailCheck {
+  EQuestFailNone = 0;
+  EQuestFailScene = 1;
+  EQuestFailVisuallayer = 2;
+  EQuestFailDeath = 3;
+  EQuestTime = 4;
+}
+

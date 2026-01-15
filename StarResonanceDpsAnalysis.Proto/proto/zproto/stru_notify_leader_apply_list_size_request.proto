@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyLeaderApplyListSizeRequest {
+  int32 v_size = 1;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyMemberOnlineRequest {
+  repeated int64 member_id_list = 1;
+  repeated int64 offline_timer = 2;
+}
+

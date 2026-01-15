@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetPhotoRequest {
+  int64 char_id = 2;
+  uint32 photo_id = 3;
+}
+

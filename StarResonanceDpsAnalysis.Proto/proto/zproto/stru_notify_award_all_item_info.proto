@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message NotifyAwardAllItemInfo {
+  repeated zproto.Item items = 1;
+}
+

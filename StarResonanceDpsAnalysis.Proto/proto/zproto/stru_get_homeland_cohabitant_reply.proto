@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_player_info.proto";
+import "stru_community_transfer.proto";
+import "enum_e_error_code.proto";
+
+message GetHomelandCohabitantReply {
+  zproto.CommunityTransfer transfer_community = 1;
+  map<int64, zproto.CommunityPlayerInfo> cohabitant = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

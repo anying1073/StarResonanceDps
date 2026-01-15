@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EAppearType {
+  EAppearNull = 0;
+  EAppearTransferIn = 1;
+  EAppearTransferPassLineIn = 2;
+}
+

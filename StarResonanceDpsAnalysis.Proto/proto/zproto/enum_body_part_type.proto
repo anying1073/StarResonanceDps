@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum BodyPartType {
+  BodyPartTypeDefault = 0;
+  BodyPartTypePart = 1;
+  BodyPartTypeMod = 2;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_path_point_change_param.proto";
+
+message MagneticRidePathPointChangeInfo {
+    repeated PathPointChangeParam PathPointChangeList = 1;
+}

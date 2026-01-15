@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message HomelandWarehouseTakeOutRequest {
+  int32 grid_pos = 1;
+  int32 item_cfg_id = 2;
+  int32 item_num = 3;
+  int64 owner_char_id = 4;
+}
+

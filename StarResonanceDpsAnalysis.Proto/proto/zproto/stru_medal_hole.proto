@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message MedalHole {
+  uint32 hole_id = 1;
+  uint32 hole_level = 2;
+  uint32 cur_exp = 3;
+}
+

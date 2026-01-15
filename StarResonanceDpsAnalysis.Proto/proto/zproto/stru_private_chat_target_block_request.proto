@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message PrivateChatTargetBlockRequest {
+  uint32 target_id = 1;
+  bool set_block = 2;
+}
+

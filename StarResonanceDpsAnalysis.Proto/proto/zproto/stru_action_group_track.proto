@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_action_group_action_clip.proto";
+import "stru_action_group_face_clip.proto";
+import "enum_e_action_group_track_type.proto";
+import "stru_dirty_mask.proto";
+
+message ActionGroupTrack {
+  zproto.EActionGroupTrackType track_type = 1;
+  repeated zproto.ActionGroupActionClip action_clip_list = 2;
+  repeated zproto.ActionGroupFaceClip face_clip_list = 3;
+}
+

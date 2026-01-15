@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_equip_enchant_type.proto";
+import "stru_dirty_mask.proto";
+
+message EquipEnchantInfo {
+  int32 enchant_item_type_id = 1;
+  int32 enchant_level = 2;
+  zproto.EEquipEnchantType enchant_type = 3;
+}
+

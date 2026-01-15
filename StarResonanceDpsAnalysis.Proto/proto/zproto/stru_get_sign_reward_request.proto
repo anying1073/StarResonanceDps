@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetSignRewardRequest {
+  int32 sign_type = 1;
+  int32 sign_days = 2;
+}
+

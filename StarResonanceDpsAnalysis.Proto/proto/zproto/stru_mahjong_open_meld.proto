@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message MahjongOpenMeld {
+  int32 meld_type = 1;
+  repeated int32 cards = 2;
+  int32 card = 3;
+  int32 from_player_index = 4;
+}
+

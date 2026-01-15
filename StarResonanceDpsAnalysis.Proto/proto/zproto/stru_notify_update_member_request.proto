@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_enum_union_notify_type.proto";
+import "stru_union_info.proto";
+import "stru_union_member.proto";
+import "stru_user_summary_data.proto";
+
+message NotifyUpdateMemberRequest {
+  zproto.UnionInfo info = 2;
+  repeated zproto.UnionMember member_info_list = 3;
+  zproto.EnumUnionNotifyType type = 4;
+  repeated zproto.UserSummaryData member_social_list = 5;
+}
+

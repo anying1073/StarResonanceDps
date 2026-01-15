@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_sign_status.proto";
+import "stru_dirty_mask.proto";
+
+message SignStatusList {
+  map<int32, zproto.SignStatus> sign_status_data = 1;
+}
+

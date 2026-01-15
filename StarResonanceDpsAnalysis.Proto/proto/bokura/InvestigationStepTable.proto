@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message InvestigationStepTableBase {
+  int32 id = 1463;
+  int_array clue = 251;
+  int_array inference_step = 1997;
+  mlstring conclusion = 879;
+  mlstring conclusion_tips = 287;
+  mlstring conclusion_bubble = 1977;
+  int32 conclusion_action = 500;
+  mlstring_array iocked_bubble = 252;
+  int_array iocked_bubble_action = 506;
+  mlstring_array review_bubble = 364;
+  int_array review_bubble_action = 1051;
+  bool quick_reasoning = 1018;
+}
+
+message InvestigationStepTableMgr {
+  map<int32, bokura.InvestigationStepTableBase> datas = 1;
+}
+

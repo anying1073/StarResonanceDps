@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+import "stru_char_team.proto";
+import "enum_e_body_size.proto";
+import "enum_e_gender.proto";
+import "stru_face_data.proto";
+import "stru_profile_info.proto";
+import "stru_user_union.proto";
+import "stru_dirty_mask.proto";
+
+message CharBaseInfo {
+  int64 char_id = 1;
+  string account_id = 2;
+  int64 show_id = 3;
+  uint32 server_id = 4;
+  string name = 5;
+  zproto.EGender gender = 6;
+  bool is_deleted = 7;
+  bool is_forbid = 8;
+  bool is_mute = 9;
+  float x = 10;
+  float y = 11;
+  float z = 12;
+  float dir = 13;
+  zproto.FaceData face_data = 14;
+  uint32 card_id = 15;
+  int64 create_time = 16;
+  int64 online_time = 17;
+  int64 offline_time = 18;
+  zproto.ProfileInfo profile_info = 19;
+  zproto.CharTeam team_info = 20;
+  uint64 char_state = 21;
+  zproto.EBodySize body_size = 22;
+  zproto.UserUnion union_info = 23;
+  repeated int32 personal_state = 24;
+  zproto.AvatarInfo avatar_info = 25;
+  uint64 total_online_time = 26;
+  string open_id = 27;
+  int32 sdk_type = 28;
+  int32 os = 29;
+  int32 init_profession_id = 31;
+  uint64 last_cal_total_time = 32;
+  int32 area_id = 33;
+  string client_version = 34;
+  int32 fight_point = 35;
+  int64 sum_save = 36;
+  string client_resource_version = 37;
+  int64 last_offline_time = 38;
+  int32 day_acc_dur_time = 39;
+  int64 last_acc_dur_timestamp = 40;
+  int64 last_online_time = 42;
+}
+

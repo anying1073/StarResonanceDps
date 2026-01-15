@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+import "stru_monthly_card_buy_list.proto";
+import "stru_monthly_card_info.proto";
+import "stru_dirty_mask.proto";
+
+message MonthlyCard {
+  int64 expire_time = 1;
+  map<int32, zproto.MonthlyCardInfo> monthly_card_info = 2;
+  int32 last_award_monthly_card_time = 3;
+  int32 tips_clicked = 4;
+  int32 tips_day = 5;
+  repeated zproto.Item items = 6;
+  map<int64, zproto.MonthlyCardBuyList> monthly_card_buy_list = 7;
+}
+

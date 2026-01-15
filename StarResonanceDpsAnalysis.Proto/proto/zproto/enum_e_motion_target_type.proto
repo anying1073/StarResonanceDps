@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EMotionTargetType {
+  MotionTargetDefault = 0;
+  MotionTargetTargetPos = 1;
+  MotionTargetTargetPosFixed = 2;
+  MotionTargetTarget = 3;
+}
+

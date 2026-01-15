@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_photo_graph_show.proto";
+
+message GetPhotoReply {
+  int64 char_id = 3;
+  uint32 photo_id = 4;
+  zproto.PhotoGraphShow photo_graph = 5;
+  zproto.EErrorCode err_code = 6;
+}
+

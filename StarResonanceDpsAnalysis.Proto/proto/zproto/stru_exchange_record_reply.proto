@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_exchange_record_item_data.proto";
+
+message ExchangeRecordReply {
+  repeated zproto.ExchangeRecordItemData buy_record = 2;
+  repeated zproto.ExchangeRecordItemData sell_record = 3;
+  zproto.EErrorCode err_code = 4;
+}
+

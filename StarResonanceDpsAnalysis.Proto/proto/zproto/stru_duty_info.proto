@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_profession_skill_info.proto";
+import "stru_dirty_mask.proto";
+
+message DutyInfo {
+  map<int32, zproto.ProfessionSkillInfo> duty_skill_info_map = 1;
+  map<int32, int32> duty_skill_slot_info_map = 2;
+}
+

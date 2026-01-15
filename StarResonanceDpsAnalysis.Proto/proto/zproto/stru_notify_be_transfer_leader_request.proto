@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_user_summary_data.proto";
+
+message NotifyBeTransferLeaderRequest {
+  zproto.UserSummaryData leader_data = 1;
+}
+

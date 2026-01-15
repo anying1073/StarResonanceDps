@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message LifeProfessionAlchemyInfo {
+  uint32 failure_count = 1;
+  uint32 rd_count = 2;
+  int64 last_reset_time = 3;
+}
+

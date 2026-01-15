@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_hot_key_context.proto";
+import "stru_dungeon_single_ai_mode_context.proto";
+import "stru_dungeon_union_info.proto";
+import "stru_homeland_info.proto";
+import "stru_match_key_info.proto";
+import "stru_planet_memory_context.proto";
+import "stru_ride_seat_info.proto";
+import "stru_weekly_tower_info.proto";
+import "google/protobuf/any.proto";
+
+message SceneInitParams {
+  repeated int64 owners = 1;
+  int64 change_flag = 4;
+  zproto.PlanetMemoryContext context = 5;
+  repeated int32 affixes = 6;
+  int32 team_id = 7;
+  int64 community_id = 8;
+  int64 homeland_id = 9;
+  int32 community_map_id = 10;
+  zproto.HomelandInfo homeland_info = 12;
+  zproto.DungeonUnionInfo union_info = 15;
+  zproto.DungeonSingleAiModeContext single_ai_mode_context = 16;
+  zproto.DungeonHotKeyContext dungeon_hot_key_context = 17;
+  string scene_guid_index = 19;
+  zproto.WeeklyTowerInfo weekly_tower_info = 20;
+  zproto.RideSeatInfo ride_seat_info = 21;
+  repeated google.protobuf.Any init_params = 22;
+  int32 master_mode_diff = 23;
+  zproto.MatchKeyInfo match_key_info = 24;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message UpgradeRogueEntryParam {
+  int64 obj_uuid = 1;
+  int32 id = 2;
+}
+

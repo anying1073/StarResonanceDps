@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_monster_target_info.proto";
+import "stru_dirty_mask.proto";
+
+message MonsterHuntTarget {
+  int32 monster_id = 1;
+  map<int32, zproto.MonsterTargetInfo> target_info_list = 2;
+}
+

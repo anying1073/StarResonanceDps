@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum DungeonEventState {
+  DungeonEventStateNull = 0;
+  DungeonEventStateRunning = 1;
+  DungeonEventStateEnd = 2;
+}
+

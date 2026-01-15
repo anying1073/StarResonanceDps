@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message RecruitInfo {
+  uint32 join_level = 1;
+  string instruction = 2;
+}
+

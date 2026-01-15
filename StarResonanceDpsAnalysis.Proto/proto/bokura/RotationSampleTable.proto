@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message RotationSampleTableBase {
+  int64 id = 1463;
+  string name = 439;
+  number_table sample_info = 1926;
+  int32 has_change_flag = 1764;
+}
+
+message RotationSampleTableMgr {
+  map<int64, bokura.RotationSampleTableBase> datas = 1;
+}
+

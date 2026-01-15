@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_passive_skill_info.proto";
+
+message SeqPassiveSkillInfo {
+    optional int64 ActorUuid = 1;
+    repeated PassiveSkillInfo PassiveInfos = 2;
+}

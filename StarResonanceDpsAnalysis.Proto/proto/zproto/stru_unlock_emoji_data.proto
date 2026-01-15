@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message UnlockEmojiData {
+  map<int32, bool> unlock_map = 1;
+}
+

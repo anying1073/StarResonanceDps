@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESpeakStatus {
+  ESpeakStatusDefault = 0;
+  ESpeakStatusBegin = 1;
+  ESpeakStatusEnd = 2;
+}
+

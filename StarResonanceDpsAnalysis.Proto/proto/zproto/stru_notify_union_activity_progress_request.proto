@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_activity_progress_info.proto";
+
+message NotifyUnionActivityProgressRequest {
+  zproto.UnionActivityProgressInfo progress_info = 2;
+}
+

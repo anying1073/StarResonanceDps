@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionResource {
+  int64 sum_num = 1;
+  int32 timer_limit_num = 2;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EReceiveRewardStatus {
+  EReceiveRewardStatusNotReceive = 0;
+  EReceiveRewardStatusCanReceive = 1;
+  EReceiveRewardStatusReceived = 2;
+}
+

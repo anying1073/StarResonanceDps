@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECommunityAuthorityClass {
+  CommunityAuthorityClassNone = 0;
+  CommunityAuthorityClassHome = 1;
+  CommunityAuthorityClassPlayer = 2;
+}
+

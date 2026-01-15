@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ChatPersonalizedTagBase {
+  int32 id = 1463;
+  mlstring tag_name = 510;
+  string tag_bg = 1998;
+  string tag_icon = 25;
+  int32 sequence = 831;
+}
+
+message ChatPersonalizedTagMgr {
+  map<int32, bokura.ChatPersonalizedTagBase> datas = 1;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EHitType {
+  HitTypeInHand = 0;
+  HitTypeOutHand = 1;
+}
+

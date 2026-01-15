@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetShowPictureRequest {
+  string url = 2;
+}
+

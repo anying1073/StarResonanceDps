@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetBattlePassAwardRequest {
+  bool onekey = 1;
+  int32 level = 2;
+  bool unlock = 3;
+  int32 id = 4;
+}
+

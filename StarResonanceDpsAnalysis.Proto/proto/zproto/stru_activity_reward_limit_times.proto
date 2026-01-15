@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_timer_type.proto";
+
+message ActivityRewardLimitTimes {
+  zproto.ETimerType times_type = 1;
+  uint32 times = 2;
+  uint32 max_times = 3;
+}
+

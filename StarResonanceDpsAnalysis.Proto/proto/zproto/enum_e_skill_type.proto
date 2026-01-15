@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESkillType {
+  SkillNormal = 0;
+  SkillCommon = 1;
+  SkillContinuous = 3;
+  SkillSwitch = 4;
+  SkillCharge = 5;
+  SkillBenediction = 6;
+  SkillSceneMark = 7;
+}
+

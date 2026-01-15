@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+enum PurviewType {
+  PurviewTypeDefault = 0;
+  PurviewTypeAddMenSumNum = 1;
+  PurviewTypeEffectGridSumNum = 2;
+  PurviewTypeUnlockEffectId = 3;
+  PurviewTypeUnlockKitchen = 4;
+  PurviewTypeUnlockPVE = 5;
+  PurviewTypeUnlockRestAreaId = 6;
+  PurviewTypeUnlockAutoSeller = 7;
+  PurviewTypeUnlockEScreenId = 8;
+  PurviewTypeUnlockUnionScene = 9;
+  PurviewTypeUnlockEScreenPhotoNum = 10;
+  PurviewTypeAddPhotoNum = 11;
+}
+

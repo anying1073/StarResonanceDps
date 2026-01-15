@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ExchangeSaleRankItemData {
+  int32 rank_idx = 1;
+  int32 rate = 2;
+}
+

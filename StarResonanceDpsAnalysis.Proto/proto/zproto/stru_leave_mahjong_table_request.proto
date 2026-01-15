@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_leave_mahjong_table_reason.proto";
+
+message LeaveMahjongTableRequest {
+  string table_guid = 1;
+  zproto.LeaveMahjongTableReason reason = 2;
+}
+

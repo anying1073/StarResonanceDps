@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message WindTunnelTableBase {
+  int32 id = 1463;
+  string name = 439;
+  string effect_path = 1536;
+}
+
+message WindTunnelTableMgr {
+  map<int32, bokura.WindTunnelTableBase> datas = 1;
+}
+

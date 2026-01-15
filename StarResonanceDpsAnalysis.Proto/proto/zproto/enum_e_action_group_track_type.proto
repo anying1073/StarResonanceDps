@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EActionGroupTrackType {
+  EActionTrack = 0;
+  EFaceTrack = 1;
+}
+

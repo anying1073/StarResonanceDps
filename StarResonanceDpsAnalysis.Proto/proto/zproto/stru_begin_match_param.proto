@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message BeginMatchParam {
+  int32 target_id = 3;
+  int32 want_leader = 4;
+}
+

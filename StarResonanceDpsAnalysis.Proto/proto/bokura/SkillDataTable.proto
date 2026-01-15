@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SkillDataTableBase {
+  int64 s_kill_level_id = 84;
+  int64_array action_array = 1470;
+  int64_array event_array = 1310;
+  int64_array effect_array = 137;
+  int64_array camera_array = 1936;
+  int64_array material_array = 1946;
+  int64_array audio_array = 3994;
+  int64_array bullet_array = 947;
+  int64_array time_scale_array = 1615;
+}
+
+message SkillDataTableMgr {
+  map<int64, bokura.SkillDataTableBase> datas = 1;
+}
+

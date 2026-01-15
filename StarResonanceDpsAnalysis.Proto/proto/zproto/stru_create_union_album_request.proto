@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_album_right.proto";
+
+message CreateUnionAlbumRequest {
+  int64 union_id = 1;
+  string name = 2;
+  zproto.EAlbumRight access = 3;
+}
+

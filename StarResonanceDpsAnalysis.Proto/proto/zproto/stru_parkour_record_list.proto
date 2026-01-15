@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_parkour_record.proto";
+import "stru_dirty_mask.proto";
+
+message ParkourRecordList {
+  map<uint32, zproto.ParkourRecord> record_list = 1;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_show_item_type.proto";
+import "stru_item.proto";
+
+message ShowItemsInfo {
+  zproto.EShowItemType type = 1;
+  repeated zproto.Item items = 2;
+}
+

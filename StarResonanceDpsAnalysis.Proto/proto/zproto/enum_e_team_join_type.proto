@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETeamJoinType {
+  ETeamJoinTypeNone = 0;
+  ETeamJoinTypeInvite = 1;
+  ETeamJoinTypeTargetMatch = 2;
+}
+

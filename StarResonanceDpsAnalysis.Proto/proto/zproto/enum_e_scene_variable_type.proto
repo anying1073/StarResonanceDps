@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESceneVariableType {
+  ESceneVariableTypeNone = 0;
+  ESceneVariableTypeGroup = 1;
+  ESceneVariableTypePlayer = 2;
+}
+

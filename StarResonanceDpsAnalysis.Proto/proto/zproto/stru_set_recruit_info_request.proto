@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_recruit_info.proto";
+
+message SetRecruitInfoRequest {
+  int64 union_id = 2;
+  zproto.RecruitInfo recruit_info = 3;
+  string slogan = 4;
+}
+

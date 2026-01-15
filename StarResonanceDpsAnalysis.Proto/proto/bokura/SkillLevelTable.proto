@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SkillLevelTableBase {
+  int32 id = 1463;
+  int_table cost = 1056;
+  int_table extra_cost = 1788;
+}
+
+message SkillLevelTableMgr {
+  map<int32, bokura.SkillLevelTableBase> datas = 1;
+}
+

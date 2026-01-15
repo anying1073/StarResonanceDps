@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AchievementTableBase {
+  int32 id = 1463;
+  string name = 176;
+  int32 main_type = 1850;
+  int32 sub_type = 1973;
+  string desc = 483;
+  int32 show = 601;
+  int32 time_limit = 1869;
+  int_table award = 149;
+  string icon = 1210;
+}
+
+message AchievementTableMgr {
+  map<int32, bokura.AchievementTableBase> datas = 1;
+}
+

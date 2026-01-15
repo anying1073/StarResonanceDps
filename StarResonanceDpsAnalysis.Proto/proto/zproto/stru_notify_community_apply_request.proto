@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_apply_info.proto";
+
+message NotifyCommunityApplyRequest {
+  zproto.CommunityApplyInfo apply_info = 1;
+}
+

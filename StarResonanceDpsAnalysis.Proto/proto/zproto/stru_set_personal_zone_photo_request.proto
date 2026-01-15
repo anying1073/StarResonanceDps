@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetPersonalZonePhotoRequest {
+  map<int32, int32> photos = 3;
+}
+

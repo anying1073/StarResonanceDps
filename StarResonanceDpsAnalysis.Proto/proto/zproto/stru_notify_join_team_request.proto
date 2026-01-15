@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_team_join_type.proto";
+import "stru_team_base_info.proto";
+import "stru_team_member_fast_sync_data.proto";
+import "stru_team_mem_data.proto";
+import "stru_team_mem_real_time_voice_info.proto";
+
+message NotifyJoinTeamRequest {
+  zproto.TeamBaseInfo base_info = 1;
+  repeated zproto.TeamMemData member_data = 2;
+  map<int64, zproto.TeamMemRealTimeVoiceInfo> mem_real_time_voice_infos = 4;
+  zproto.ETeamJoinType team_join_type = 5;
+  map<int64, zproto.TeamMemberFastSyncData> member_sync_datas = 6;
+}
+

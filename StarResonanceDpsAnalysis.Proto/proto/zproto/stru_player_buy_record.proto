@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PlayerBuyRecord {
+  int32 count = 2;
+  int64 buy_timestamp = 3;
+}
+

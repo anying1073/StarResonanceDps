@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_scene_data.proto";
+import "stru_transfer_info.proto";
+
+message SceneInfo {
+  zproto.SceneData data = 1;
+  uint32 server_id = 2;
+  int64 scene_id = 3;
+  string host = 4;
+  bool changemap = 5;
+  uint32 old_scene_id = 6;
+  uint32 old_scene_sub_type = 7;
+  uint32 scene_sub_type = 8;
+  zproto.TransferInfo transfer_info = 9;
+}
+

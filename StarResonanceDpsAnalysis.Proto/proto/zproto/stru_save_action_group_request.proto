@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_action_group_save_info.proto";
+
+message SaveActionGroupRequest {
+  int32 action_group_id = 1;
+  zproto.ActionGroupSaveInfo action_group_save_info = 2;
+}
+

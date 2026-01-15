@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message DialogueCameraTableBase {
+  int64 id = 1463;
+  string comment = 1030;
+  int_array template_ids = 1931;
+  int32 aim_target_character = 1134;
+  string aim_point = 950;
+}
+
+message DialogueCameraTableMgr {
+  map<int64, bokura.DialogueCameraTableBase> datas = 1;
+}
+

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message ConditionTableBase {
+  int32 type = 673;
+  string param = 1207;
+  bool is_lua = 1695;
+  string example = 522;
+  string refresh_num = 1376;
+}
+
+message ConditionTableMgr {
+  map<int32, bokura.ConditionTableBase> datas = 1;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_structure_op_type.proto";
+
+message NotifyFlowerTimeUpdateRequest {
+  zproto.StructureOpType op_type = 1;
+}
+

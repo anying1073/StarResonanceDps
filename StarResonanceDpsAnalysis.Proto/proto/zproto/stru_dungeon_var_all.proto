@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_var.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonVarAll {
+  map<int64, zproto.DungeonVar> dungeon_var_all_map = 1;
+}
+

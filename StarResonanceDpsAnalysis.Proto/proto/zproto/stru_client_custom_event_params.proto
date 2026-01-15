@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message ClientCustomEventParams {
+  int32 custom_event_id = 1;
+}
+

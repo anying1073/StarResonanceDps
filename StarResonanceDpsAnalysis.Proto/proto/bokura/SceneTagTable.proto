@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SceneTagTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string icon1 = 652;
+  string icon2 = 1314;
+  int32 type = 673;
+  string param = 1207;
+  int32 function_id = 149;
+  int32 track_type = 1246;
+  int32 show = 183;
+  int32 unlock = 1666;
+  int32 level = 1120;
+  int32 sort = 1643;
+  int32 number = 1714;
+  int32 mini_show = 591;
+  mlstring description = 75;
+}
+
+message SceneTagTableMgr {
+  map<int32, bokura.SceneTagTableBase> datas = 1;
+}
+

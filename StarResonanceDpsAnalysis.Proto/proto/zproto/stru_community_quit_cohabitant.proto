@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityQuitCohabitant {
+  bool is_initiative_quit = 1;
+  int64 time = 2;
+}
+

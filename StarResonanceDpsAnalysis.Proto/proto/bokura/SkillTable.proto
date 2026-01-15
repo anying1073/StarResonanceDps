@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SkillTableBase {
+  int32 id = 1463;
+  string name_design = 1649;
+  mlstring desc = 1953;
+  mlstring name = 439;
+  int_array skill_level_group = 1371;
+  int_array effect_i_ds = 209;
+  int32 skill_type = 1451;
+  bool face_target = 497;
+  bool is_preview = 283;
+  int32 target_type = 736;
+  int32 skill_target_range_type = 434;
+  int32 skill_range_type = 1631;
+  int32 skill_select_point_type = 178;
+  int32 skill_hated_type = 1592;
+  int32 skill_dam_type = 1417;
+  int32 switch_skill_id = 990;
+  bool is_aoe = 236;
+  string icon = 1153;
+  int32 next_skill_id = 993;
+  int32 slot_type = 517;
+  int32 long_press_replace_s_kill_id = 1868;
+  float long_press_time = 406;
+  float combo_take_effect_time = 1009;
+  bool can_play_in_sky = 1082;
+  int32 sky_skill_id = 1405;
+  bool is_armor = 150;
+  bool cant_stiff = 1650;
+  bool cant_stiff_back = 199;
+  bool cant_stiff_down = 948;
+  bool cant_stiff_air = 630;
+  int32 unbreak_skill_priority = 1706;
+  int32 break_skill_priority = 223;
+  bool use_total_damage_hud = 1346;
+  bool weapon_return = 1875;
+  float skill_root_shift = 278;
+  float cool_time_type = 1658;
+  int_array necessary_parts = 1107;
+  int_array exclude_parts = 641;
+  string_array skill_area_array = 758;
+  number_table switch_skill_info = 1655;
+  int64 energy_charge_time = 1141;
+  int32 max_energy_charge_num = 296;
+  float continues_skill_delay_time = 452;
+  int32 use_add_res_value = 713;
+  bool atk_speed_switch = 766;
+  int32 skill_look_at_angle = 1353;
+  int32 defocus_look_atangle = 964;
+  bool is_fracture_skill = 744;
+  bool is_danger_skill = 857;
+  bool is_passive_desc = 1460;
+  bool is_search_enemie = 1903;
+  string search_enemie_filter_name = 1409;
+  bool rocker_dir = 418;
+  int32 skill_unbreak_level_additional = 113;
+  bool is_hide_replace_effect = 883;
+  bool change_wp_in_skill = 498;
+  bool is_tanlent_continued_begin = 1862;
+  number_array ui_warning_param = 1110;
+  bool inherit_motion_speed = 1917;
+}
+
+message SkillTableMgr {
+  map<int32, bokura.SkillTableBase> datas = 1;
+}
+

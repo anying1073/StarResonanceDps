@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_grow_fund_mem_info.proto";
+import "stru_union_crowd_fund.proto";
+
+message GetUnionGrowFundInfoReply {
+  zproto.UnionCrowdFund crowd_fund = 1;
+  repeated zproto.GrowFundMemInfo crow_func_mem_list = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

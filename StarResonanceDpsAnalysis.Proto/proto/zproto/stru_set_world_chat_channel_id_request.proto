@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetWorldChatChannelIdRequest {
+  uint32 channel_id = 1;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_notify_questionnaire_finish_request.proto";
+
+message QuestionnaireNtf {
+
+  message NotifyQuestionnaireFinish {
+    zproto.NotifyQuestionnaireFinishRequest request = 1;
+  }
+}
+

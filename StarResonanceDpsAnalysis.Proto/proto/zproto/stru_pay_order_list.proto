@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_pay_data.proto";
+import "stru_refund_item_info.proto";
+import "stru_dirty_mask.proto";
+
+message PayOrderList {
+  repeated string pay_order_list = 1;
+  repeated string pay_refund_list = 2;
+  zproto.PayData first_pay = 3;
+  map<int64, int32> order_index_list = 5;
+  map<int64, zproto.RefundItemInfo> order_index_refund_list = 6;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESceneLineStatus {
+  SceneLineStatusNone = 0;
+  SceneLineStatusLow = 1;
+  SceneLineStatusMedium = 2;
+  SceneLineStatusHigh = 3;
+  SceneLineStatusFull = 4;
+  SceneLineStatusRecycle = 5;
+}
+

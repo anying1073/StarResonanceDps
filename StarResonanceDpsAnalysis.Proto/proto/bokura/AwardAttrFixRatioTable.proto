@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AwardAttrFixRatioTableBase {
+  int32 id = 1463;
+  int32 attr_id = 1307;
+  int32 type = 673;
+  int32 item_type = 809;
+  int_table item_params = 1953;
+}
+
+message AwardAttrFixRatioTableMgr {
+  map<int32, bokura.AwardAttrFixRatioTableBase> datas = 1;
+}
+

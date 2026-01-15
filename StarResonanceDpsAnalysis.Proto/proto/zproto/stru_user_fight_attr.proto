@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_skill_c_d_info.proto";
+import "stru_dirty_mask.proto";
+
+message UserFightAttr {
+  int64 cur_hp = 1;
+  int64 max_hp = 2;
+  float origin_energy = 3;
+  repeated uint32 resource_ids = 4;
+  repeated uint32 resources = 5;
+  int32 is_dead = 6;
+  int64 dead_time = 7;
+  int32 revive_id = 8;
+  repeated zproto.SkillCDInfo cd_info = 9;
+}
+

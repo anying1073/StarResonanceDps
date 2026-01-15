@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_chit_chat_msg.proto";
+import "enum_e_error_code.proto";
+
+message GetChipChatRecordsReply {
+  bool is_end = 3;
+  int64 max_read_msg_id = 4;
+  repeated zproto.ChitChatMsg multi_msg_list = 5;
+  zproto.EErrorCode err_code = 6;
+}
+

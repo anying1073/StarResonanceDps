@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message MapAttrValue {
+    optional bool IsRemove = 1;
+    optional bytes Key = 2;
+    optional bytes Value = 3;
+}

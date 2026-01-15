@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ScenePointInfoGlobalTableBase {
+  int32 u_id = 2028;
+  number_array position = 686;
+}
+
+message ScenePointInfoGlobalTableMgr {
+  map<int32, bokura.ScenePointInfoGlobalTableBase> datas = 1;
+}
+

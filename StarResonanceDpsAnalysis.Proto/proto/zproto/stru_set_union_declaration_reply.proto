@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_base_data.proto";
+
+message SetUnionDeclarationReply {
+  zproto.UnionBaseData data = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

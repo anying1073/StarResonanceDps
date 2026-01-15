@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mod_attr_info.proto";
+import "stru_dirty_mask.proto";
+
+message ModAttr {
+  int32 load_flag = 1;
+  int32 type = 2;
+  int32 level = 3;
+  repeated zproto.ModAttrInfo mod_attr_info = 4;
+}
+

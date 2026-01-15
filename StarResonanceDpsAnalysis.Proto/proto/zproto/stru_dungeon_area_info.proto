@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_area_data.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonAreaInfo {
+  map<int64, zproto.DungeonAreaData> dungeon_area_data_map = 1;
+}
+

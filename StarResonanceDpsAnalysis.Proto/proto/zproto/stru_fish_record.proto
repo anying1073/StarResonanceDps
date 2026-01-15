@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message FishRecord {
+  int32 fish_id = 1;
+  bool first_flag = 2;
+  int32 size = 3;
+  int64 millisecond = 4;
+  int32 research = 5;
+  uint32 count = 6;
+  int32 min_size = 7;
+  int64 min_sizemillisecond = 8;
+  map<int32, int64> star_cnts = 9;
+}
+

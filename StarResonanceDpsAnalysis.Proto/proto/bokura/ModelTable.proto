@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ModelTableBase {
+  int32 model_id = 2011;
+  string model_desc = 1227;
+  int32 model_type = 1034;
+  string image = 958;
+  string bust = 1934;
+  int32 model_prefab_id = 5;
+  float model_scale = 1070;
+  string_array mount = 278;
+  number_table mount_offset = 1939;
+  number_table mount_rot = 380;
+  number_table mount_scale = 1962;
+  string weapon_idle_anim = 102;
+  int32 go_type = 1223;
+  number_array go_data = 1790;
+  int_array body_parts = 682;
+  vector3 rt_pos = 808;
+  vector3 rt_rot = 508;
+  float weight_factor = 1330;
+  string_array stiff_air_curve = 812;
+  string_array stiff_down_curve = 775;
+  string_array stiff_fall_curve = 989;
+  number_array stiff_time = 106;
+  float stiff_stand_time = 1664;
+  float stiff_down_time = 1774;
+  int32 death_action_time = 1799;
+  float break_end_anim_time = 689;
+  string_array audio_bank = 1796;
+  bool ignore_far_cull = 847;
+  int32 size_type = 57;
+  int32 basic_fleshy_type = 2041;
+  float walk_velocity = 2105;
+  float run_velocity = 1804;
+  float dash_velocity = 1551;
+  float move_anim_speed = 334;
+  string model_effect = 1811;
+  bool is_multipod = 1464;
+  float be_hit_offset = 391;
+  number_array scale_params = 1778;
+  string be_hit_addi_anim_name = 1240;
+  number_table state_additive_hit_weight = 1556;
+  float blood_hud_offset = 189;
+}
+
+message ModelTableMgr {
+  map<int32, bokura.ModelTableBase> datas = 1;
+}
+

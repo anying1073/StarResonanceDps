@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EMatchStatus {
+  EMatchStatusNull = 0;
+  EMatchStatusMatching = 1;
+  EMatchStatusWaitReady = 2;
+  EMatchStatusAllReady = 3;
+  EMatchStatusSuccess = 4;
+}
+

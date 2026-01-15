@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_duty_info.proto";
+import "stru_dirty_mask.proto";
+
+message DutyList {
+  int32 cur_profession_duty_id = 1;
+  map<int32, zproto.DutyInfo> duty_info_map = 2;
+}
+

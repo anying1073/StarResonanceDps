@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_picture_type.proto";
+
+message ImageCosKey {
+  zproto.EPictureType type = 1;
+  string cos_key = 2;
+  string extra_info = 3;
+}
+

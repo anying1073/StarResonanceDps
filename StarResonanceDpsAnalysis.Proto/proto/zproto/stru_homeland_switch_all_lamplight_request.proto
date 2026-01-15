@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_homeland_lamplight_state.proto";
+
+message HomelandSwitchAllLamplightRequest {
+  zproto.EHomelandLamplightState lamplight_state = 1;
+  bool is_outer = 2;
+}
+

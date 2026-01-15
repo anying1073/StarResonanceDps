@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_exchange_item_type.proto";
+
+message ExchangeCareRequest {
+  zproto.EExchangeItemType type = 1;
+  int32 item_config_id = 2;
+}
+

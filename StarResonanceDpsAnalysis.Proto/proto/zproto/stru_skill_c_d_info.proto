@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message SkillCDInfo {
+  int32 skill_level_id = 1;
+  int64 skill_begin_time = 2;
+  int32 duration = 3;
+  uint32 skill_cd_type = 4;
+  int64 profession_hold_begin_time = 6;
+  int32 charge_count = 7;
+  int32 valid_cd_time = 8;
+  int32 sub_cd_ratio = 9;
+  int64 sub_cd_fixed = 10;
+  int32 accelerate_cd_ratio = 11;
+}
+

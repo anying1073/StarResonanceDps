@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESecondDamageType {
+  ESecondDamageType_Crit = 0;
+  ESecondDamageType_Block = 1;
+  ESecondDamageType_AttackerLuck = 2;
+  ESecondDamageType_AttackedLuck = 3;
+}
+

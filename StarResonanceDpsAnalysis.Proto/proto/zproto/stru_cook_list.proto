@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_cook_book.proto";
+import "stru_dirty_mask.proto";
+
+message CookList {
+  map<uint32, zproto.CookBook> book_data = 1;
+}
+

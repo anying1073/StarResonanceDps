@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetUnionDeclarationRequest {
+  int64 union_id = 2;
+  string declaration = 3;
+}
+

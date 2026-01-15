@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETransferType {
+  TransferTypeNotSetCamera = 0;
+  TransferTypeNotSetPosition = 1;
+  TransferTypeLoadingBlack = 2;
+  TransferTypeLoadingRipple = 3;
+  TransferTypeEffect = 4;
+  TransferTypePassLine = 5;
+  TransferTypeLoadingWhite = 6;
+  TransferTypeLoadingNoEffect = 7;
+}
+

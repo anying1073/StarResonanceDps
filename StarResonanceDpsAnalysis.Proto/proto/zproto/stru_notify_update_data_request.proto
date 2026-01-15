@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_friend_data.proto";
+
+message NotifyUpdateDataRequest {
+  map<int32, int32> operation_map = 1;
+  zproto.FriendData sync_data = 2;
+}
+

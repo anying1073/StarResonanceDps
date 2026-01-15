@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message DungeonTargetProgress {
+  int32 target_id = 1;
+  int32 target_progress = 2;
+  int32 award_state = 3;
+}
+

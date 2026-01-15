@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETimerExeType {
+  TimerExeTypeNull = 0;
+  TimerExeType_Start = 1;
+  TimerExeType_End = 2;
+  TimerExeType_Cycle_Start = 3;
+  TimerExeType_Cycle_End = 4;
+}
+

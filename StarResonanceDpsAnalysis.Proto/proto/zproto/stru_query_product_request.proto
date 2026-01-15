@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_pay_type.proto";
+
+message QueryProductRequest {
+  zproto.EPayType pay_type = 1;
+}
+

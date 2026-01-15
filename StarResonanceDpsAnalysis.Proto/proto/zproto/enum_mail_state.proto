@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum MailState {
+  MailStateNull = 0;
+  MailStateSend = 1;
+  MailStateRead = 2;
+  MailStateGet = 3;
+  MailStateDelete = 4;
+  MailStateHide = 5;
+}
+

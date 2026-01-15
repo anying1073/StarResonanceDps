@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EStiffStage {
+  Stiffing = 0;
+  StiffEnd = 1;
+  StiffStandup = 2;
+}
+

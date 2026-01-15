@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ResolveTableBase {
+  int32 id = 1463;
+  int32 item_id = 609;
+  string item_name = 1477;
+  int_array get_item = 859;
+  int32 function_id = 149;
+  int32 limit = 640;
+}
+
+message ResolveTableMgr {
+  map<int32, bokura.ResolveTableBase> datas = 1;
+}
+

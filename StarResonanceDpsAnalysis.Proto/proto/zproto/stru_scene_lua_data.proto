@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message SceneLuaData {
+  map<uint32, string> scene_lua_info = 1;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message MahjongSettleMessage {
+  int32 confirm_index = 1;
+  int64 confirm_time = 2;
+}
+

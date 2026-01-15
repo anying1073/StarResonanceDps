@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_profession_talent_info.proto";
+
+message ProjectExtraSyncData {
+  zproto.ProfessionTalentInfo current_talent_id_list = 1;
+  map<int32, int32> current_skill_id_list = 2;
+}
+

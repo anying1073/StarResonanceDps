@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ModTableBase {
+  int32 id = 1463;
+  string mod_pic = 197;
+  int32 mod_lvl = 395;
+  int32 effect_type = 527;
+  int32 effect_config = 110;
+  int_array effect_parameter = 761;
+  int_array tag_id = 1054;
+}
+
+message ModTableMgr {
+  map<int32, bokura.ModTableBase> datas = 1;
+}
+

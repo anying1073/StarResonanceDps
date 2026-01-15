@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETeamErrorType {
+  ReqCreateTeam = 0;
+  ReqSetTeamTargetInfo = 1;
+  ReqInviteToTeam = 2;
+  ReqReplyBeInvitation = 3;
+  ReqQuitTeam = 4;
+  ReqApplyBeLeader = 5;
+  ReqTransferLeader = 6;
+  ReqAcceptTransferBeLeader = 7;
+  ReqRefuseLeaderApply = 8;
+  ReqTickOut = 9;
+  ReqGetTeamList = 10;
+  ReqGetNearTeamList = 11;
+  ReqApplyJoinTeam = 12;
+  ReqDealApplyJoin = 13;
+  ReqDenyAllApplyJoin = 14;
+  ReqCharBeginMatch = 15;
+  ReqCharCancelMatch = 16;
+  ReqLeaderBeginMatch = 17;
+  ReqLeaderCancelMatch = 18;
+  ReqLeaderGetApplyList = 19;
+  ReqTeamStartActivity = 20;
+  ReqTeamCancelActivity = 21;
+  ReqReplyJoinActivity = 22;
+  ReqSetShowHall = 23;
+}
+

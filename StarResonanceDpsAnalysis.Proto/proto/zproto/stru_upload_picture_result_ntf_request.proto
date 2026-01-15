@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "enum_e_picture_type.proto";
+import "stru_picture_info.proto";
+
+message UploadPictureResultNtfRequest {
+  zproto.EErrorCode err_code = 2;
+  zproto.EPictureType picture_type = 3;
+  zproto.PictureInfo picture_info = 4;
+}
+

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+message TargetTrackTableBase {
+  int32 id = 1463;
+  string type = 673;
+  int32 team = 852;
+  int32 scene_track = 618;
+  int32 map_track = 1075;
+  int32 start_distance = 1892;
+  int32 end_distance = 1679;
+  string icon = 1153;
+}
+
+message TargetTrackTableMgr {
+  map<int32, bokura.TargetTrackTableBase> datas = 1;
+}
+

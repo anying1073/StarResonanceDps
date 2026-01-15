@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message RedDotCheckTableBase {
+  int32 id = 1463;
+  string check_method_name = 776;
+  string file_name = 1506;
+  int32 function_id = 149;
+  int32 check_method_type = 690;
+}
+
+message RedDotCheckTableMgr {
+  map<int32, bokura.RedDotCheckTableBase> datas = 1;
+}
+

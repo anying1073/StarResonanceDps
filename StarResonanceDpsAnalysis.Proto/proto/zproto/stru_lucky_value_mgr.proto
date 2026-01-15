@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_lucky_value_info.proto";
+import "stru_dirty_mask.proto";
+
+message LuckyValueMgr {
+  map<int32, zproto.LuckyValueInfo> luck_value_info = 1;
+  bool init_value = 2;
+}
+

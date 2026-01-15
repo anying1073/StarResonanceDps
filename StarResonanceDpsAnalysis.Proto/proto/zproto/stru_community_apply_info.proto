@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_char_basic_data.proto";
+
+message CommunityApplyInfo {
+  int64 time = 1;
+  int64 char_id = 2;
+  int64 home_id = 3;
+  zproto.CommunityCharBasicData char_basic_data = 4;
+  int64 community_id = 5;
+}
+

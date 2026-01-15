@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_interaction_template_action.proto";
+
+message InteractionTemplateData {
+  zproto.EInteractionTemplateAction type = 1;
+  uint64 object_id = 2;
+  int32 template_id = 3;
+  int64 homeland_id = 4;
+  int32 pos_id = 5;
+  int32 sub_template_id = 6;
+}
+

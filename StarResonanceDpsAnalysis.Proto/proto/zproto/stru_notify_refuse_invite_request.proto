@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyRefuseInviteRequest {
+  string invitees_name = 1;
+  int64 invitees_id = 2;
+}
+

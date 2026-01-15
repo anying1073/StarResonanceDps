@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BuffDataTableBase {
+  int64 buff_id = 674;
+  int64_array action_array = 1470;
+  int64_array effect_array = 137;
+  int64_array material_array = 1946;
+  int64_array w_wise_array = 1945;
+}
+
+message BuffDataTableMgr {
+  map<int64, bokura.BuffDataTableBase> datas = 1;
+}
+

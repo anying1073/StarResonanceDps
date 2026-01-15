@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnionRaidKillBossRecord {
+  int64 char_id = 1;
+  string char_name = 2;
+  int64 kill_time = 3;
+}
+

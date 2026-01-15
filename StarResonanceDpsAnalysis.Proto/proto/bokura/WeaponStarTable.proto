@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message WeaponStarTableBase {
+  int32 id = 1463;
+  int32 weapon_id = 952;
+  int32 skill_id = 1087;
+  int_table ulock_skill_level = 60;
+  int32 change_skill = 513;
+  int_table upgrade_cost = 151;
+  int_table upgrade_extra_cost = 262;
+  int32 buff_id = 500;
+  int_array buff_par = 1688;
+  int_array upgrade_skill_id = 665;
+  int_array upgrade_skill_level = 1794;
+  mlstring name = 439;
+  mlstring des = 266;
+}
+
+message WeaponStarTableMgr {
+  map<int32, bokura.WeaponStarTableBase> datas = 1;
+}
+

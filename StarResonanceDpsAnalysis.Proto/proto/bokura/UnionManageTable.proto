@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message UnionManageTableBase {
+  int32 id = 1463;
+  mlstring position = 686;
+  int32 position_num = 1912;
+  vector3_array union_manage = 1491;
+  int32 show_sort = 1506;
+  int_array union_authority_sit = 166;
+}
+
+message UnionManageTableMgr {
+  map<int32, bokura.UnionManageTableBase> datas = 1;
+}
+

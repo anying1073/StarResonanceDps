@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBuffVisible {
+  None = 0;
+  Self = 1;
+  All = 2;
+}
+

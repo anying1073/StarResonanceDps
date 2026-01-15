@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_slot_info_data.proto";
+
+message SlotData {
+  map<int32, zproto.SlotInfoData> slots = 1;
+}
+

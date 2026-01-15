@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ExchangeTakeItemRequest {
+  string uuid = 2;
+  uint32 config_id = 3;
+}
+

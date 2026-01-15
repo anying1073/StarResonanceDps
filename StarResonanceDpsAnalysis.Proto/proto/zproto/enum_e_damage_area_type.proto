@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EDamageAreaType {
+  DamageNone = 0;
+  DamageCylinder = 1;
+  DamageCube = 2;
+  DamageSector = 3;
+  DamageAnnulus = 4;
+  DamageSphere = 5;
+  DamagePoint = 6;
+}
+

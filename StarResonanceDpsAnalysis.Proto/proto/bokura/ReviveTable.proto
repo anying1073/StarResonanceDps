@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ReviveTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int32 type = 673;
+  int_array consume = 1838;
+  int32 count_down = 3886;
+  int_array before_buff_id = 1753;
+  int32 wait_time = 106;
+  int32 is_boss_can_revive = 812;
+}
+
+message ReviveTableMgr {
+  map<int32, bokura.ReviveTableBase> datas = 1;
+}
+

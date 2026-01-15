@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message CommunityBuildLifeProfessionInfo {
+  int64 build_uuid = 1;
+  int64 char_id = 2;
+  int64 start_time = 3;
+  int32 item_id = 4;
+  int32 item_count = 5;
+  repeated zproto.Item consume_items = 6;
+  int32 reduce_time = 7;
+}
+

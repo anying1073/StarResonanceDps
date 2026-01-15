@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+
+import "enum_e_buff_event_type.proto";
+import "stru_buff_effect_logic_info.proto";
+
+message BuffEffect {
+    optional EBuffEventType Type = 1;
+    optional int32 BuffUuid = 2;
+    optional int64 HostUuid = 3;
+    optional int64 TriggerTime = 4;
+    repeated BuffEffectLogicInfo LogicEffect = 5;
+}
+

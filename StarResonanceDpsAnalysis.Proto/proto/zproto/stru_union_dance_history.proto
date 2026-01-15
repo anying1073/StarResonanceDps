@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message UnionDanceHistory {
+  int64 dance_end_time = 1;
+  bool sent_dance_award = 2;
+  bool drawn_dance_award = 3;
+}
+

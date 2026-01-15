@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AffixTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  mlstring description = 75;
+  string remark = 1391;
+  string icon = 1153;
+  int32 effect_type = 527;
+  int32 target_type = 736;
+  int32 level = 1120;
+  int_array mutex = 924;
+  int_table effect = 602;
+  number_table effect_time = 1664;
+  int32 gs_change = 1558;
+}
+
+message AffixTableMgr {
+  map<int32, bokura.AffixTableBase> datas = 1;
+}
+

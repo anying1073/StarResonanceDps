@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetSlotAutoBattleRequest {
+  map<int32, bool> slots = 1;
+}
+

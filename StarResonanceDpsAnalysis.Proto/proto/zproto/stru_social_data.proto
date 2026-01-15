@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_account_data.proto";
+import "stru_avatar_info.proto";
+import "stru_basic_data.proto";
+import "stru_char_team.proto";
+import "stru_community_data.proto";
+import "stru_equip_data.proto";
+import "stru_face_data.proto";
+import "stru_fashion_data.proto";
+import "stru_fish_social_data.proto";
+import "stru_function_data.proto";
+import "stru_master_mode_dungeon_data.proto";
+import "stru_personal_zone.proto";
+import "stru_privilege_data.proto";
+import "stru_profession_data.proto";
+import "stru_scene_data.proto";
+import "stru_season_rank_data.proto";
+import "stru_setting_data.proto";
+import "stru_union_data.proto";
+import "stru_user_attr_data.proto";
+import "stru_warehouse_data.proto";
+import "stru_dirty_mask.proto";
+
+message SocialData {
+  int64 char_id = 1;
+  string account_id = 2;
+  zproto.BasicData basic_data = 3;
+  zproto.AvatarInfo avatar_info = 4;
+  zproto.FaceData face_data = 5;
+  zproto.ProfessionData profession_data = 6;
+  zproto.EquipData equip_data = 7;
+  zproto.FashionData fashion_data = 8;
+  zproto.SettingData setting_data = 9;
+  zproto.SceneData scene_data = 10;
+  zproto.UserAttrData user_attr_data = 11;
+  zproto.CharTeam team_data = 12;
+  zproto.UnionData union_data = 13;
+  zproto.AccountData account_data = 14;
+  zproto.FunctionData function_data = 15;
+  zproto.PersonalZone personal_zone = 16;
+  zproto.WarehouseData warehouse = 17;
+  zproto.SeasonRankData season_rank = 18;
+  zproto.FishSocialData fish_data = 19;
+  zproto.CommunityData community_data = 20;
+  zproto.PrivilegeData privilege_data = 21;
+  zproto.MasterModeDungeonData master_mode_dungeon_data = 22;
+}
+

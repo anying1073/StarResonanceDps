@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message AttrDescriptionBase {
+  int32 id = 1463;
+  mlstring description = 75;
+}
+
+message AttrDescriptionMgr {
+  map<int32, bokura.AttrDescriptionBase> datas = 1;
+}
+

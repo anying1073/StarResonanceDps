@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+message QuickJumpTypeTableBase {
+  int32 type = 673;
+  string param = 1207;
+  string example = 522;
+  string refresh_num = 1376;
+}
+
+message QuickJumpTypeTableMgr {
+  map<int32, bokura.QuickJumpTypeTableBase> datas = 1;
+}
+

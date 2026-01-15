@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ExchangeData {
+  int32 item_config_id = 1;
+  int32 unlock = 2;
+  int32 cur_exchange_count = 3;
+  int64 expire_time = 4;
+  int64 last_refresh_time = 5;
+}
+

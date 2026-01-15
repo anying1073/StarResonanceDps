@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_drought_record.proto";
+import "enum_e_farmland_state.proto";
+import "stru_home_land_item_instance.proto";
+
+message StructureFarmlandInfo {
+  int64 operator_char_id = 1;
+  zproto.HomeLandItemInstance seed_instance = 2;
+  bool need_water = 3;
+  zproto.EFarmlandState farmland_state = 4;
+  int64 seeding_time = 5;
+  int64 grow_end_time = 6;
+  int64 pollinate_begin_time = 7;
+  int64 pollinate_end_time = 8;
+  int64 harvest_begin_time = 9;
+  int64 harvest_end_time = 10;
+  bool is_end = 11;
+  zproto.HomeLandItemInstance flower_instance = 12;
+  int32 next_segment_index = 13;
+  repeated zproto.DroughtRecord records = 14;
+  repeated int32 fertilizes = 15;
+  zproto.HomeLandItemInstance pollen_instance = 16;
+  map<int64, int32> pick_up_players = 17;
+  int64 new_seeding_sec = 18;
+  int64 new_grow_end_sec = 19;
+  int64 new_pollinate_begin_sec = 20;
+  int64 new_pollinate_end_sec = 21;
+  int64 new_harvest_begin_sec = 22;
+  int64 new_harvest_end_sec = 23;
+}
+

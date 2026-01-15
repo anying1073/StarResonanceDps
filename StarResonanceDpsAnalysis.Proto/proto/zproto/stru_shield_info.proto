@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message ShieldInfo {
+  int64 uuid = 1;
+  int32 shield_type = 2;
+  int64 value = 3;
+  int64 initial_value = 4;
+  int64 max_value = 5;
+}
+

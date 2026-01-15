@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ERefineState {
+  Null = 0;
+  Unlock = 1;
+  CountDown = 2;
+  Wait = 3;
+  Receive = 4;
+  Add = 5;
+}
+

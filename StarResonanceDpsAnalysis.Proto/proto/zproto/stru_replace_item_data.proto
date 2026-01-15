@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message ReplaceItemData {
+  repeated zproto.Item items = 1;
+}
+

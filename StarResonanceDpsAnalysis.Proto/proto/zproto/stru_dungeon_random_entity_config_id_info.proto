@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message DungeonRandomEntityConfigIdInfo {
+  map<int64, int32> random_entity_map = 1;
+}
+

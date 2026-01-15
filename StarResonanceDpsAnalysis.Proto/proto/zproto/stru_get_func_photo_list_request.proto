@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_platform_func_type.proto";
+
+message GetFuncPhotoListRequest {
+  zproto.EPlatformFuncType func_type = 1;
+  int64 owner_id = 2;
+}
+

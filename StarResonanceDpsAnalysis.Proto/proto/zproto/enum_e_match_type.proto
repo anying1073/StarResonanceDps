@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EMatchType {
+  EMatchTypeNull = 0;
+  EMatchTypeTeam = 1;
+  EMatchTypeActivity = 2;
+}
+

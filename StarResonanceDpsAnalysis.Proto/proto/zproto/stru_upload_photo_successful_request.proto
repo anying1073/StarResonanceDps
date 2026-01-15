@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_platform_func_type.proto";
+import "stru_upload_photo_successful_data.proto";
+
+message UploadPhotoSuccessfulRequest {
+  int64 char_id = 2;
+  uint32 picture_id = 3;
+  zproto.EPlatformFuncType func_type = 4;
+  repeated zproto.UploadPhotoSuccessfulData data = 5;
+  int64 owner_id = 6;
+}
+

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package zproto;
+
+enum PlaceHolderType {
+  PlaceHolderTypeNone = 0;
+  PlaceHolderTypeVal = 1;
+  PlaceHolderTypePlayer = 2;
+  PlaceHolderTypeItem = 3;
+  PlaceHolderTypeUnion = 4;
+  PlaceHolderTypeBuff = 5;
+  PlaceHolderTypeTimestamp = 6;
+  PlaceHolderTypeString = 7;
+  PlaceHolderTypeFishPersonalTotal = 8;
+  PlaceHolderTypeFishItem = 9;
+  PlaceHolderTypeFishRank = 10;
+  PlaceHolderTypeUnionGroup = 11;
+  PlaceHolderTypeMasterMode = 12;
+  PlaceHolderTypeScenePosition = 13;
+}
+

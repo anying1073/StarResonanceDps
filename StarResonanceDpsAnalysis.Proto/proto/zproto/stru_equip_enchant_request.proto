@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_equip_enchant_type.proto";
+
+message EquipEnchantRequest {
+  int64 equip_uuid = 1;
+  int64 enchant_item_config_id = 2;
+  zproto.EEquipEnchantType enchant_type = 3;
+}
+

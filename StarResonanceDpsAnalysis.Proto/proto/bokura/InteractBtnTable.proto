@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message InteractBtnTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string icon_path = 757;
+  string_array function_order = 1467;
+}
+
+message InteractBtnTableMgr {
+  map<int32, bokura.InteractBtnTableBase> datas = 1;
+}
+

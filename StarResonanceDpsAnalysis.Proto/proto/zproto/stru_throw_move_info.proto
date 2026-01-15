@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message ThrowMoveInfo {
+  int64 target_uuid = 1;
+  int32 skill_id = 2;
+  int32 skill_level = 3;
+  int32 stage_id = 4;
+  int32 event_id = 5;
+}
+

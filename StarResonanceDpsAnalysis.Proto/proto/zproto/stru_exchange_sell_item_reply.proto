@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_exchange_sell_item_data.proto";
+
+message ExchangeSellItemReply {
+  repeated zproto.ExchangeSellItemData items = 2;
+  map<uint32, uint32> with_draw_item = 3;
+  int32 limit = 4;
+  int32 rate = 5;
+  zproto.EErrorCode err_code = 6;
+}
+

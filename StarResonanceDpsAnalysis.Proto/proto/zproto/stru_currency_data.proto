@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message CurrencyData {
+  int32 config_id = 1;
+  int64 count = 2;
+}
+

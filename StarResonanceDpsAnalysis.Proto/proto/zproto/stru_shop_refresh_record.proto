@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_player_refresh_shop_record.proto";
+import "stru_dirty_mask.proto";
+
+message ShopRefreshRecord {
+  int64 refresh_timestamp = 3;
+  int32 refresh_count = 4;
+  map<int32, zproto.PlayerRefreshShopRecord> shop_refresh_records = 5;
+}
+

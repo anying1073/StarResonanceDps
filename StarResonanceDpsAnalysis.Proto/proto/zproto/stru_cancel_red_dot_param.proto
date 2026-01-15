@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message CancelRedDotParam {
+  int32 red_dot_id = 1;
+}
+

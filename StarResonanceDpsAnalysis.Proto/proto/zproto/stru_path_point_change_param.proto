@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+
+package zproto;
+
+import "stru_position.proto";
+
+message PathPointChangeParam {
+    optional int32 Operation = 1;
+    optional Position AddPoint = 2;
+    optional int32 RemovePointCount = 3;
+}

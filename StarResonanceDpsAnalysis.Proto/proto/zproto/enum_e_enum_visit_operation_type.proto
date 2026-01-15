@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EEnumVisitOperationType {
+  EnumVisitOperNone = 0;
+  EnumVisitOperEnter = 1;
+  EnumVisitOperLevev = 2;
+  EnumVisitOperKickOut = 3;
+}
+

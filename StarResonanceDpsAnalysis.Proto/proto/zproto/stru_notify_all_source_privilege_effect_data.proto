@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_source_privilege_effect_data.proto";
+
+message NotifyAllSourcePrivilegeEffectData {
+  map<int32, zproto.SourcePrivilegeEffectData> all_source_privilege_effects_map = 1;
+}
+

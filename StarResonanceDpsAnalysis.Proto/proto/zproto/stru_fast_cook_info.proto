@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message FastCookInfo {
+  int32 book_id = 1;
+  int32 count = 2;
+  repeated int32 main_materials = 3;
+  repeated int32 cook_methods = 4;
+}
+

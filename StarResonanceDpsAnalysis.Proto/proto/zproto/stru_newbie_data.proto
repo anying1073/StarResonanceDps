@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_newbie_act_data.proto";
+import "stru_dirty_mask.proto";
+
+message NewbieData {
+  int64 total_online_time = 1;
+  bool is_newbie = 2;
+  bool is_cancel_newbie = 3;
+  int32 season_id = 4;
+  int32 activate_times = 5;
+  bool is_not_show_tag = 6;
+  int64 begin_time = 7;
+  zproto.NewbieActData act_data = 8;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_home_land_task.proto";
+
+message HomeLandPlayerTaskInfo {
+  int64 next_task_reflush_time = 1;
+  int32 cur_left_times = 2;
+  map<int32, zproto.HomeLandTask> cur_task_map = 3;
+  int64 new_next_task_reflush_sec = 4;
+}
+

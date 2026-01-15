@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message CommunityAcceptRejectInvitationReply {
+  zproto.EErrorCode err_code = 1;
+  string check_in_content = 2;
+}
+

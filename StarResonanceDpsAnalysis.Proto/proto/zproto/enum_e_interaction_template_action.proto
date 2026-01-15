@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EInteractionTemplateAction {
+  EInteractionTemplateDefault = 0;
+  EInteractionTemplateBegin = 1;
+  EInteractionTemplateUpdate = 2;
+  EInteractionTemplateEnd = 3;
+  EInteractionTemplateAbort = 4;
+  EInteractionTemplateStageEnd = 5;
+}
+

@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message NpcTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int32 model_id = 2011;
+  string ai_config_file = 1218;
+  float walk_speed = 601;
+  float run_speed = 82;
+  bool export_voxel = 328;
+  string voxel_path = 434;
+  int32 default_camp = 1466;
+  bool is_show_hp = 36;
+  number_array entity_turn_velocity = 1703;
+  string map_icon = 39;
+  mlstring title = 695;
+  int32 dialog_flow = 107;
+  string comment = 11;
+  string npc_icon = 3266;
+  bool show_type = 1131;
+  int32 show_name = 1078;
+  mlstring_table npc_function_id = 1777;
+  int32 scene_tag_id = 1393;
+  bool is_turn_to_player = 1069;
+  int32 talk_action_id = 1687;
+  vector3 look_at_position = 506;
+  int32 look_at_npc = 1277;
+  string look_at_player = 1060;
+  int32 look_at_distance = 1940;
+  int32 look_at_angle = 910;
+  number_array loot_at_weight = 1459;
+  int32 response_range = 47;
+  int32 scare_action_id = 361;
+  int32 praise_action_id = 1770;
+  int_array be_pushed_action_id = 1647;
+  int32 layer = 1227;
+  int32 insightusable = 71;
+  string born_effect = 1140;
+  int32 born_time = 1588;
+  int_array born_client_buffs = 1364;
+  string dead_effect = 346;
+  int_array dead_client_buffs = 1638;
+  bool use_ik = 1262;
+  bool is_dissolution = 1579;
+  int32 plot_characters_id = 1282;
+  int_table status_info = 1979;
+  int_table status_transition = 109;
+  int_table interaction_template = 1682;
+  string_array interaction_event = 1343;
+  int32 default_state = 1528;
+  int_table show_status_info = 1473;
+  int_table show_status_transition = 1771;
+}
+
+message NpcTableMgr {
+  map<int32, bokura.NpcTableBase> datas = 1;
+}
+

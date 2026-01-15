@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_editor_u_i_position.proto";
+
+message SetPersonalZoneUIPositionRequest {
+  repeated zproto.EditorUIPosition ui_position = 1;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_vec3.proto";
+
+message SceneInteractionInfo {
+  int32 obj_id = 1;
+  int32 pos_id = 2;
+  zproto.Vec3 pos = 3;
+}
+

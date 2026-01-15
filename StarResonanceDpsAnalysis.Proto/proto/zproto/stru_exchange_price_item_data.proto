@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message ExchangePriceItemData {
+  int32 price = 1;
+  int32 num = 2;
+  zproto.Item item_info = 3;
+  string guid = 4;
+  int64 notice_time = 5;
+}
+

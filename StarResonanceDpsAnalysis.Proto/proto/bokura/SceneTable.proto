@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SceneTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string comment = 11;
+  int32 scene_type = 208;
+  int32 scene_sub_type = 1706;
+  int32 parent_id = 1361;
+  bool is_share_parent_scene_data = 1616;
+  int32 scene_resource_id = 1781;
+  string loading_png = 536;
+  string_array scene_ui = 708;
+  vector2 map_size = 250;
+  string_array map_texs = 1485;
+  int32 map_row_count = 1058;
+  vector2_array map_tex_size = 82;
+  bool big_world = 1871;
+  string_array audio_bank = 1796;
+  int32 scene_enter_type = 132;
+  vector3_array born_pos = 1476;
+  int32 born_id = 824;
+  bool can_revive = 224;
+  int32 revive_type = 496;
+  int32 revive_id = 869;
+  int_array revive_table_id = 1420;
+  int32 cam_config = 102;
+  string bgm = 1107;
+  string loading_bgm = 360;
+  string battle_bgm = 18;
+  string environment_sound = 1322;
+  number_array cam_position = 1631;
+  bool lua_script = 1809;
+  float fall_dis = 1769;
+  int32 weather = 276;
+  int32 day_and_night = 1682;
+  int32 cutscene_id = 1653;
+  int32 main_ui = 21;
+  bool can_change_layer = 1110;
+  number_table max_layer = 1414;
+  int_array preload_cutscenes = 1546;
+  int_array preload_ep_flows = 135;
+  int32 ep_flow_id = 725;
+  int32 show_mini_map = 524;
+  int32 mini_map_ratio = 1608;
+  string sub_scene = 568;
+}
+
+message SceneTableMgr {
+  map<int32, bokura.SceneTableBase> datas = 1;
+}
+

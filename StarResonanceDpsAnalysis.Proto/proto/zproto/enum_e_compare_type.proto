@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECompareType {
+  ENone = 0;
+  EEqual = 1;
+  EUnequal = 2;
+  EGreater = 3;
+  EGreaterAndEqual = 4;
+  ELess = 5;
+  ELessAndEqual = 6;
+}
+

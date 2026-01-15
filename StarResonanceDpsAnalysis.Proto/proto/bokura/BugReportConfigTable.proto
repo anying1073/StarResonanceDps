@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package bokura;
+
+message BugReportConfigTableBase {
+  int32 id = 1463;
+  int32 data_type = 682;
+  int32 data_index = 1373;
+  string data_value = 569;
+  string data_value2 = 1651;
+  string desc = 1953;
+}
+
+message BugReportConfigTableMgr {
+  map<int32, bokura.BugReportConfigTableBase> datas = 1;
+}
+

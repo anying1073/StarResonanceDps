@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+message ElementalRestraintTableBase {
+  int32 id = 1463;
+  int32 property_id = 62;
+  int32 defense_general = 553;
+  int32 defense_fire = 834;
+  int32 defense_water = 635;
+  int32 defense_electricity = 597;
+  int32 defense_wood = 1317;
+  int32 defense_wind = 1926;
+  int32 defense_rock = 512;
+  int32 defense_light = 210;
+  int32 defense_dark = 937;
+}
+
+message ElementalRestraintTableMgr {
+  map<int32, bokura.ElementalRestraintTableBase> datas = 1;
+}
+

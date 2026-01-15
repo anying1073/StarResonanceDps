@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message CutsceneTableBase {
+  int32 id = 1463;
+  string name_design = 1649;
+  string res_path = 548;
+  int32 content_hiding = 1154;
+  bool is_cutscene_editor = 247;
+  int32 can_skip = 315;
+  bool validate_skip = 1204;
+  int_array black_mask = 911;
+  int_array allow_input = 256;
+  bool is_save_play_state = 1541;
+  int32 check_play_key_index = 565;
+  int_array end_sync_actor_type = 1242;
+  int_array end_sync_actor_id = 2023;
+  vector3_array end_sync_actor_pos = 1480;
+  number_array end_sync_actor_rotation = 1778;
+  int32 check_play_type = 1918;
+  string audio_state = 751;
+  int32 binding_scene = 1231;
+  int32 player_sync_type = 20;
+  number_array player_sync_pos = 865;
+  float player_sync_rotation = 572;
+}
+
+message CutsceneTableMgr {
+  map<int32, bokura.CutsceneTableBase> datas = 1;
+}
+

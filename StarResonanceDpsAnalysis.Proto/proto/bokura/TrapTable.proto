@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message TrapTableBase {
+  int32 id = 1463;
+  string name = 439;
+  int32 skill_id = 1087;
+  int_array buff_ids = 1916;
+  float trigger_range = 360;
+  int32 attribute_id = 1825;
+  int32 model_id = 555;
+  int_array life_info = 412;
+  int_array tags = 232;
+}
+
+message TrapTableMgr {
+  map<int32, bokura.TrapTableBase> datas = 1;
+}
+

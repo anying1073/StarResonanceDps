@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message MonthlyCardBuyList {
+  int64 begin_time = 1;
+  int64 end_time = 2;
+  int64 last_award_day_time = 3;
+}
+

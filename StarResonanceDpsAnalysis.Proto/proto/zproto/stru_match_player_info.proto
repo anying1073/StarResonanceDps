@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_match_ready_status.proto";
+import "enum_e_talent_job_type.proto";
+import "stru_match_player_show_info.proto";
+
+message MatchPlayerInfo {
+  int64 char_id = 1;
+  zproto.EMatchReadyStatus ready_status = 2;
+  int32 profession_id = 3;
+  zproto.ETalentJobType talent_id = 4;
+  bool is_assist = 5;
+  bool is_bot = 6;
+  zproto.MatchPlayerShowInfo match_show_info = 7;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EShowItemType {
+  EShowItemTypeNull = 0;
+  EShowItemTypeCommon = 1;
+  EShowItemTypeMonthlyCard = 2;
+  EShowItemTypeTips = 4;
+}
+

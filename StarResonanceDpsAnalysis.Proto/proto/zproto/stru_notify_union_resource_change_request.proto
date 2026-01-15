@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_resource.proto";
+
+message NotifyUnionResourceChangeRequest {
+  map<int32, zproto.UnionResource> change_resource_lib = 2;
+  int64 donor_mem_id = 3;
+}
+

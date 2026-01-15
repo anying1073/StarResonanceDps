@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESettingType {
+  SettingTypeNull = 0;
+  MainVolume = 1;
+  BgMusic = 2;
+  SystemSound = 3;
+  NpcTalkSound = 4;
+  UiSound = 5;
+  QuitLogin = 6;
+  ShowInTeamHall = 7;
+  SelfAutoMatch = 8;
+  TeamAutoMatch = 9;
+  ToBeLeader = 10;
+  AcceptInviteInTeam = 11;
+  ChatComprehensive = 101;
+  ChatWorld = 102;
+  ChatNow = 103;
+  ChatTeam = 104;
+  ChatUnion = 105;
+  ChatSystem = 106;
+  ChatBullet = 107;
+  ChatFilter = 108;
+  Appearance = 201;
+}
+

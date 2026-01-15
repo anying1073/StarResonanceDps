@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EEnumStructureSubType {
+  EnumStructureSubTypeNone = 0;
+  EnumStructureSubTypeFloorMat = 101;
+  EnumStructureSubTypeWallMat = 102;
+}
+

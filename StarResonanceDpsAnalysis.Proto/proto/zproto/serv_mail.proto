@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_delete_mail_reply.proto";
+import "stru_delete_mail_request.proto";
+import "stru_get_mail_uuid_list_reply.proto";
+import "stru_get_mail_uuid_list_request.proto";
+import "stru_read_mail_reply.proto";
+import "stru_read_mail_request.proto";
+
+message Mail {
+
+  message ReadMail_Ret {
+    zproto.ReadMailReply ret = 1;
+  }
+
+  message ReadMail {
+    zproto.ReadMailRequest v_request = 1;
+  }
+
+  message DeleteMail_Ret {
+    zproto.DeleteMailReply ret = 1;
+  }
+
+  message DeleteMail {
+    zproto.DeleteMailRequest v_request = 1;
+  }
+
+  message GetMailUuidList_Ret {
+    zproto.GetMailUuidListReply ret = 1;
+  }
+
+  message GetMailUuidList {
+    zproto.GetMailUuidListRequest v_request = 1;
+  }
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum UnionEnterScene {
+  UnionEnterSceneNormal = 0;
+  UnionEnterSceneDance = 1;
+  UnionEnterSceneHunt = 2;
+}
+

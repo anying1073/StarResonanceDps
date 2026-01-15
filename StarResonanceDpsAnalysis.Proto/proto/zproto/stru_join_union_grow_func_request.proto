@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message JoinUnionGrowFuncRequest {
+  int64 union_id = 1;
+  int32 grow_func_pos = 2;
+}
+

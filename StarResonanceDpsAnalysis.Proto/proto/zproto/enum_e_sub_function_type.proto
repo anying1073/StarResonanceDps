@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESubFunctionType {
+  ESubFunctionTypeNone = 0;
+  ESubFunctionTypeWorldChat = 102102;
+  ESubFunctionTypeSceneChat = 102103;
+  ESubFunctionTypeTeamChat = 102104;
+  ESubFunctionTypeUnionChat = 102105;
+}
+

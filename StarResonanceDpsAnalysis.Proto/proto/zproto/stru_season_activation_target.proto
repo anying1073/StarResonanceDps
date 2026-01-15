@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message SeasonActivationTarget {
+  int32 id = 1;
+  int32 target_type = 2;
+  int32 target_uuid = 3;
+  int32 reward_rate = 4;
+  int32 progress = 5;
+  int32 completed_times = 6;
+}
+

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EItemPackageType {
+  PackageNode = 0;
+  PackageItem = 1;
+  PackageEquip = 2;
+  PackageSign = 5;
+  PackageFashion = 7;
+  PackageWeaponSkin = 8;
+  PackagePersonalZone = 9;
+  PackageUnionResource = 10;
+  PackageFurniture = 11;
+  PackageRide = 12;
+  PackageHomeLandCurrency = 13;
+  PackageCurrency = 100;
+  PackageLifeCareer = 102;
+}
+

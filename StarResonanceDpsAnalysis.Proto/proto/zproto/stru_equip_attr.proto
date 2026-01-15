@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_equip_attr_set.proto";
+import "stru_dirty_mask.proto";
+
+message EquipAttr {
+  map<uint32, uint32> base_attrs = 4;
+  int32 perfection_value = 7;
+  int32 recast_count = 8;
+  int32 total_recast_count = 9;
+  map<int32, int32> basic_attr = 10;
+  map<int32, int32> advance_attr = 11;
+  map<int32, int32> recast_attr = 12;
+  int32 perfection_level = 13;
+  map<int32, int32> rare_quality_attr = 14;
+  int32 max_perfection_value = 15;
+  zproto.EquipAttrSet equip_attr_set = 17;
+  int32 break_through_time = 18;
+}
+

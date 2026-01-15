@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum VisualLayerType {
+  VisualLayerTypePublic = 0;
+  VisualLayerTypeMultiPlayer = 1;
+  VisualLayerTypePrivate = 2;
+  VisualLayerTypeMultiPlayerUuid = 3;
+  VisualLayerTypeCommunityOutdoor = 4;
+  VisualLayerTypeCommunityIndoor = 5;
+}
+

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MapStickerTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  string icon = 1153;
+  int32 number = 1714;
+  int32 sort_id = 1586;
+  mlstring des = 266;
+  int_array task_id = 71;
+  int32 award_id = 1197;
+}
+
+message MapStickerTableMgr {
+  map<int32, bokura.MapStickerTableBase> datas = 1;
+}
+

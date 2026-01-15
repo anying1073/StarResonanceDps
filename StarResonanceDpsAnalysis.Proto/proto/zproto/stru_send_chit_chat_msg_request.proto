@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_chat_msg_info.proto";
+import "enum_chit_chat_channel_type.proto";
+
+message SendChitChatMsgRequest {
+  zproto.ChitChatChannelType channel_type = 2;
+  uint32 same_rate = 3;
+  zproto.ChatMsgInfo msg_info = 4;
+  bool send_to_me = 5;
+}
+

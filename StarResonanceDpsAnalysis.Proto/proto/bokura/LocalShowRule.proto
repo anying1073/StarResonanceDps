@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+message LocalShowRuleBase {
+  int32 id = 1463;
+  string lang_area = 383;
+  string ymd = 1317;
+  string ymd_to_ymd = 809;
+  string md = 381;
+  string md_to_md = 1410;
+  string hms = 602;
+  string hm = 310;
+}
+
+message LocalShowRuleMgr {
+  map<int32, bokura.LocalShowRuleBase> datas = 1;
+}
+

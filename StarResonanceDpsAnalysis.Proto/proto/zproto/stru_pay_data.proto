@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_first_pay_info.proto";
+import "stru_dirty_mask.proto";
+
+message PayData {
+  map<int32, zproto.FirstPayInfo> pay_data = 1;
+}
+

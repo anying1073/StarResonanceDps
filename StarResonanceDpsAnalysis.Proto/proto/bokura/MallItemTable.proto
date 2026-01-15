@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MallItemTableBase {
+  int32 id = 1463;
+  int32 item_id = 504;
+  int32 quantity = 1641;
+  string item_name = 1477;
+  int32 sort = 1643;
+  int32 function_id = 149;
+  int32 limit_sex = 835;
+  int32 limit_level = 718;
+  int32 limit_time = 348;
+  int_table show_limit_type = 433;
+  int_array original_price = 1949;
+  map<int32, int32> cost = 1056;
+  int_table refresh_type = 213;
+  int32 bind = 1803;
+  int_table deliver_way = 439;
+  string_array label = 432;
+  string_array show_count_down = 1192;
+  int_table weight_pool_parameter = 1484;
+  int_table weight = 140;
+  int32 check_display = 341;
+}
+
+message MallItemTableMgr {
+  map<int32, bokura.MallItemTableBase> datas = 1;
+}
+

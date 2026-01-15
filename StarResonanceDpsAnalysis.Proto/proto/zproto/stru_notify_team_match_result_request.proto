@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_team_info.proto";
+
+message NotifyTeamMatchResultRequest {
+  bool success = 1;
+  zproto.TeamInfo team_info = 2;
+}
+

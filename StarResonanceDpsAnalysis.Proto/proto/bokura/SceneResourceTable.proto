@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message SceneResourceTableBase {
+  int32 id = 1463;
+  int32 scene_load_type = 1292;
+  string scene_file = 1293;
+}
+
+message SceneResourceTableMgr {
+  map<int32, bokura.SceneResourceTableBase> datas = 1;
+}
+

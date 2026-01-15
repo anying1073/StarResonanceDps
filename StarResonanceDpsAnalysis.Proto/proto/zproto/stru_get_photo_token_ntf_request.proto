@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "enum_e_platform_func_type.proto";
+import "stru_image_cos_key.proto";
+import "stru_tmp_token_result.proto";
+
+message GetPhotoTokenNtfRequest {
+  zproto.EErrorCode err_code = 2;
+  zproto.TmpTokenResult result = 3;
+  repeated zproto.ImageCosKey cos_keys = 4;
+  zproto.EPlatformFuncType func_type = 5;
+}
+

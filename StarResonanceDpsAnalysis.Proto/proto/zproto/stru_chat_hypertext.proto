@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_place_holder.proto";
+
+message ChatHypertext {
+  uint32 config_id = 1;
+  repeated zproto.PlaceHolder hypertext_contents = 2;
+}
+

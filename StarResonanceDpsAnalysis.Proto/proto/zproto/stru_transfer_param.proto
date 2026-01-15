@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_user_transfer_type.proto";
+import "stru_position_param.proto";
+
+message TransferParam {
+  int32 scene_id = 1;
+  zproto.EUserTransferType transfer_type = 2;
+  zproto.PositionParam position_param = 3;
+  int64 change_flag = 4;
+  bool is_server_switch = 5;
+  int32 visual_layer_config_id = 6;
+  string scene_guid = 7;
+  string connect_guid = 8;
+  int64 sub_scene_uuid = 9;
+  bool is_revive = 10;
+}
+

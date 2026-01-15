@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EInteractionConditionType {
+  InteractionConditionTypeNull = 0;
+  InteractionConditionTypeItem = 1;
+  InteractionConditionTypeEquip = 2;
+  InteractionConditionTypeQuest = 3;
+}
+

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message UnlockInfo {
+  uint64 object_id = 1;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_backflow_online_data.proto";
+import "stru_dirty_mask.proto";
+
+message NewbieBackflowPublicData {
+  bool level_award_received = 1;
+  repeated int32 elective_preference = 2;
+  repeated zproto.BackflowOnlineData online_data = 3;
+  int64 border_logout_time_stamp = 4;
+}
+

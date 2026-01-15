@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_boss_progress.proto";
+import "stru_dirty_mask.proto";
+
+message RaidRecord {
+  map<int32, zproto.BossProgress> boss_progress = 2;
+}
+

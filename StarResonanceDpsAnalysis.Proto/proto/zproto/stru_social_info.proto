@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_user_summary_data.proto";
+
+message SocialInfo {
+  string remark = 1;
+  bool remind = 2;
+  bool top = 3;
+  int32 group_id = 4;
+  zproto.UserSummaryData social_data = 5;
+  int64 last_refresh_time = 6;
+}
+

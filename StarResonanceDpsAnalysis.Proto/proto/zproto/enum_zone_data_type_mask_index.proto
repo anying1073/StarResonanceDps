@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ZoneDataTypeMaskIndex {
+  ClientNotifyServer = 0;
+  AreaWall = 1;
+  Enterable = 2;
+  Exitable = 3;
+  ClientTrigger = 4;
+  CameraBlock = 5;
+  OnlyServerTrigger = 6;
+  DontShowAreaWallEffect = 7;
+  Empty3 = 8;
+  Empty4 = 9;
+  Nav = 10;
+}
+

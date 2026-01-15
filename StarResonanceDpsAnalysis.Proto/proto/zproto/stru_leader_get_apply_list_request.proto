@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message LeaderGetApplyListRequest {
+  bool is_refresh = 2;
+}
+

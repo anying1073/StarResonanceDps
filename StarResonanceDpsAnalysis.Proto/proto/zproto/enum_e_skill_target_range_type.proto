@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESkillTargetRangeType {
+  SkillPassive = 0;
+  SkillTarget = 1;
+  SkillDir = 2;
+  SkillPos = 3;
+  SkillSelf = 4;
+}
+

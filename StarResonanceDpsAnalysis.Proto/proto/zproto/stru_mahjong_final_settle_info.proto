@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message MahjongFinalSettleInfo {
+  int64 player_id = 1;
+  int32 coin = 2;
+  int32 scoring_point = 3;
+  int32 rank_score = 4;
+  int32 coin_change = 5;
+}
+

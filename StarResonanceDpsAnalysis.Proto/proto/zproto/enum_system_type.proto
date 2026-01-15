@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum SystemType {
+  SystemType_Null = 0;
+  SystemType_Android = 1;
+  SystemType_Ios = 2;
+  SystemType_Web = 3;
+  SystemType_Linux = 4;
+  SystemType_Windows = 5;
+  SystemType_HarmonyOS = 10001;
+}
+

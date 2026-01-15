@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+message EffectTableBase {
+  int32 id = 1463;
+  string comment = 11;
+  string path = 172;
+  float play_time = 1323;
+}
+
+message EffectTableMgr {
+  map<int32, bokura.EffectTableBase> datas = 1;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message FriendlinessExpLevel {
+  int64 friend_id = 1;
+  int32 level = 2;
+  int32 cur_exp = 3;
+  int32 today_add_exps = 4;
+}
+

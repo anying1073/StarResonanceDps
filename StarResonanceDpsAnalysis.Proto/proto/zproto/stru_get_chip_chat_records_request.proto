@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_chit_chat_channel_type.proto";
+
+message GetChipChatRecordsRequest {
+  zproto.ChitChatChannelType channel_type = 2;
+  int64 desc_msg_id = 3;
+  uint32 record_num = 4;
+  int64 target_id = 5;
+}
+

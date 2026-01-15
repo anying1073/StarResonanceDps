@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_recommend_play_data.proto";
+
+message GetRecommendPlayDataReply {
+  map<int32, zproto.RecommendPlayData> recommend_play_data = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_exchange_pre_item_result.proto";
+import "stru_item.proto";
+
+message ExchangeRecordItemData {
+  int32 config_id = 1;
+  int32 num = 2;
+  int32 price = 3;
+  int64 time = 4;
+  zproto.EExchangePreItemResult pre_result = 5;
+  zproto.Item item_info = 6;
+}
+

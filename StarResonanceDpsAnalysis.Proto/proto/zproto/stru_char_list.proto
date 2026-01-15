@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message CharList {
+  repeated int64 member_list = 1;
+}
+

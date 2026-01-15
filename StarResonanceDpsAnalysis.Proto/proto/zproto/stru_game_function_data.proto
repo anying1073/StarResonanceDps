@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_function_time_data.proto";
+import "stru_dirty_mask.proto";
+
+message GameFunctionData {
+  uint32 id = 1;
+  bool state = 2;
+  uint32 product_id = 3;
+  map<uint32, zproto.FunctionTimeData> function_times = 4;
+}
+

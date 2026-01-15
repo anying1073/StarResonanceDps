@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message MonsterAwardParam {
+  int32 monster_id = 1;
+  int32 stage_id = 2;
+}
+

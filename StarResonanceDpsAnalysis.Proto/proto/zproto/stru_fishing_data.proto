@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+message FishingData {
+  int32 rod_id = 1;
+  int32 area_id = 2;
+  int32 fish_id = 3;
+  int32 stage = 4;
+  bool is_get_fish = 5;
+  int32 size = 6;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETalentType {
+  TalentType_None = 0;
+  TalentType_Active = 1;
+  TalentType_SmallSkill = 2;
+  TalentType_Passive = 3;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EToyType {
+  ECommon = 0;
+  EDrawingBoard = 1;
+  ESwimmingPool = 2;
+}
+

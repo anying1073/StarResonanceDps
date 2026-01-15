@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_position.proto";
+import "stru_dirty_mask.proto";
+
+message LastSceneData {
+  uint32 scene_id = 1;
+  zproto.Position pos = 2;
+  int32 scene_area_id = 3;
+}
+

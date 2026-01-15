@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_device_info.proto";
+import "stru_face_data_db.proto";
+
+message CreateCharRequest {
+  string token = 4;
+  string name = 5;
+  int32 gender = 6;
+  int32 v_body_size = 7;
+  zproto.FaceDataDb face_data = 9;
+  zproto.DeviceInfo device_info = 11;
+  int32 init_profession_id = 13;
+  int32 area_id = 14;
+}
+

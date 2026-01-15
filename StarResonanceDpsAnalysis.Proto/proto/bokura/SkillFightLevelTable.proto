@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SkillFightLevelTableBase {
+  int32 id = 1463;
+  int32 skill_id = 1087;
+  int32 level = 1120;
+  int32 skill_effect_id = 897;
+  string name = 439;
+  int_table skill_cost = 619;
+  int_table skill_res_check = 487;
+  float pve_cool_time = 2001;
+  string_table float_parameter = 1246;
+  int_array show_parameter = 661;
+}
+
+message SkillFightLevelTableMgr {
+  map<int32, bokura.SkillFightLevelTableBase> datas = 1;
+}
+

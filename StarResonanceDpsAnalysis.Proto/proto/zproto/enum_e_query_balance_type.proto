@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EQueryBalanceType {
+  EQueryBalanceTypeNull = 0;
+  EQueryBalanceTypeLeft = 1;
+  EQueryBalanceTypeMonthCard = 2;
+}
+

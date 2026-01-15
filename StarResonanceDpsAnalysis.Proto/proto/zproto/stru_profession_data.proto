@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ProfessionData {
+  int32 profession_id = 1;
+  int32 weapon_skin = 2;
+}
+

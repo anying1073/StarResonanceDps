@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SeasonRankTableBase {
+  int32 id = 1463;
+  int32 rank_id = 1469;
+  string des = 266;
+  mlstring name = 439;
+  int32 star_level = 1264;
+  string icon_big = 1688;
+  string icon_min = 1611;
+  int32 season_id = 1669;
+  int_table conditions = 1570;
+  int_table echo_points = 1201;
+  int32 reward_id = 1752;
+  int_table core_reward_id = 51;
+  int_table final_reward_id = 539;
+  int32 promotion_type = 106;
+  int32 back_rank_id = 1617;
+}
+
+message SeasonRankTableMgr {
+  map<int32, bokura.SeasonRankTableBase> datas = 1;
+}
+

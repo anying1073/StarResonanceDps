@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EAwardType {
+  EAwardTypeNull = 0;
+  EAwardTypeBdMod = 1;
+  EAwardTypeSelect = 2;
+}
+

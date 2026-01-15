@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_temp_photo_cache_info.proto";
+
+message tempPhotoCache {
+  map<string, zproto.tempPhotoCacheInfo> temp_photo_cache_dict = 1;
+}
+

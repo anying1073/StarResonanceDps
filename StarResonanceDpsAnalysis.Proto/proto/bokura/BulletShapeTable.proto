@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BulletShapeTableBase {
+  int64 id = 1463;
+  int32 shape_type = 881;
+  number_array shape_data = 1901;
+  number_table scale_curve = 627;
+  number_table scale_curve_sample = 638;
+}
+
+message BulletShapeTableMgr {
+  map<int64, bokura.BulletShapeTableBase> datas = 1;
+}
+

@@ -1,0 +1,355 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "enum_e_picture_type.proto";
+import "stru_award_data.proto";
+import "stru_card_info.proto";
+import "stru_char_serialize.proto";
+import "stru_client_custom_event_params.proto";
+import "stru_debug_message_tip_info.proto";
+import "stru_driver_apply_ride_param.proto";
+import "stru_dungeon_ready_info.proto";
+import "stru_dungeon_sync_data.proto";
+import "stru_enter_match_result_ntf_request.proto";
+import "stru_entry_random_data_param.proto";
+import "stru_invite_apply_ride_param.proto";
+import "stru_notice_info.proto";
+import "stru_notice_multi_language_info.proto";
+import "stru_notify_all_source_privilege_effect_data.proto";
+import "stru_notify_all_valid_battle_pass_data.proto";
+import "stru_notify_award_all_item_info.proto";
+import "stru_notify_buy_shop_result_param.proto";
+import "stru_notify_function_params.proto";
+import "stru_notify_life_profession_unlock_recipe_info.proto";
+import "stru_notify_life_profession_work_history_change_info.proto";
+import "stru_notify_pay_param.proto";
+import "stru_notify_quest_accept_param.proto";
+import "stru_notify_quest_change_step_param.proto";
+import "stru_notify_quest_complete_param.proto";
+import "stru_notify_quest_give_up_param.proto";
+import "stru_notify_ride_is_agree_param.proto";
+import "stru_notify_shop_item_can_buy_param.proto";
+import "stru_parkour_record.proto";
+import "stru_payment_result.proto";
+import "stru_show_items_info.proto";
+import "stru_sign_reward_notify_request.proto";
+import "stru_start_playing_dungeon_param.proto";
+import "stru_switch_info.proto";
+import "stru_sync_invite_request.proto";
+import "stru_tips_info.proto";
+import "stru_unlock_cook_book_info.proto";
+import "stru_world_boss_rank_info_param.proto";
+
+import "stru_skill_c_d_info.proto";
+
+import "stru_attr_collection.proto";
+import "stru_temp_attr_collection.proto";
+import "stru_event_data_list.proto";
+import "stru_bullet_event.proto";
+import "stru_actor_body_part_infos.proto";
+import "stru_seq_passive_skill_info.proto";
+import "stru_seq_passive_skill_end_info.proto";
+import "stru_buff_info_sync.proto";
+import "stru_skill_effect.proto";
+import "stru_buff_effect_sync.proto";
+import "stru_fake_bullet_info.proto";
+import "stru_magnetic_ride_queue_change_info.proto";
+import "stru_fight_res_c_d.proto";
+import "stru_buffer_stream.proto";
+import "stru_disappear_entity.proto";
+import "stru_entity.proto";
+
+
+message WorldNtf {
+
+  message AoiSyncDelta {
+      optional int64 Uuid = 1;
+      optional AttrCollection Attrs = 2;
+      optional TempAttrCollection TempAttrs = 3;
+      optional EventDataList EventDataList = 4;
+      optional BulletEvent BulletEvent = 5;
+      optional ActorBodyPartInfos BodyPartInfos = 6;
+      optional SkillEffect SkillEffects = 7;
+      optional SeqPassiveSkillInfo PassiveSkillInfos = 8;
+      optional SeqPassiveSkillEndInfo PassiveSkillEndInfos = 9;
+      optional BuffInfoSync BuffInfos = 10;
+      optional BuffEffectSync BuffEffect = 11;
+      repeated FakeBulletInfo FakeBullets = 12;
+      repeated MagneticRideQueueChangeInfo MagneticRideQueueChangeInfoList = 13;
+  }
+  
+  message AoiSyncToMeDelta {
+      optional AoiSyncDelta BaseDelta = 1;
+      repeated int64 SyncHateIds = 2;
+      repeated SkillCDInfo SyncSkillCDs = 3;
+      repeated FightResCD FightResCDs = 4;
+      optional int64 Uuid = 5;
+  }
+
+  message SyncPioneerInfo {
+    uint32 target_id = 1;
+    uint32 target_num = 2;
+  }
+
+  message SyncSwitchChange {
+    uint32 id = 1;
+    uint32 on_off = 2;
+  }
+
+  message SyncSwitchInfo {
+    zproto.SwitchInfo info = 1;
+  }
+
+  message SyncContainerData {
+    zproto.CharSerialize v_data = 1;
+  }
+
+  message SyncContainerDirtyData {
+    zproto.BufferStream VData = 1;
+  }
+
+  message SyncNearDeltaInfo {
+    repeated AoiSyncDelta DeltaInfos = 1;
+  }
+
+  message SyncNearEntities {
+    repeated zproto.Entity appear    = 1;  // nearby entities that appeared
+    repeated zproto.DisappearEntity disappear = 2;  // nearby entities that disappeared
+  }
+
+  message SyncToMeDeltaInfo {
+    AoiSyncToMeDelta DeltaInfo = 1;
+  }
+
+  message SyncDungeonData {
+    zproto.DungeonSyncData v_data = 1;
+  }
+
+  message AwardNotify {
+    zproto.AwardData award = 1;
+  }
+
+  message CardInfoAck {
+    int64 char_id = 1;
+    zproto.CardInfo info = 2;
+  }
+
+  message SyncSeason {
+    int32 v_season = 1;
+  }
+
+  message UserAction {
+    int64 v_char_id = 1;
+    int32 v_action_id = 2;
+  }
+
+  message NotifyDisplayPlayHelp {
+    int32 v_play_help_id = 1;
+  }
+
+  message NotifyApplicationInteraction {
+    int64 v_orig_id = 1;
+    int32 v_action_id = 2;
+  }
+
+  message NotifyIsAgree {
+    int64 v_invitee_id = 1;
+    int32 v_action_id = 2;
+    bool v_is_agree = 3;
+  }
+
+  message NotifyCancelAction {
+    int64 v_cancel_char_id = 1;
+  }
+
+  message NotifyUploadPictureResult {
+    bool success = 1;
+    zproto.EPictureType photo_type = 2;
+    uint32 photo_id = 3;
+    string photo_name = 4;
+  }
+
+  message SyncInvite {
+    zproto.SyncInviteRequest v_request = 1;
+  }
+
+  message NotifyRedDotChange {
+    int32 v_red_dot_id = 1;
+    int32 v_value = 2;
+  }
+
+  message ChangeNameResultNtf {
+    int32 v_code = 1;
+  }
+
+  message NotifyReviveUser {
+    int64 v_actor_uuid = 1;
+  }
+
+  message NotifyParkourRankInfo {
+    int32 v_rank_id = 1;
+  }
+
+  message NotifyParkourRecordInfo {
+    int32 result = 1;
+    zproto.ParkourRecord v_record = 2;
+  }
+
+  message NotifyShowTips {
+    zproto.TipsInfo v_tips = 1;
+  }
+
+  message NotifyNoticeInfo {
+    zproto.NoticeInfo v_info = 1;
+  }
+
+  message NotifyClientKickOff {
+    zproto.EErrorCode err_code = 1;
+  }
+
+  message PaymentResponse {
+    zproto.PaymentResult v_request = 1;
+  }
+
+  message NotifyUnlockCookBook {
+    zproto.UnlockCookBookInfo v_info = 1;
+  }
+
+  message NotifyCustomEvent {
+    zproto.ClientCustomEventParams event_params = 1;
+  }
+
+  message NotifyStartPlayingDungeon {
+    zproto.StartPlayingDungeonParam v_param = 1;
+  }
+
+  message ChangeShowIdResultNtf {
+    zproto.EErrorCode err_code = 1;
+  }
+
+  message NotifyShowItems {
+    zproto.ShowItemsInfo v_info = 1;
+  }
+
+  message NotifySeasonActivationTargetInfo {
+    int32 v_season_id = 1;
+    bool is_refresh = 2;
+  }
+
+  message NotifyTextCheckResult {
+    zproto.EErrorCode err_code = 1;
+  }
+
+  message NotifyDebugMessageTip {
+    zproto.DebugMessageTipInfo v_info = 1;
+  }
+
+  message NotifyUserCloseFunction {
+    zproto.NotifyFunctionParams v_param = 1;
+  }
+
+  message NotifyServerCloseFunction {
+    zproto.NotifyFunctionParams v_param = 1;
+  }
+
+  message NotifyAwardAllItems {
+    zproto.NotifyAwardAllItemInfo v_all_item = 1;
+  }
+
+  message NotifyAllMemberReady {
+    bool v_open_or_close = 1;
+  }
+
+  message NotifyCaptainReady {
+    string v_member_name = 1;
+    int64 v_char_id = 2;
+    zproto.DungeonReadyInfo v_ready_info = 3;
+  }
+
+  message NotifyUserAllSourcePrivilegeEffectData {
+    zproto.NotifyAllSourcePrivilegeEffectData v_all_privilege_effects = 1;
+  }
+
+  message NotifyQuestAccept {
+    zproto.NotifyQuestAcceptParam v_param = 1;
+  }
+
+  message NotifyQuestChangeStep {
+    zproto.NotifyQuestChangeStepParam v_param = 1;
+  }
+
+  message NotifyQuestGiveUp {
+    zproto.NotifyQuestGiveUpParam v_param = 1;
+  }
+
+  message NotifyQuestComplete {
+    zproto.NotifyQuestCompleteParam v_param = 1;
+  }
+
+  message NotifyUserAllValidBattlePassData {
+    zproto.NotifyAllValidBattlePassData valid_battle_pass_data = 1;
+  }
+
+  message NotifyNoticeMultiLanguageInfo {
+    zproto.NoticeMultiLanguageInfo v_info = 1;
+  }
+
+  message QteBegin {
+    uint32 qte_id = 1;
+  }
+
+  message QuestAbort {
+    int32 quest_id = 1;
+  }
+
+  message NotifyBuyShopResult {
+    zproto.NotifyBuyShopResultParam param = 1;
+  }
+
+  message NotifyShopItemCanBuy {
+    zproto.NotifyShopItemCanBuyParam param = 1;
+  }
+
+  message WorldBossRankInfoNtf {
+    zproto.WorldBossRankInfoParam rank_info = 1;
+  }
+
+  message EnterMatchResultNtf {
+    zproto.EnterMatchResultNtfRequest v_request = 1;
+  }
+
+  message NotifyDriverApplyRide {
+    zproto.DriverApplyRideParam param = 1;
+  }
+
+  message NotifyInviteApplyRide {
+    zproto.InviteApplyRideParam param = 1;
+  }
+
+  message NotifyRideIsAgree {
+    zproto.NotifyRideIsAgreeParam param = 1;
+  }
+
+  message NotifyPayInfo {
+    zproto.NotifyPayParam param = 1;
+  }
+
+  message NotifyLifeProfessionWorkHistoryChange {
+    zproto.NotifyLifeProfessionWorkHistoryChangeInfo info = 1;
+  }
+
+  message NotifyLifeProfessionUnlockRecipe {
+    zproto.NotifyLifeProfessionUnlockRecipeInfo info = 1;
+  }
+
+  message SignRewardNotify {
+    zproto.SignRewardNotifyRequest v_request = 1;
+  }
+
+  message NotifyEntryRandomData {
+    zproto.EntryRandomDataParam param = 1;
+  }
+}
+

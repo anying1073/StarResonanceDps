@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_dungeon_enter_select_type.proto";
+
+message DungeonSingleAiModeContext {
+  int32 scene_id = 1;
+  zproto.EDungeonEnterSelectType select_type = 2;
+  map<int64, uint32> ai_config_id_map = 3;
+}
+

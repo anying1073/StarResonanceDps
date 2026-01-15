@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EDamageSource {
+  EDamageSourceSkill = 0;
+  EDamageSourceBullet = 1;
+  EDamageSourceBuff = 2;
+  EDamageSourceFall = 3;
+  EDamageSourceFakeBullet = 4;
+  EDamageSourceOther = 100;
+}
+

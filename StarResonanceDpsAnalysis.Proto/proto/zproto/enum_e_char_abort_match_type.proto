@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECharAbortMatchType {
+  ECharAbortMatch_Void = 0;
+  ECharAbortMatch_CreateTeam = 1;
+  ECharAbortMatch_JoinTeam = 2;
+  ECharAbortMatch_Error = 3;
+}
+

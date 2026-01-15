@@ -1,0 +1,333 @@
+syntax = "proto3";
+
+package chat.pb;
+
+enum CHAT_CLIENT_CMD {
+  CHAT_CLIENT_CMD_INVALID = 0;
+  CHAT_CLIENT_REGISTER_REQ = 101;
+  CHAT_CLIENT_REGISTER_RSP = 102;
+  CHAT_CLIENT_UNREGISTER_REQ = 103;
+  CHAT_CLIENT_UNREGISTER_RSP = 104;
+  CHAT_CLIENT_PRIVATE_CHAT_REQ = 105;
+  CHAT_CLIENT_PRIVATE_CHAT_RSP = 106;
+  CHAT_CLIENT_CHANNEL_CHAT_REQ = 107;
+  CHAT_CLIENT_CHANNEL_CHAT_RSP = 108;
+  CHAT_CLIENT_WORLD_CHAT_REQ = 109;
+  CHAT_CLIENT_WORLD_CHAT_RSP = 110;
+  CHAT_CLIENT_GET_PRIVATE_CHAT_RECORD_REQ = 111;
+  CHAT_CLIENT_GET_PRIVATE_CHAT_RECORD_RSP = 112;
+  CHAT_CLIENT_GET_CHANNEL_CHAT_RECORD_REQ = 113;
+  CHAT_CLIENT_GET_CHANNEL_CHAT_RECORD_RSP = 114;
+  CHAT_CLIENT_GET_WORLD_CHAT_RECORD_REQ = 115;
+  CHAT_CLIENT_GET_WORLD_CHAT_RECORD_RSP = 116;
+  CHAT_CLIENT_DEL_PRIVATE_CHAT_RECORD_REQ = 117;
+  CHAT_CLIENT_DEL_PRIVATE_CHAT_RECORD_RSP = 118;
+  CHAT_CLIENT_GET_CHANNEL_GROUP_INFO_REQ = 119;
+  CHAT_CLIENT_GET_CHANNEL_GROUP_INFO_RSP = 120;
+  CHAT_CLIENT_CHANNEL_GROUP_SWITCH_REQ = 121;
+  CHAT_CLIENT_CHANNEL_GROUP_SWITCH_RSP = 122;
+  CHAT_CLIENT_ADD_BLACKLIST_REQ = 123;
+  CHAT_CLIENT_ADD_BLACKLIST_RSP = 124;
+  CHAT_CLIENT_REMOVE_BLACKLIST_REQ = 125;
+  CHAT_CLIENT_REMOVE_BLACKLIST_RSP = 126;
+  CHAT_CLIENT_GET_BLACKLIST_REQ = 127;
+  CHAT_CLIENT_GET_BLACKLIST_RSP = 128;
+  CHAT_CLIENT_SYNC_BLACKLIST_REQ = 129;
+  CHAT_CLIENT_SYNC_BLACKLIST_RSP = 130;
+  CHAT_CLIENT_GET_PERSONAL_BAN_INFO_REQ = 131;
+  CHAT_CLIENT_GET_PERSONAL_BAN_INFO_RSP = 132;
+  CHAT_CLIENT_DEL_CHANNEL_CHAT_RECORD_REQ = 133;
+  CHAT_CLIENT_DEL_CHANNEL_CHAT_RECORD_RSP = 134;
+  CHAT_CLIENT_DEL_WORLD_CHAT_RECORD_REQ = 135;
+  CHAT_CLIENT_DEL_WORLD_CHAT_RECORD_RSP = 136;
+  CHAT_CLIENT_READ_PRIVATE_LAST_MSG_INDEX_REQ = 137;
+  CHAT_CLIENT_READ_PRIVATE_LAST_MSG_INDEX_RSP = 138;
+  CHAT_CLIENT_PRIVATE_CHAT_RECEIVE = 152;
+  CHAT_CLIENT_CHANNEL_CHAT_RECEIVE = 154;
+  CHAT_CLIENT_WORLD_CHAT_RECEIVE = 156;
+  CHAT_CLIENT_EVENT_NOTICE = 158;
+}
+
+message JoinChannelInfo {
+  string channel_id = 1;
+  uint32 msg_count = 2;
+}
+
+message ClientRegisterReq {
+  string client_id = 1;
+  string client_token = 2;
+}
+
+message ClientRegisterRsp {
+  chat.pb.ClientRegisterRsp.ClientRegisterCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+  repeated chat.pb.JoinChannelInfo join_channel_list = 4;
+
+  enum ClientRegisterCode {
+    SUCCESS = 0;
+    TOKEN_INVALID = 1;
+    ALREADY_REGISTER = 2;
+  }
+}
+
+message ClientUnRegisterReq {
+  string client_id = 1;
+  string client_token = 2;
+}
+
+message ClientUnRegisterRsp {
+  chat.pb.ClientUnRegisterRsp.ClientUnRegisterCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+
+  enum ClientUnRegisterCode {
+    SUCCESS = 0;
+    TOKEN_INVALID = 1;
+    NOT_REGISTER = 2;
+  }
+}
+
+message PrivateChatReq {
+  string from_client_id = 1;
+  bytes baseinfo = 2;
+  string to_client_id = 3;
+  string msg = 4;
+}
+
+message PrivateChatRsp {
+  chat.pb.PrivateChatRsp.PrivateChatCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+  string to_client_id = 4;
+  uint32 left_cd_time = 5;
+  bytes baseinfo = 6;
+  string chat_msg = 7;
+
+  enum PrivateChatCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    IN_BAN = 3;
+    IN_BLACK_LIST = 4;
+    CD_LIMIT = 5;
+    TARGET_CLIENTID_INVALID = 6;
+  }
+}
+
+message ChannelChatReq {
+  string from_client_id = 1;
+  bytes baseinfo = 2;
+  string channel_id = 3;
+  string msg = 4;
+}
+
+message ChannelChatRsp {
+  chat.pb.ChannelChatRsp.ChannelChatCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+  string channel_id = 4;
+  uint32 left_cd_time = 5;
+  bytes baseinfo = 6;
+  string chat_msg = 7;
+
+  enum ChannelChatCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    CHANNEL_ID_INVALID = 3;
+    NOT_MEMBER = 4;
+    IN_BAN = 5;
+    CD_LIMIT = 6;
+    COUNT_LIMIT = 7;
+  }
+}
+
+message WorldChatReq {
+  string from_client_id = 1;
+  bytes baseinfo = 2;
+  string msg = 3;
+}
+
+message WorldChatRsp {
+  chat.pb.WorldChatRsp.WorldChatCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+  uint32 left_cd_time = 4;
+  bytes baseinfo = 5;
+  string chat_msg = 6;
+
+  enum WorldChatCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    IN_BAN = 3;
+    CD_LIMIT = 4;
+    COUNT_LIMIT = 5;
+  }
+}
+
+message ChatRecord {
+  string from_client_id = 1;
+  bytes baseinfo = 2;
+  string msg = 3;
+  int64 send_time = 4;
+  uint64 index = 5;
+}
+
+message GetPrivateRecordReq {
+  string client_id = 1;
+  string target_client_id = 2;
+  bool is_batch_get = 3;
+  uint32 start_index = 4;
+  uint32 count = 5;
+}
+
+message GetPrivateRecordRsp {
+  chat.pb.GetPrivateRecordRsp.GetPrivateRecordCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+  string target_client_id = 4;
+  repeated chat.pb.ChatRecord record_list = 5;
+  uint32 total_count = 6;
+  uint32 un_read_count = 7;
+  uint64 readed_last_index = 8;
+
+  enum GetPrivateRecordCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    INDEX_ERR = 3;
+  }
+}
+
+message GetChannelRecordReq {
+  string client_id = 1;
+  string channel_id = 2;
+  bool is_batch_get = 3;
+  uint32 start_index = 4;
+  uint32 count = 5;
+}
+
+message GetChannelRecordRsp {
+  chat.pb.GetChannelRecordRsp.GetChannelRecordCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+  string channel_id = 4;
+  repeated chat.pb.ChatRecord record_list = 5;
+  uint32 total_count = 6;
+
+  enum GetChannelRecordCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    CHANNEL_ID_INVALID = 3;
+    NOT_MEMBER = 4;
+    INDEX_ERR = 5;
+  }
+}
+
+message GetWorldRecordReq {
+  string client_id = 1;
+  bool is_batch_get = 2;
+  uint32 start_index = 3;
+  uint32 count = 4;
+}
+
+message GetWorldRecordRsp {
+  chat.pb.GetWorldRecordRsp.GetWorldRecordCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+  repeated chat.pb.ChatRecord record_list = 4;
+  uint32 total_count = 5;
+
+  enum GetWorldRecordCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    INDEX_ERR = 3;
+  }
+}
+
+message ReadPrivateLastMsgIndexReq {
+  string client_id = 1;
+  string target_client_id = 2;
+  uint64 last_index = 3;
+}
+
+message ReadPrivateLastMsgIndexRsp {
+  chat.pb.ReadPrivateLastMsgIndexRsp.ReadPrivateLastMsgIndexCode code = 1;
+  string msg = 2;
+  string client_id = 3;
+  string target_client_id = 4;
+  uint64 last_index = 5;
+
+  enum ReadPrivateLastMsgIndexCode {
+    SUCCESS = 0;
+    INNER_ERR = 1;
+    NOT_REGISTER = 2;
+    INDEX_ERR = 3;
+  }
+}
+
+message ChatMessage {
+  string from_client_id = 1;
+  bytes baseinfo = 2;
+  string msg = 3;
+  int64 send_time = 4;
+  uint64 index = 5;
+}
+
+message PrivateMessage {
+  string client_id = 1;
+  repeated chat.pb.ChatMessage msg_list = 2;
+}
+
+message PrivateChatReceive {
+  repeated chat.pb.PrivateMessage msg_list = 1;
+}
+
+message ChannelMessage {
+  string client_id = 1;
+  string channel_id = 2;
+  repeated chat.pb.ChatMessage msg_list = 3;
+}
+
+message ChannelChatReceive {
+  repeated chat.pb.ChannelMessage msg_list = 1;
+}
+
+message WorldMessage {
+  string client_id = 1;
+  repeated chat.pb.ChatMessage msg_list = 2;
+}
+
+message WorldChatReceive {
+  repeated chat.pb.WorldMessage msg_list = 1;
+}
+
+message ChatEventNotice {
+  chat.pb.ChatEventNotice.CHAT_EVENT_TYPE event_type = 1;
+  string id = 2;
+  uint32 state = 3;
+
+  enum CHAT_EVENT_TYPE {
+    CHAT_EVENT_TYPE_NONE = 0;
+    CHAT_EVENT_TYPE_CHANNEL_JOIN = 1;
+    CHAT_EVENT_TYPE_CHANNEL_OUT = 2;
+    CHAT_EVENT_TYPE_CHANNEL_GROUP_CHANGE = 3;
+    CHAT_EVENT_TYPE_PERSONAL_BAN_CHANGE = 4;
+    CHAT_EVENT_TYPE_CHANNEL_BAN_CHANGE = 5;
+    CHAT_EVENT_TYPE_CHANNEL_GROUP_BAN_CHANGE = 6;
+  }
+}
+
+message BaseInfo {
+  int32 char_id = 1;
+  int32 head_id = 2;
+  int32 model_id = 3;
+  int64 player_uuid = 4;
+  string player_name = 5;
+  int32 player_level = 6;
+}
+

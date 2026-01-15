@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message BuffAttrShowInfo {
+  int32 id = 1;
+  bool is_gain = 2;
+}
+

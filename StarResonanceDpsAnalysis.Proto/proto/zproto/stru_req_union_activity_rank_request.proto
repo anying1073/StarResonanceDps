@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_union_activity_rank_type.proto";
+
+message ReqUnionActivityRankRequest {
+  int32 union_id = 2;
+  int32 activity_id = 3;
+  zproto.EUnionActivityRankType rank_type = 4;
+}
+

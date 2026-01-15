@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message GetWorldChatChannelIdReply {
+  uint32 channel_id = 1;
+  uint32 user_num = 2;
+  uint32 max_num = 3;
+  uint32 state = 4;
+  zproto.EErrorCode err_code = 5;
+}
+

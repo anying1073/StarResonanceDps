@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message EntryRandomDataParam {
+  int32 refresh_cnt = 1;
+  repeated int32 ids = 2;
+  int64 obj_uuid = 3;
+  int64 dead_timestamp = 4;
+}
+

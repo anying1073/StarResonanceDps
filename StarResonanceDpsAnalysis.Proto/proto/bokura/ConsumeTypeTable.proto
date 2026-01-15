@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package bokura;
+
+message ConsumeTypeTableBase {
+  int32 id = 1463;
+  string note = 453;
+  int32 invalid = 1205;
+  int32 time_limit = 1722;
+  int32 exclusive = 1326;
+}
+
+message ConsumeTypeTableMgr {
+  map<int32, bokura.ConsumeTypeTableBase> datas = 1;
+}
+

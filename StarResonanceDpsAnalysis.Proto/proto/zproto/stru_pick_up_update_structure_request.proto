@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_structure_land_op.proto";
+
+message PickUpUpdateStructureRequest {
+  int64 home_id = 1;
+  zproto.StructureLandOp op = 2;
+}
+

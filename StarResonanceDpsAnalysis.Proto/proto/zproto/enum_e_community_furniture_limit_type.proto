@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECommunityFurnitureLimitType {
+  CommunityFurnitureLimitTypeUnlimited = 0;
+  CommunityFurnitureLimitTypeIndoorOnly = 1;
+  CommunityFurnitureLimitTypeOutdoorOnly = 2;
+}
+

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_battle_pass_award_info.proto";
+import "stru_dirty_mask.proto";
+
+message BattlePass {
+  int32 id = 1;
+  int32 level = 2;
+  int32 curexp = 3;
+  int32 week_exp = 4;
+  int32 exp_last_time = 5;
+  bool is_unlock = 6;
+  bool buy_normal_pas = 7;
+  bool buy_prime_pass = 8;
+  map<int32, zproto.BattlePassAwardInfo> award = 9;
+  bool is_valid = 10;
+  bool is_sended_mail = 11;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_build_furniture_op_type.proto";
+import "stru_community_build_furniture_info.proto";
+
+message NotifyBuildFurnitureOp {
+  zproto.BuildFurnitureOpType op_type = 1;
+  zproto.CommunityBuildFurnitureInfo furniture = 2;
+}
+

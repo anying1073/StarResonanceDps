@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message DriverApplyRideParam {
+  int64 apply_id = 1;
+  string apply_name = 2;
+}
+

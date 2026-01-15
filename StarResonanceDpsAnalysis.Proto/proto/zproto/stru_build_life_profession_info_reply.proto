@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_build_life_profession_info.proto";
+import "enum_e_error_code.proto";
+
+message BuildLifeProfessionInfoReply {
+  zproto.EErrorCode err_code = 1;
+  repeated zproto.CommunityBuildLifeProfessionInfo profession_infos = 2;
+}
+

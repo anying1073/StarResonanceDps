@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum MonsterTargetAward {
+  MonsterTargetAwardNull = 0;
+  MonsterTargetAwardGet = 1;
+  MonsterTargetAwardReceived = 2;
+}
+

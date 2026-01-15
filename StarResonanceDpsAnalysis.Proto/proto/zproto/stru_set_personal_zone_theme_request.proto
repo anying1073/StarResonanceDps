@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetPersonalZoneThemeRequest {
+  int32 theme_id = 1;
+}
+

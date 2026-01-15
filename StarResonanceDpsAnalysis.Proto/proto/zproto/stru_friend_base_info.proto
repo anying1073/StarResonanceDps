@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_application_info.proto";
+import "stru_social_info.proto";
+
+message FriendBaseInfo {
+  map<int64, zproto.SocialInfo> friend_list = 1;
+  map<int32, string> group_id_list = 3;
+  repeated zproto.ApplicationInfo application_list = 4;
+  repeated int32 group_sort = 5;
+}
+

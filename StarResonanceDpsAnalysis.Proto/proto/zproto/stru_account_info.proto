@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_social_data.proto";
+
+message AccountInfo {
+  string account_id = 1;
+  string open_id = 2;
+  repeated zproto.SocialData chars = 3;
+  string token = 5;
+  int64 restrict_time = 6;
+  map<int64, int64> delete_char_ids_left_time = 7;
+  uint32 ban_reason = 8;
+}
+

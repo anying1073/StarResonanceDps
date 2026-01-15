@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+message FacialExpressionTableBase {
+  int32 id = 1463;
+  string facial_name = 1569;
+  string remark = 1391;
+  string path = 172;
+}
+
+message FacialExpressionTableMgr {
+  map<int32, bokura.FacialExpressionTableBase> datas = 1;
+}
+

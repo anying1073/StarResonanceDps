@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_body_size.proto";
+import "stru_dirty_mask.proto";
+
+message BasicData {
+  int64 char_id = 1;
+  int64 show_id = 2;
+  string name = 3;
+  int32 gender = 4;
+  zproto.EBodySize body_size = 5;
+  int32 level = 6;
+  int32 scene_id = 7;
+  repeated int32 personal_state = 8;
+  int64 offline_time = 9;
+  string scene_guid = 10;
+  int64 create_time = 11;
+  uint32 cur_talent_pool_id = 12;
+  uint32 bot_ai_id = 13;
+  int32 register_channel = 14;
+  uint64 char_state = 15;
+  int64 online_time = 16;
+  int64 sum_save_diamond = 17;
+  bool is_newbie = 18;
+  int32 season_level = 19;
+  bool is_backflow = 20;
+}
+

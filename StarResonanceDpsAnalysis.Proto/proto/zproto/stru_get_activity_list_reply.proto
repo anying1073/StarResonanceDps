@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_activity.proto";
+import "enum_e_error_code.proto";
+
+message GetActivityListReply {
+  repeated zproto.Activity activity_list = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

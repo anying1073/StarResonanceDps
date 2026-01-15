@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_transfer.proto";
+import "stru_home_land_clutter_generation_record.proto";
+import "stru_home_land_clutter_info.proto";
+import "stru_home_land_item_instance.proto";
+import "stru_home_land_sell_shop_info.proto";
+import "stru_homeland_visit_info.proto";
+
+message HomelandBaseInfo {
+  zproto.HomelandVisitInfo visit_info = 1;
+  int64 exp = 2;
+  int64 home_resource = 3;
+  int64 lastsubtractcleanlinesstime = 4;
+  zproto.HomeLandClutterInfo home_land_clutter = 5;
+  zproto.HomeLandClutterGenerationRecord home_land_clutter_generation_record = 6;
+  zproto.HomeLandSellShopInfo home_land_sell_shop_info = 7;
+  map<int64, zproto.HomeLandItemInstance> items = 8;
+  map<int64, int64> slots = 9;
+  map<int64, int64> item_to_slot = 10;
+  int64 capacity = 11;
+  int64 used_slots = 12;
+  string check_in_content = 13;
+  zproto.CommunityTransfer transfer_community = 14;
+}
+

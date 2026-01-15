@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message DungeonScore {
+  int32 total_score = 1;
+  int32 cur_ratio = 2;
+}
+

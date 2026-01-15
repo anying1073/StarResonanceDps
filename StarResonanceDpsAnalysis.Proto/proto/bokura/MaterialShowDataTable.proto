@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MaterialShowDataTableBase {
+  int64 id = 1463;
+  float start = 678;
+  float duration = 544;
+  float end = 1415;
+  bool is_attacker = 920;
+  int32 state_id = 308;
+  int32 group_id = 196;
+  int32 material_type = 1428;
+  number_array colour = 1759;
+  float power = 35;
+  number_table colour_curve = 1313;
+  number_table power_curve = 55;
+  number_array colour2 = 2023;
+  float power2 = 1714;
+  bool is_body = 342;
+  bool is_primary_weapon = 1227;
+  bool is_secondary_weapon = 2083;
+}
+
+message MaterialShowDataTableMgr {
+  map<int64, bokura.MaterialShowDataTableBase> datas = 1;
+}
+

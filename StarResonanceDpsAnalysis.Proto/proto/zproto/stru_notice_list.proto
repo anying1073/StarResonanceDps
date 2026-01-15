@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_notice_info.proto";
+
+message NoticeList {
+  repeated zproto.NoticeInfo notices = 1;
+}
+

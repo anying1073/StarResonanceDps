@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ModifyProjectNameRequest {
+  int32 project_id = 1;
+  string name = 2;
+}
+

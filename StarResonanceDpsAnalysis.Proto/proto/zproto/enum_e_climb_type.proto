@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EClimbType {
+  ClimbIdle = 0;
+  Climbing = 1;
+  ClimbRush = 2;
+  ShinIdle = 10;
+  Shining = 11;
+  ShinCross = 12;
+  TopBraceUp = 20;
+  TopBraceDown = 21;
+  BottomBraceUp = 22;
+  BottomBraceDown = 23;
+}
+

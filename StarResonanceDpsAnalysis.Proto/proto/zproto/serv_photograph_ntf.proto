@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_get_photo_token_ntf_request.proto";
+import "stru_ret_avatar_token_request.proto";
+import "stru_review_avatar_info_ntf_request.proto";
+import "stru_upload_photo_result_ntf_request.proto";
+import "stru_upload_picture_result_ntf_request.proto";
+
+message PhotographNtf {
+
+  message GetPhotoTokenNtf {
+    zproto.GetPhotoTokenNtfRequest v_request = 1;
+  }
+
+  message UploadPhotoResultNtf {
+    zproto.UploadPhotoResultNtfRequest v_request = 1;
+  }
+
+  message UploadPictureResultNtf {
+    zproto.UploadPictureResultNtfRequest v_request = 1;
+  }
+
+  message RetAvatarToken {
+    zproto.RetAvatarTokenRequest v_request = 1;
+  }
+
+  message ReviewAvatarInfoNtf {
+    zproto.ReviewAvatarInfoNtfRequest v_request = 1;
+  }
+}
+

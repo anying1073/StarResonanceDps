@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_sign_reward_data.proto";
+
+message SignRewardNotifyRequest {
+  repeated int32 sign_days = 1;
+  repeated int32 reward_days = 2;
+  map<int32, zproto.SignRewardData> sign_reward_data_map = 3;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_private_chat_target_info.proto";
+
+message NotifyAddPrivateChatSessionRequest {
+  zproto.EErrorCode err_code = 1;
+  zproto.PrivateChatTargetInfo add_target_info = 2;
+  int64 del_target_id = 3;
+}
+

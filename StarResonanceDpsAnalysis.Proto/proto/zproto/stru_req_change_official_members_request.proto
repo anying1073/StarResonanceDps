@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReqChangeOfficialMembersRequest {
+  int64 union_id = 2;
+  map<uint32, int32> change_officials = 3;
+}
+

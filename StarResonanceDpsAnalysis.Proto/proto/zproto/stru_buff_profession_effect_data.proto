@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message BuffProfessionEffectData {
+  int32 profession_type = 1;
+  repeated int32 profession_point = 2;
+  repeated bool profession_switch = 3;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EHeroKeyRollType {
+  HeroKeyRollTypeNull = 0;
+  HeroKeyRollTypeGiveup = 1;
+  HeroKeyRollTypeRoll = 2;
+  HeroKeyRollTypeGet = 3;
+  HeroKeyRollTypeRollGet = 4;
+  HeroKeyRollTypeCountFull = 5;
+}
+

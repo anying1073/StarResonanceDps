@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_quit_cohabitant_info.proto";
+
+message CommunityQuitCohabitantAgreeRequest {
+  zproto.CommunityQuitCohabitantInfo info = 1;
+}
+

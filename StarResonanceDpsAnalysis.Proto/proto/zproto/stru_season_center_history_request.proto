@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SeasonCenterHistoryRequest {
+  int32 season_id = 1;
+}
+

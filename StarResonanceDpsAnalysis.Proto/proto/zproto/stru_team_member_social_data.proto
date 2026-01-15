@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+import "stru_basic_data.proto";
+import "stru_equip_data.proto";
+import "stru_face_data.proto";
+import "stru_fashion_data.proto";
+import "stru_personal_zone_show.proto";
+import "stru_profession_data.proto";
+import "stru_user_attr_data.proto";
+import "stru_user_scene_info.proto";
+import "stru_dirty_mask.proto";
+
+message TeamMemberSocialData {
+  zproto.BasicData basic_data = 1;
+  zproto.AvatarInfo avatar_info = 2;
+  zproto.FaceData face_data = 3;
+  zproto.ProfessionData profession_data = 4;
+  zproto.EquipData equip_data = 5;
+  zproto.FashionData fashion_data = 6;
+  zproto.UserSceneInfo user_scene_info = 7;
+  zproto.UserAttrData user_attr_data = 8;
+  zproto.PersonalZoneShow personal_zone = 9;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_world_event_data.proto";
+import "stru_dirty_mask.proto";
+
+message WorldEventMap {
+  map<uint32, zproto.worldEventData> event_map = 1;
+  int32 accept_count = 2;
+  int64 last_update_time = 3;
+  int64 refresh_time = 4;
+}
+

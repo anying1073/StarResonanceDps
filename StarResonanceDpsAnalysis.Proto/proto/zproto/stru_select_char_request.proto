@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message SelectCharRequest {
+  string token = 2;
+  int64 char_id = 3;
+  int32 area_id = 5;
+}
+

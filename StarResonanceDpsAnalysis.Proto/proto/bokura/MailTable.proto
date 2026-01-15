@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MailTableBase {
+  int32 id = 1463;
+  mlstring title = 695;
+  int32 npc_id = 694;
+  mlstring npc_name = 1186;
+  mlstring content = 783;
+  int32 award_id = 1197;
+  string mail_group_content = 1572;
+  int32 expire_time = 418;
+  int32 mail_type = 56;
+  int32 important = 1782;
+  int32 limit_type = 92;
+}
+
+message MailTableMgr {
+  map<int32, bokura.MailTableBase> datas = 1;
+}
+

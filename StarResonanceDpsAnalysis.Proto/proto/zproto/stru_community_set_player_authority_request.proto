@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_player_authority_info.proto";
+
+message CommunitySetPlayerAuthorityRequest {
+  int64 char_id = 1;
+  zproto.CommunityPlayerAuthorityInfo authority_info = 2;
+}
+

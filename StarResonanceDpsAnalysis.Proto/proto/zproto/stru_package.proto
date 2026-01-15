@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+import "stru_dirty_mask.proto";
+
+message Package {
+  int32 type = 1;
+  int32 max_capacity = 2;
+  map<int32, int64> item_cd = 3;
+  map<int64, zproto.Item> items = 4;
+  int64 public_cd = 5;
+  int32 change_version = 6;
+}
+

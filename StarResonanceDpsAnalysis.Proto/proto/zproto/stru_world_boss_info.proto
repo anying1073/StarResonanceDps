@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message WorldBossInfo {
+  int32 boss_stage = 1;
+  int32 boss_killed_num = 2;
+  int32 uuid = 3;
+  int32 boss_cfg_id = 4;
+  zproto.EErrorCode err_code = 5;
+}
+

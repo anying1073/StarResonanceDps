@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_exchange_info.proto";
+import "stru_dirty_mask.proto";
+
+message ExchangeItem {
+  map<int32, zproto.ExchangeInfo> exchange_info = 1;
+}
+

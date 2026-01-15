@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_vec3.proto";
+
+message ClientHitPartInfo {
+    optional int32 PartId = 1;
+    optional Vec3 DamagePos = 2;
+    optional int64 DamageVal = 3;
+}

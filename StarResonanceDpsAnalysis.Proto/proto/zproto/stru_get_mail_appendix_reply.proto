@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_item.proto";
+import "stru_mail_base.proto";
+
+message GetMailAppendixReply {
+  map<int64, zproto.MailBase> mails = 3;
+  repeated zproto.Item rewards = 4;
+  zproto.EErrorCode err_code = 5;
+}
+

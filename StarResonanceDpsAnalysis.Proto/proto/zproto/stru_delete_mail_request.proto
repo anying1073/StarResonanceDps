@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message DeleteMailRequest {
+  repeated int64 mail_ids = 2;
+  repeated int64 un_get_mail_ids = 3;
+}
+

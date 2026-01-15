@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message TowerProcessAward {
+  int32 climb_up_id = 1;
+  bool one_key = 2;
+}
+

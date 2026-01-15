@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_team_member_type.proto";
+import "stru_team_member_group_info.proto";
+
+message TeamBaseInfo {
+  int64 team_id = 1;
+  uint32 target_id = 2;
+  int64 leader_id = 3;
+  string desc = 4;
+  bool auto_match = 5;
+  bool hall_show = 6;
+  bool matching = 7;
+  zproto.ETeamMemberType team_member_type = 8;
+  map<int32, zproto.TeamMemberGroupInfo> team_member_group_infos = 9;
+  int64 create_time = 10;
+}
+

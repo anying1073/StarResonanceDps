@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message HomelandWarehouseStoreRequest {
+  map<int64, int64> items = 1;
+}
+

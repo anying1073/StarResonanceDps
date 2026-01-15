@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "enum_e_team_member_type.proto";
+
+message NotifyTeamChangeMemberTypeRequest {
+  zproto.EErrorCode error_code = 1;
+  zproto.ETeamMemberType team_member_type = 2;
+  int32 target_id = 3;
+}
+

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package zproto;
+
+enum MahjongProtocol {
+  MahjongProtocolNone = 0;
+  Sync = 1;
+  SyncOperate = 2;
+  SyncTableEnd = 3;
+  SyncShowSettle = 4;
+  SyncFinalSettle = 5;
+  SyncPlayerMessage = 6;
+  SyncPlayerEmoji = 7;
+  Handle = 101;
+  Confirm = 102;
+  TestCard = 110;
+}
+

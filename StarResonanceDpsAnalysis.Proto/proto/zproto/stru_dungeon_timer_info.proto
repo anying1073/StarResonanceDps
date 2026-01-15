@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_dungeon_timer_direction.proto";
+import "enum_e_dungeon_timer_effect_type.proto";
+import "enum_e_dungeon_timer_timer_look_type.proto";
+import "enum_e_dungeon_timer_type.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonTimerInfo {
+  zproto.EDungeonTimerType type = 1;
+  int32 start_time = 2;
+  int32 dungeon_times = 3;
+  zproto.EDungeonTimerDirection direction = 4;
+  int32 index = 5;
+  int32 change_time = 6;
+  zproto.EDungeonTimerEffectType effect_type = 7;
+  int32 pause_time = 8;
+  int32 pause_total_time = 9;
+  zproto.EDungeonTimerTimerLookType out_look_type = 10;
+  int32 cur_pause_timestamp = 11;
+}
+

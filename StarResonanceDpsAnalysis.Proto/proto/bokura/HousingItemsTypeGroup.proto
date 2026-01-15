@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package bokura;
+
+message HousingItemsTypeGroupBase {
+  int32 id = 1463;
+  int32 group_name = 581;
+}
+
+message HousingItemsTypeGroupMgr {
+  map<int32, bokura.HousingItemsTypeGroupBase> datas = 1;
+}
+

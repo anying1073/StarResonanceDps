@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PlayHelper {
+  map<int32, bool> displayed_helper_list = 1;
+  map<int32, bool> completed_guide = 2;
+}
+

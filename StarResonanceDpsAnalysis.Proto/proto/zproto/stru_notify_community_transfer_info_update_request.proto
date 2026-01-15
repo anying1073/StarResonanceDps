@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_transfer.proto";
+
+message NotifyCommunityTransferInfoUpdateRequest {
+  zproto.CommunityTransfer transfer_community = 1;
+}
+

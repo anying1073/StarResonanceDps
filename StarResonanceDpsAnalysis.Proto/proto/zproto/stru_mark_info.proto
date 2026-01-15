@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mark_position.proto";
+import "stru_dirty_mask.proto";
+
+message MarkInfo {
+  int64 tag_id = 1;
+  string title = 2;
+  string content = 3;
+  uint32 icon_id = 4;
+  zproto.MarkPosition position = 5;
+  int32 map_layer_id = 6;
+}
+

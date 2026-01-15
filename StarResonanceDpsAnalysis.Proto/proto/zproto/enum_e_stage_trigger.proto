@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EStageTrigger {
+  EStageTrigger_None = 0;
+  EStageTrigger_Timer = 1;
+  EStageTrigger_Hit = 2;
+  EStageTrigger_SkillBegin = 101;
+  EStageTrigger_SingingEnd = 102;
+  EStageTrigger_AccumulateEnd = 103;
+  EStageTrigger_SkillEnd = 104;
+  EStageTrigger_StageBegin = 105;
+  EStageTrigger_OffsetBegin = 106;
+  EStageTrigger_OffsetCollide = 107;
+  EStageTrigger_OffsetEnd = 108;
+  EStageTrigger_FallInGround = 109;
+  EStageTrigger_OnClientBuffEnd = 110;
+  EStageTrigger_SingingBegin = 111;
+  EStageTrigger_ClientBegin = 10000;
+  EStageTrigger_OnBtnPress = 10001;
+  EStageTrigger_OnBtnUp = 10002;
+}
+

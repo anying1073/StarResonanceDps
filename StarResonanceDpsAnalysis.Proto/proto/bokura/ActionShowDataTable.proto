@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package bokura;
+
+message ActionShowDataTableBase {
+  int64 id = 1463;
+  float start = 678;
+  float duration = 544;
+  float end = 1415;
+  bool is_attacker = 920;
+  int32 state_id = 308;
+  int32 group_id = 196;
+  string action_name = 1340;
+  string res_path = 548;
+  int32 action_type = 830;
+  bool is_loop = 109;
+  bool is_upend = 494;
+  bool enhance_damping = 1754;
+}
+
+message ActionShowDataTableMgr {
+  map<int64, bokura.ActionShowDataTableBase> datas = 1;
+}
+

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EAccessType {
+  AccessFinishQuest = 0;
+  AccessLevelUp = 1;
+  AccessEquipProfessionType = 2;
+  AccessItemCount = 11;
+  AccessInScene = 12;
+  AccessNotInScene = 13;
+  AccessInVisualLayer = 15;
+  AccessNotInVisualLayer = 16;
+  AccessEnterZone = 17;
+  AccessTimer = 18;
+  AccessInZone = 19;
+  AccessNotInZone = 20;
+  AccessFinishQuestStep = 21;
+  AccessTimeLimit = 80;
+  AccessMastery = 82;
+  AccessSex = 1000;
+  AccessSeason = 1001;
+}
+

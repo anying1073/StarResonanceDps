@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESceneSubType {
+  SceneSubTypeUnknown = 0;
+  SceneSubTypeLogin = 1;
+  SceneSubTypeSelect = 2;
+  SceneSubTypeStaticCity = 3;
+  SceneSubTypeStaticWildMap = 4;
+  SceneSubTypeDungeon = 5;
+  SceneSubTypeMirror = 6;
+  SceneSubTypeCommunity = 7;
+  SceneSubTypeHomeland = 8;
+  SceneSubTypeUnion = 9;
+}
+

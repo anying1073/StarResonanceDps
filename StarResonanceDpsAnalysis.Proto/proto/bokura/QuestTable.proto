@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message QuestTableBase {
+  int32 quest_id = 874;
+  mlstring quest_name = 813;
+  mlstring quest_detail = 567;
+  int32 quest_type = 728;
+  int32 quest_step = 263;
+  int32 award_id = 1197;
+  int32 follow_quest = 879;
+  int_array pre_quest = 1240;
+  string pre_quest_logic = 1105;
+  int_array must_pre_quest = 1049;
+  string_table access_limit = 90;
+  string_array time_limit = 1722;
+  string_table continue_limit = 1395;
+  string_table abort_limit = 1720;
+  string step_flow_path = 1794;
+}
+
+message QuestTableMgr {
+  map<int32, bokura.QuestTableBase> datas = 1;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_monster_explore_info.proto";
+import "stru_dirty_mask.proto";
+
+message MonsterExploreList {
+  map<int32, zproto.MonsterExploreInfo> monster_explore_list = 1;
+}
+

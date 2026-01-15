@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_body_part_state.proto";
+
+message ActorBodyPartInfo {
+    optional int32 PartId = 1;
+    optional uint64 Hp = 2;
+    optional uint64 MaxHp = 3;
+    optional BodyPartState State = 4;
+    optional int32 FleshyId = 5;
+}

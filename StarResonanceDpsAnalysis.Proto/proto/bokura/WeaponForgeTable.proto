@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message WeaponForgeTableBase {
+  int32 id = 1463;
+  string name = 439;
+  int_table consumable_id = 1714;
+  int_array consumable_gold = 18;
+  int32 sort = 1643;
+}
+
+message WeaponForgeTableMgr {
+  map<int32, bokura.WeaponForgeTableBase> datas = 1;
+}
+

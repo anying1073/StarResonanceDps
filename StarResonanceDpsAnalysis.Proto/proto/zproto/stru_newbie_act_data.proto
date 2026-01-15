@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_newbie_backflow_elective.proto";
+import "stru_newbie_backflow_target_data.proto";
+import "stru_newbie_backflow_target_id_list.proto";
+import "stru_dirty_mask.proto";
+
+message NewbieActData {
+  int32 login_days = 1;
+  int64 refresh_time_stamp = 2;
+  int32 refresh_season_id = 3;
+  bool award_received = 4;
+  bool graduate_received = 5;
+  map<uint32, zproto.NewbieBackflowTargetData> target_map = 6;
+  map<int32, zproto.NewbieBackflowElective> elective_data = 7;
+  map<int32, zproto.NewbieBackflowTargetIdList> required_targets = 8;
+}
+

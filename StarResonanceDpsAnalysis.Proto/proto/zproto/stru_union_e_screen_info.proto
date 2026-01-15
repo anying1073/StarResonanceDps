@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_photo_graph_show.proto";
+import "stru_dirty_mask.proto";
+
+message UnionEScreenInfo {
+  int32 e_screen_id = 1;
+  repeated zproto.PhotoGraphShow photo_graphs = 2;
+}
+

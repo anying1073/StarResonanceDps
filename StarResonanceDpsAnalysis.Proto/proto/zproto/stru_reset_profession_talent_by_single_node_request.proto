@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ResetProfessionTalentBySingleNodeRequest {
+  int32 profession_id = 1;
+  int32 talent_node_id = 2;
+}
+

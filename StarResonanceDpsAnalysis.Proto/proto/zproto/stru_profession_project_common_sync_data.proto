@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message ProfessionProjectCommonSyncData {
+  int32 profession_id = 1;
+  string project_name = 2;
+  map<int32, int64> equip_info_map = 3;
+  map<int32, int64> mod_info_map = 4;
+  int32 current_talent_stage_cfg_id = 5;
+}
+

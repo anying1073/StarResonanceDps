@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyWarehouseInviteRequest {
+  int64 char_id = 1;
+  int64 warehouse_id = 2;
+}
+

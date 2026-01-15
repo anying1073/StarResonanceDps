@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message DeleteCharReply {
+  int64 char_id = 1;
+  int64 delete_left_time = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

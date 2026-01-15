@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dance_ball.proto";
+import "stru_union_base_data.proto";
+import "stru_union_event.proto";
+import "stru_union_official.proto";
+
+message UnionInfo {
+  zproto.UnionBaseData base_info = 1;
+  repeated zproto.UnionEvent union_events = 3;
+  map<int32, zproto.UnionOfficial> officials = 4;
+  bool auto_pass = 5;
+  int64 create_time = 6;
+  int64 change_name_time = 7;
+  int64 join_crow_fund_num = 8;
+  zproto.DanceBall dance_ball = 9;
+  string group_id = 10;
+  int32 group_type = 11;
+  bool is_name_regist = 12;
+}
+

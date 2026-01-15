@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message TalentTagTableBase {
+  int32 id = 1463;
+  string des = 266;
+  int32 tag_type = 847;
+  int32 fight_res_id = 1204;
+  mlstring tag_name = 510;
+  string tag_icon = 25;
+  string tag_icon_bg = 1743;
+  string tag_icon_mark = 723;
+  mlstring simple_des = 139;
+  mlstring details_des = 103;
+  int_array talent_associated_id = 1389;
+  int_array fantasy_hole_list = 997;
+}
+
+message TalentTagTableMgr {
+  map<int32, bokura.TalentTagTableBase> datas = 1;
+}
+

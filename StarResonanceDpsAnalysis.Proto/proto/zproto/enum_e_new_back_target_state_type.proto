@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ENewBackTargetStateType {
+  ENewBackTargetStateTypeNull = 0;
+  ENewBackTargetStateTypeGet = 1;
+  ENewBackTargetStateTypeReceived = 2;
+}
+

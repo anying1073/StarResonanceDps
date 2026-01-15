@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_match_type.proto";
+
+message MatchKeyInfo {
+  int32 match_id = 1;
+  zproto.EMatchType match_type = 2;
+  int64 match_type_uuid = 3;
+}
+

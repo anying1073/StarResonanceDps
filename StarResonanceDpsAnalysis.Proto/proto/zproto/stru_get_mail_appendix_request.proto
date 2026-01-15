@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetMailAppendixRequest {
+  repeated int64 mail_ids = 2;
+  bool only_get = 3;
+}
+

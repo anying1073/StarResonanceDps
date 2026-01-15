@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+import "enum_e_body_size.proto";
+import "stru_personal_zone_show.proto";
+
+message MatchPlayerShowInfo {
+  string name = 1;
+  int32 gender = 2;
+  zproto.EBodySize body_size = 3;
+  int32 level = 4;
+  zproto.AvatarInfo avatar_info = 5;
+  zproto.PersonalZoneShow personal_zone = 6;
+}
+

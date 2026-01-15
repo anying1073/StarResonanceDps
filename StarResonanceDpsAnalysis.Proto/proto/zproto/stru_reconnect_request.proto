@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_launch_param.proto";
+
+message ReconnectRequest {
+  string account_id = 3;
+  string token = 4;
+  string client_version = 5;
+  string client_resource_version = 6;
+  int32 os = 7;
+  zproto.LaunchParam launch_param = 9;
+}
+

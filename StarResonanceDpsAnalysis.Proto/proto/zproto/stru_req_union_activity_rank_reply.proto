@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_activity_rank_info.proto";
+
+message ReqUnionActivityRankReply {
+  repeated zproto.UnionActivityRankInfo rank_list = 1;
+  zproto.EErrorCode err_code = 2;
+}
+

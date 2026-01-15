@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+message NoticeInfo {
+  uint32 notice_id = 1;
+  uint64 send_time = 2;
+  bool is_loop = 3;
+  int32 loop_number = 4;
+  uint32 loop_time_interval = 5;
+  string content_text = 6;
+  int64 end_time = 7;
+}
+

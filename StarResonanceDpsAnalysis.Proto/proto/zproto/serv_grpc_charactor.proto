@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_cancel_delete_char_reply.proto";
+import "stru_cancel_delete_char_request.proto";
+import "stru_create_char_reply.proto";
+import "stru_create_char_request.proto";
+import "stru_delete_char_reply.proto";
+import "stru_delete_char_request.proto";
+import "stru_exit_game_request.proto";
+import "stru_get_face_data_url_reply.proto";
+import "stru_get_face_data_url_request.proto";
+import "stru_get_face_up_token_request.proto";
+import "stru_get_face_upload_data_reply.proto";
+import "stru_get_face_upload_data_request.proto";
+import "stru_login_reply.proto";
+import "stru_login_request.proto";
+import "stru_privilege_activate_reply.proto";
+import "stru_privilege_activate_request.proto";
+import "stru_reconnect_reply.proto";
+import "stru_reconnect_request.proto";
+import "stru_report_m_sdk_request.proto";
+import "stru_select_char_reply.proto";
+import "stru_select_char_request.proto";
+import "stru_sync_language_request.proto";
+import "stru_take_award_by_cd_key_request.proto";
+import "stru_upload_face_success_request.proto";
+
+message GrpcCharactor {
+
+  message Login_Ret {
+    zproto.LoginReply ret = 1;
+  }
+
+  message Login {
+    zproto.LoginRequest v_request = 1;
+  }
+
+  message CreateChar_Ret {
+    zproto.CreateCharReply ret = 1;
+  }
+
+  message CreateChar {
+    zproto.CreateCharRequest v_request = 1;
+  }
+
+  message SelectChar_Ret {
+    zproto.SelectCharReply ret = 1;
+  }
+
+  message SelectChar {
+    zproto.SelectCharRequest v_request = 1;
+  }
+
+  message DeleteChar_Ret {
+    zproto.DeleteCharReply ret = 1;
+  }
+
+  message DeleteChar {
+    zproto.DeleteCharRequest v_request = 1;
+  }
+
+  message Reconnect_Ret {
+    zproto.ReconnectReply ret = 1;
+  }
+
+  message Reconnect {
+    zproto.ReconnectRequest v_request = 1;
+  }
+
+  message ExitGame {
+    zproto.ExitGameRequest v_request = 1;
+  }
+
+  message ReportMSdk_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message ReportMSdk {
+    zproto.ReportMSdkRequest v_request = 1;
+  }
+
+  message GetFaceUpToken {
+    zproto.GetFaceUpTokenRequest v_request = 1;
+  }
+
+  message UploadFaceSuccess_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message UploadFaceSuccess {
+    zproto.UploadFaceSuccessRequest v_request = 1;
+  }
+
+  message GetFaceUploadData_Ret {
+    zproto.GetFaceUploadDataReply ret = 1;
+  }
+
+  message GetFaceUploadData {
+    zproto.GetFaceUploadDataRequest v_request = 1;
+  }
+
+  message GetFaceDataUrl_Ret {
+    zproto.GetFaceDataUrlReply ret = 1;
+  }
+
+  message GetFaceDataUrl {
+    zproto.GetFaceDataUrlRequest v_request = 1;
+  }
+
+  message CancelDeleteChar_Ret {
+    zproto.CancelDeleteCharReply ret = 1;
+  }
+
+  message CancelDeleteChar {
+    zproto.CancelDeleteCharRequest v_request = 1;
+  }
+
+  message PrivilegeActivate_Ret {
+    zproto.PrivilegeActivateReply ret = 1;
+  }
+
+  message PrivilegeActivate {
+    zproto.PrivilegeActivateRequest v_request = 1;
+  }
+
+  message TakeAwardByCdKey_Ret {
+    zproto.EErrorCode ret = 1;
+  }
+
+  message TakeAwardByCdKey {
+    zproto.TakeAwardByCdKeyRequest v_request = 1;
+  }
+
+  message SyncLanguage {
+    zproto.SyncLanguageRequest v_request = 1;
+  }
+}
+

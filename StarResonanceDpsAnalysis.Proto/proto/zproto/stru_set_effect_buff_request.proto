@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetEffectBuffRequest {
+  int64 union_id = 2;
+  int32 effect_buff_pos = 3;
+  int32 effect_buff_id = 4;
+}
+

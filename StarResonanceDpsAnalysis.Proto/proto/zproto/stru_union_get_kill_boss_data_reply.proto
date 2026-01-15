@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_raid_kill_boss_record.proto";
+
+message UnionGetKillBossDataReply {
+  int32 kill_cnt = 1;
+  repeated zproto.UnionRaidKillBossRecord kill_boss_records = 2;
+  zproto.EErrorCode err_code = 3;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_build_life_profession_infos.proto";
+import "enum_e_error_code.proto";
+import "stru_homeland_visit_info.proto";
+
+message GetHomelandVisitInfoReply {
+  zproto.EErrorCode err_code = 1;
+  zproto.HomelandVisitInfo homeland_visit_info = 2;
+  zproto.CommunityBuildLifeProfessionInfos life_profession_infos = 3;
+}
+

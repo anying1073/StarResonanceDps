@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message InvestigationClueTableBase {
+  int32 id = 1463;
+  int32 sort = 822;
+  int_table unlock_condition = 1014;
+  mlstring clue = 251;
+  mlstring_array answer = 311;
+  mlstring tips = 1184;
+  mlstring_array tap_bubble = 1681;
+  int_array tap_bubble_action = 1849;
+  mlstring unlocked_bubble = 1539;
+  int32 unlocked_bubble_action = 130;
+}
+
+message InvestigationClueTableMgr {
+  map<int32, bokura.InvestigationClueTableBase> datas = 1;
+}
+

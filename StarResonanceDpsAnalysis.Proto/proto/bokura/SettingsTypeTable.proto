@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+message SettingsTypeTableBase {
+  int32 types_id = 1912;
+  int32 system_id = 518;
+  string name = 439;
+  int32 sort = 1643;
+}
+
+message SettingsTypeTableMgr {
+  map<int32, bokura.SettingsTypeTableBase> datas = 1;
+}
+

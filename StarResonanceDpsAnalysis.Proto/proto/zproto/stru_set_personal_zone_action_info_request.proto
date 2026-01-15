@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_action_info.proto";
+
+message SetPersonalZoneActionInfoRequest {
+  zproto.ActionInfo action_info = 1;
+}
+

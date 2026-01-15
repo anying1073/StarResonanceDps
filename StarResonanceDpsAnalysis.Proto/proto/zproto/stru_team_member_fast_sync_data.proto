@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_position.proto";
+
+message TeamMemberFastSyncData {
+  int64 char_id = 1;
+  int32 scene_id = 2;
+  zproto.Position position = 3;
+  int64 hp = 4;
+  int64 max_hp = 5;
+  int32 state = 6;
+  int32 scene_area_id = 7;
+}
+

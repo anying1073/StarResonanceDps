@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message GashaGuaranteeInfo {
+  uint32 id = 1;
+  uint32 guaranteex = 2;
+  uint32 guaranteey = 3;
+  int32 residue_guarantee_timex = 4;
+  int32 residue_guarantee_timey = 5;
+  int32 residue_guarantee_timez = 6;
+  uint32 guaranteez = 7;
+}
+

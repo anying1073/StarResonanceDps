@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_cut_scene_info.proto";
+import "stru_dirty_mask.proto";
+
+message CutSceneInfos {
+  map<int32, zproto.CutSceneInfo> cut_scene_infos = 1;
+  map<int32, bool> finished_cut_scenes = 2;
+  map<int64, bool> finished_infos = 3;
+}
+

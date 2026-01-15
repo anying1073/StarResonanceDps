@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message StructureGroupInfo {
+  int64 group_id = 1;
+  string group_name = 2;
+  repeated int64 structure_ids = 3;
+}
+

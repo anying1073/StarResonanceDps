@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+message CreateUnionRequest {
+  string union_name = 2;
+  repeated uint32 union_icon = 3;
+  string declaration = 4;
+  bool auto_approval = 5;
+  repeated uint32 tags = 6;
+}
+

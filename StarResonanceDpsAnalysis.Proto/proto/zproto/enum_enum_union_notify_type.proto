@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EnumUnionNotifyType {
+  UnionNotifyDefault = 0;
+  UnionNotifyJoin = 1;
+  UnionNotifyLeave = 2;
+  UnionNotifyMemUpdate = 3;
+}
+

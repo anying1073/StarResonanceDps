@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EEnumVisitorType {
+  EnumVisitNone = 0;
+  EnumVisitOwner = 1;
+  EnumVisitCohabitant = 2;
+  EnumVisitOther = 3;
+}
+

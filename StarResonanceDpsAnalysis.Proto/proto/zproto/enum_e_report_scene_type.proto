@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EReportSceneType {
+  EReportSceneTypeNone = 0;
+  EReportSceneTypeChat = 1;
+  EReportSceneTypeBaseInfo = 2;
+  EReportSceneTypeGameScene = 3;
+  EReportSceneTypeArticle = 4;
+  EReportSceneTypeComment = 5;
+  EReportSceneTypeBreakThrough = 6;
+  EReportSceneTypeUnionInfo = 7;
+  EReportSceneTypeHomeInfo = 8;
+}
+

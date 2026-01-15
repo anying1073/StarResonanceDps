@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message DanceActive {
+  int64 union_id = 1;
+  int32 action_id = 2;
+}
+

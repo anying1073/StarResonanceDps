@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message FishingFirstShowRecordRequest {
+  int32 fish_id = 1;
+}
+

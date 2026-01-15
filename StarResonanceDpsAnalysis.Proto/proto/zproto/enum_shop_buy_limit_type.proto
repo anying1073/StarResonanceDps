@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ShopBuyLimitType {
+  ShopBuyLimitNone = 0;
+  ShopBuyLimitLevel = 1;
+}
+

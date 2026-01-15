@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReplaceSkillInfo {
+  int32 uuid = 1;
+  int64 begin_time = 2;
+  int32 skill_id = 3;
+  int32 replace_skill = 4;
+}
+

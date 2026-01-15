@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EUserTransferType {
+  EUserTransferTypeDefault = 0;
+  EUserTransferTypeScenePosition = 1;
+  EUserTransferTypeScenePosId = 2;
+  EUserTransferTypePivot = 3;
+  EUserTransferTypeCutScene = 4;
+  EUserTransferTypeNear = 5;
+}
+

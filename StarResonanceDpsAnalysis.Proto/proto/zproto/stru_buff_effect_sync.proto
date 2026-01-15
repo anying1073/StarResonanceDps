@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_buff_effect.proto";
+
+message BuffEffectSync {
+    optional int64 Uuid = 1;
+    repeated BuffEffect BuffEffects = 2;
+}

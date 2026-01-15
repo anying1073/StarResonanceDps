@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_pay_type.proto";
+import "enum_e_query_balance_type.proto";
+
+message QueryBalanceRequest {
+  zproto.EPayType pay_type = 1;
+  zproto.EQueryBalanceType query_type = 2;
+  string ext_data = 3;
+}
+

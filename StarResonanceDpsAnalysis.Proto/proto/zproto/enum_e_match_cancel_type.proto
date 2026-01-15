@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EMatchCancelType {
+  EMatchCancelTypeNull = 0;
+  EMatchCancelTypeRequest = 1;
+  EMatchCancelTypeTimeout = 2;
+  EMatchCancelTypeUnReady = 3;
+  EMatchCancelTypeTeamMemberJoin = 4;
+  EMatchCancelTypeTeamMemberLeave = 5;
+  EMatchCancelTypeEnterDungeon = 6;
+}
+

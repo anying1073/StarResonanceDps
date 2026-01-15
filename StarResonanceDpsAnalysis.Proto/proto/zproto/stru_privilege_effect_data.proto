@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PrivilegeEffectData {
+  int32 normal_pass_id = 1;
+  int32 prime_pass_id = 2;
+  map<int32, bool> normal_pass_id_map = 3;
+  map<int32, bool> prime_pass_id_map = 4;
+}
+

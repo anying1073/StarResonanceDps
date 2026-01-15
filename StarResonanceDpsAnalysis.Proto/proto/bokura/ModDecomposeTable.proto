@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ModDecomposeTableBase {
+  int32 id = 1463;
+  int32 mod_lvl = 395;
+  int32 mod_type = 34;
+  int_table mod_decomposea = 1033;
+  int_table mod_decomposeb = 81;
+}
+
+message ModDecomposeTableMgr {
+  map<int32, bokura.ModDecomposeTableBase> datas = 1;
+}
+

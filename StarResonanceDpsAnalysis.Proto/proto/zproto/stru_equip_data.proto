@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_equip_nine.proto";
+import "stru_dirty_mask.proto";
+
+message EquipData {
+  repeated zproto.EquipNine equip_infos = 1;
+}
+

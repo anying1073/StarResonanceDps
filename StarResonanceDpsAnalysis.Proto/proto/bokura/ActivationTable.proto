@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ActivationTableBase {
+  int32 id = 1463;
+  int32 target_type = 736;
+  int32 scene_id = 1506;
+  int_array param = 1207;
+  int32 activation = 1705;
+  mlstring target_des = 1279;
+}
+
+message ActivationTableMgr {
+  map<int32, bokura.ActivationTableBase> datas = 1;
+}
+

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FriendshipLevelBase {
+  int32 level = 1120;
+  int32 exp = 970;
+  bool is_award_level = 1171;
+  mlstring content = 783;
+  string function_unlock = 1328;
+  int_table reward_id = 212;
+  int32 award_id = 1636;
+}
+
+message FriendshipLevelMgr {
+  map<int32, bokura.FriendshipLevelBase> datas = 1;
+}
+

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_completed_target_info.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonPioneer {
+  map<int32, zproto.CompletedTargetInfo> completed_target_this_time = 1;
+}
+

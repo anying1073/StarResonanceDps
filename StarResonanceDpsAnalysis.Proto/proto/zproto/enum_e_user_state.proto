@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EUserState {
+  ECreateState = 0;
+  ENameState = 1;
+}
+

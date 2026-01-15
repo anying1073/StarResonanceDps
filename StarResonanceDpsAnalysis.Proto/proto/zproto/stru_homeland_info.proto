@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_player_info.proto";
+import "stru_home_land_clutter_generation_record.proto";
+import "stru_home_land_clutter_info.proto";
+import "stru_homeland_decoration_info.proto";
+import "stru_structure.proto";
+import "stru_structure_group_info.proto";
+
+message HomelandInfo {
+  int64 owner_char_id = 1;
+  int64 homeland_id = 2;
+  int32 field_id = 3;
+  string name = 4;
+  int32 level = 5;
+  int64 exp = 6;
+  int32 cleanliness = 7;
+  int64 lastsubtractcleanlinesstime = 8;
+  zproto.HomeLandClutterInfo home_land_clutter = 9;
+  zproto.HomeLandClutterGenerationRecord home_land_clutter_generation_record = 10;
+  map<int64, zproto.Structure> structures = 11;
+  map<int64, zproto.StructureGroupInfo> groups = 12;
+  map<int64, zproto.CommunityPlayerInfo> cohabitant = 13;
+  zproto.HomelandDecorationInfo outer_decoration_info = 14;
+  zproto.HomelandDecorationInfo inner_decoration_info = 15;
+  repeated int32 unlocked_areas = 16;
+  int32 housing_type = 17;
+}
+

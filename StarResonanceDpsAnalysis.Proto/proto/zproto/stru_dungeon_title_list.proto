@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_title_info.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonTitleList {
+  map<int32, zproto.DungeonTitleInfo> title_info = 1;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EChangeSceneType {
+  ChangeSceneTypeNormal = 0;
+  ChangeSceneTransfer = 1;
+  ChangeSceneTypeLogin = 2;
+  ChangeSceneReconnect = 3;
+  ChangeSceneDisconnect = 4;
+  ReceiveLoadMapSuccess = 5;
+}
+

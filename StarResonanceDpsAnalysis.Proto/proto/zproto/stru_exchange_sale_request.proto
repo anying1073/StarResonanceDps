@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ExchangeSaleRequest {
+  int32 num = 1;
+  int32 rate = 2;
+}
+

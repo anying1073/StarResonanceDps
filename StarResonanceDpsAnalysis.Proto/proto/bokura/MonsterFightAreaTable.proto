@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MonsterFightAreaTableBase {
+  int32 id = 1463;
+  string_array area_name = 1408;
+  int_array area_hate_weight = 747;
+  number_table area_radius = 499;
+  float area_maximum_radius = 262;
+  number_table area_angle = 1241;
+  float player_hate_weight = 1180;
+}
+
+message MonsterFightAreaTableMgr {
+  map<int32, bokura.MonsterFightAreaTableBase> datas = 1;
+}
+

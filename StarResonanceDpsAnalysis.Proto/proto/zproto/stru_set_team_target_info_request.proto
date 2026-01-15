@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetTeamTargetInfoRequest {
+  uint32 target_id = 2;
+  bool show = 3;
+  bool auto_match = 4;
+  string desc = 5;
+}
+

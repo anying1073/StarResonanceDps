@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_build_life_profession_info.proto";
+
+message CommunityBuildLifeProfessionInfoList {
+  repeated zproto.CommunityBuildLifeProfessionInfo items = 1;
+}
+

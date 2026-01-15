@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_fashion_advance_info.proto";
+import "stru_fashion_color_info.proto";
+import "stru_unlock_color_info.proto";
+import "stru_dirty_mask.proto";
+
+message FashionMgr {
+  map<int32, int32> wear_info = 1;
+  map<int32, zproto.FashionColorInfo> fashion_datas = 2;
+  map<int32, zproto.UnlockColorInfo> unlock_color = 3;
+  map<int32, bool> fashion_reward = 4;
+  map<int32, bool> all_fashion = 5;
+  map<int32, bool> all_ride = 6;
+  map<int32, bool> all_weapon_skin = 7;
+  map<int32, zproto.FashionAdvanceInfo> fashion_advance = 8;
+  int32 fashion_collect_point = 9;
+  int32 ride_collect_point = 10;
+  int32 weapon_skin_collect_point = 11;
+  map<int32, int32> all_fashion_num = 12;
+  map<int32, int32> all_ride_num = 13;
+  map<int32, int32> all_weapon_skin_num = 14;
+  bool is_fashion_init = 15;
+  bool is_ride_init = 16;
+  bool is_weapon_skin_init = 17;
+  int32 fashion_unlock_fix_flag = 18;
+}
+

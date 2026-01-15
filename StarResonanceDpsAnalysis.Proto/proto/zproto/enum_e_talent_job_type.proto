@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETalentJobType {
+  TalentJobType_None = 0;
+  TalentJobType_Attack = 1;
+  TalentJobType_Support = 2;
+  TalentJobType_Survive = 3;
+}
+

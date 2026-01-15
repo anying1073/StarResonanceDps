@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_map_attr_value.proto";
+
+message MapAttr {
+    optional bool IsClear = 1;
+    optional int32 Id = 2;
+    repeated MapAttrValue Attrs = 3;
+}

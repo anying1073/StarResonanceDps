@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message MahjongActionRequest {
+  int32 action_id = 1;
+  int32 action_param = 2;
+  bytes data = 3;
+}
+

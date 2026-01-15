@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message PlaceHolderPlayer {
+  int64 char_id = 1;
+  string name = 2;
+}
+

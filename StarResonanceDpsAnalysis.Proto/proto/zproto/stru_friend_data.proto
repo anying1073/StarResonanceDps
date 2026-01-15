@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_friend_base_info.proto";
+import "stru_personal_info.proto";
+
+message FriendData {
+  zproto.PersonalInfo info = 1;
+  zproto.FriendBaseInfo base_info = 2;
+}
+

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message VoxelExportTableBase {
+  int32 id = 1463;
+  string name = 439;
+  string scene_file_path = 1595;
+  number_array cube_position = 837;
+  number_array collider_size = 987;
+  bool has_terrain = 635;
+  string terrain_file_path = 1538;
+}
+
+message VoxelExportTableMgr {
+  map<int32, bokura.VoxelExportTableBase> datas = 1;
+}
+

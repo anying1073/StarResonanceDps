@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_bubble_info.proto";
+import "stru_dirty_mask.proto";
+
+message BubbleActData {
+  map<int32, zproto.BubbleInfo> bubble_info = 5;
+}
+

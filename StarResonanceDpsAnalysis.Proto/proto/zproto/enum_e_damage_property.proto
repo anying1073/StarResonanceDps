@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EDamageProperty {
+  General = 0;
+  Fire = 1;
+  Water = 2;
+  Electricity = 3;
+  Wood = 4;
+  Wind = 5;
+  Rock = 6;
+  Light = 7;
+  Dark = 8;
+  Count = 9;
+}
+

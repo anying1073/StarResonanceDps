@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ProfessionSignTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int_array sign_type = 1653;
+  string card = 483;
+  string item_tips = 491;
+  int_array effect_type = 527;
+  int_array effect_id = 1555;
+  string_table effectkey = 1761;
+}
+
+message ProfessionSignTableMgr {
+  map<int32, bokura.ProfessionSignTableBase> datas = 1;
+}
+

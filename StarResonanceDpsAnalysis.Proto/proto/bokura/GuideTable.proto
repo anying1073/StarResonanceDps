@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message GuideTableBase {
+  int32 id = 1463;
+  int32 priority = 1712;
+  int32 guide_group = 1642;
+  int_array show_condition_type = 1621;
+  string show_condition_value = 1389;
+  bool check_completion = 1533;
+  string trigger_condition_type = 14;
+  string trigger_condition_value = 303;
+  string completion_condition_type = 1075;
+  string completion_condition_value = 1630;
+  int32 auto_complete_time = 1693;
+  bool is_show_ui_frame = 1167;
+  mlstring text_around = 1939;
+  int_array text_show_direction = 1908;
+  mlstring text_middle = 782;
+  int_array keyboard_id = 246;
+  string ui_view = 1534;
+  bool is_black = 965;
+  int32 show_helplibrary_id = 464;
+  string_array dynamic_ui = 1636;
+}
+
+message GuideTableMgr {
+  map<int32, bokura.GuideTableBase> datas = 1;
+}
+

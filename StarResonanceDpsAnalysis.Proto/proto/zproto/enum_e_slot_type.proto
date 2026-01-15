@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ESlotType {
+  NormalSlot = 0;
+  PressTimeSlot = 1;
+  StageHasLongPressSlot = 2;
+}
+

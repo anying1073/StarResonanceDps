@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ChitChatMsgType {
+  ChatMsgTextMessage = 0;
+  ChatMsgTextNotice = 1;
+  ChatMsgMultiLangNotice = 2;
+  ChatMsgPictureEmoji = 3;
+  ChatMsgPicture = 4;
+  ChatMsgVoice = 5;
+  ChatMsgHypertext = 6;
+}
+

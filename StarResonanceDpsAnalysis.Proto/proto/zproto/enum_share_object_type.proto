@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ShareObjectType {
+  ShareObjectTypeNone = 0;
+  ShareObjectTypeItem = 1;
+  ShareObjectTypeFishPersonalTotal = 2;
+  ShareObjectTypeFishItem = 3;
+  ShareObjectTypeFishRank = 4;
+  ShareObjectTypePersonalZone = 5;
+  ShareObjectTypeUnionGrowFund = 6;
+  ShareObjectTypeMasterMode = 7;
+  ShareObjectTypePosition = 8;
+}
+

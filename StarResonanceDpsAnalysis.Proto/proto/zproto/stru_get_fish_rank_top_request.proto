@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetFishRankTopRequest {
+  int32 fish_area_id = 1;
+}
+

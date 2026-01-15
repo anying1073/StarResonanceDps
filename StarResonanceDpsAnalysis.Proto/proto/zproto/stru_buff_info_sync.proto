@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_buff_info.proto";
+
+message BuffInfoSync {
+    optional int64 Uuid = 1;
+    repeated BuffInfo BuffInfos = 2;
+}

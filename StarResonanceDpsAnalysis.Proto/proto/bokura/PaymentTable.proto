@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PaymentTableBase {
+  int32 id = 1463;
+  string product_name = 1541;
+  string desc = 1953;
+  int32 product_type = 618;
+  string currency = 968;
+  int32 price = 310;
+  int32 award_id = 1197;
+  int_table items = 669;
+  int32 mail_id = 583;
+  int32 platform = 1857;
+  int32 is_sale = 1626;
+}
+
+message PaymentTableMgr {
+  map<int32, bokura.PaymentTableBase> datas = 1;
+}
+

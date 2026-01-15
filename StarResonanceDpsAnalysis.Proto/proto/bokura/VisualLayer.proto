@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message VisualLayerBase {
+  int32 id = 1463;
+  int32 visual_layer_type = 1532;
+  int32 main_ui = 21;
+  int_array revive_table_id = 1420;
+  string_array audio_bank = 1796;
+  string bgm = 1107;
+  int_array black_mask = 911;
+}
+
+message VisualLayerMgr {
+  map<int32, bokura.VisualLayerBase> datas = 1;
+}
+

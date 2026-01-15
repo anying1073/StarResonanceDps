@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mail_state_info.proto";
+
+message SyncMailInfoRequest {
+  map<int64, zproto.MailStateInfo> mails = 1;
+}
+

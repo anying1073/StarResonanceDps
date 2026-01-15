@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_lift_profession_specialization.proto";
+import "stru_dirty_mask.proto";
+
+message LifeProfessionBasic {
+  int32 id = 1;
+  int32 level = 2;
+  int32 exp = 3;
+  map<int32, zproto.LiftProfessionSpecialization> specialization = 5;
+  int32 current_specialization_point = 6;
+}
+

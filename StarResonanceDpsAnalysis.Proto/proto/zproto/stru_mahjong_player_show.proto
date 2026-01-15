@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mahjong_open_meld.proto";
+
+message MahjongPlayerShow {
+  int64 player_id = 1;
+  int32 player_index = 2;
+  int32 coin = 3;
+  int32 self_wind = 4;
+  int32 lizhi = 5;
+  repeated int32 drop_cards = 6;
+  repeated zproto.MahjongOpenMeld open_melds = 7;
+  int32 cards_len = 8;
+  bool is_last_draw = 9;
+  repeated int32 cards = 10;
+  int32 furtin = 11;
+  bytes show_data = 12;
+}
+

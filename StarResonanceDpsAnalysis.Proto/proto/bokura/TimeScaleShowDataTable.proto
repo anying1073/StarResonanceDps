@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+message TimeScaleShowDataTableBase {
+  int64 id = 1463;
+  float start = 678;
+  float duration = 544;
+  float end = 1415;
+  bool is_attacker = 920;
+  int32 state_id = 308;
+  int32 group_id = 196;
+  float time_scale = 1847;
+}
+
+message TimeScaleShowDataTableMgr {
+  map<int64, bokura.TimeScaleShowDataTableBase> datas = 1;
+}
+

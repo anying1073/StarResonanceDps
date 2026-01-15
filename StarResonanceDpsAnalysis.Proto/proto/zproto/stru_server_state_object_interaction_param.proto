@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ServerStateObjectInteractionParam {
+  int64 obj_uuid = 1;
+  int32 state_value = 2;
+  int64 last_interaction_time = 3;
+}
+

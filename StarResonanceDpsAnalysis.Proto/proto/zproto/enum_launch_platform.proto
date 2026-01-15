@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum LaunchPlatform {
+  LaunchPlatformNull = 0;
+  LaunchPlatformWeXin = 1001;
+  LaunchPlatformQq = 1002;
+}
+

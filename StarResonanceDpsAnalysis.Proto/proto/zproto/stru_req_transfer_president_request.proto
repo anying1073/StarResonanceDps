@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReqTransferPresidentRequest {
+  int64 union_id = 2;
+  uint32 v_new_president_id = 3;
+}
+

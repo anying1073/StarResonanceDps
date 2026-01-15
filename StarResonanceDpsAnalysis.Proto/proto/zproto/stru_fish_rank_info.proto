@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_user_summary_data.proto";
+
+message FishRankInfo {
+  int64 millisecond = 1;
+  int32 size = 2;
+  zproto.UserSummaryData player_data = 3;
+}
+

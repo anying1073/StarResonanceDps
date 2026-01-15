@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message MovePhotoToAlbumReply {
+  uint32 photo_id = 3;
+  uint32 prev_album_id = 4;
+  uint32 cur_album_id = 5;
+  zproto.EErrorCode err_code = 6;
+}
+

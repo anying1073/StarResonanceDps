@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ERecordState {
+  ERecordState_None = 0;
+  ERecordState_Perfect = 1;
+  ERecordState_Broken = 2;
+}
+

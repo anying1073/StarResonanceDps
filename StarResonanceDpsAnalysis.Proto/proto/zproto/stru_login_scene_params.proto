@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message LoginSceneParams {
+  int32 into_scene_type = 1;
+  int32 last_scene_id = 2;
+  int32 born_scene_id = 3;
+}
+

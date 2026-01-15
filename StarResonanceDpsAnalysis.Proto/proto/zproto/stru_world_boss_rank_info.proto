@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message WorldBossRankInfo {
+  int64 char_id = 1;
+  int32 score = 2;
+}
+

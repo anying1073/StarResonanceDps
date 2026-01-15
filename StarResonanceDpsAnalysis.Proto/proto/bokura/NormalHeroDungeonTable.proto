@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message NormalHeroDungeonTableBase {
+  int32 dungeon_id = 1583;
+  int32 season_open_time = 962;
+  int32 affix_pool = 870;
+  string background = 343;
+  int32 model_id = 555;
+  int32 effect_id = 1555;
+  int32 base_ratio = 1148;
+  int32 limit_time = 348;
+  int_table score_rank = 741;
+  int_array key_reward = 1791;
+}
+
+message NormalHeroDungeonTableMgr {
+  map<int32, bokura.NormalHeroDungeonTableBase> datas = 1;
+}
+

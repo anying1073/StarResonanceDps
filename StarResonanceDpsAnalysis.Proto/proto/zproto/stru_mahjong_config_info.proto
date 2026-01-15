@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_mahjong_config_type.proto";
+
+message MahjongConfigInfo {
+  zproto.MahjongConfigType config_type = 1;
+  string value = 2;
+}
+

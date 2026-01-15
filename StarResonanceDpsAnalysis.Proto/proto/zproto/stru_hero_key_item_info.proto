@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_hero_key_roll_info.proto";
+import "stru_item.proto";
+import "stru_dirty_mask.proto";
+
+message HeroKeyItemInfo {
+  zproto.Item item = 1;
+  map<uint32, zproto.HeroKeyRollInfo> roll_info = 2;
+}
+

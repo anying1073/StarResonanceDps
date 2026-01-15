@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_union_info.proto";
+
+message UnionRemoveItemRequest {
+  zproto.UnionInfo union_info = 1;
+  zproto.EErrorCode err_code = 2;
+  repeated int32 item_ids = 3;
+  repeated int32 item_num = 4;
+}
+

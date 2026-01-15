@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_union_effect_buff.proto";
+
+message NotifyEffectBufChangeRequest {
+  zproto.UnionEffectBuff set_effect_buff = 2;
+  zproto.UnionEffectBuff cancel_effect_buff = 3;
+}
+

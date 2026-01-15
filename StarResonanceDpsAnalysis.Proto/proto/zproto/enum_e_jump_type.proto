@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EJumpType {
+  EDefault = 0;
+  EReverse = 1;
+  EFallen = 2;
+  EShimmy = 3;
+  EKickWall = 4;
+  EFive = 5;
+  EPedalWallEnd = 6;
+  EPedalWallStop = 7;
+  ELazyJump = 8;
+  EPedalWallOver = 9;
+  ERideJump = 101;
+  EBounceJump = 201;
+}
+

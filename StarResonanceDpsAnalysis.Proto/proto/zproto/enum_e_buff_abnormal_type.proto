@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EBuffAbnormalType {
+  EAbnormalNone = 0;
+  EAbnormalA = 301;
+  EAbnormalB = 302;
+  EAbnormalC = 303;
+  EAbnormalD = 304;
+  EAbnormalE = 305;
+}
+

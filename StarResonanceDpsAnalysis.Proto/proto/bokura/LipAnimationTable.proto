@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+message LipAnimationTableBase {
+  int32 id = 1463;
+  string comment = 11;
+  string vowela = 1427;
+  string vowelo = 1999;
+  string vowele = 950;
+  string voweli = 1593;
+  string vowelu = 587;
+}
+
+message LipAnimationTableMgr {
+  map<int32, bokura.LipAnimationTableBase> datas = 1;
+}
+

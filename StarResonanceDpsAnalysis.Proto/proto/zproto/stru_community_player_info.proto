@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_community_char_basic_data.proto";
+import "stru_community_player_authority_info.proto";
+import "stru_community_quit_cohabitant.proto";
+import "stru_home_land_player_task_info.proto";
+
+message CommunityPlayerInfo {
+  zproto.CommunityCharBasicData community_char = 1;
+  zproto.CommunityPlayerAuthorityInfo player_authority_info = 2;
+  zproto.CommunityQuitCohabitant quit_cohabitant = 3;
+  zproto.HomeLandPlayerTaskInfo home_land_player_task_info = 4;
+}
+

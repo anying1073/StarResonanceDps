@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityInvitationInfo {
+  int64 time = 1;
+  int64 invitee_char_id = 2;
+}
+

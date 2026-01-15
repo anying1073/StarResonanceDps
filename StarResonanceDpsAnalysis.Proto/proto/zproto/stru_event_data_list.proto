@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_event_data.proto";
+
+message EventDataList {
+    optional int64 Uuid = 1;
+    repeated EventData Events = 2;
+}

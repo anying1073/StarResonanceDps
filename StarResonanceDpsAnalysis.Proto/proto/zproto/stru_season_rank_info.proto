@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message SeasonRankInfo {
+  uint32 cur_ran_k_star = 1;
+  repeated uint32 received_rank_star = 2;
+}
+

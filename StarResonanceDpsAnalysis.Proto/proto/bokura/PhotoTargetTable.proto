@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message PhotoTargetTableBase {
+  int32 id = 1463;
+  int32 target_type = 736;
+  int_array param = 1207;
+  int32 num = 947;
+  int32 scene_id = 1506;
+  mlstring des = 266;
+}
+
+message PhotoTargetTableMgr {
+  map<int32, bokura.PhotoTargetTableBase> datas = 1;
+}
+

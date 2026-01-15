@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_cultivate_big_node_data.proto";
+import "stru_cultivate_middle_node_data.proto";
+import "stru_cultivate_normal_node_data.proto";
+import "stru_dirty_mask.proto";
+
+message CultivateAreaData {
+  map<int32, zproto.CultivateNormalNodeData> cultivate_normal_node_map = 1;
+  map<int32, zproto.CultivateMiddleNodeData> cultivate_middle_node_map = 2;
+  map<int32, zproto.CultivateBigNodeData> cultivate_big_node_map = 3;
+  int32 activate_effect_score = 4;
+  bool is_active = 5;
+}
+

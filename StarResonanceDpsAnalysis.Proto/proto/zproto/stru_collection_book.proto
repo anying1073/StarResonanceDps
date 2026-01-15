@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message CollectionBook {
+  map<uint32, bool> mod_book_map = 1;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message BuffChange {
+  int32 layer = 1;
+  int64 duration = 2;
+  int64 create_time = 3;
+}
+

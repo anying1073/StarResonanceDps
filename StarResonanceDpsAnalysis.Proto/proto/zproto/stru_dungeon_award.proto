@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonAward {
+  map<int64, zproto.Item> items = 1;
+  int32 flag_assist = 2;
+  int32 award_count = 3;
+  repeated int64 first_items = 4;
+}
+

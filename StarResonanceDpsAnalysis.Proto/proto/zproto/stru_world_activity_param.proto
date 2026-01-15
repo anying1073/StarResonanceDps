@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_activity.proto";
+
+message WorldActivityParam {
+  zproto.Activity activity = 1;
+}
+

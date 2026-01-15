@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package bokura;
+
+message BugReportFilterTableBase {
+  int32 id = 1463;
+  string filter_str = 1290;
+  string match_str = 1467;
+  string desc = 1953;
+}
+
+message BugReportFilterTableMgr {
+  map<int32, bokura.BugReportFilterTableBase> datas = 1;
+}
+

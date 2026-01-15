@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FantasyHoleTableBase {
+  int32 id = 1463;
+  string des = 1550;
+  string hole_icon = 1560;
+  int_table unlock = 1666;
+  int_table unlock_consume = 1645;
+  int32 fantasytype = 36;
+}
+
+message FantasyHoleTableMgr {
+  map<int32, bokura.FantasyHoleTableBase> datas = 1;
+}
+

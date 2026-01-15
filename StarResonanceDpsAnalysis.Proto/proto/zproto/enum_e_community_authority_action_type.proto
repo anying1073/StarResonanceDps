@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ECommunityAuthorityActionType {
+  CommunityAuthorityActionType = 0;
+  CommunityAuthorityActionTypeWareHouse = 101;
+  CommunityAuthorityActionTypeFurnitureEdit = 102;
+  CommunityAuthorityActionTypeFurnitureMake = 103;
+  CommunityAuthorityActionTypeEnterHome = 104;
+  CommunityAuthorityActionTypeHarvest = 105;
+  CommunityAuthorityActionTypeInviteCohabitant = 106;
+  CommunityAuthorityActionTypeUpgradeHome = 107;
+  CommunityAuthorityActionTypeCollectFurniture = 108;
+  CommunityAuthorityActionTypePlant = 109;
+  CommunityAuthorityActionTypeWater = 110;
+  CommunityAuthorityActionTypeFertilize = 111;
+  CommunityAuthorityActionTypePollinate = 112;
+  CommunityAuthorityActionTypeFarmlandEdit = 113;
+  CommunityAuthorityActionTypePollen = 114;
+}
+

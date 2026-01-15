@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_mahjong_final_settle_info.proto";
+
+message MahjongFinalMessage {
+  repeated zproto.MahjongFinalSettleInfo infos = 1;
+}
+

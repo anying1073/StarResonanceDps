@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message HomelandMaterialInfo {
+  int32 material_id = 1;
+  int64 char_id = 2;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_int_vec3.proto";
+
+message ColorData {
+  map<int32, zproto.IntVec3> color_dict = 1;
+  map<int32, bool> reset_dict = 2;
+  map<int32, zproto.IntVec3> attachment_color = 3;
+  map<int32, bool> attachment_reset = 4;
+}
+

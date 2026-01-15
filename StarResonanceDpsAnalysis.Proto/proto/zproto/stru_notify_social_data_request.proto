@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_social_data.proto";
+
+message NotifySocialDataRequest {
+  zproto.SocialData data = 1;
+}
+

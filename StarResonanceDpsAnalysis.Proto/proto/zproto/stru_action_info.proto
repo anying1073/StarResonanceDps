@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ActionInfo {
+  int32 action_id = 1;
+  int32 period = 2;
+  float percent = 3;
+}
+

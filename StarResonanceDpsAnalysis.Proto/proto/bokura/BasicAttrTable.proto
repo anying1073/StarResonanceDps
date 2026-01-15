@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message BasicAttrTableBase {
+  int32 id = 1463;
+  int32 basic0 = 1978;
+  int_table grow_min0 = 1795;
+  int_array grow_times0 = 1494;
+  int32 basic2 = 56;
+  int_table grow_min2 = 1098;
+  int_array grow_times2 = 1315;
+  int32 basic3 = 1640;
+  int_table grow_min3 = 1474;
+  int_array grow_times3 = 1975;
+  int32 basic4 = 1070;
+  int_table grow_min4 = 356;
+  int_array grow_times4 = 1703;
+}
+
+message BasicAttrTableMgr {
+  map<int32, bokura.BasicAttrTableBase> datas = 1;
+}
+

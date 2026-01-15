@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EExchangePreItemResult {
+  ExchangePreItemResultNone = 0;
+  ExchangePreItemResultSuccess = 1;
+  ExchangePreItemResultFail = 2;
+}
+

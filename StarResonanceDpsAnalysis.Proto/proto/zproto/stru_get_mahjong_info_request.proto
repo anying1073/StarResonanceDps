@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message GetMahjongInfoRequest {
+  int32 notify_world = 1;
+  string table_guid = 2;
+}
+

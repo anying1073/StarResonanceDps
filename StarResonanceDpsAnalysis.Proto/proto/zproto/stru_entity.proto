@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_attr_collection.proto";
+import "stru_temp_attr_collection.proto";
+import "stru_actor_body_part_infos.proto";
+import "stru_seq_passive_skill_info.proto";
+import "stru_buff_info_sync.proto";
+import "stru_buff_effect_sync.proto";
+import "enum_e_entity_type.proto";
+import "enum_e_appear_type.proto";
+import "stru_magnetic_queue_appear_info.proto";
+
+// Entity details
+message Entity {
+  int64 uuid = 1;                 // 实体唯一ID
+  EEntityType ent_type = 2;       // 实体类型
+
+  AttrCollection attrs      = 3;  // attributes (used in processor)
+  TempAttrCollection temp_attrs = 4;
+  ActorBodyPartInfos body_part_infos = 5;
+  SeqPassiveSkillInfo passive_skill_infos = 6;
+  BuffInfoSync buff_infos = 7;
+  BuffEffectSync buff_effect = 8;
+  EAppearType appear_type = 9;
+  map<int32, MagneticQueueAppearInfo> magnetic_ride_queue_change_info_dict = 10;
+}

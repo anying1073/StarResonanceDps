@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message WorldQuestInfo {
+  uint32 finish_points = 1;
+  repeated uint32 rewards = 2;
+  uint32 exceeding_points = 3;
+}
+

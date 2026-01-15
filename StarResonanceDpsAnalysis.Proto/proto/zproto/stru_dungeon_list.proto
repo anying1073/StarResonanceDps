@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dungeon_enter_limit.proto";
+import "stru_dungeon_info.proto";
+import "stru_dungeon_week_target_list.proto";
+import "stru_raid_record.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonList {
+  map<int32, zproto.DungeonInfo> complete_dungeon = 1;
+  uint32 reset_time = 2;
+  uint32 normal_dungeon_pass_count = 3;
+  zproto.DungeonEnterLimit dungeon_enter_limit = 4;
+  zproto.DungeonWeekTargetList week_target = 5;
+  bool is_assist = 6;
+  map<int32, zproto.RaidRecord> raid_record_table = 7;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+import "stru_show_team.proto";
+
+message GetNearTeamListReply {
+  repeated zproto.ShowTeam team_list = 1;
+  bool is_refresh = 2;
+  int32 member_count = 4;
+  bool ignore_self_talent = 5;
+  zproto.EErrorCode err_code = 6;
+}
+

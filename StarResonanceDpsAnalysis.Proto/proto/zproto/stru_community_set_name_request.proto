@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunitySetNameRequest {
+  string name = 1;
+}
+

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_report_category_type.proto";
+import "enum_e_report_reason_type.proto";
+import "enum_e_report_scene_type.proto";
+import "stru_report_base_info.proto";
+import "stru_report_chat.proto";
+import "stru_report_home.proto";
+import "stru_report_picture.proto";
+import "stru_report_union.proto";
+
+message ReportUploadRequest {
+  zproto.EReportSceneType scene_type = 1;
+  zproto.EReportCategoryType category_type = 2;
+  repeated zproto.EReportReasonType reason_type = 3;
+  string report_desc = 4;
+  zproto.ReportBaseInfo report_base_info = 5;
+  zproto.ReportChat report_chat = 6;
+  zproto.ReportPicture report_picture = 7;
+  zproto.ReportUnion report_union = 8;
+  zproto.ReportHome report_home = 9;
+}
+

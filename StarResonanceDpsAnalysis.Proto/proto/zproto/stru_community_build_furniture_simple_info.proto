@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityBuildFurnitureSimpleInfo {
+  int64 build_uuid = 1;
+  int32 furniture_id = 2;
+  int64 end_time = 3;
+}
+

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message StaticInteractiveObjectTableBase {
+  int32 id = 1463;
+  number_array position = 686;
+  number_array roty = 1477;
+  int32 class_id = 29;
+  number_array radius = 1839;
+  number_array trigger_position = 37;
+  int_table interaction_template = 1682;
+  string_array interaction_event = 1343;
+  int32 source_type = 380;
+}
+
+message StaticInteractiveObjectTableMgr {
+  map<int32, bokura.StaticInteractiveObjectTableBase> datas = 1;
+}
+

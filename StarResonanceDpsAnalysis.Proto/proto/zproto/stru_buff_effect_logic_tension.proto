@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message BuffEffectLogicTension {
+  int64 target_uuid = 1;
+  repeated int32 strength = 2;
+  int32 strength_length = 3;
+  int32 max_length = 4;
+}
+

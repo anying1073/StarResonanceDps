@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+message ShopItemBuyLimit {
+  int32 purchased_count = 1;
+  int32 can_buy_count = 2;
+  int32 max_buy_count = 3;
+}
+

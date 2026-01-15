@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_receive_reward_status.proto";
+import "stru_month_card_item.proto";
+import "stru_dirty_mask.proto";
+
+message MonthlyCardInfo {
+  zproto.EReceiveRewardStatus limit_award_status = 1;
+  zproto.EReceiveRewardStatus award_status = 2;
+  zproto.MonthCardItem month_card_item = 3;
+  int64 begin_time = 4;
+  int64 end_time = 5;
+}
+

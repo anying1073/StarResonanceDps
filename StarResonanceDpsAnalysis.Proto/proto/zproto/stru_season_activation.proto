@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_season_activation_target.proto";
+import "stru_dirty_mask.proto";
+
+message SeasonActivation {
+  int32 season_id = 1;
+  int32 activation_point = 2;
+  int32 refresh_time = 3;
+  map<int32, zproto.SeasonActivationTarget> activation_targets = 4;
+  map<uint32, int32> stage_reward_status = 5;
+}
+

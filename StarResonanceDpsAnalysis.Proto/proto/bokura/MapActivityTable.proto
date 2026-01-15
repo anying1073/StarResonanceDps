@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message MapActivityTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  int_array scene = 1438;
+  string icon = 1153;
+  int32 function_id = 149;
+  int32 red_dot_id = 754;
+}
+
+message MapActivityTableMgr {
+  map<int32, bokura.MapActivityTableBase> datas = 1;
+}
+

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+
+message HomeLandItemInstance {
+  int64 instance_id = 1;
+  int32 config_id = 2;
+  map<int64, zproto.Item> owner_to_stack_map = 3;
+}
+

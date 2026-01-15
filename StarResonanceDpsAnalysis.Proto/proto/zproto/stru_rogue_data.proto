@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_rogue_buff_data.proto";
+import "stru_dirty_mask.proto";
+
+message RogueData {
+  map<int32, zproto.RogueBuffData> buffs = 1;
+  repeated int32 seasons = 2;
+}
+

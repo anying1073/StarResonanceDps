@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_warehouse_grid.proto";
+
+message NotifyWarehouseGridChangeRequest {
+  zproto.WarehouseGrid warehouse_grid = 1;
+  int64 take_out_char_id = 2;
+  int64 deposit_char_id = 3;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ChallengeDungeonScoreAwardParam {
+  int32 group_id = 1;
+  int32 target_id = 2;
+}
+

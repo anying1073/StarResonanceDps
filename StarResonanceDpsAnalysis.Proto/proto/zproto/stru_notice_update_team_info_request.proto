@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_team_base_info.proto";
+
+message NoticeUpdateTeamInfoRequest {
+  zproto.TeamBaseInfo base_info = 1;
+}
+

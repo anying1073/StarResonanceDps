@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EEnumStructureType {
+  EnumStructureTypeNone = 0;
+  EnumStructureTypeDecoration = 1;
+  EnumStructureTypePartitionWall = 2;
+  EnumStructureTypePartitionWallMat = 3;
+  EnumStructureTypeFarmland = 4;
+  EnumStructureTypeLamplight = 5;
+  EnumStructureTypeFlower = 9;
+}
+

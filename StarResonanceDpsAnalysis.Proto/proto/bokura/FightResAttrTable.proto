@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package bokura;
+
+message FightResAttrTableBase {
+  int64 id = 1463;
+  string name = 439;
+  bool can_cost = 690;
+}
+
+message FightResAttrTableMgr {
+  map<int64, bokura.FightResAttrTableBase> datas = 1;
+}
+

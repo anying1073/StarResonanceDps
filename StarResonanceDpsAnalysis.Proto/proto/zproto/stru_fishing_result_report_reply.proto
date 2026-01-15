@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message FishingResultReportReply {
+  bool durability_exhausted = 1;
+  bool is_burst = 2;
+  bool bait_exhausted = 3;
+  int32 size = 4;
+  bool size_new_record = 5;
+  zproto.EErrorCode err_code = 6;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EItemBindFlag {
+  ItemBindNone = 0;
+  ItemNotBind = 1;
+  ItemBindAll = 2;
+}
+

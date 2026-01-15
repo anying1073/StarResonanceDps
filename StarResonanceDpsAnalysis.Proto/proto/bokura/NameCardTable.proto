@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message NameCardTableBase {
+  int32 id = 1463;
+  mlstring name = 439;
+  mlstring unlock_des = 1991;
+  string image1 = 1583;
+  string image2 = 2016;
+  int32 unlock = 1666;
+}
+
+message NameCardTableMgr {
+  map<int32, bokura.NameCardTableBase> datas = 1;
+}
+

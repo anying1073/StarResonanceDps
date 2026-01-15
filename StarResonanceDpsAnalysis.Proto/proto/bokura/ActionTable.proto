@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+message ActionTableBase {
+  int32 id = 1463;
+  string action_effect = 795;
+  bool is_blend = 173;
+  bool is_upper = 1666;
+  float look_at_body_weight = 1807;
+  int32 unlock_item = 702;
+  bool is_follow = 1100;
+}
+
+message ActionTableMgr {
+  map<int32, bokura.ActionTableBase> datas = 1;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunityTransferOwnershipRequest {
+  int64 homeland_id = 1;
+  int64 new_owner_char_id = 2;
+}
+

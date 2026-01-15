@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message QuestTypeGroupTableBase {
+  int32 quest_type_group_id = 873;
+  mlstring group_name = 581;
+  string type_group_ui = 700;
+  string type_group_ui_color = 42;
+  int32 display_order = 582;
+}
+
+message QuestTypeGroupTableMgr {
+  map<int32, bokura.QuestTypeGroupTableBase> datas = 1;
+}
+

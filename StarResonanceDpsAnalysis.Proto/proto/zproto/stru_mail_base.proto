@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_item.proto";
+import "stru_mail_extra_condition.proto";
+import "stru_mail_multilingual_text.proto";
+import "enum_mail_state.proto";
+import "enum_mail_type.proto";
+
+message MailBase {
+  int64 mail_uuid = 1;
+  uint32 mail_config_id = 2;
+  int64 create_time = 3;
+  zproto.MailType mail_type = 4;
+  int64 send_id = 5;
+  string send_name = 6;
+  string mail_title = 7;
+  string mail_body = 8;
+  int64 timeout_ms = 9;
+  repeated zproto.Item appendix = 10;
+  zproto.MailState mail_state = 11;
+  repeated string title_prams = 12;
+  repeated string body_prams = 13;
+  int64 accept_id = 14;
+  uint32 importance = 15;
+  repeated uint32 award_ids = 16;
+  int64 register_before_time = 17;
+  zproto.MailExtraCondition condition = 18;
+  bool is_collect = 19;
+  repeated zproto.MailMultilingualText multilingual_text = 20;
+}
+

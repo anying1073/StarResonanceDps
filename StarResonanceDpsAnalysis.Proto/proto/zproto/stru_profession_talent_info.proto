@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message ProfessionTalentInfo {
+  uint32 used_talent_points = 1;
+  repeated uint32 talent_node_ids = 2;
+  int32 talent_stage_cfg_id = 4;
+  int32 talent_ilegal_reset_count = 5;
+  int32 used_attack_mark = 6;
+  int32 used_guard_mark = 7;
+  int32 used_heal_mark = 8;
+}
+

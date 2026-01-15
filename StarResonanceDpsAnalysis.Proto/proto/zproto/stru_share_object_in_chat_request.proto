@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_chit_chat_channel_type.proto";
+import "enum_share_object_type.proto";
+
+message ShareObjectInChatRequest {
+  zproto.ChitChatChannelType channel_type = 1;
+  zproto.ShareObjectType object_type = 2;
+  int64 object_uu_id = 3;
+  string before_desc = 4;
+  string after_desc = 5;
+  int64 target_char_id = 6;
+  repeated int64 param_list = 7;
+}
+

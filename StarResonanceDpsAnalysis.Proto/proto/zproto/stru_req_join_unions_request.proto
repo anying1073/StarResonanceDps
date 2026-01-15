@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message ReqJoinUnionsRequest {
+  repeated int64 union_ids = 2;
+  bool is_all = 3;
+}
+

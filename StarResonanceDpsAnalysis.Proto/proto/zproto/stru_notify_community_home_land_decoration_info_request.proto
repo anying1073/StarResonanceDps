@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_homeland_decoration_info.proto";
+
+message NotifyCommunityHomeLandDecorationInfoRequest {
+  bool is_outer = 1;
+  zproto.HomelandDecorationInfo decoration_info = 2;
+}
+

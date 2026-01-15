@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ERogueEntryType {
+  ERogueEntryTypeNone = 0;
+  ERogueEntryTypeRandom = 1;
+  ERogueEntryTypeBase = 2;
+  ERogueEntryTypeSkill = 3;
+}
+

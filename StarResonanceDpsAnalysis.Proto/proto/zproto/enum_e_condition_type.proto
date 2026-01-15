@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EConditionType {
+  Condition_AlwaysTrue = 0;
+  Condition_HasBuff = 101;
+  Condition_BuffLayer = 102;
+  Condition_InGround = 103;
+  Condition_Collide = 104;
+  Condition_Attr = 105;
+  Condition_FightRes = 106;
+  Condition_StageCount = 107;
+  Condition_StageRunTime = 108;
+  Condition_HitCount = 109;
+  Condition_TargetDistance = 110;
+  Condition_IsInAir = 111;
+  Condition_TargetAngle = 112;
+  Condition_InputDirection = 113;
+  Condition_ClientBulletHasTarget = 114;
+  Condition_IsPassive = 115;
+  Condition_IsBtnPress = 10001;
+  Condition_IsBtnUp = 10002;
+  Condition_ClickCount = 10003;
+  Condition_PressTime = 10004;
+}
+

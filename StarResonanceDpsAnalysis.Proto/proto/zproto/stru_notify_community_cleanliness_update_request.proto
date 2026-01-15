@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message NotifyCommunityCleanlinessUpdateRequest {
+  int32 new_cleanliness = 1;
+  int64 new_last_subtract_cleanliness_sec = 2;
+  int32 old_cleanliness = 3;
+  int32 actual_subtract = 4;
+}
+

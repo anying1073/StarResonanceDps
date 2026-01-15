@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_rank_data.proto";
+import "stru_dirty_mask.proto";
+
+message DungeonBossRank {
+  map<int32, zproto.RankData> boss_rank = 1;
+}
+

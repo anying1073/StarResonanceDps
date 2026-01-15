@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+message TimerTableBase {
+  int64 id = 1463;
+  string starttime = 1235;
+  string endtime = 1671;
+  int32 type = 679;
+  string offset = 1658;
+  string duration = 1720;
+  string command = 995;
+}
+
+message TimerTableMgr {
+  map<int64, bokura.TimerTableBase> datas = 1;
+}
+

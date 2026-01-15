@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message FantasyTypeTableBase {
+  int32 id = 1463;
+  string des = 266;
+  mlstring name = 439;
+  string type_tips = 209;
+  string type_show = 52;
+}
+
+message FantasyTypeTableMgr {
+  map<int32, bokura.FantasyTypeTableBase> datas = 1;
+}
+

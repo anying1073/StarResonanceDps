@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_char_abort_match_type.proto";
+
+message NotifyCharAbortMatchRequest {
+  zproto.ECharAbortMatchType reason = 1;
+}
+

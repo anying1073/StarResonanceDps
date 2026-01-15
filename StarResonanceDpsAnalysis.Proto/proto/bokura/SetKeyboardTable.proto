@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message SetKeyboardTableBase {
+  int32 id = 1463;
+  int_array action_ids = 1695;
+  int32 map_category_id = 1371;
+  mlstring set_des = 1939;
+  int32 keyboard_des = 383;
+  int32 function_id = 149;
+  int32 sort = 1643;
+  int32 show_switch = 343;
+  string go_back = 1601;
+}
+
+message SetKeyboardTableMgr {
+  map<int32, bokura.SetKeyboardTableBase> datas = 1;
+}
+

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_single_privilege_effect_data.proto";
+
+message PrivilegeEffectListData {
+  repeated zproto.SinglePrivilegeEffectData privilege_effect_data = 1;
+}
+

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message SetPersonalZoneAvatarFrameRequest {
+  int32 avatar_frame_id = 1;
+}
+

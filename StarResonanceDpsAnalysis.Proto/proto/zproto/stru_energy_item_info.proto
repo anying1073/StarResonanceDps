@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message EnergyItemInfo {
+  uint32 queue_id = 1;
+  uint32 column_id = 2;
+  uint32 refine_state = 3;
+  int64 gain_time = 4;
+}
+

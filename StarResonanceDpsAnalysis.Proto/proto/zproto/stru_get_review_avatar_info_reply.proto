@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_avatar_info.proto";
+import "enum_e_error_code.proto";
+
+message GetReviewAvatarInfoReply {
+  zproto.AvatarInfo avatar_info = 3;
+  zproto.EErrorCode err_code = 4;
+}
+

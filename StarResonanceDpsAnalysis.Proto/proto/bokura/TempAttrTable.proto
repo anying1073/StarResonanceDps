@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message TempAttrTableBase {
+  int64 id = 1463;
+  string name = 439;
+  string desc = 1953;
+  int32 attr_type = 633;
+  int32 logic_type = 198;
+  int_array attr_params = 10;
+  int32 lower_limit = 1339;
+  int32 upper_limit = 1615;
+  bool is_sync_client = 880;
+}
+
+message TempAttrTableMgr {
+  map<int64, bokura.TempAttrTableBase> datas = 1;
+}
+

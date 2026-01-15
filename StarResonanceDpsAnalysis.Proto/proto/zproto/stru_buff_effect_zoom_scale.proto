@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message BuffEffectZoomScale {
+  float zoom_ratio_add = 1;
+  float zoom_ratio_max = 2;
+}
+

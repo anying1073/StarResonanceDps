@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zproto;
+
+enum ETeamVoteRet {
+  ETeamVoteRetNull = 0;
+  ETeamVoteRetAgree = 1;
+  ETeamVoteRetRefuse = 2;
+  ETeamVoteRetCancel = 3;
+  ETeamVoteRetTimeOut = 4;
+}
+

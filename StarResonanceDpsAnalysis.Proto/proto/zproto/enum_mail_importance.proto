@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+enum MailImportance {
+  MailImportanceNormal = 0;
+  MailImportanceImportant = 1;
+}
+

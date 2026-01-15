@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "enum_e_error_code.proto";
+
+message NotifyTeamEnterErrRequest {
+  zproto.EErrorCode err_code = 1;
+  int64 char_id = 2;
+}
+

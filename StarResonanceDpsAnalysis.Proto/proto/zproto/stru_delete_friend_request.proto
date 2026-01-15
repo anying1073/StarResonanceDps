@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_char_list.proto";
+
+message DeleteFriendRequest {
+  zproto.CharList char_list = 2;
+}
+

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_gasha_record_item_info.proto";
+
+message GashaRecord {
+  string char_id_pool = 1;
+  uint32 pool_id = 2;
+  repeated zproto.GashaRecordItemInfo gasha_record_info = 3;
+  int64 first_timestamp = 4;
+}
+

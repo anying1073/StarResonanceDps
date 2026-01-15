@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zproto;
+
+enum QuestionnaireStatus {
+  QuestionnaireNotAnswered = 0;
+  QuestionnaireAnswered = 1;
+  QuestionnaireEmailed = 2;
+}
+

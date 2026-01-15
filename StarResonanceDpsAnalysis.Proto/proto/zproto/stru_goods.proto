@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message Goods {
+  int32 goods_id = 1;
+  int32 goods_num = 2;
+}
+

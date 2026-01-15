@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message DungeonEnterCount {
+  uint32 enter_time = 1;
+  int32 enter_count = 2;
+}
+

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zproto;
+
+message InstallModRequest {
+  int32 slot_id = 1;
+  int64 mod_uuid = 2;
+}
+

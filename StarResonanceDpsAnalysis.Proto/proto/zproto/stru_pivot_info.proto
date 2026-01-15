@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+import "stru_dirty_mask.proto";
+
+message PivotInfo {
+  int32 id = 1;
+  repeated int32 break_point = 2;
+  repeated int32 reward_stage = 3;
+  int32 reward_full_state = 4;
+}
+

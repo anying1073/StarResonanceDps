@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message TalentTableBase {
+  int32 id = 1463;
+  int32 talent_id = 513;
+  string des = 266;
+  mlstring talent_name = 1889;
+  string talent_icon = 180;
+  int32 talent_type = 676;
+  int32 talent_level = 580;
+  int_table talent_effect = 152;
+  string_table buff_value_key = 668;
+  int_table buff_par = 1688;
+  int_table unlock = 1666;
+  int_table pre_talent = 1850;
+  int_table unlock_consume = 1645;
+  int32 bd_tag_id = 1743;
+}
+
+message TalentTableMgr {
+  map<int32, bokura.TalentTableBase> datas = 1;
+}
+

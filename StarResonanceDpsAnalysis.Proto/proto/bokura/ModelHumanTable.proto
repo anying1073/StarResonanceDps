@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package bokura;
+
+import "table_basic.proto";
+
+message ModelHumanTableBase {
+  int32 model_prefab_id = 5;
+  string model_prefab_desc = 1152;
+  string skeleton = 1130;
+  string anim_template = 1244;
+  string head = 664;
+  string emo_prefix = 857;
+  int32 sex = 1062;
+  int32 model = 421;
+  float height_parm = 1285;
+  float arm_parm = 2043;
+  float chest_parm = 797;
+  float waist_parm = 81;
+  float crotch_parm = 534;
+  float thigh_parm = 45;
+  float calf_parm = 1057;
+  float female_parm = 136;
+  vector3 skin = 915;
+  string_array face = 1418;
+  float chin = 292;
+  string_array eyebrow = 43;
+  float eyebrow_angle = 692;
+  vector3 eyebrow_color = 569;
+  string_array eye = 1710;
+  float eye_up_down = 1114;
+  float eye_angle = 184;
+  string_array eye_tex = 636;
+  string_array lash_tex = 277;
+  vector3 lash_color = 69;
+  int32 eye_color_diff = 283;
+  vector3 l_eye_color = 1905;
+  vector3 r_eye_color = 564;
+  int32 color_zone = 1999;
+  vector3_array l_eye_color_arr = 208;
+  vector3_array r_eye_color_arr = 688;
+  string_array nose = 580;
+  float nose_up_down = 1570;
+  string_array mouth = 2003;
+  string_array eye_shadow = 1838;
+  vector3 eye_shadow_color = 172;
+  string_array lip = 1445;
+  vector3 lip_color = 899;
+  string_array feature = 1503;
+  vector3 feature_color = 771;
+  string_array decal_tex = 730;
+  vector3 decal_color = 613;
+  string_array beard = 1013;
+  vector3 beard_color = 1840;
+  string_array hair = 574;
+  string_array fhair = 1207;
+  string_array bhair = 2000;
+  string_array dull_hair = 1998;
+  int32 hair_highlight = 1087;
+  vector3_array hair_color = 1621;
+  number_array hair_gradient = 1112;
+  string_array tail = 1292;
+  vector3_array tail_color = 1852;
+  string_array weapon = 24;
+  int32 combine_type = 1146;
+  string_array half_suit = 1650;
+  vector3_array half_suit_color = 2232;
+  string_array suit = 197;
+  vector3_array suit_color = 573;
+  string_array clothes = 1622;
+  vector3_array clothes_color = 594;
+  string_array pants = 658;
+  vector3_array pants_color = 1056;
+  string_array gloves = 156;
+  vector3_array gloves_color = 73;
+  string_array shoes = 3162;
+  vector3_array shoes_color = 721;
+  string socks = 465;
+  vector3_array socks_color = 595;
+  string bodyu = 1592;
+  string bodyd = 1685;
+  string under_wear = 1618;
+  vector3_array under_wear_color = 1172;
+  string_array headwear = 709;
+  vector3_array headwear_color = 763;
+  string_array mask = 74;
+  vector3_array mask_color = 3888;
+  string_array mouth_mask = 1366;
+  vector3_array mouth_mask_color = 1085;
+  string_array earrings = 1793;
+  vector3_array earrings_color = 909;
+  string_array necklace = 543;
+  vector3_array necklace_color = 1796;
+  string_array ring = 980;
+  vector3_array ring_color = 1572;
+  number_array preview_action = 3620;
+  string preview_icon = 1521;
+  string pinch_config = 832;
+}
+
+message ModelHumanTableMgr {
+  map<int32, bokura.ModelHumanTableBase> datas = 1;
+}
+

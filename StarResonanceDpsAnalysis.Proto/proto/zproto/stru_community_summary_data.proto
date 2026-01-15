@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zproto;
+
+message CommunitySummaryData {
+  int64 community_id = 1;
+  int64 homeland_id = 2;
+  bool is_single = 3;
+  int64 last_exit_cohabitation_time = 4;
+}
+

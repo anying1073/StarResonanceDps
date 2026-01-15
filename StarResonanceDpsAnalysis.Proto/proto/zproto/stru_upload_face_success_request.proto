@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zproto;
+
+message UploadFaceSuccessRequest {
+  string face_cos_url = 1;
+}
+

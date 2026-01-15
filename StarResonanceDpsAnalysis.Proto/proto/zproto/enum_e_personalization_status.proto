@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zproto;
+
+enum EPersonalizationStatus {
+  EStatusDefault = 0;
+  EStatusOnline = 1;
+  EStatusDungeon = 2;
+  EStatusCutScene = 3;
+  EStatusPhoto = 4;
+  EStatusRecruit = 5;
+}
+
