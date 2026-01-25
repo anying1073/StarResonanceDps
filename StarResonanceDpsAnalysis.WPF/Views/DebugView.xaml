@@ -141,6 +141,12 @@
                     Padding="8,4"
                     Command="{Binding SaveLogsCommand}"
                     Content="{lex:Loc Key={x:Static loc:ResourcesKeys.Debug_SaveLogs}}" />
+                 <Button
+                    Margin="5,0"
+                    Padding="8,4"
+                    Command="{Binding ClearPlayerInfoCacheCommand}"
+                    Content="ClearPlayerInfoCache" />
+
                 <Separator Margin="5,0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
 
                 <CheckBox

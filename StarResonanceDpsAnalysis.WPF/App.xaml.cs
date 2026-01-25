@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using SharpPcap;
+using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Extensions;
 using StarResonanceDpsAnalysis.WPF.Localization;
@@ -60,7 +61,7 @@ public partial class App : Application
         var appStartup = Host.Services.GetRequiredService<IApplicationStartup>();
         appStartup.InitializeAsync().Wait();
 
-        app.MainWindow = Host.Services.GetRequiredService<DpsStatisticsView>();
+        app.MainWindow = Host.Services.GetRequiredService<MainView>();
         app.MainWindow.Visibility = Visibility.Visible;
         app.Run();
 
@@ -133,7 +134,6 @@ public partial class App : Application
                 services.AddSingleton<IGlobalHotkeyService, GlobalHotkeyService>();
                 services.AddSingleton<IMousePenetrationService, MousePenetrationService>();
                 services.AddSingleton<ITopmostService, TopmostService>();
-
                 RegisterBuiltInPlugins(services);
 
                 services.AddSingleton<IPluginManager, PluginManager>();

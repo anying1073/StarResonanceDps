@@ -52,19 +52,19 @@ public class TeamStatsUIManager : ITeamStatsUIManager
                 StatisticType = statisticType
             });
 
-            // Log details only when there's data to avoid log spam
-            if (hasData)
-            {
-                _logger.LogDebug(
-                    "TeamStats [{Type}]: Total={Total:N0}, DPS={Dps:N0}, " +
-                    "Players={Players}, NPCs={NPCs}, Duration={Duration:F1}s",
-                    statisticType,
-                    teamStats.TotalValue,
-                    teamStats.TotalDps,
-                    teamStats.PlayerCount,
-                    teamStats.NpcCount,
-                    teamStats.MaxDuration);
-            }
+            //// Log details only when there's data to avoid log spam
+            //if (hasData)
+            //{
+            //    _logger.LogDebug(
+            //        "TeamStats [{Type}]: Total={Total:N0}, DPS={Dps:N0}, " +
+            //        "Players={Players}, NPCs={NPCs}, Duration={Duration:F1}s",
+            //        statisticType,
+            //        teamStats.TotalValue,
+            //        teamStats.TotalDps,
+            //        teamStats.PlayerCount,
+            //        teamStats.NpcCount,
+            //        teamStats.MaxDuration);
+            //}
         }
     }
 

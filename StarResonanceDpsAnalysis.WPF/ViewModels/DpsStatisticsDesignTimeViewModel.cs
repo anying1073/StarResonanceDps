@@ -32,7 +32,8 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
             new DesignLogObservable(),
             new DesignOptionsMonitor(),
             null!,
-            LocalizationManager.Instance),
+            LocalizationManager.Instance,
+            new DesignDataStorage()),
         new DesignBattleSnapshotService(),
         LocalizationManager.Instance,
         new MessageDialogService(null!),
@@ -232,6 +233,7 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
         public bool EnsurePlayer(long playerUid) => true;
         public void SetPlayerHP(long playerUid, long hp) { }
         public void SetPlayerMaxHP(long playerUid, long maxHp) { }
+        public void SetPlayerCombatState(long uid, bool combatState) { }
         public void SetPlayerName(long playerUid, string playerName) { }
         public void SetPlayerCombatPower(long playerUid, int combatPower) { }
         public void SetPlayerProfessionID(long playerUid, int professionId) { }
@@ -250,6 +252,7 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
         public IReadOnlyDictionary<long, PlayerStatistics> GetStatistics(bool fullSession) => null!;
         public int GetStatisticsCount(bool fullSession) => 0;
         public event Action? BeforeSectionCleared;
+        public void SetPlayerCombatStateTime(long uid, int readInt32) { } 
         public void RecordSamples(TimeSpan sectionDuration) { }
         public void Dispose() { }
     }

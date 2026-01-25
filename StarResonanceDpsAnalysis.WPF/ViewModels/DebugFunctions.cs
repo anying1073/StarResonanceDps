@@ -26,6 +26,7 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
 
     private readonly Dispatcher _dispatcher;
     private readonly LocalizationManager _localizationManager;
+    private readonly IDataStorage _storage;
     private readonly ILogger<DebugFunctions> _logger;
     private readonly IDisposable? _logSubscription;
     private readonly IPacketAnalyzer _packetAnalyzer;
@@ -61,7 +62,8 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
         IObservable<LogEvent> observer,
         IOptionsMonitor<AppConfig> options,
         IPacketAnalyzer packetAnalyzer,
-        LocalizationManager localizationManager)
+        LocalizationManager localizationManager,
+        IDataStorage storage)
     {
         _dispatcher = dispatcher;
         _logger = logger;
@@ -75,6 +77,7 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
         options.OnChange(SetProperty);
         _packetAnalyzer = packetAnalyzer;
         _localizationManager = localizationManager;
+        _storage = storage;
 
         _logger.LogInformation("Debug panel initialized");
     }
@@ -311,6 +314,12 @@ public partial class DebugFunctions : BaseViewModel, IDisposable
     private void AddTestLog()
     {
         _logger.LogInformation("Test log entry {Id}", Guid.NewGuid().ToString("N")[..8]);
+    }
+
+    [RelayCommand]
+    private void ClearPlayerInfoCache()
+    {
+        _storage.ClearPlayerInfos();
     }
 
     #region Localization

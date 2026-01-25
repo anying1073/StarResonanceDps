@@ -73,7 +73,7 @@ public partial class SettingsViewModel(
         get
         {
             if (!AppConfig.UseCustomFormat) return "Custom format is disabled. Using field visibility settings.";
-            
+
             // 创建一个示例 PlayerInfoViewModel 来生成预览
             var previewVm = new PlayerInfoViewModel(localization)
             {
@@ -88,7 +88,7 @@ public partial class SettingsViewModel(
                 UseCustomFormat = true,
                 FormatString = AppConfig.PlayerInfoFormatString
             };
-            
+
             // Trigger the update to generate the formatted string
             return previewVm.PlayerInfo;
         }
@@ -128,7 +128,7 @@ public partial class SettingsViewModel(
     private void AddFieldToFormat(FormatFieldOption? field)
     {
         if (field == null) return;
-        
+
         AppConfig.PlayerInfoFormatString += field.Placeholder;
         AppConfig.UseCustomFormat = true;
         OnPropertyChanged(nameof(FormatPreview));
@@ -141,7 +141,7 @@ public partial class SettingsViewModel(
     private void AddSeparatorToFormat(string? separator)
     {
         if (string.IsNullOrEmpty(separator)) return;
-        
+
         AppConfig.PlayerInfoFormatString += separator;
         OnPropertyChanged(nameof(FormatPreview));
     }
@@ -528,7 +528,7 @@ public partial class SettingsViewModel(
         if (!string.IsNullOrEmpty(color))
         {
             AppConfig.ThemeColor = color;
-            
+
             // ⭐ 实时应用到当前运行的配置（预览效果，不需要点保存）
             configManager.CurrentConfig.ThemeColor = color;
         }
@@ -542,7 +542,7 @@ public partial class SettingsViewModel(
     {
         var hexColor = $"#{color.R:X2}{color.G:X2}{color.B:X2}";
         AppConfig.ThemeColor = hexColor;
-        
+
         // ⭐ 实时应用到当前运行的配置（预览效果）
         configManager.CurrentConfig.ThemeColor = hexColor;
     }
@@ -581,7 +581,7 @@ public partial class SettingsViewModel(
 
         // Restore opacity to original value
         configManager.CurrentConfig.Opacity = _originalConfig.Opacity;
-        
+
         // Restore player info format settings
         configManager.CurrentConfig.UseCustomFormat = _originalConfig.UseCustomFormat;
         configManager.CurrentConfig.PlayerInfoFormatString = _originalConfig.PlayerInfoFormatString;
@@ -685,9 +685,9 @@ public enum ShortcutType
 public sealed class SettingsDesignTimeViewModel : SettingsViewModel
 {
     public SettingsDesignTimeViewModel() : base(
-        new DesignConfigManager(), 
-        new DesignTimeDeviceManagementService(), 
-        new LocalizationManager(new LocalizationConfiguration(), NullLogger<LocalizationManager>.Instance), 
+        new DesignConfigManager(),
+        new DesignTimeDeviceManagementService(),
+        new LocalizationManager(new LocalizationConfiguration(), NullLogger<LocalizationManager>.Instance),
         new DesignMessageDialogService(),
         new DesignDataStorage())
     {
@@ -756,6 +756,8 @@ internal sealed class DesignDataStorage : IDataStorage
     public event DataUpdatedEventHandler? DataUpdated;
     public event ServerChangedEventHandler? ServerChanged;
     public event Action? BeforeSectionCleared;
+    public void SetPlayerCombatStateTime(long uid, int readInt32) { }
+
     public event SectionEndedEventHandler? SectionEnded;
 #pragma warning restore
 
@@ -772,6 +774,8 @@ internal sealed class DesignDataStorage : IDataStorage
     public bool EnsurePlayer(long playerUid) => true;
     public void SetPlayerHP(long playerUid, long hp) { }
     public void SetPlayerMaxHP(long playerUid, long maxHp) { }
+    public void SetPlayerCombatState(long uid, bool combatState) { }
+
     public void SetPlayerName(long playerUid, string playerName) { }
     public void SetPlayerCombatPower(long playerUid, int combatPower) { }
     public void SetPlayerProfessionID(long playerUid, int professionId) { }

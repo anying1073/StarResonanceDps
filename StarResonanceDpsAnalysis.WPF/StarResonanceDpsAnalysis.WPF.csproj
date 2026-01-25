@@ -59,6 +59,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <!--<PackageReference Include="Catglobe.ResXFileCodeGenerator" />-->
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" />
     <PackageReference Include="Ihon.ResXKeyCodeGenerator">
       <PrivateAssets>all</PrivateAssets>
@@ -109,13 +110,6 @@
     <Resource Include="Assets\Images\Classes_WIndKnight.png" />
     <Resource Include="Assets\Images\ok_hover.png" />
     <Resource Include="Assets\Images\ok_normal.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Update="Data\DebugData\debugData.en-US.json">
