@@ -100,7 +100,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     /// <summary>
     /// 战斗日志分段超时时间 (默认: 5000ms)
     /// </summary>
-    public TimeSpan SectionTimeout { get; set; } = TimeSpan.FromMilliseconds(5000);
+    public TimeSpan SectionTimeout { get; set; } = TimeSpan.FromMilliseconds(10000);
 
     /// <summary>
     /// 是否正在监听服务器
@@ -544,6 +544,18 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
             playerInfo.Spec = spec;
             TriggerPlayerInfoUpdated(uid);
         }
+    }
+
+    public void SetPlayerCombatState(long uid, bool combatState)
+    {
+        PlayerInfoData[uid].CombatState = combatState;
+        TriggerPlayerInfoUpdatedImmediate(uid);
+    }
+
+    public void SetPlayerCombatStateTime(long uid, int readInt32)
+    {
+        PlayerInfoData[uid].CombatStateTime = readInt32;
+        TriggerPlayerInfoUpdatedImmediate(uid);
     }
 
     public void SetPlayerName(long uid, string name)

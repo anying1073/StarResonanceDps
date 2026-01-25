@@ -41,4 +41,6 @@ public class PlayerInfo
     public int NpcTemplateId { get; internal set; }
     public int SeasonStrength { get; internal set; }
     public int SeasonLevel { get; internal set; }
+    public bool CombatState { get; internal set; }
+    public int CombatStateTime { get; internal set; }
 }

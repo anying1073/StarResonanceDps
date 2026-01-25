@@ -442,6 +442,11 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         DataStorage.ReadOnlyPlayerInfoDatas[playerUid].MaxHP = maxHp;
     }
 
+    public void SetPlayerCombatState(long uid, bool combatState)
+    {
+        throw new NotImplementedException();
+    }
+
     public void SetPlayerName(long playerUid, string playerName)
     {
         EnsurePlayer(playerUid);
@@ -540,6 +545,10 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
     }
 
     public event Action? BeforeSectionCleared;
+    public void SetPlayerCombatStateTime(long uid, int readInt32)
+    {
+        throw new NotImplementedException();
+    }
 
     public void RecordSamples(TimeSpan sectionDuration)
     {

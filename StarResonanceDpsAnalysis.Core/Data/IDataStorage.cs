@@ -38,6 +38,7 @@ public interface IDataStorage : IDisposable
     bool EnsurePlayer(long playerUid);
     void SetPlayerHP(long playerUid, long hp);
     void SetPlayerMaxHP(long playerUid, long maxHp);
+    void SetPlayerCombatState(long uid, bool combatState);
     void SetPlayerName(long playerUid, string playerName);
     void SetPlayerCombatPower(long playerUid, int combatPower);
     void SetPlayerProfessionID(long playerUid, int professionId);
@@ -88,6 +89,7 @@ public interface IDataStorage : IDisposable
     int GetStatisticsCount(bool fullSession);
 
     event Action? BeforeSectionCleared;
+    void SetPlayerCombatStateTime(long uid, int readInt32);
 }
 
 public delegate void ServerConnectionStateChangedEventHandler(bool serverConnectionState);
