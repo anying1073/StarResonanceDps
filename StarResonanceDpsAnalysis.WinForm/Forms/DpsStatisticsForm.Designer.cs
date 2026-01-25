@@ -46,6 +46,10 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
             button_AlwaysInjured = new AntdUI.Button();
             button_TotalTreatment = new AntdUI.Button();
             button_TotalDamage = new AntdUI.Button();
+            button_PcapOpen = new AntdUI.Button();
+            button_PcapPlay = new();
+            button_PcapStop = new();
+            button_PcapPause = new();
             sortedProgressBarList_MainList = new StarResonanceDpsAnalysis.WinForm.Control.SortedProgressBarList();
             timer_BattleTimeLabelUpdater = new System.Windows.Forms.Timer(components);
             pageHeader_MainHeader.SuspendLayout();
@@ -63,6 +67,10 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
             pageHeader_MainHeader.Controls.Add(button_AlwaysOnTop);
             pageHeader_MainHeader.Controls.Add(button_RefreshDps);
             pageHeader_MainHeader.Controls.Add(button_Settings);
+            pageHeader_MainHeader.Controls.Add(button_PcapOpen);
+            pageHeader_MainHeader.Controls.Add(button_PcapPlay);
+            pageHeader_MainHeader.Controls.Add(button_PcapPause);
+            pageHeader_MainHeader.Controls.Add(button_PcapStop);
             pageHeader_MainHeader.DividerShow = true;
             pageHeader_MainHeader.DividerThickness = 2F;
             pageHeader_MainHeader.Dock = DockStyle.Top;
@@ -88,7 +96,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
             button_ThemeSwitch.Ghost = true;
             button_ThemeSwitch.IconRatio = 0.8F;
             button_ThemeSwitch.IconSvg = "SunOutlined";
-            button_ThemeSwitch.Location = new Point(404, 0);
+            button_ThemeSwitch.Location = new Point(320, 0);
             button_ThemeSwitch.Margin = new Padding(2);
             button_ThemeSwitch.Name = "button_ThemeSwitch";
             button_ThemeSwitch.Size = new Size(34, 25);
@@ -103,7 +111,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
             button_Minimum.Ghost = true;
             button_Minimum.IconRatio = 0.8F;
             button_Minimum.IconSvg = resources.GetString("button_Minimum.IconSvg");
-            button_Minimum.Location = new Point(438, 0);
+            button_Minimum.Location = new Point(354, 0);
             button_Minimum.Margin = new Padding(4, 4, 4, 4);
             button_Minimum.Name = "button_Minimum";
             button_Minimum.Size = new Size(20, 25);
@@ -126,6 +134,62 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
             button_SwitchStatisticsMode.Click += button_SwitchStatisticsMode_Click;
             button_SwitchStatisticsMode.MouseEnter += button_SwitchStatisticsMode_MouseEnter;
             // 
+            // button_PcapOpen
+            // 
+            button_PcapOpen.ColorScheme = AntdUI.TAMode.Dark;
+            button_PcapOpen.Dock = DockStyle.Right;
+            button_PcapOpen.Ghost = true;
+            button_PcapOpen.IconRatio = 0.8F;
+            button_PcapOpen.IconSvg = "FolderOpenOutlined";
+            button_PcapOpen.Location = new Point(239, 0);
+            button_PcapOpen.Margin = new Padding(4, 4, 4, 4);
+            button_PcapOpen.Name = "button_PcapOpen";
+            button_PcapOpen.Size = new Size(20, 25);
+            button_PcapOpen.TabIndex = 6;
+            button_PcapOpen.Click += button_PcapOpen_Click;
+            // 
+            // button_PcapPlay
+            // 
+            button_PcapPlay.ColorScheme = AntdUI.TAMode.Dark;
+            button_PcapPlay.Dock = DockStyle.Right;
+            button_PcapPlay.Ghost = true;
+            button_PcapPlay.IconRatio = 0.8F;
+            button_PcapPlay.IconSvg = "PlayCircleOutlined";
+            button_PcapPlay.Location = new Point(259, 0);
+            button_PcapPlay.Margin = new Padding(4, 4, 4, 4);
+            button_PcapPlay.Name = "button_PcapPlay";
+            button_PcapPlay.Size = new Size(20, 25);
+            button_PcapPlay.TabIndex = 7;
+            button_PcapPlay.Click += button_PcapPlay_Click;
+            // 
+            // button_PcapPause
+            // 
+            button_PcapPause.ColorScheme = AntdUI.TAMode.Dark;
+            button_PcapPause.Dock = DockStyle.Right;
+            button_PcapPause.Ghost = true;
+            button_PcapPause.IconRatio = 0.8F;
+            button_PcapPause.IconSvg = "PauseCircleOutlined";
+            button_PcapPause.Location = new Point(279, 0);
+            button_PcapPause.Margin = new Padding(4, 4, 4, 4);
+            button_PcapPause.Name = "button_PcapPause";
+            button_PcapPause.Size = new Size(20, 25);
+            button_PcapPause.TabIndex = 8;
+            button_PcapPause.Click += button_PcapPause_Click;
+            // 
+            // button_PcapStop
+            // 
+            button_PcapStop.ColorScheme = AntdUI.TAMode.Dark;
+            button_PcapStop.Dock = DockStyle.Right;
+            button_PcapStop.Ghost = true;
+            button_PcapStop.IconRatio = 0.8F;
+            button_PcapStop.IconSvg = "StopOutlined";
+            button_PcapStop.Location = new Point(299, 0);
+            button_PcapStop.Margin = new Padding(4, 4, 4, 4);
+            button_PcapStop.Name = "button_PcapStop";
+            button_PcapStop.Size = new Size(20, 25);
+            button_PcapStop.TabIndex = 9;
+            button_PcapStop.Click += button_PcapStop_Click;
+            // 
             // button_AlwaysOnTop
             // 
             button_AlwaysOnTop.ColorScheme = AntdUI.TAMode.Dark;
@@ -133,7 +197,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
             button_AlwaysOnTop.Ghost = true;
             button_AlwaysOnTop.IconRatio = 0.8F;
             button_AlwaysOnTop.IconSvg = resources.GetString("button_AlwaysOnTop.IconSvg");
-            button_AlwaysOnTop.Location = new Point(458, 0);
+            button_AlwaysOnTop.Location = new Point(374, 0);
             button_AlwaysOnTop.Margin = new Padding(4, 4, 4, 4);
             button_AlwaysOnTop.Name = "button_AlwaysOnTop";
             button_AlwaysOnTop.Size = new Size(22, 25);
@@ -149,7 +213,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
             button_RefreshDps.Ghost = true;
             button_RefreshDps.IconRatio = 0.8F;
             button_RefreshDps.IconSvg = resources.GetString("button_RefreshDps.IconSvg");
-            button_RefreshDps.Location = new Point(480, 0);
+            button_RefreshDps.Location = new Point(396, 0);
             button_RefreshDps.Margin = new Padding(4, 4, 4, 4);
             button_RefreshDps.Name = "button_RefreshDps";
             button_RefreshDps.Size = new Size(20, 25);
@@ -169,7 +233,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
             button_Settings.Icon = (Image)resources.GetObject("button_Settings.Icon");
             button_Settings.IconRatio = 1F;
             button_Settings.IconSvg = "";
-            button_Settings.Location = new Point(500, 0);
+            button_Settings.Location = new Point(416, 0);
             button_Settings.Margin = new Padding(4, 4, 4, 4);
             button_Settings.Name = "button_Settings";
             button_Settings.Size = new Size(26, 25);
@@ -381,5 +445,9 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
         private AntdUI.Button button_ThemeSwitch;
         private Control.SortedProgressBarList sortedProgressBarList_MainList;
         private System.Windows.Forms.Timer timer_BattleTimeLabelUpdater;
+        private AntdUI.Button button_PcapOpen;
+        private AntdUI.Button button_PcapPlay;
+        private AntdUI.Button button_PcapPause;
+        private AntdUI.Button button_PcapStop;
     }
 }

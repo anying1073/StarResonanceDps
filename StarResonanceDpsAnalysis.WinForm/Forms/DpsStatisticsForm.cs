@@ -31,6 +31,10 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
         public DpsStatisticsForm()
         {
             InitializeComponent();
+            button_PcapOpen.Hide();
+            button_PcapPause.Hide();
+            button_PcapPlay.Hide();
+            button_PcapStop.Hide();
 
             // 统一设置窗体默认 GUI 风格（字体、间距、阴影等）
             FormGui.SetDefaultGUI(this);
@@ -494,6 +498,67 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
         }
 
         /// <summary>
+        /// Pcap 打开按钮点击
+        /// </summary>
+        private void button_PcapOpen_Click(object sender, EventArgs e)
+        {
+            using var dlg = new OpenFileDialog()
+            {
+                Filter = "Capture files (*.pcap;*.pcapng)|*.pcap;*.pcapng|All files (*.*)|*.*",
+                Title = "选择 Pcap/Pcapng 文件进行回放"
+            };
+
+            if (dlg.ShowDialog(this) != DialogResult.OK) return;
+
+            _lastPcapFilePath = dlg.FileName;
+            StartPcapReplay(_lastPcapFilePath, realtime: true, speed: 1.0);
+
+            this.Invoke(() =>
+            {
+                label_BattleTimeText.Text = $"正在回放: {System.IO.Path.GetFileName(dlg.FileName)}";
+            });
+        }
+
+        /// <summary>
+        /// Pcap 播放按钮点击 - 重新加载最后一个文件
+        /// </summary>
+        private void button_PcapPlay_Click(object sender, EventArgs e)
+        {
+            if (_lastPcapFilePath == null)
+            {
+                AppMessageBox.ShowMessage("请先使用打开按钮选择一个 Pcap 文件", this);
+                return;
+            }
+
+            StartPcapReplay(_lastPcapFilePath, realtime: true, speed: 1.0);
+        }
+
+        /// <summary>
+        /// Pcap 暂停按钮点击 - 当前实现停止播放
+        /// </summary>
+        private void button_PcapPause_Click(object sender, EventArgs e)
+        {
+            StopPcapReplay();
+            this.Invoke(() =>
+            {
+                label_BattleTimeText.Text = "回放已暂停";
+            });
+        }
+
+        /// <summary>
+        /// Pcap 停止按钮点击
+        /// </summary>
+        private void button_PcapStop_Click(object sender, EventArgs e)
+        {
+            StopPcapReplay();
+            _lastPcapFilePath = null;
+            this.Invoke(() =>
+            {
+                label_BattleTimeText.Text = "回放已停止";
+            });
+        }
+
+        /// <summary>
         /// 打开基础设置面板
         /// </summary>
         private void OpenSettingsDialog()
@@ -700,6 +765,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
         // PCAP replay helpers (insert into the DpsStatisticsForm partial class)
         private System.Threading.CancellationTokenSource? _replayCts;
         private Task? _replayTask;
+        private string? _lastPcapFilePath;
 
         /// <summary>
         /// Start replaying a pcap/pcapng file into the existing PacketAnalyzer.
