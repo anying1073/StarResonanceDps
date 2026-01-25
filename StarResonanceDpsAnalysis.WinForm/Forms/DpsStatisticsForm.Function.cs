@@ -47,10 +47,10 @@ namespace StarResonanceDpsAnalysis.WinForm.Forms
         /// <summary>
         /// 分析器
         /// </summary>
-        private PacketAnalyzer PacketAnalyzer { get; } = new(); // # 抓包/分析器：每个到达的数据包交由该分析器处理
+        private PacketAnalyzer PacketAnalyzer { get; } = new(null); // # 抓包/分析器：每个到达的数据包交由该分析器处理
         #endregion
 
-        private void LoadAppConfig() 
+        private void LoadAppConfig()
         {
             DataStorage.SectionTimeout = TimeSpan.FromSeconds(AppConfig.CombatTimeClearDelaySeconds);
         }
