@@ -1,4 +1,5 @@
 using StarResonanceDpsAnalysis.Core.Analyze;
+using StarResonanceDpsAnalysis.Core.Analyze.V2.Processors.WorldNtf;
 using StarResonanceDpsAnalysis.Core.Data;
 
 namespace StarResonanceDpsAnalysis.Tests;
@@ -17,7 +18,7 @@ public class MessageAnalyzerTests : IDisposable
     {
         var playerUid = 55502962L;
         var payload = TestMessageBuilder.BuildSyncNearEntitiesPayload(playerUid, "Static Hero", 66);
-        var envelope = TestMessageBuilder.BuildNotifyEnvelope(MessageMethod.SyncNearEntities, payload);
+        var envelope = TestMessageBuilder.BuildNotifyEnvelope(WorldNtfMessageId.SyncNearEntities, payload);
 
         MessageAnalyzer.Process(envelope);
 

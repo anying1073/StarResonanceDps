@@ -65,8 +65,8 @@ namespace StarResonanceDpsAnalysis.WinForm.Core.Module
             ModuleResultMemory.Clear();
 
             // 解析 protobuf，同 Python: v_data = syncContainerData.VData
-            var syncContainerData = BlueprotobufPb2.SyncContainerData.Parser.ParseFrom(payloadBuffer);
-            BlueprotobufPb2.CharSerialize Serialize = syncContainerData.VData;
+            var syncContainerData = Zproto.WorldNtf.Types.SyncContainerData.Parser.ParseFrom(payloadBuffer);
+            var Serialize = syncContainerData.VData;
 
             // 如果没有 ModInfos，直接返回
             if (Serialize?.Mod?.ModInfos == null) return;

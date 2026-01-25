@@ -6,9 +6,9 @@ using StarResonanceDpsAnalysis.Core.Data;
 using System.Buffers.Binary;
 using System.Net;
 using System.Net.NetworkInformation;
-using BlueProto;
 using Google.Protobuf;
 using Microsoft.Extensions.Logging.Abstractions;
+using Zproto;
 
 namespace StarResonanceDpsAnalysis.Core.Benchmarks;
 
@@ -187,7 +187,7 @@ public class PacketAnalyzerBenchmarks
             Attrs = attrCollection
         };
 
-        var sync = new SyncNearEntities();
+        var sync = new WorldNtf.Types.SyncNearEntities();
         sync.Appear.Add(entity);
         return sync.ToByteArray();
     }

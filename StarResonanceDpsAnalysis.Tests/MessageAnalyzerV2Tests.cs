@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using StarResonanceDpsAnalysis.Core.Analyze;
+using StarResonanceDpsAnalysis.Core.Analyze.V2.Processors.WorldNtf;
 using StarResonanceDpsAnalysis.Core.Data;
 
 namespace StarResonanceDpsAnalysis.Tests;
@@ -13,7 +14,7 @@ public class MessageAnalyzerV2Tests
         var analyzer = new MessageAnalyzerV2(storage);
         var playerUid = 55502962L;
         var payload = TestMessageBuilder.BuildSyncNearEntitiesPayload(playerUid, "Realtime Hero", 88);
-        var envelope = TestMessageBuilder.BuildNotifyEnvelope(MessageMethod.SyncNearEntities, payload);
+        var envelope = TestMessageBuilder.BuildNotifyEnvelope(WorldNtfMessageId.SyncNearEntities, payload);
 
         analyzer.Process(envelope);
 

@@ -5,12 +5,12 @@ using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
-using BlueProto;
 using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging.Abstractions;
+using Zproto;
 
 BenchmarkSwitcher.FromAssembly(typeof(BenchmarkMarker).Assembly).Run(args);
 
@@ -154,7 +154,7 @@ public class MessageParsingBenchmarks
             Attrs = attrCollection
         };
 
-        var sync = new SyncNearEntities();
+        var sync = new WorldNtf.Types.SyncNearEntities();
         sync.Appear.Add(entity);
         return sync.ToByteArray();
     }

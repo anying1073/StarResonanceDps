@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using BlueProto;
 using Google.Protobuf;
+using Zproto;
 
 namespace StarResonanceDpsAnalysis.WinForm.Core.test
 {
@@ -93,7 +93,7 @@ namespace StarResonanceDpsAnalysis.WinForm.Core.test
         private static void PrintUnion(UnionData union)
         {
             Console.WriteLine("---- [Union] 基本信息 ----");
-            Console.WriteLine($"UnionId   : {union.UnionId}");
+            Console.WriteLine($"UnionId   : {union.Unionid}");
             Console.WriteLine($"Name      : {union.Name}");
             Console.WriteLine($"HuntRank  : {union.UnionHuntRank}");
         }

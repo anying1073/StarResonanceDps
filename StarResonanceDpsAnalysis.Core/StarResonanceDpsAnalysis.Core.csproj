@@ -15,13 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Analyze\Versions\**" />
-    <EmbeddedResource Remove="Analyze\Versions\**" />
-    <None Remove="Analyze\Versions\**" />
-    <Page Remove="Analyze\Versions\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Google.Protobuf" />
     <PackageReference Include="Grpc.Tools">
       <PrivateAssets>all</PrivateAssets>
@@ -37,10 +30,6 @@
     <PackageReference Include="ZstdNet" />
   </ItemGroup>
   <ItemGroup>
-    <!-- <Protobuf Include="..\StarResonanceData\proto\**\*.proto" GrpcServices="Both" ProtoRoot="..\StarResonanceData\proto" /> -->
-    <Protobuf Include="Protobuf\BlueProtobuf.proto" GrpcServices="Both" Condition="Exists('Protobuf\BlueProtobuf.proto')" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Analyze\Helpers\" />
+    <ProjectReference Include="..\StarResonanceDpsAnalysis.Proto\StarResonanceDpsAnalysis.Proto.csproj" />
   </ItemGroup>
 </Project>

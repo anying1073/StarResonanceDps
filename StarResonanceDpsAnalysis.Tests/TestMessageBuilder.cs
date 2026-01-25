@@ -1,26 +1,39 @@
 using System.Buffers.Binary;
-using BlueProto;
 using Google.Protobuf;
 using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
+using StarResonanceDpsAnalysis.Core.Analyze.V2.Processors.WorldNtf;
+using Zproto;
 
 namespace StarResonanceDpsAnalysis.Tests;
 
 internal static class TestMessageBuilder
 {
-    private const ulong ServiceUuidCombat = 0x0000000063335342UL;
+    // This matches WORLD_NTF_SERVICE_ID in MessageAnalyzerV2
+    private const ulong WORLD_NTF_SERVICE_ID = 0x0000000063335342UL; // 1664308034 decimal
+    private const ulong WORLD_SERVICE_ID = 0x00000000062827566UL; // 103198054 decimal
 
-    public static byte[] BuildNotifyEnvelope(MessageMethod method, byte[] rpcPayload)
+    public static byte[] BuildNotifyEnvelope(WorldNtfMessageId id, byte[] rpcPayload, bool useWorldServiceId = false)
     {
-        var payloadLength = 8 + 4 + 4 + rpcPayload.Length;
-        var innerLength = 4 + 2 + payloadLength;
-        var buffer = new byte[4 + innerLength];
+        var serviceUuid = useWorldServiceId ? WORLD_SERVICE_ID : WORLD_NTF_SERVICE_ID;
+        
+        // Packet structure:
+        // 4 bytes: packet length (includes these 4 bytes)
+        // 2 bytes: packet type
+        // 8 bytes: service UUID  
+        // 4 bytes: stub ID
+        // 4 bytes: method ID
+        // N bytes: payload
+        
+        var payloadLength = 8 + 4 + 4 + rpcPayload.Length; // UUID + stubId + methodId + payload
+        var packetLength = 4 + 2 + payloadLength;  // Total including length field itself
+        var buffer = new byte[packetLength];
 
-        BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan(0, 4), (uint)innerLength);
+        BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan(0, 4), (uint)packetLength);
         BinaryPrimitives.WriteUInt16BigEndian(buffer.AsSpan(4, 2), (ushort)MessageType.Notify);
-        BinaryPrimitives.WriteUInt64BigEndian(buffer.AsSpan(6, 8), ServiceUuidCombat);
+        BinaryPrimitives.WriteUInt64BigEndian(buffer.AsSpan(6, 8), serviceUuid);
         BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan(14, 4), 0); // stubId
-        BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan(18, 4), method.ToUInt32());
+        BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan(18, 4), id.ToUInt32());
 
         rpcPayload.CopyTo(buffer, 22);
         return buffer;
@@ -52,7 +65,7 @@ internal static class TestMessageBuilder
             Attrs = attrCollection
         };
 
-        var sync = new SyncNearEntities();
+        var sync = new WorldNtf.Types.SyncNearEntities();
         sync.Appear.Add(entity);
         return sync.ToByteArray();
     }

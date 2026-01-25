@@ -1,10 +1,11 @@
-using BlueProto;
 using Google.Protobuf;
 using Moq;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Analyze.V2.Processors;
+using StarResonanceDpsAnalysis.Core.Analyze.V2.Processors.WorldNtf;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
+using Zproto;
 
 namespace StarResonanceDpsAnalysis.Tests;
 
@@ -30,15 +31,15 @@ public partial class ProcessorTests
         const int fightPoint = 50000;
         const int profId = 101;
 
-        var syncContainerData = new SyncContainerData
+        var syncContainerData = new Zproto.WorldNtf.Types.SyncContainerData
         {
-            VData = new CharSerialize
+            VData = new Zproto.CharSerialize
             {
                 CharId = playerUid,
-                RoleLevel = new RoleLevel { Level = level },
-                Attr = new UserFightAttr { CurHp = curHp, MaxHp = maxHp },
-                CharBase = new CharBaseInfo { Name = playerName, FightPoint = fightPoint },
-                ProfessionList = new ProfessionList { CurProfessionId = profId }
+                RoleLevel = new Zproto.RoleLevel { Level = level },
+                Attr = new Zproto.UserFightAttr { CurHp = curHp, MaxHp = maxHp },
+                CharBase = new Zproto.CharBaseInfo { Name = playerName, FightPoint = fightPoint },
+                ProfessionList = new Zproto.ProfessionList { CurProfessionId = profId }
             }
         };
         var payload = syncContainerData.ToByteArray();
@@ -79,10 +80,10 @@ public partial class ProcessorTests
         // Arrange
         var mockStorage = new Mock<IDataStorage>();
         const long playerUuidRaw = 12345L << 16;
-        const long playerUid = 12345L;
+        const long playerUuid = 12345L;
         const string playerName = "DirtyPlayer";
 
-        mockStorage.Setup(s => s.CurrentPlayerUUID).Returns(playerUuidRaw);
+        mockStorage.Setup(s => s.CurrentPlayerUUID).Returns(playerUuid);
         var playerInfo = new PlayerInfo();
         mockStorage.Setup(s => s.CurrentPlayerInfo).Returns(playerInfo);
 
@@ -99,11 +100,11 @@ public partial class ProcessorTests
         WriteString(bw, playerName);
         var buffer = ms.ToArray();
 
-        var dirtyData = new SyncContainerDirtyData
+        var dirtyData = new WorldNtf.Types.SyncContainerDirtyData
         {
             VData = new BufferStream()
             {
-                BufferS = ByteString.CopyFrom(buffer)
+                Buffer = ByteString.CopyFrom(buffer)
             }
         };
         var payload = dirtyData.ToByteArray();
@@ -112,8 +113,8 @@ public partial class ProcessorTests
         processor.Process(payload);
 
         // Assert
-        mockStorage.Verify(s => s.EnsurePlayer(playerUid), Times.Once);
-        mockStorage.Verify(s => s.SetPlayerName(playerUid, playerName), Times.Once);
+        mockStorage.Verify(s => s.EnsurePlayer(playerUuid), Times.Once);
+        mockStorage.Verify(s => s.SetPlayerName(playerUuid, playerName), Times.Once);
         Assert.Equal(playerName, playerInfo.Name);
     }
 
@@ -123,11 +124,11 @@ public partial class ProcessorTests
         // Arrange
         var mockStorage = new Mock<IDataStorage>();
         const long playerUuidRaw = 12345L << 16;
-        const long playerUid = 12345L;
+        const long playerUuid = 12345L;
         const int curHp = 5000;
         // const int maxHp = 8000;
 
-        mockStorage.Setup(s => s.CurrentPlayerUUID).Returns(playerUuidRaw);
+        mockStorage.Setup(s => s.CurrentPlayerUUID).Returns(playerUuid);
         var playerInfo = new PlayerInfo();
         mockStorage.Setup(s => s.CurrentPlayerInfo).Returns(playerInfo);
 
@@ -145,11 +146,11 @@ public partial class ProcessorTests
         WriteIdentifier(bw);
         var buffer = ms.ToArray();
 
-        var dirtyData = new SyncContainerDirtyData
+        var dirtyData = new WorldNtf.Types.SyncContainerDirtyData
         {
             VData = new BufferStream()
             {
-                BufferS = ByteString.CopyFrom(buffer)
+                Buffer = ByteString.CopyFrom(buffer)
             }
         };
         var payload = dirtyData.ToByteArray();
@@ -158,8 +159,8 @@ public partial class ProcessorTests
         processor.Process(payload);
 
         // Assert
-        mockStorage.Verify(s => s.EnsurePlayer(playerUid), Times.Once);
-        mockStorage.Verify(s => s.SetPlayerHP(playerUid, curHp), Times.Once);
+        mockStorage.Verify(s => s.EnsurePlayer(playerUuid), Times.Once);
+        mockStorage.Verify(s => s.SetPlayerHP(playerUuid, curHp), Times.Once);
         Assert.Equal(curHp, playerInfo.HP);
     }
 
@@ -195,7 +196,7 @@ public partial class ProcessorTests
         const string playerName = "NearPlayer";
         const int level = 55;
 
-        var syncNearEntities = new SyncNearEntities();
+        var syncNearEntities = new WorldNtf.Types.SyncNearEntities();
         var entity = new Entity
         {
             Uuid = playerUid << 16,
@@ -305,13 +306,13 @@ public partial class ProcessorTests
         const long attacker2 = 555L;
         const long target2 = 666L;
 
-        var syncNearDeltaInfo = new SyncNearDeltaInfo();
-        syncNearDeltaInfo.DeltaInfos.Add(new AoiSyncDelta
+        var syncNearDeltaInfo = new WorldNtf.Types.SyncNearDeltaInfo();
+        syncNearDeltaInfo.DeltaInfos.Add(new WorldNtf.Types.AoiSyncDelta
         {
             Uuid = target1 << 16,
             SkillEffects = new SkillEffect { Damages = { new SyncDamageInfo { AttackerUuid = attacker1 << 16, Value = 100, OwnerId = 1 } } }
         });
-        syncNearDeltaInfo.DeltaInfos.Add(new AoiSyncDelta
+        syncNearDeltaInfo.DeltaInfos.Add(new WorldNtf.Types.AoiSyncDelta
         {
             Uuid = target2 << 16,
             SkillEffects = new SkillEffect { Damages = { new SyncDamageInfo { AttackerUuid = attacker2 << 16, Value = 200, OwnerId = 2, Type = EDamageType.Heal } } }
