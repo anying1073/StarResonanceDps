@@ -47,8 +47,10 @@ public sealed class PacketAnalyzerV2(
             _cts = new CancellationTokenSource();
             _channel = Channel.CreateUnbounded<RawCapture>(new UnboundedChannelOptions
             {
-                SingleReader = true,
-                SingleWriter = true,
+                SingleReader = false,
+                // Capture producers (SharpPcap callbacks) may invoke on multiple threads.
+                // Do not assume a single writer; let the channel handle concurrent writers.
+                SingleWriter = false,
                 AllowSynchronousContinuations = true
             });
 
@@ -154,9 +156,10 @@ public sealed class PacketAnalyzerV2(
         var writer = _channel.Writer;
         try
         {
-            if (await writer.WaitToWriteAsync(token))
+            while (await writer.WaitToWriteAsync(token))
             {
                 await writer.WriteAsync(data, token);
+                break;
             }
         }
         catch (ChannelClosedException)

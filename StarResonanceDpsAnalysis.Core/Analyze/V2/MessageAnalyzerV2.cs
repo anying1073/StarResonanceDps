@@ -1,5 +1,8 @@
+using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Analyze.V2.Processors;
+using StarResonanceDpsAnalysis.Core.Analyze.V2.Processors.World;
+using StarResonanceDpsAnalysis.Core.Analyze.V2.Processors.WorldNtf;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Tools;
 using ZstdNet;
@@ -15,12 +18,14 @@ public sealed class MessageAnalyzerV2
 {
     private readonly ILogger<MessageAnalyzerV2>? _logger;
     private readonly Dictionary<MessageType, Action<ByteReader, bool>> _messageHandlerMap;
-    private readonly MessageHandlerRegistry _registry;
+    private readonly WorldNtfMessageHandlerRegistry _registry;
+    private readonly WorldMessageHandlerRegistry _worldMessageHandlerRegistry;
 
     public MessageAnalyzerV2(IDataStorage storage, ILogger<MessageAnalyzerV2>? logger = null)
     {
         _logger = logger;
-        _registry = new MessageHandlerRegistry(storage, logger);
+        _registry = new WorldNtfMessageHandlerRegistry(storage, logger);
+        _worldMessageHandlerRegistry = new(logger);
         _messageHandlerMap = new Dictionary<MessageType, Action<ByteReader, bool>>
         {
             { MessageType.Notify, ProcessNotifyMsg },
@@ -36,6 +41,7 @@ public sealed class MessageAnalyzerV2
         if (packets is not { Length: > 0 }) return;
 
         var packetsReader = new ByteReader(packets);
+        var processedCount = 0;
         while (packetsReader.Remaining > 0)
         {
             if (!packetsReader.TryPeekUInt32BE(out var packetSize)) break;
@@ -54,6 +60,8 @@ public sealed class MessageAnalyzerV2
                 continue;
             }
 
+            processedCount++;
+
 #if RELEASE
             try
             {
@@ -67,62 +75,70 @@ public sealed class MessageAnalyzerV2
             handler(packetReader, isZstdCompressed);
 #endif
         }
-    }
-
-    /// <summary>
-    /// Zero-copy entry that parses messages directly from a span.
-    /// Avoids allocating an exact-sized array for each frame.
-    /// </summary>
-    public void Process(ReadOnlySpan<byte> packets)
-    {
-        if (packets.Length == 0) return;
-
-        var reader = new SpanReader(packets);
-        while (reader.Remaining > 0)
+        
+        if (processedCount > 0)
         {
-            if (!reader.TryPeekUInt32BE(out var packetSize)) break;
-            if (packetSize < 6) break;
-            if (packetSize > reader.Remaining) break;
-
-            var frameStartOffset = reader.Offset;
-            var sizeAgain = reader.ReadUInt32BE();
-            if (sizeAgain != packetSize)
-            {
-                // skip malformed
-                reader.Offset = frameStartOffset + (int)packetSize;
-                continue;
-            }
-
-            var packetType = reader.ReadUInt16BE();
-            var isZstdCompressed = (packetType & 0x8000) != 0;
-            var msgTypeId = (MessageType)(packetType & 0x7FFF);
-
-            var frameConsumed = 6; // 4 length + 2 type already consumed within this frame
-            var frameRemaining = (int)packetSize - frameConsumed;
-            if (frameRemaining < 0 || frameRemaining > reader.Remaining)
-            {
-                // Not enough data
-                reader.Offset = frameStartOffset; // rewind to start of frame for next attempt
-                break;
-            }
-
-            // Slice the rest of the frame for inner parsing
-            var inner = reader.ReadBytesSpan(frameRemaining);
-
-            switch (msgTypeId)
-            {
-                case MessageType.Notify:
-                    ProcessNotifyMsg(inner, isZstdCompressed);
-                    break;
-                case MessageType.FrameDown:
-                    ProcessFrameDown(inner, isZstdCompressed);
-                    break;
-                default:
-                    // Unknown, skip
-                    break;
-            }
+            _logger?.LogTrace("Processed {Count} messages from {TotalBytes} byte buffer", processedCount, packets.Length);
         }
     }
+
+    ///// <summary>
+    ///// Zero-copy entry that parses messages directly from a span.
+    ///// Avoids allocating an exact-sized array for each frame.
+    ///// </summary>
+    //public void Process(ReadOnlySpan<byte> packets)
+    //{
+    //    if (packets.Length == 0) return;
+
+    //    var reader = new SpanReader(packets);
+    //    while (reader.Remaining > 0)
+    //    {
+    //        if (!reader.TryPeekUInt32BE(out var packetSize)) break;
+    //        if (packetSize < 6) break;
+    //        if (packetSize > reader.Remaining) break;
+
+    //        var frameStartOffset = reader.Offset;
+    //        var sizeAgain = reader.ReadUInt32BE();
+    //        if (sizeAgain != packetSize)
+    //        {
+    //            // skip malformed
+    //            reader.Offset = frameStartOffset + (int)packetSize;
+    //            continue;
+    //        }
+
+    //        var packetType = reader.ReadUInt16BE();
+    //        var isZstdCompressed = (packetType & 0x8000) != 0;
+    //        var msgTypeId = (MessageType)(packetType & 0x7FFF);
+
+    //        var frameConsumed = 6; // 4 length + 2 type already consumed within this frame
+    //        var frameRemaining = (int)packetSize - frameConsumed;
+    //        if (frameRemaining < 0 || frameRemaining > reader.Remaining)
+    //        {
+    //            // Not enough data
+    //            reader.Offset = frameStartOffset; // rewind to start of frame for next attempt
+    //            break;
+    //        }
+
+    //        // Slice the rest of the frame for inner parsing
+    //        var inner = reader.ReadBytesSpan(frameRemaining);
+
+    //        switch (msgTypeId)
+    //        {
+    //            case MessageType.Notify:
+    //                ProcessNotifyMsg(inner, isZstdCompressed);
+    //                break;
+    //            case MessageType.FrameDown:
+    //                ProcessFrameDown(inner, isZstdCompressed);
+    //                break;
+    //            default:
+    //                // Unknown, skip
+    //                break;
+    //        }
+    //    }
+    //}
+
+    private const ulong WORLD_SERVICE_ID = 103198054;
+    private const ulong WORLD_NTF_SERVICE_ID = 1664308034;
 
     /// <summary>
     /// Processes Notify messages by dispatching them to the appropriate registered processor.
@@ -133,7 +149,7 @@ public sealed class MessageAnalyzerV2
         _ = packet.ReadUInt32BE(); // stubId
         var methodId = packet.ReadUInt32BE();
 
-        if (serviceUuid != 0x0000000063335342UL) return; // Not a combat-related service
+        if (serviceUuid != WORLD_NTF_SERVICE_ID && serviceUuid != WORLD_SERVICE_ID) return; // Not a combat-related service
 
         var msgPayload = packet.ReadRemaining();
         if (isZstdCompressed)
@@ -142,41 +158,70 @@ public sealed class MessageAnalyzerV2
         }
 
         _logger?.LogTrace("MessageTypeId:{id}", methodId);
-        if (_registry.TryGetProcessor(methodId, out var processor))
+        
+        if (serviceUuid == WORLD_NTF_SERVICE_ID)
         {
-            processor.Process(msgPayload);
+            if (_registry.TryGetProcessor(methodId, out var processor))
+            {
+                //Interlocked.Increment(ref _count);
+                //Debug.WriteLine("ProcessNotifyMsg@V2: {0}", _count);
+                processor.Process(msgPayload);
+                return;
+            }
+        }
+
+        if (serviceUuid == WORLD_SERVICE_ID)
+        {
+            if (_worldMessageHandlerRegistry.TryGetProcessor(methodId, out var processor))
+            {
+                processor.Process(msgPayload);
+                return;
+            }
         }
     }
 
-    /// <summary>
-    /// Span-based Notify parser to avoid frame array allocation.
-    /// </summary>
-    private void ProcessNotifyMsg(ReadOnlySpan<byte> packet, bool isZstdCompressed)
-    {
-        var r = new SpanReader(packet);
-        var serviceUuid = r.ReadUInt64BE();
-        _ = r.ReadUInt32BE(); // stubId
-        var methodId = r.ReadUInt32BE();
+    ///// <summary>
+    ///// Span-based Notify parser to avoid frame array allocation.
+    ///// </summary>
+    //private void ProcessNotifyMsg(ReadOnlySpan<byte> packet, bool isZstdCompressed)
+    //{
+    //    var r = new SpanReader(packet);
+    //    var serviceUuid = r.ReadUInt64BE();
+    //    _ = r.ReadUInt32BE(); // stubId
+    //    var methodId = r.ReadUInt32BE();
 
-        if (serviceUuid != 0x0000000063335342UL) return;
+    //    if (serviceUuid != WORLD_NTF_SERVICE_ID && serviceUuid != WORLD_SERVICE_ID) return; // Not a combat-related service
 
-        var msgPayloadSpan = r.ReadRemainingSpan();
-        byte[] msgPayload;
-        if (isZstdCompressed)
-        {
-            msgPayload = DecompressZstdIfNeeded(msgPayloadSpan.ToArray());
-        }
-        else
-        {
-            msgPayload = msgPayloadSpan.ToArray();
-        }
+    //    var msgPayloadSpan = r.ReadRemainingSpan();
+    //    byte[] msgPayload;
+    //    if (isZstdCompressed)
+    //    {
+    //        msgPayload = DecompressZstdIfNeeded(msgPayloadSpan.ToArray());
+    //    }
+    //    else
+    //    {
+    //        msgPayload = msgPayloadSpan.ToArray();
+    //    }
 
-        _logger?.LogTrace("MessageTypeId:{id}", methodId);
-        if (_registry.TryGetProcessor(methodId, out var processor))
-        {
-            processor.Process(msgPayload);
-        }
-    }
+    //    _logger?.LogTrace("MessageTypeId:{id}", methodId);
+    //    if (serviceUuid == WORLD_NTF_SERVICE_ID)
+    //    {
+    //        if (_registry.TryGetProcessor(methodId, out var processor))
+    //        {
+    //            Interlocked.Increment(ref _count);
+    //            Debug.WriteLine("ProcessNotifyMsg@V2: {0}", _count);
+    //            processor.Process(msgPayload);
+    //        }
+    //    }
+
+    //    if (serviceUuid == WORLD_SERVICE_ID)
+    //    {
+    //        if (_worldMessageHandlerRegistry.TryGetProcessor(methodId, out var processor))
+    //        {
+    //            processor.Process(msgPayload);
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// Processes FrameDown messages which contain nested packets.
@@ -196,32 +241,32 @@ public sealed class MessageAnalyzerV2
         Process(nestedPacket); // Recursively process the inner packet
     }
 
-    /// <summary>
-    /// Span-based FrameDown parser to avoid frame array allocation.
-    /// </summary>
-    private void ProcessFrameDown(ReadOnlySpan<byte> packet, bool isZstdCompressed)
-    {
-        var r = new SpanReader(packet);
-        _ = r.ReadUInt32BE(); // serverSequenceId
-        var nestedSpan = r.ReadRemainingSpan();
-        if (nestedSpan.Length == 0) return;
+    ///// <summary>
+    ///// Span-based FrameDown parser to avoid frame array allocation.
+    ///// </summary>
+    //private void ProcessFrameDown(ReadOnlySpan<byte> packet, bool isZstdCompressed)
+    //{
+    //    var r = new SpanReader(packet);
+    //    _ = r.ReadUInt32BE(); // serverSequenceId
+    //    var nestedSpan = r.ReadRemainingSpan();
+    //    if (nestedSpan.Length == 0) return;
 
-        if (isZstdCompressed)
-        {
-            var nested = DecompressZstdIfNeeded(nestedSpan.ToArray());
-            Process(nested);
-        }
-        else
-        {
-            Process(nestedSpan);
-        }
-    }
+    //    if (isZstdCompressed)
+    //    {
+    //        var nested = DecompressZstdIfNeeded(nestedSpan.ToArray());
+    //        Process(nested);
+    //    }
+    //    else
+    //    {
+    //        Process(nestedSpan);
+    //    }
+    //}
 
     #region Zstd Decompression
 
-    private static readonly uint ZSTD_MAGIC = 0xFD2FB528;
-    private static readonly uint SKIPPABLE_MAGIC_MIN = 0x184D2A50;
-    private static readonly uint SKIPPABLE_MAGIC_MAX = 0x184D2A5F;
+    private const uint ZSTD_MAGIC = 0xFD2FB528;
+    private const uint SKIPPABLE_MAGIC_MIN = 0x184D2A50;
+    private const uint SKIPPABLE_MAGIC_MAX = 0x184D2A5F;
 
     private static byte[] DecompressZstdIfNeeded(byte[] buffer)
     {
@@ -251,11 +296,23 @@ public sealed class MessageAnalyzerV2
         using var output = new MemoryStream();
 
         const long MAX_OUT = 32L * 1024 * 1024; // 32MB limit
-        decoder.CopyTo(output, 8192);
-        if (output.Length > MAX_OUT)
-        {
-            throw new InvalidDataException("Decompressed data exceeds 32MB limit.");
-        }
+        //decoder.CopyTo(output, 8192);
+        //if (output.Length > MAX_OUT)
+        //{
+        //    throw new InvalidDataException("Decompressed data exceeds 32MB limit.");
+        //}
+        var temp = new byte[8192];
+            long total = 0;
+            int read;
+            while ((read = decoder.Read(temp, 0, temp.Length)) > 0)
+            {
+                total += read;
+
+                if (total > MAX_OUT) throw new InvalidDataException("Decompressed data exceeds 32MB limit.");
+
+                output.Write(temp, 0, read);
+            }
+
 
         return output.ToArray();
     }

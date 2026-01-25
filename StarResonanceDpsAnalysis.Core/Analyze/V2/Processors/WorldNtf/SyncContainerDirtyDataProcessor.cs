@@ -1,30 +1,25 @@
+using System.Diagnostics;
 using System.Text;
-using BlueProto;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Data;
-using StarResonanceDpsAnalysis.Core.Extends.BlueProto;
-using StarResonanceDpsAnalysis.Core.Extends.System;
 
-namespace StarResonanceDpsAnalysis.Core.Analyze.V2.Processors;
+namespace StarResonanceDpsAnalysis.Core.Analyze.V2.Processors.WorldNtf;
 
 /// <summary>
 /// Processes the SyncContainerDirtyData message for incremental player data updates.
 /// </summary>
-internal sealed class SyncContainerDirtyDataProcessor(IDataStorage storage, ILogger? logger) : IMessageProcessor
+internal sealed class SyncContainerDirtyDataProcessor(IDataStorage storage, ILogger? logger) : WorldNtfBaseProcessor(WorldNtfMessageId.SyncContainerDirtyData)
 {
-    private readonly IDataStorage _storage = storage;
-    private readonly ILogger? _logger = logger;
-
-    public void Process(byte[] payload)
+    public override void Process(byte[] payload)
     {
-        _logger?.LogDebug(nameof(SyncContainerDirtyDataProcessor));
+        logger?.LogDebug(nameof(SyncContainerDirtyDataProcessor));
         try
         {
-            if (_storage.CurrentPlayerUUID == 0) return;
-            var dirty = SyncContainerDirtyData.Parser.ParseFrom(payload);
-            if (dirty?.VData?.BufferS == null || dirty.VData.BufferS.Length == 0) return;
+            if (storage.CurrentPlayerUUID == 0) return;
+            var dirty = Zproto.WorldNtf.Types.SyncContainerDirtyData.Parser.ParseFrom(payload);
+            if (dirty?.VData?.Buffer == null || dirty.VData.Buffer.Length == 0) return;
 
-            var buf = dirty.VData.BufferS.ToByteArray();
+            var buf = dirty.VData.Buffer.ToByteArray();
             using var ms = new MemoryStream(buf, false);
             using var br = new BinaryReader(ms);
 
@@ -33,19 +28,19 @@ internal sealed class SyncContainerDirtyDataProcessor(IDataStorage storage, ILog
             var fieldIndex = br.ReadUInt32();
             _ = br.ReadInt32();
 
-            var playerUid = _storage.CurrentPlayerUUID.ShiftRight16();
-            _storage.EnsurePlayer(playerUid);
+            var playerUid = storage.CurrentPlayerUUID;
+            storage.EnsurePlayer(playerUid);
 
             switch (fieldIndex)
             {
                 case 2: ProcessNameAndPowerLevel(br, playerUid); break;
                 case 16: ProcessHp(br, playerUid); break;
-                case 61: ProcessProfession(br, playerUid); break;
+                case 61: ProcessClass(br, playerUid); break;
             }
         }
         catch (Exception ex)
         {
-            _logger?.LogError(ex, "Failed to process dirty container data.");
+            logger?.LogError(ex, "Failed to process dirty container data.");
         }
     }
 
@@ -60,18 +55,22 @@ internal sealed class SyncContainerDirtyDataProcessor(IDataStorage storage, ILog
                 var playerName = StreamReadString(br);
                 if (!string.IsNullOrEmpty(playerName))
                 {
-                    _storage.CurrentPlayerInfo.Name = playerName;
-                    _storage.SetPlayerName(playerUid, playerName);
+                    storage.CurrentPlayerInfo.Name = playerName;
+                    storage.SetPlayerName(playerUid, playerName);
                 }
                 break;
             case 35:
-                var fightPoint = (int)br.ReadUInt32();
+                var fightPoint = br.ReadInt32();
                 _ = br.ReadInt32();
                 if (fightPoint != 0)
                 {
-                    _storage.CurrentPlayerInfo.CombatPower = fightPoint;
-                    _storage.SetPlayerCombatPower(playerUid, fightPoint);
+                    storage.CurrentPlayerInfo.CombatPower = fightPoint;
+                    storage.SetPlayerCombatPower(playerUid, fightPoint);
                 }
+                break;
+            default:
+                var tt = br.ReadInt32();
+                Debug.WriteLine("tt:" + tt);
                 break;
         }
     }
@@ -84,31 +83,32 @@ internal sealed class SyncContainerDirtyDataProcessor(IDataStorage storage, ILog
         switch (fieldIndex)
         {
             case 1:
-                var curHp = (int)br.ReadUInt32();
-                _storage.CurrentPlayerInfo.HP = curHp;
-                _storage.SetPlayerHP(playerUid, curHp);
+                var curHp = br.ReadInt32();
+                storage.CurrentPlayerInfo.HP = curHp;
+                storage.SetPlayerHP(playerUid, curHp);
                 break;
             case 2:
-                var maxHp = (int)br.ReadUInt32();
-                _storage.CurrentPlayerInfo.MaxHP = maxHp;
-                _storage.SetPlayerMaxHP(playerUid, maxHp);
+                //var maxHp = (int)br.ReadUInt32();
+                var maxHp = br.ReadInt32();
+                storage.CurrentPlayerInfo.MaxHP = maxHp;
+                storage.SetPlayerMaxHP(playerUid, maxHp);
                 break;
         }
     }
 
-    private void ProcessProfession(BinaryReader br, long playerUid)
+    private void ProcessClass(BinaryReader br, long playerUid)
     {
         if (!DoesStreamHaveIdentifier(br)) return;
         var fieldIndex = br.ReadUInt32();
         _ = br.ReadInt32();
         if (fieldIndex == 1)
         {
-            var curProfessionId = (int)br.ReadUInt32();
+            var curClassId = br.ReadInt32();
             _ = br.ReadInt32();
-            if (curProfessionId != 0)
+            if (curClassId != 0)
             {
-                _storage.CurrentPlayerInfo.ProfessionID = curProfessionId;
-                _storage.SetPlayerProfessionID(playerUid, curProfessionId);
+                storage.CurrentPlayerInfo.ProfessionID = curClassId;
+                storage.SetPlayerProfessionID(playerUid, curClassId);
             }
         }
     }

@@ -1,21 +1,21 @@
 using System.Diagnostics;
-using System.Collections.Generic;
-using BlueProto;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Logging;
 
-namespace StarResonanceDpsAnalysis.Core.Analyze.V2.Processors;
+namespace StarResonanceDpsAnalysis.Core.Analyze.V2.Processors.WorldNtf;
 
 /// <summary>
 /// Processes the SyncContainerData message to update the current player's core information.
 /// </summary>
-public sealed class SyncContainerDataProcessor(IDataStorage storage, ILogger? logger) : IMessageProcessor
+public sealed class SyncContainerDataProcessor(IDataStorage storage, ILogger? logger) : WorldNtfBaseProcessor(WorldNtfMessageId.SyncContainerData)
 {
-    public void Process(byte[] payload)
+    public override void Process(byte[] payload)
     {
         logger?.LogDebug(CoreLogEvents.SyncContainerData, "SyncContainerData received: {Bytes} bytes", payload.Length);
-        var syncContainerData = SyncContainerData.Parser.ParseFrom(payload);
+
+        var syncContainerData = Zproto.WorldNtf.Types.SyncContainerData.Parser.ParseFrom(payload);
+        //var syncContainerData = SyncContainerData.Parser.ParseFrom(payload);
         if (syncContainerData?.VData == null) return;
         var vData = syncContainerData.VData;
         Debug.Assert(vData != null);
@@ -27,11 +27,12 @@ public sealed class SyncContainerDataProcessor(IDataStorage storage, ILogger? lo
         var prev = storage.CurrentPlayerInfo;
         var prevName = prev.Name;
         var prevLevel = prev.Level;
-        var prevHP = prev.HP;
-        var prevMaxHP = prev.MaxHP;
+        var prevHp = prev.HP;
+        var prevMaxHp = prev.MaxHP;
         var prevPower = prev.CombatPower;
         var prevProfId = prev.ProfessionID;
 
+        storage.CurrentPlayerUUID = playerUid;
         storage.CurrentPlayerInfo.UID = playerUid;
         storage.EnsurePlayer(playerUid);
 
@@ -48,14 +49,14 @@ public sealed class SyncContainerDataProcessor(IDataStorage storage, ILogger? lo
         {
             storage.CurrentPlayerInfo.HP = curHp;
             storage.SetPlayerHP(playerUid, curHp);
-            if (prevHP != curHp) updates.Add($"hp={curHp}");
+            if (prevHp != curHp) updates.Add($"hp={curHp}");
         }
 
         if (vData.Attr?.MaxHp is { } maxHp && maxHp != 0)
         {
             storage.CurrentPlayerInfo.MaxHP = maxHp;
             storage.SetPlayerMaxHP(playerUid, maxHp);
-            if (prevMaxHP != maxHp) updates.Add($"maxHp={maxHp}");
+            if (prevMaxHp != maxHp) updates.Add($"maxHp={maxHp}");
         }
 
         if (vData.CharBase != null)

@@ -1,10 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-using BlueProto;
 using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Microsoft.Extensions.Logging;
@@ -13,6 +13,7 @@ using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Extends.BlueProto;
 using StarResonanceDpsAnalysis.Core.Extends.System;
 using StarResonanceDpsAnalysis.Core.Tools;
+using Zproto;
 using ZstdNet;
 
 // 0472 -> 针对可控类型与 null 的比较, 由于使用了 Protobuf 的固定类型, 本页禁用该警告
@@ -73,7 +74,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// Key = methodId
         /// Value = 对应的处理方法
         /// </summary>
-        private static readonly Dictionary<uint, Action<byte[]>> ProcessMethods = new()
+        private static readonly Dictionary<uint, Action<byte[], bool>> ProcessMethods = new()
         {
             { 0x00000006U, ProcessSyncNearEntities },        // 同步周边玩家实体
             { 0x00000015U, ProcessSyncContainerData },       // 同步自身完整容器数据
@@ -94,11 +95,12 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             if (serviceUuid != 0x0000000063335342UL) return; // 非战斗相关，忽略
 
             byte[] msgPayload = packet.ReadRemaining();
+            byte[] origPayload = msgPayload;
             if (isZstdCompressed) msgPayload = DecompressZstdIfNeeded(msgPayload);
 
             logger?.LogTrace("MethodId: {methodId}", methodId);
             if (!ProcessMethods.TryGetValue(methodId, out var processMethod)) return;
-            processMethod(msgPayload);
+            processMethod(msgPayload, isZstdCompressed);
         }
 
         #region Zstd 解压逻辑
@@ -155,7 +157,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         }
         #endregion
 
-        private static readonly List<Action<long, RepeatedField<Attr>>?> ProcessSyncNearEntitiesMethods = new()
+        private static readonly List<Action<long, RepeatedField<Attr>, byte[]>?> ProcessSyncNearEntitiesMethods = new()
         {
             null,
             ProcessEnemyAttrs, // EEntityType.EntMonster(1)
@@ -166,9 +168,9 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 同步周边实体 怪物和玩家
         /// </summary>
-        public static void ProcessSyncNearEntities(byte[] payloadBuffer)
+        public static void ProcessSyncNearEntities(byte[] payloadBuffer, bool b)
         {
-            var syncNearEntities = SyncNearEntities.Parser.ParseFrom(payloadBuffer);
+            var syncNearEntities = WorldNtf.Types.SyncNearEntities.Parser.ParseFrom(payloadBuffer);
             if (syncNearEntities.Appear == null || syncNearEntities.Appear.Count == 0) return;
 
             foreach (var entity in syncNearEntities.Appear)
@@ -184,7 +186,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
 
                 if ((int)entity.EntType < 0 || (int)entity.EntType >= ProcessSyncNearEntitiesMethods.Count) continue;
                 var processSyncNearEntitiesMethod = ProcessSyncNearEntitiesMethods[(int)entity.EntType];
-                processSyncNearEntitiesMethod?.Invoke(playerUid, attrCollection.Attrs);
+                processSyncNearEntitiesMethod?.Invoke(playerUid, attrCollection.Attrs, payloadBuffer);
             }
         }
 
@@ -193,13 +195,13 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 同步自身完整容器数据（基础属性、昵称、职业、战力）
         /// </summary>
-        public static void ProcessSyncContainerData(byte[] payloadBuffer)
+        public static void ProcessSyncContainerData(byte[] payloadBuffer, bool b)
         {
             // TODO: 模组分析模块待分离
             ModulePayloadBuffer = payloadBuffer;
 
             //Console.WriteLine("Head (前64字节): " + ToHex(payloadBuffer));
-            var syncContainerData = SyncContainerData.Parser.ParseFrom(payloadBuffer);
+            var syncContainerData = Zproto.WorldNtf.Types.SyncContainerData.Parser.ParseFrom(payloadBuffer);
             if (syncContainerData?.VData == null) return;
             var vData = syncContainerData.VData;
             if (vData.CharId == null || vData.CharId == 0) return;
@@ -256,15 +258,16 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 同步自身部分更新（脏数据） //增量更新，有数据就更新
         /// </summary>
-        public static void ProcessSyncContainerDirtyData(byte[] payloadBuffer)
+        public static void ProcessSyncContainerDirtyData(byte[] payloadBuffer, bool b)
         {
             try
             {
                 if (DataStorage.CurrentPlayerUUID == 0) return;
-                var dirty = SyncContainerDirtyData.Parser.ParseFrom(payloadBuffer);
-                if (dirty?.VData?.BufferS == null || dirty.VData.BufferS.Length == 0) return;
+                //var dirty = Zproto.WorldNtf.Types.SyncContainerDirtyData.Parser.ParseFrom(payloadBuffer);
+                var dirty = Zproto.WorldNtf.Types.SyncContainerDirtyData.Parser.ParseFrom(payloadBuffer);
+                if (dirty?.VData?.Buffer == null || dirty.VData.Buffer.Length == 0) return;
 
-                var buf = dirty.VData.BufferS.ToByteArray();
+                var buf = dirty.VData.Buffer.ToByteArray();
                 using var ms = new MemoryStream(buf, writable: false);
                 using var br = new BinaryReader(ms);
 
@@ -399,9 +402,9 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 同步自身增量伤害
         /// </summary>
-        public static void ProcessSyncToMeDeltaInfo(byte[] payloadBuffer)
+        public static void ProcessSyncToMeDeltaInfo(byte[] payloadBuffer, bool b)
         {
-            var syncToMeDeltaInfo = SyncToMeDeltaInfo.Parser.ParseFrom(payloadBuffer);
+            var syncToMeDeltaInfo = WorldNtf.Types.SyncToMeDeltaInfo.Parser.ParseFrom(payloadBuffer);
             var aoiSyncToMeDelta = syncToMeDeltaInfo.DeltaInfo;
             var uuid = aoiSyncToMeDelta.Uuid;
             if (uuid != 0 && DataStorage.CurrentPlayerUUID != uuid)
@@ -419,9 +422,9 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 同步周边增量伤害（范围内其他角色的技能/伤害）
         /// </summary>
-        public static void ProcessSyncNearDeltaInfo(byte[] payloadBuffer)
+        public static void ProcessSyncNearDeltaInfo(byte[] payloadBuffer, bool b)
         {
-            var syncNearDeltaInfo = SyncNearDeltaInfo.Parser.ParseFrom(payloadBuffer);
+            var syncNearDeltaInfo = WorldNtf.Types.SyncNearDeltaInfo.Parser.ParseFrom(payloadBuffer);
             if (syncNearDeltaInfo.DeltaInfos == null || syncNearDeltaInfo.DeltaInfos.Count == 0) return;
 
             foreach (var aoiSyncDelta in syncNearDeltaInfo.DeltaInfos) ProcessAoiSyncDelta(aoiSyncDelta);
@@ -431,7 +434,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 处理一条技能伤害/治疗记录
         /// </summary>
-        public static void ProcessAoiSyncDelta(AoiSyncDelta delta)
+        public static void ProcessAoiSyncDelta(WorldNtf.Types.AoiSyncDelta delta)
         {
             if (delta == null) return;
 
@@ -446,12 +449,12 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 if (isTargetPlayer)
                 {
                     //玩家
-                    ProcessPlayerAttrs(targetUuidRaw, attrCollection.Attrs);
+                    ProcessPlayerAttrs(targetUuidRaw, attrCollection.Attrs, []);
                 }
                 else
                 {
                     //怪物
-                    ProcessEnemyAttrs(targetUuid, attrCollection.Attrs);
+                    ProcessEnemyAttrs(targetUuid, attrCollection.Attrs, []);
                 }
             }
 
@@ -545,7 +548,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// </summary>
         /// <param name="playerUid"></param>
         /// <param name="attrs"></param>
-        public static void ProcessPlayerAttrs(long playerUid, RepeatedField<Attr> attrs)
+        public static void ProcessPlayerAttrs(long playerUid, RepeatedField<Attr> attrs, byte[] payload)
         {
             DataStorage.TestCreatePlayerInfoByUID(playerUid);
 
@@ -557,7 +560,9 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 switch (attr.Id)
                 {
                     case (int)AttrType.AttrName:
-                        DataStorage.SetPlayerName(playerUid, reader.ReadString());
+                        var playerName = reader.ReadString();
+                        DataStorage.SetPlayerName(playerUid, playerName);
+                        Debug.WriteLine($"SyncNearEntitiesV1: SetPlayerName:{playerUid}@{playerName}");
                         break;
                     case (int)AttrType.AttrProfessionId:
                         DataStorage.SetPlayerProfessionID(playerUid, reader.ReadInt32());
@@ -601,7 +606,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
 
         }
 
-        public static void ProcessEnemyAttrs(long enemyUid, RepeatedField<Attr> attrs)
+        public static void ProcessEnemyAttrs(long enemyUid, RepeatedField<Attr> attrs, byte[] arg3)
         {
             #region
             //foreach (var attr in attrs)

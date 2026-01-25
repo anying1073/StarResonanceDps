@@ -1,5 +1,6 @@
 using System.Buffers;
 using System.Buffers.Binary;
+using System.Diagnostics;
 using System.Net;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
@@ -41,9 +42,7 @@ internal sealed class TcpStreamProcessor : IDisposable
 
     // Pipe replaces the previous MemoryStream staging buffer
     private Pipe _pipe;
-    
-    // Reentrancy guard for ParseFromPipe
-    private bool _isParsingPipe;
+    private readonly object _pipeLock = new();
 
     public string CurrentServer => CurrentServerEndpoint.ToString();
     public ServerEndpoint CurrentServerEndpoint { get; private set; }
@@ -158,12 +157,12 @@ internal sealed class TcpStreamProcessor : IDisposable
 
     private void ReassembleAndParse(DateTime now)
     {
-        var hasData = false;
         var messageBuffer = ArrayPool<byte>.Shared.Rent(4096);
         var messageLength = 0;
 
         try
         {
+            // Reassemble packets
             while (_tcpNextSeq != null && _tcpCache.TryRemove(_tcpNextSeq.Value, out var cachedData))
             {
                 if (messageLength + cachedData.Length > messageBuffer.Length)
@@ -176,115 +175,45 @@ internal sealed class TcpStreamProcessor : IDisposable
 
                 Buffer.BlockCopy(cachedData, 0, messageBuffer, messageLength, cachedData.Length);
                 messageLength += cachedData.Length;
-                hasData = true;
-
                 unchecked { _tcpNextSeq += (uint)cachedData.Length; }
                 _tcpLastTime = now;
-                _lastAnyPacketAt = now;
             }
 
-            if (hasData)
+            if (messageLength > 0)
             {
-                _logger?.LogTrace("Writing {Bytes} bytes to pipe for parsing", messageLength);
-                _pipe.Writer.Write(messageBuffer.AsSpan(0, messageLength));
-                _ = _pipe.Writer.FlushAsync().GetAwaiter().GetResult();
+                // Parse directly from buffer
+                ParseMessages(messageBuffer.AsSpan(0, messageLength));
             }
         }
         finally
         {
             ArrayPool<byte>.Shared.Return(messageBuffer);
         }
-
-        // Parse as many complete messages as possible from the pipe
-        ParseFromPipe();
     }
 
-    private void ParseFromPipe()
+    private void ParseMessages(ReadOnlySpan<byte> data)
     {
-        // Prevent reentrancy - if we're already parsing, skip this call
-        if (_isParsingPipe)
+        var offset = 0;
+        while (offset + 4 <= data.Length)
         {
-            return;
-        }
+            var packetSize = BinaryPrimitives.ReadInt32BigEndian(data.Slice(offset, 4));
 
-        _isParsingPipe = true;
-        try
-        {
-            var reader = _pipe.Reader;
-            while (reader.TryRead(out var result))
+            if (packetSize <= 4 || packetSize > 0x0FFFFF) break;
+            if (offset + packetSize > data.Length) break;
+
+            var packet = data.Slice(offset, packetSize).ToArray();
+
+
+            try
             {
-                var buffer = result.Buffer;
-                long consumedBytes = 0;
-                var parsedPackets = 0;
-
-                while (true)
-                {
-                    if (buffer.Length < 4) break;
-
-                    // Peek 4-byte big-endian length
-                    var head = buffer.Slice(0, 4);
-                    int packetSize;
-                    if (head.IsSingleSegment)
-                    {
-                        packetSize = BinaryPrimitives.ReadInt32BigEndian(head.FirstSpan);
-                    }
-                    else
-                    {
-                        // Multi-segment sequence: allocate a small temporary array
-                        var tmp = head.ToArray();
-                        packetSize = BinaryPrimitives.ReadInt32BigEndian(tmp);
-                    }
-
-                    if (packetSize <= 4 || packetSize > 0x0FFFFF) break;
-
-                    if (buffer.Length < packetSize) break; // not enough data yet
-
-                    var packetSeq = buffer.Slice(0, packetSize);
-
-                    // Zero-copy: pass span directly
-                    try
-                    {
-                        if (packetSeq.IsSingleSegment)
-                        {
-                            _messageAnalyzer.Process(packetSeq.FirstSpan);
-                        }
-                        else
-                        {
-                            // Multi-segment: coalesce minimally into a pooled buffer
-                            var exactPacket = new byte[packetSize];
-                            packetSeq.CopyTo(exactPacket);
-                            _messageAnalyzer.Process(exactPacket);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger?.LogError(ex, "Error processing message in ParseFromPipe");
-                        // Continue processing remaining packets
-                    }
-
-                    parsedPackets++;
-                    buffer = buffer.Slice(packetSize);
-                    consumedBytes += packetSize;
-                }
-
-                if (parsedPackets > 0)
-                {
-                    _logger?.LogTrace("Parsed {Count} framed messages from pipe", parsedPackets);
-                }
-
-                var consumed = result.Buffer.GetPosition(consumedBytes);
-                var examined = buffer.End; // leave remaining unconsumed
-                reader.AdvanceTo(consumed, examined);
-
-                if (result.IsCompleted && buffer.Length == 0)
-                {
-                    break;
-                }
+                _messageAnalyzer.Process(packet);
             }
-        }
-        finally
-        {
-            _isParsingPipe = false;
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error processing message");
+            }
+
+            offset += packetSize;
         }
     }
 
@@ -379,6 +308,7 @@ internal sealed class TcpStreamProcessor : IDisposable
         _lastAnyPacketAt = DateTime.Now;
         var currentServerStr = endpoint.ToString();
         _logger?.LogInformation(CoreLogEvents.ServerDetected, "Got Scene Server: {Server}", currentServerStr);
+        Debug.WriteLine($"Set server {prevServer} -> {currentServerStr}");
 
         // Mark as connected only after we have positively detected the server
         _storage.IsServerConnected = true;
@@ -397,25 +327,28 @@ internal sealed class TcpStreamProcessor : IDisposable
         _waitingGapSince = null;
         _tcpCache.Clear();
 
-        try
+        lock (_pipeLock)
         {
-            _pipe.Writer.Complete();
-        }
-        catch
-        {
-            //Ignore
-        }
+            try
+            {
+                _pipe.Writer.Complete();
+            }
+            catch
+            {
+                //Ignore
+            }
 
-        try
-        {
-            _pipe.Reader.Complete();
-        }
-        catch
-        {
-            //Ignore
-        }
+            try
+            {
+                _pipe.Reader.Complete();
+            }
+            catch
+            {
+                //Ignore
+            }
 
-        _pipe = new Pipe(new PipeOptions(useSynchronizationContext: false));
+            _pipe = new Pipe(new PipeOptions(useSynchronizationContext: false));
+        }
         _storage.IsServerConnected = false;
         _logger?.LogInformation(CoreLogEvents.Reconnect, "Capture state reset, previous server was {Prev}", prev);
     }
