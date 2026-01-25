@@ -1,6 +1,7 @@
 <Solution>
   <Configurations>
     <Platform Name="x64" />
+    <Platform Name="x86" />
   </Configurations>
   <Folder Name="/Solution Items/">
     <File Path="Directory.Packages.props" />
@@ -8,21 +9,24 @@
     <File Path="TODO.md" />
   </Folder>
   <Project Path="StarResonanceDpsAnalysis.Assets/StarResonanceDpsAnalysis.Assets.csproj">
-    <Platform Solution="*|x64" Project="x64" />
+    <Platform Project="x64" />
   </Project>
   <Project Path="StarResonanceDpsAnalysis.Core.Benchmarks/StarResonanceDpsAnalysis.Core.Benchmarks.csproj">
-    <Platform Solution="*|x64" Project="x64" />
+    <Platform Project="x64" />
   </Project>
   <Project Path="StarResonanceDpsAnalysis.Core/StarResonanceDpsAnalysis.Core.csproj">
-    <Platform Solution="*|x64" Project="x64" />
+    <Platform Project="x64" />
+  </Project>
+  <Project Path="StarResonanceDpsAnalysis.Proto/StarResonanceDpsAnalysis.Proto.csproj" Id="147dc940-8464-4aec-b4c2-1457d9051389">
+    <Platform Project="x64" />
   </Project>
   <Project Path="StarResonanceDpsAnalysis.Tests/StarResonanceDpsAnalysis.Tests.csproj">
-    <Platform Solution="*|x64" Project="x64" />
+    <Platform Project="x64" />
   </Project>
   <Project Path="StarResonanceDpsAnalysis.WinForm/StarResonanceDpsAnalysis.WinForm.csproj">
-    <Platform Solution="*|x64" Project="x64" />
+    <Platform Project="x64" />
   </Project>
   <Project Path="StarResonanceDpsAnalysis.WPF/StarResonanceDpsAnalysis.WPF.csproj">
-    <Platform Solution="*|x64" Project="x64" />
+    <Platform Project="x64" />
   </Project>
 </Solution>
