@@ -24,10 +24,10 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore dependencies
-      run: dotnet restore StarResonanceDpsAnalysis.sln
+      run: dotnet restore StarResonanceDpsAnalysis.slnx
 
     - name: Build solution
-      run: dotnet build StarResonanceDpsAnalysis.sln --configuration ${{ matrix.configuration }} --no-restore
+      run: dotnet build StarResonanceDpsAnalysis.slnx --configuration ${{ matrix.configuration }} --no-restore
 
     - name: Run tests
-      run: dotnet test StarResonanceDpsAnalysis.sln --configuration ${{ matrix.configuration }} --no-build
+      run: dotnet test StarResonanceDpsAnalysis.slnx --configuration ${{ matrix.configuration }} --no-build
