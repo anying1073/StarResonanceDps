@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Logging;
 using StarResonanceDpsAnalysis.WPF.Models;
 
@@ -14,67 +13,13 @@ public partial class DpsStatisticsViewModel
 {
     protected void UpdateData()
     {
-        InvokeOnDispatcher(Do);
-        return;
-
-        void Do()
-        {
-            _logger.LogTrace("Enter UpdateData");
-
-            var stat = _storage.GetStatistics(ScopeTime == ScopeTime.Total);
-
-            if (!_timerService.IsRunning && HasData(stat))
-            {
-                _logger.LogInformation("检测到战斗数据,启动计时器 (using DpsTimerService)");
-                _timerService.Start();
-                _combatState.SectionTimedOut = false;
-            }
-
-            if (_combatState.AwaitingSectionStart)
-            {
-                var hasSectionDamage = _storage.GetStatisticsCount(false) > 0;
-                _logger.LogDebug("Awaiting section start - has section damage: {HasSectionDamage}", hasSectionDamage);
-
-                if (hasSectionDamage)
-                {
-                    foreach (var subVm in StatisticData.Values)
-                    {
-                        subVm.Reset();
-                    }
-
-                    _timerService.StartNewSection();
-                    _combatState.MarkSectionStarted();
-                    _logger.LogDebug("Section start processed, new section begins");
-                }
-            }
-
-            UpdateData(stat);
-            UpdateBattleDuration();
-        }
+        _dataSourceEngine.DeliverProcessedData();
     }
 
-    private void UpdateData(IReadOnlyDictionary<long, PlayerStatistics> data)
-    {
-        _logger.LogTrace(WpfLogEvents.VmUpdateData, "Update data requested: {Count} entries", data.Count);
-
-        var currentPlayerUid = _storage.CurrentPlayerUUID > 0 ? _storage.CurrentPlayerUUID : _configManager.CurrentConfig.Uid;
-
-        var processedDataByType = _dataProcessor.PreProcessData(data, IsIncludeNpcData);
-
-        foreach (var (statisticType, processedData) in processedDataByType)
-        {
-            if (!StatisticData.TryGetValue(statisticType, out var subViewModel)) continue;
-            subViewModel.ScopeTime = ScopeTime;
-            subViewModel.UpdateDataOptimized(processedData, currentPlayerUid);
-        }
-
-        UpdateTeamTotalStats(data);
-    }
-
-    private void UpdateTeamTotalStats(IReadOnlyDictionary<long, PlayerStatistics> data)
+    private void UpdateTeamTotalStats(IReadOnlyDictionary<long, DpsDataProcessed> data)
     {
         // Delegate to TeamStatsUIManager following Single Responsibility Principle
-        var teamStats = _dataProcessor.CalculateTeamTotal(data, StatisticIndex);
+        var teamStats = _dataProcessor.CalculateTeamTotal(data);
         _teamStatsManager.UpdateTeamStats(teamStats, StatisticIndex, data.Count > 0);
     }
 
@@ -89,44 +34,46 @@ public partial class DpsStatisticsViewModel
 
             if (ScopeTime == ScopeTime.Current)
             {
-                if (_combatState.AwaitingSectionStart)
-                {
-                    BattleDuration = _combatState.LastSectionElapsed;
-                    return;
-                }
-
-                if (_combatState.SectionTimedOut && _combatState.LastSectionElapsed > TimeSpan.Zero)
-                {
-                    BattleDuration = _combatState.LastSectionElapsed;
-                    return;
-                }
-
                 // Use timer service for section elapsed
                 BattleDuration = _timerService.GetSectionElapsed();
             }
             else // ScopeTime.Total
             {
-                if (_combatState.AwaitingSectionStart)
-                {
-                    BattleDuration = _combatState.TotalCombatDuration;
-                }
-                else
-                {
-                    var currentSectionDuration = _timerService.GetSectionElapsed();
-                    BattleDuration = _combatState.TotalCombatDuration + currentSectionDuration;
-                }
+                BattleDuration = _timerService.TotalCombatDuration;
             }
         }
     }
 
-    private void RefreshData()
+    /// <summary>
+    /// Apply processed data prepared by providers/engine to sub-viewmodels and team totals.
+    /// This centralizes UI update logic when providers pre-process data.
+    /// </summary>
+    private void ApplyProcessedData(Dictionary<StatisticType, Dictionary<long, DpsDataProcessed>> processedByType)
     {
-        var stat = _storage.GetStatistics(ScopeTime == ScopeTime.Total);
-        UpdateData(stat);
-    }
+        InvokeOnDispatcher(Action);
+        return;
 
-    private bool HasData(IReadOnlyDictionary<long, PlayerStatistics> stats)
-    {
-        return stats.Count > 0;
+        // Ensure UI updates on dispatcher
+        void Action()
+        {
+            var currentPlayerUid = _storage.CurrentPlayerUUID > 0 ? _storage.CurrentPlayerUUID : _configManager.CurrentConfig.Uid;
+
+            // Apply processed data to each sub viewmodel
+            foreach (var (statisticType, processed) in processedByType)
+            {
+                if (!StatisticData.TryGetValue(statisticType, out var subViewModel)) continue;
+                subViewModel.ScopeTime = ScopeTime;
+                subViewModel.UpdateDataOptimized(processed, currentPlayerUid);
+            }
+
+            // Update team totals
+            var teamStats = _dataProcessor.CalculateTeamTotal(processedByType[StatisticIndex]);
+            _teamStatsManager.UpdateTeamStats(teamStats, StatisticIndex, processedByType.Count > 0);
+
+            // Update duration
+            UpdateBattleDuration();
+        }
+
     }
 }
+

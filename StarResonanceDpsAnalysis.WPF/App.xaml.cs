@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,17 +7,16 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using SharpPcap;
-using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Extensions;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Logging;
 using StarResonanceDpsAnalysis.WPF.Plugins;
-using StarResonanceDpsAnalysis.WPF.Plugins.BuiltIn;
 using StarResonanceDpsAnalysis.WPF.Plugins.Interfaces;
 using StarResonanceDpsAnalysis.WPF.Services;
 using StarResonanceDpsAnalysis.WPF.Themes;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
+using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
 using StarResonanceDpsAnalysis.WPF.Views;
 
 namespace StarResonanceDpsAnalysis.WPF;
@@ -32,6 +25,16 @@ public partial class App : Application
 {
     private static ILogger<App>? _logger;
     private static IObservable<LogEvent>? _logStream; // exposed for UI subscription
+
+    private static readonly Dictionary<Type, ServiceLifetime> LifeTimeOverrides = new()
+    {
+        { typeof(DpsStatisticsViewModel), ServiceLifetime.Singleton },
+        { typeof(DpsStatisticsView), ServiceLifetime.Singleton },
+        { typeof(SkillBreakdownViewModel), ServiceLifetime.Transient },
+        { typeof(SkillBreakdownView), ServiceLifetime.Transient },
+        { typeof(PlayerInfoDebugViewModel), ServiceLifetime.Transient },
+        { typeof(PlayerInfoDebugView), ServiceLifetime.Transient }
+    };
 
     public static IHost? Host { get; private set; }
 
@@ -134,6 +137,7 @@ public partial class App : Application
                 services.AddSingleton<IGlobalHotkeyService, GlobalHotkeyService>();
                 services.AddSingleton<IMousePenetrationService, MousePenetrationService>();
                 services.AddSingleton<ITopmostService, TopmostService>();
+                services.AddSingleton<DataSourceEngine>();
                 RegisterBuiltInPlugins(services);
 
                 services.AddSingleton<IPluginManager, PluginManager>();
@@ -153,16 +157,6 @@ public partial class App : Application
             .ConfigureLogging(lb => lb.ClearProviders());
     }
 
-    static readonly Dictionary<Type, ServiceLifetime> LifeTimeOverrides = new()
-    {
-        { typeof(DpsStatisticsViewModel), ServiceLifetime.Singleton },
-        { typeof(DpsStatisticsView), ServiceLifetime.Singleton },
-        { typeof(SkillBreakdownViewModel), ServiceLifetime.Transient },
-        { typeof(SkillBreakdownView), ServiceLifetime.Transient },
-        { typeof(PlayerInfoDebugViewModel), ServiceLifetime.Transient },
-        { typeof(PlayerInfoDebugView), ServiceLifetime.Transient },
-    };
-
     private static void RegisterViewModels(IServiceCollection services)
     {
         RegisterTypes(services, "StarResonanceDpsAnalysis.WPF.ViewModels", "ViewModel");
@@ -173,9 +167,10 @@ public partial class App : Application
         RegisterTypes(services, "StarResonanceDpsAnalysis.WPF.Views", "View");
     }
 
-    private static void RegisterBuiltInPlugins(IServiceCollection services) 
+    private static void RegisterBuiltInPlugins(IServiceCollection services)
     {
-        RegisterTypes(services, "StarResonanceDpsAnalysis.WPF.Plugins.BuiltIn", "Plugin", typeof(IPlugin), ServiceLifetime.Singleton);
+        RegisterTypes(services, "StarResonanceDpsAnalysis.WPF.Plugins.BuiltIn", "Plugin", typeof(IPlugin),
+            ServiceLifetime.Singleton);
     }
 
     private static void RegisterTypes(

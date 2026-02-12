@@ -1,9 +1,8 @@
 using System.ComponentModel;
-using System.IO;
 using Microsoft.Extensions.Logging;
-using StarResonanceDpsAnalysis.Core.Analyze.Exceptions;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Models;
+using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -45,43 +44,14 @@ public partial class DpsStatisticsViewModel
             AppConfig.DpsUpdateMode,
             AppConfig.DpsUpdateInterval);
 
-        if (_resumeActiveTimerHandler != null)
+        _dataSourceEngine.Configure(new DataSourceEngineParam()
         {
-            _storage.DpsDataUpdated -= _resumeActiveTimerHandler;
-            _resumeActiveTimerHandler = null;
-            _logger.LogDebug("Removed resume active timer handler");
-        }
+            Mode = AppConfig.DpsUpdateMode.ToDataSourceMode()
+        });
 
-        switch (AppConfig.DpsUpdateMode)
-        {
-            case DpsUpdateMode.Passive:
-                _updateCoordinator.Stop();
-                _storage.DpsDataUpdated -= UpdateData;
-                _storage.DpsDataUpdated += UpdateData;
-                _storage.NewSectionCreated -= StorageOnNewSectionCreated;
-                _storage.NewSectionCreated += StorageOnNewSectionCreated;
-                _logger.LogDebug("Passive mode enabled: DpsDataUpdated event subscribed (using DpsUpdateCoordinator)");
-                break;
-
-            case DpsUpdateMode.Active:
-                _storage.DpsDataUpdated -= UpdateData;
-                _storage.NewSectionCreated -= StorageOnNewSectionCreated;
-                _storage.NewSectionCreated += StorageOnNewSectionCreated;
-
-                _updateCoordinator.Configure(AppConfig.DpsUpdateMode, AppConfig.DpsUpdateInterval);
-                _updateCoordinator.Start();
-                _logger.LogDebug("Active mode enabled: coordinator started with interval {Interval}ms (using DpsUpdateCoordinator)",
-                    AppConfig.DpsUpdateInterval);
-                break;
-
-            default:
-                _logger.LogWarning("Unknown DPS update mode: {Mode}", AppConfig.DpsUpdateMode);
-                break;
-        }
-
-        _logger.LogInformation("Update mode configuration complete. Mode: {Mode}, Coordinator enabled: {Enabled}",
+        _logger.LogInformation("Update mode configuration complete. Mode: {Mode}, DataSourceEngine Mode: {CurrentMode}",
             AppConfig.DpsUpdateMode,
-            _updateCoordinator.IsUpdateEnabled);
+            _dataSourceEngine.CurrentMode);
     }
 
     private void LoadDpsStatisticsSettings()
@@ -107,23 +77,6 @@ public partial class DpsStatisticsViewModel
         _logger.LogInformation("从配置加载最小记录时长: {Duration}秒", Options.MinimalDurationInSeconds);
 
         Options.PropertyChanged += Options_PropertyChanged;
-    }
-
-    private void LoadPlayerCache()
-    {
-        try
-        {
-            _storage.LoadPlayerInfoFromFile();
-        }
-        catch (FileNotFoundException)
-        {
-            // cache not found
-        }
-        catch (DataTamperedException)
-        {
-            _storage.ClearAllPlayerInfos();
-            _storage.SavePlayerInfoToFile();
-        }
     }
 
     private void Options_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -268,7 +221,6 @@ public partial class DpsStatisticsViewModel
         _logger.LogDebug("OnStatisticIndexChanged: 切换到统计类型 {Type}", value);
 
         OnPropertyChanged(nameof(CurrentStatisticData));
-        RefreshData();
 
         _logger.LogDebug("OnStatisticIndexChanged: 统计类型已切换,强制刷新完成");
     }

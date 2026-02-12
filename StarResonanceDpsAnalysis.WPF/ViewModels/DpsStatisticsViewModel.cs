@@ -3,11 +3,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Data;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.Properties;
 using StarResonanceDpsAnalysis.WPF.Services;
+using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -26,7 +28,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 {
     // ===== Services =====
     private readonly IApplicationControlService _appControlService;
-    private readonly ICombatSectionStateManager _combatState;
     private readonly IConfigManager _configManager;
     private readonly IDpsDataProcessor _dataProcessor;
     private readonly Dispatcher _dispatcher;
@@ -37,7 +38,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     private readonly IDataStorage _storage;
     private readonly ITeamStatsUIManager _teamStatsManager;
     private readonly IDpsTimerService _timerService;
-    private readonly IDpsUpdateCoordinator _updateCoordinator;
     private readonly IWindowManagementService _windowManagement;
 
     // ===== Observable Properties =====
@@ -60,13 +60,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     [ObservableProperty] private bool _temporaryMaskPlayerName;
 
     // ===== Private State Fields =====
-    private DispatcherTimer? _dpsUpdateTimer;
-    private DispatcherTimer? _durationTimer;
     private int _indicatorHoverCount;
     private bool _isInitialized;
-    private DpsDataUpdatedEventHandler? _resumeActiveTimerHandler;
-    private bool _wasPassiveMode;
-    private bool _wasTimerRunning;
 
     // ===== Public Properties =====
     public DpsStatisticsSubViewModel CurrentStatisticData => StatisticData[StatisticIndex];
@@ -75,9 +70,12 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     public BattleSnapshotService SnapshotService { get; }
     public Dictionary<StatisticType, DpsStatisticsSubViewModel> StatisticData { get; }
 
+    // Engine instance (initialized in constructor)
+    private readonly DataSourceEngine _dataSourceEngine;
+
     // ===== Constructor =====
-    public DpsStatisticsViewModel(
-        ILogger<DpsStatisticsViewModel> logger,
+
+    public DpsStatisticsViewModel(ILogger<DpsStatisticsViewModel> logger,
         IDataStorage storage,
         IConfigManager configManager,
         IWindowManagementService windowManagement,
@@ -89,9 +87,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         IMessageDialogService messageDialogService,
         IDpsTimerService timerService,
         IDpsDataProcessor dataProcessor,
-        IDpsUpdateCoordinator updateCoordinator,
-        ICombatSectionStateManager combatSectionState,
         ITeamStatsUIManager teamStatsManager,
+        DataSourceEngine dataSourceEngine,
         IResetCoordinator resetCoordinator)
     {
         _logger = logger;
@@ -106,34 +103,43 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         SnapshotService = snapshotService;
         _timerService = timerService;
         _dataProcessor = dataProcessor;
-        _updateCoordinator = updateCoordinator;
-        _combatState = combatSectionState;
         _teamStatsManager = teamStatsManager;
         _resetCoordinator = resetCoordinator;
 
+        // Subscribe to engine processed data ready event
+        _dataSourceEngine = dataSourceEngine;
+        _dataSourceEngine.ProcessedDataReady += DataSourceEngineOnProcessedDataReady;
+        void DataSourceEngineOnProcessedDataReady(Dictionary<StatisticType, Dictionary<long, DpsDataProcessed>> processed)
+        {
+            InvokeOnDispatcher(() => ApplyProcessedData(processed));
+        }
+
+
+        // Configure engine mode according to config
+        _dataSourceEngine.ChangeMode(_configManager.CurrentConfig.DpsUpdateMode.ToDataSourceMode());
+
         StatisticData = new Dictionary<StatisticType, DpsStatisticsSubViewModel>
         {
-            [StatisticType.Damage] = new(logger, dispatcher, StatisticType.Damage, storage, debugFunctions, this, localizationManager),
-            [StatisticType.Healing] = new(logger, dispatcher, StatisticType.Healing, storage, debugFunctions, this, localizationManager),
-            [StatisticType.TakenDamage] = new(logger, dispatcher, StatisticType.TakenDamage, storage, debugFunctions, this, localizationManager),
-            [StatisticType.NpcTakenDamage] = new(logger, dispatcher, StatisticType.NpcTakenDamage, storage, debugFunctions, this, localizationManager)
+            [StatisticType.Damage] = new(logger, dispatcher, StatisticType.Damage, debugFunctions, this, localizationManager, _dataSourceEngine),
+            [StatisticType.Healing] = new(logger, dispatcher, StatisticType.Healing, debugFunctions, this, localizationManager, _dataSourceEngine),
+            [StatisticType.TakenDamage] = new(logger, dispatcher, StatisticType.TakenDamage, debugFunctions, this, localizationManager, _dataSourceEngine),
+            [StatisticType.NpcTakenDamage] = new(logger, dispatcher, StatisticType.NpcTakenDamage, debugFunctions, this, localizationManager, _dataSourceEngine)
         };
 
+
         _configManager.ConfigurationUpdated += ConfigManagerOnConfigurationUpdated;
+
         _storage.BeforeSectionCleared += StorageOnBeforeSectionCleared;
-        _storage.DpsDataUpdated += UpdateData;
-        _storage.NewSectionCreated += StorageOnNewSectionCreated;
         _storage.ServerConnectionStateChanged += StorageOnServerConnectionStateChanged;
         _storage.PlayerInfoUpdated += StorageOnPlayerInfoUpdated;
         _storage.ServerChanged += StorageOnServerChanged;
         _storage.SectionEnded += SectionEnded;
+        _storage.NewSectionCreated += StorageOnNewSectionCreated;
         DebugFunctions.SampleDataRequested += OnSampleDataRequested;
 
         AppConfig = _configManager.CurrentConfig;
         LoadDpsStatisticsSettings();
 
-        _updateCoordinator.UpdateRequested += OnUpdateRequested;
-        
         // Bind team stats manager to show team total setting
         _teamStatsManager.ShowTeamTotal = ShowTeamTotalDamage;
         _teamStatsManager.TeamStatsUpdated += OnTeamStatsUpdated;
@@ -147,25 +153,8 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     {
         DebugFunctions.SampleDataRequested -= OnSampleDataRequested;
         _configManager.ConfigurationUpdated -= ConfigManagerOnConfigurationUpdated;
-        _updateCoordinator.UpdateRequested -= OnUpdateRequested;
         _timerService.Stop();
-        _updateCoordinator.Stop();
 
-        if (_durationTimer != null)
-        {
-            _durationTimer.Stop();
-            _durationTimer.Tick -= DurationTimerOnTick;
-        }
-
-        if (_dpsUpdateTimer != null)
-        {
-            _dpsUpdateTimer.Stop();
-            _dpsUpdateTimer.Tick -= DpsUpdateTimerOnTick;
-            _dpsUpdateTimer = null;
-        }
-
-        _storage.DpsDataUpdated -= UpdateData;
-        _storage.NewSectionCreated -= StorageOnNewSectionCreated;
         _storage.ServerConnectionStateChanged -= StorageOnServerConnectionStateChanged;
         _storage.PlayerInfoUpdated -= StorageOnPlayerInfoUpdated;
         _storage.Dispose();
@@ -176,12 +165,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }
 
         _isInitialized = false;
-
-        if (_resumeActiveTimerHandler != null)
-        {
-            _storage.DpsDataUpdated -= _resumeActiveTimerHandler;
-            _resumeActiveTimerHandler = null;
-        }
 
         _storage.BeforeSectionCleared -= StorageOnBeforeSectionCleared;
     }
@@ -226,38 +209,13 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _logger.LogInformation("ResetAll: Mode={Mode}, Interval={Interval}ms",
                 AppConfig.DpsUpdateMode, AppConfig.DpsUpdateInterval);
 
-            if (_resumeActiveTimerHandler != null)
-            {
-                _storage.DpsDataUpdated -= _resumeActiveTimerHandler;
-                _resumeActiveTimerHandler = null;
-            }
-
-            _updateCoordinator.Stop();
-            _storage.DpsDataUpdated -= UpdateData;
-            _storage.NewSectionCreated -= StorageOnNewSectionCreated;
-
             _logger.LogInformation("ResetAll: Stopped all existing update mechanisms (using DpsUpdateCoordinator)");
 
-            if (AppConfig.DpsUpdateMode == DpsUpdateMode.Active)
-            {
-                _updateCoordinator.Configure(AppConfig.DpsUpdateMode, AppConfig.DpsUpdateInterval);
-                _updateCoordinator.Start();
-                _logger.LogInformation("ResetAll: Started DpsUpdateCoordinator. Interval={Interval}ms", AppConfig.DpsUpdateInterval);
-            }
-            else
-            {
-                _storage.DpsDataUpdated += UpdateData;
-                _logger.LogInformation("ResetAll: Subscribed to DpsDataUpdated event");
-            }
-
-            _storage.NewSectionCreated += StorageOnNewSectionCreated;
-
-            RefreshData();
             UpdateBattleDuration();
 
             _logger.LogInformation(
-                "=== ResetAll COMPLETE === ScopeTime={ScopeTime}, Mode={Mode}, Coordinator enabled={Enabled}, Event subscribed={Event}",
-                ScopeTime, AppConfig.DpsUpdateMode, _updateCoordinator.IsUpdateEnabled, AppConfig.DpsUpdateMode == DpsUpdateMode.Passive);
+                "=== ResetAll COMPLETE === ScopeTime={ScopeTime}, Mode={Mode}, Event subscribed={Event}",
+                ScopeTime, AppConfig.DpsUpdateMode, AppConfig.DpsUpdateMode == DpsUpdateMode.Passive);
         }
         catch (Exception ex)
         {
@@ -269,10 +227,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     public void ResetSection()
     {
         _logger.LogInformation("=== ResetSection START ===");
-        
+
         // Delegate to ResetCoordinator
         _resetCoordinator.ResetCurrentSection();
-        
+
         _logger.LogInformation("=== ResetSection COMPLETE ===");
     }
 
@@ -297,33 +255,22 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
     // ===== Private Helper Methods =====
 
-    private void OnUpdateRequested(object? sender, EventArgs e)
-    {
-        if (!_dispatcher.CheckAccess())
-        {
-            _dispatcher.BeginInvoke(OnUpdateRequested, sender, e);
-            return;
-        }
-
-        UpdateData();
-    }
-
     private void OnSampleDataRequested(object? sender, EventArgs e)
     {
         AddRandomData();
     }
-    
+
     private void OnTeamStatsUpdated(object? sender, TeamStatsUpdatedEventArgs e)
     {
         // Update observable properties when team stats change
-        _dispatcher.Invoke(() =>
+        InvokeOnDispatcher(() =>
         {
             TeamTotalDamage = e.TotalDamage;
             TeamTotalDps = e.TotalDps;
             TeamTotalLabel = GetTeamTotalLabel(e.StatisticType);
         });
     }
-    
+
     private string GetTeamTotalLabel(StatisticType statisticType)
     {
         return statisticType switch
@@ -344,39 +291,6 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
                 ResourcesKeys.DpsStatistics_TeamTotal_Damage,
                 defaultValue: "Team DPS")
         };
-    }
-
-    private void DpsUpdateTimerOnTick(object? sender, EventArgs e)
-    {
-        // 每10次tick输出一次日志,避免日志爆炸
-        if (_dpsUpdateTimer != null && _dpsUpdateTimer.IsEnabled)
-        {
-            var currentSecond = DateTime.Now.Second;
-            if (currentSecond % 10 == 0) // 每10秒输出一次
-            {
-                _logger.LogDebug("Timer tick triggered - calling DataStorage_DpsDataUpdated");
-            }
-        }
-
-        // Call the same update logic as event-based mode
-        UpdateData();
-    }
-
-    private void DurationTimerOnTick(object? sender, EventArgs e)
-    {
-        UpdateBattleDuration();
-    }
-
-    private void EnsureDurationTimerStarted()
-    {
-        if (_durationTimer != null) return;
-
-        _durationTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromSeconds(1)
-        };
-        _durationTimer.Tick += DurationTimerOnTick;
-        _durationTimer.Start();
     }
 
     private void InvokeOnDispatcher(Action action)

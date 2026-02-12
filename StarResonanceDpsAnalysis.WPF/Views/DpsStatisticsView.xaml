@@ -718,9 +718,9 @@
                                                   ItemsSource="{Binding SnapshotService.CurrentSnapshots}">
                                             <MenuItem.ItemContainerStyle>
                                                 <Style TargetType="MenuItem" BasedOn="{StaticResource ModernMenuItem}">
-                                                    <Setter Property="Header" Value="{Binding DisplayLabel}" />
+                                                    <Setter Property="Header" Value="{Binding Title}" />
                                                     <!-- ContextMenu.DataContext is set to PlacementTarget.DataContext, so bind directly -->
-                                                    <Setter Property="Command" Value="{Binding LoadSnapshotCommand}" />
+                                                    <Setter Property="Command" Value="{Binding DataContext.LoadSnapshotCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}" />
                                                     <Setter Property="CommandParameter" Value="{Binding}" />
                                                 </Style>
                                             </MenuItem.ItemContainerStyle>
@@ -731,9 +731,9 @@
                                                   ItemsSource="{Binding SnapshotService.TotalSnapshots}">
                                             <MenuItem.ItemContainerStyle>
                                                 <Style TargetType="MenuItem" BasedOn="{StaticResource ModernMenuItem}">
-                                                    <Setter Property="Header" Value="{Binding DisplayLabel}" />
+                                                    <Setter Property="Header" Value="{Binding Title}" />
                                                     <!-- ContextMenu.DataContext is set to PlacementTarget.DataContext, so bind directly -->
-                                                    <Setter Property="Command" Value="{Binding LoadSnapshotCommand}" />
+                                                    <Setter Property="Command" Value="{Binding DataContext.LoadSnapshotCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}" />
                                                     <Setter Property="CommandParameter" Value="{Binding}" />
                                                 </Style>
                                             </MenuItem.ItemContainerStyle>

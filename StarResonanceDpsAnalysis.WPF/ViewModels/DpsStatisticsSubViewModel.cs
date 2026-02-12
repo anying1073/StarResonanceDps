@@ -5,35 +5,24 @@ using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Models;
 using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Extensions;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
+using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
-/// <summary>
-/// Helper struct for pre-processed DPS data to avoid redundant calculations
-/// Immutable by design for thread-safety and performance
-/// </summary>
-public readonly record struct DpsDataProcessed(
-    PlayerStatistics OriginalData,
-    ulong Value,
-    long DurationTicks,
-    long Uid,
-    double ValuePerSecond);
-
 public partial class DpsStatisticsSubViewModel : BaseViewModel
 {
+    private readonly DataSourceEngine _dataSourceEngine;
     private readonly DebugFunctions _debugFunctions;
     private readonly Dispatcher _dispatcher;
     private readonly LocalizationManager _localizationManager;
     private readonly ILogger<DpsStatisticsViewModel> _logger;
     private readonly DpsStatisticsViewModel _parent;
-    private readonly IDataStorage _storage;
     private readonly StatisticType _type;
     [ObservableProperty] private int? _currentPlayerRank;
     [ObservableProperty] private StatisticDataViewModel? _currentPlayerSlot;
@@ -46,16 +35,16 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
     [ObservableProperty] private bool _suppressSorting;
 
     public DpsStatisticsSubViewModel(ILogger<DpsStatisticsViewModel> logger, Dispatcher dispatcher, StatisticType type,
-        IDataStorage storage,
-        DebugFunctions debugFunctions, DpsStatisticsViewModel parent, LocalizationManager localizationManager)
+        DebugFunctions debugFunctions, DpsStatisticsViewModel parent, LocalizationManager localizationManager,
+        DataSourceEngine dataSourceEngine)
     {
         _logger = logger;
         _dispatcher = dispatcher;
         _type = type;
-        _storage = storage;
         _debugFunctions = debugFunctions;
         _parent = parent;
         _localizationManager = localizationManager;
+        _dataSourceEngine = dataSourceEngine;
         _data.CollectionChanged += DataChanged;
         return;
 
@@ -187,7 +176,8 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
         if (DataDictionary.TryGetValue(playerStats.Uid, out var slot))
             return slot;
 
-        var ret = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(playerStats.Uid, out var playerInfo);
+        var playerInfoDict = _dataSourceEngine.GetPlayerInfoDictionary();
+        var ret = playerInfoDict.TryGetValue(playerStats.Uid, out var playerInfo);
         slot = new StatisticDataViewModel(_debugFunctions, _localizationManager, FetchSkillList)
         {
             Index = 999,
@@ -217,8 +207,9 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
 
     private SkillViewModelCollection FetchSkillList(long playerUid)
     {
-        var ret = _storage.GetStatistics(ScopeTime == ScopeTime.Total);
-        var found = ret.TryGetValue(playerUid, out var value);
+        var data = _dataSourceEngine.CurrentSource.GetRawData();
+        var found = data.TryGetValue(playerUid, out var value);
+
         Debug.Assert(found, $"PlayerNotFound with {playerUid}");
         Debug.Assert(value != null, nameof(value) + " != null");
         if (!found)
@@ -304,7 +295,8 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             var slot = GetOrAddStatisticDataViewModel(processed.OriginalData);
 
             // Update player info
-            var ret = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(processed.Uid, out var playerInfo);
+            var playerInfoDict = _dataSourceEngine.GetPlayerInfoDictionary();
+            var ret = playerInfoDict.TryGetValue(processed.Uid, out var playerInfo);
             if (!ret) continue;
             UpdatePlayerInfo(slot, playerInfo);
 
@@ -460,9 +452,9 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
 
         static SkillViewModelCollection FetchSkillListFunc(long uid)
         {
-            List<SkillItemViewModel> damage = [new SkillItemViewModel()];
-            List<SkillItemViewModel> healing = [new SkillItemViewModel()];
-            List<SkillItemViewModel> taken = [new SkillItemViewModel()];
+            List<SkillItemViewModel> damage = [new()];
+            List<SkillItemViewModel> healing = [new()];
+            List<SkillItemViewModel> taken = [new()];
             return new SkillViewModelCollection(damage, healing, taken);
         }
     }

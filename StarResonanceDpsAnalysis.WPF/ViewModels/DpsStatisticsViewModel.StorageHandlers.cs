@@ -15,21 +15,19 @@ public partial class DpsStatisticsViewModel
 {
     private void SectionEnded()
     {
-        if (!_dispatcher.CheckAccess())
+        InvokeOnDispatcher(Do);
+        return;
+
+        void Do()
         {
-            _dispatcher.BeginInvoke(SectionEnded);
-            return;
+            _logger.LogInformation("=== SectionEnded event received ===");
+
+            var finalSectionDuration = _timerService.GetSectionElapsed();
+            _timerService.Stop();
+
+            _logger.LogInformation("Section ended, final duration: {Duration:F1}s (using DpsTimerService)",
+                finalSectionDuration.TotalSeconds);
         }
-
-        _logger.LogInformation("=== SectionEnded event received ===");
-
-        var finalSectionDuration = _timerService.GetSectionDuration();
-        _combatState.MarkSectionEnded(finalSectionDuration);
-
-        _logger.LogInformation("Section ended, final duration: {Duration:F1}s (using DpsTimerService)", 
-            finalSectionDuration.TotalSeconds);
-
-        UpdateBattleDuration();
     }
 
     private void StorageOnBeforeSectionCleared()
@@ -43,25 +41,23 @@ public partial class DpsStatisticsViewModel
 
             if (ScopeTime != ScopeTime.Current)
             {
-                _logger.LogDebug("跳过快照保存: ScopeTime={ScopeTime}, DataCount={Count}", 
+                _logger.LogDebug("跳过快照保存: ScopeTime={ScopeTime}, DataCount={Count}",
                     ScopeTime, _storage.GetStatisticsCount(true));
                 return;
             }
 
             var statCount = _storage.GetStatisticsCount(false);
             if (statCount <= 0) return;
-            
+
             try
             {
-                var duration = _timerService.GetSectionDuration();
+                var duration = _timerService.GetSectionElapsed();
                 _logger.LogInformation(
                     "脱战自动保存快照, 数据量: {Count}, 时长: {Duration:F1}s (using DpsTimerService)",
                     _storage.GetStatisticsCount(false),
                     duration.TotalSeconds);
 
                 SnapshotService.SaveCurrentSnapshot(_storage, duration, Options.MinimalDurationInSeconds);
-
-                _combatState.SkipNextSnapshotSave = true;
 
                 _logger.LogInformation("? 脱战自动保存快照成功");
             }
@@ -74,27 +70,13 @@ public partial class DpsStatisticsViewModel
 
     private void StorageOnNewSectionCreated()
     {
-        _dispatcher.BeginInvoke(() =>
+        InvokeOnDispatcher(() =>
         {
             _logger.LogInformation("=== NewSectionCreated triggered (数据已被清空) ===");
+            _timerService.Start();
+            _timerService.StartNewSection();
 
-            if (_combatState.SkipNextSnapshotSave)
-            {
-                _logger.LogInformation("?? 跳过快照保存(已在脱战前保存)");
-                _combatState.SkipNextSnapshotSave = false;
-            }
-
-            if (_timerService.IsRunning)
-            {
-                _combatState.AccumulateSectionDuration();
-            }
-
-            _combatState.AwaitingSectionStart = true;
-            _combatState.SectionTimedOut = false;
             UpdateBattleDuration();
-
-            _logger.LogInformation("NewSection完成: awaiting={AwaitingStart}, 全程时长={TotalDuration:F1}s",
-                _combatState.AwaitingSectionStart, _combatState.TotalCombatDuration.TotalSeconds);
         });
     }
 
@@ -137,7 +119,7 @@ public partial class DpsStatisticsViewModel
             _logger.LogInformation("服务器切换: {Prev} -> {Current}", prevServer, currentServer);
 
             if (ScopeTime != ScopeTime.Total || _storage.GetStatisticsCount(true) <= 0) return;
-            
+
             try
             {
                 SnapshotService.SaveTotalSnapshot(_storage, BattleDuration, Options.MinimalDurationInSeconds);
@@ -152,13 +134,6 @@ public partial class DpsStatisticsViewModel
 
     private void StorageOnServerConnectionStateChanged(bool serverConnectionState)
     {
-        if (_dispatcher.CheckAccess())
-        {
-            IsServerConnected = serverConnectionState;
-        }
-        else
-        {
-            _dispatcher.Invoke(() => IsServerConnected = serverConnectionState);
-        }
+        InvokeOnDispatcher(() => IsServerConnected = serverConnectionState);
     }
 }
