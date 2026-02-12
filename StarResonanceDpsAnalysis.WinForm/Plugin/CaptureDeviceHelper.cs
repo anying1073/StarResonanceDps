@@ -165,7 +165,8 @@ namespace StarResonanceDpsAnalysis.WinForm.Plugin
                 var dest = IPAddress.Parse("8.8.8.8");
                 // Convert IP address to uint in network byte order as required by Windows GetBestInterface API
                 var bytes = dest.GetAddressBytes();
-                var addr = BitConverter.ToUInt32(BitConverter.IsLittleEndian ? bytes.Reverse().ToArray() : bytes, 0);
+
+                var addr = BitConverter.ToUInt32(BitConverter.IsLittleEndian ? Enumerable.Reverse(bytes).ToArray() : bytes, 0);
 
                 if (GetBestInterface(addr, out var index) == 0)
                 {
