@@ -10,14 +10,14 @@ namespace StarResonanceDpsAnalysis.WPF.Services;
 /// </summary>
 public class DpsTimerService : IDpsTimerService
 {
-    private readonly Stopwatch _stopwatch = new();
     private readonly DispatcherTimer _updateTimer;
+    private DateTime _startedTime;
     private TimeSpan _sectionStartElapsed = TimeSpan.Zero;
     private TimeSpan _totalCombatDuration = TimeSpan.Zero;
 
     public TimeSpan BattleDuration { get; private set; }
     public TimeSpan TotalCombatDuration => _totalCombatDuration;
-    public bool IsRunning => _stopwatch.IsRunning;
+    public bool IsRunning => _updateTimer.IsEnabled;
 
     public event EventHandler<TimeSpan>? DurationChanged;
 
@@ -35,38 +35,24 @@ public class DpsTimerService : IDpsTimerService
 
     public void Start()
     {
-        if (!_stopwatch.IsRunning)
+        if (!IsRunning)
         {
-            _stopwatch.Start();
+            _startedTime = DateTime.UtcNow;
             _updateTimer.Start();
         }
     }
 
     public void Stop()
     {
-        if (_stopwatch.IsRunning)
-        {
-            _stopwatch.Stop();
-            _updateTimer.Stop();
-        }
+        _updateTimer.Stop();
     }
 
     public void Reset()
     {
-        _stopwatch.Reset();
         _sectionStartElapsed = TimeSpan.Zero;
         _totalCombatDuration = TimeSpan.Zero;
         BattleDuration = TimeSpan.Zero;
         DurationChanged?.Invoke(this, BattleDuration);
-    }
-
-    public TimeSpan GetSectionDuration()
-    {
-        if (!_stopwatch.IsRunning)
-            return TimeSpan.Zero;
-
-        var elapsed = _stopwatch.Elapsed - _sectionStartElapsed;
-        return elapsed < TimeSpan.Zero ? TimeSpan.Zero : elapsed;
     }
 
     public void StartNewSection()
@@ -79,15 +65,19 @@ public class DpsTimerService : IDpsTimerService
         }
 
         // Mark new section start
-        _sectionStartElapsed = _stopwatch.Elapsed;
+        _sectionStartElapsed = GetElapsedTime();
     }
 
     public TimeSpan GetSectionElapsed()
     {
-        if (!_stopwatch.IsRunning)
-            return TimeSpan.Zero;
+        if (!IsRunning) return TimeSpan.Zero;
 
-        var elapsed = _stopwatch.Elapsed - _sectionStartElapsed;
+        var elapsed = GetElapsedTime() - _sectionStartElapsed;
         return elapsed < TimeSpan.Zero ? TimeSpan.Zero : elapsed;
+    }
+
+    private TimeSpan GetElapsedTime()
+    {
+        return DateTime.UtcNow - _startedTime;
     }
 }

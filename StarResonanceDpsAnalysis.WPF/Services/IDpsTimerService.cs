@@ -39,11 +39,6 @@ public interface IDpsTimerService
     void Reset();
 
     /// <summary>
-    /// Get the current section duration
-    /// </summary>
-    TimeSpan GetSectionDuration();
-
-    /// <summary>
     /// Mark the start of a new section
     /// </summary>
     void StartNewSection();

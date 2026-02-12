@@ -88,7 +88,7 @@ public class DpsTimerServiceTests
         // Act
         var sectionDuration = service.GetSectionElapsed();
         Thread.Sleep(50); // Timer continues
-        var currentDuration = service.GetSectionDuration();
+        var currentDuration = service.GetSectionElapsed();
         
         // Assert
         Assert.True(sectionDuration.TotalMilliseconds >= 100);
@@ -104,7 +104,7 @@ public class DpsTimerServiceTests
         Thread.Sleep(100);
         
         // Act
-        var duration = service.GetSectionDuration();
+        var duration = service.GetSectionElapsed();
         
         // Assert
         Assert.True(duration.TotalMilliseconds >= 100);
@@ -117,12 +117,12 @@ public class DpsTimerServiceTests
         var service = new DpsTimerService();
         service.Start();
         Thread.Sleep(100);
-        var firstDuration = service.GetSectionDuration();
+        var firstDuration = service.GetSectionElapsed();
         
         // Act
         service.Start(); // Should not reset
         Thread.Sleep(50);
-        var secondDuration = service.GetSectionDuration();
+        var secondDuration = service.GetSectionElapsed();
         
         // Assert
         Assert.True(secondDuration >= firstDuration);

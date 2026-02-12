@@ -16,10 +16,8 @@ public static class DpsServicesExtensions
         // Phase 1: Core Services (Timer, Data Processing, Update Coordination)
         services.AddSingleton<IDpsTimerService, DpsTimerService>();
         services.AddSingleton<IDpsDataProcessor, DpsDataProcessor>();
-        services.AddSingleton<IDpsUpdateCoordinator, DpsUpdateCoordinator>();
         
         // Phase 2: State Management Services (following Single Responsibility)
-        services.AddSingleton<ICombatSectionStateManager, CombatSectionStateManager>();
         services.AddSingleton<ITeamStatsUIManager, TeamStatsUIManager>();
 
         // Phase 3: Coordination Services

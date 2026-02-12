@@ -12,22 +12,18 @@ public class ResetCoordinator : IResetCoordinator
 {
     private readonly IDataStorage _storage;
     private readonly IDpsTimerService _timerService;
-    private readonly ICombatSectionStateManager _combatState;
     private readonly ITeamStatsUIManager _teamStatsManager;
     private readonly BattleSnapshotService _snapshotService;
     private readonly ILogger<ResetCoordinator> _logger;
 
-    public ResetCoordinator(
-        IDataStorage storage,
+    public ResetCoordinator(IDataStorage storage,
         IDpsTimerService timerService,
-        ICombatSectionStateManager combatState,
         ITeamStatsUIManager teamStatsManager,
         BattleSnapshotService snapshotService,
         ILogger<ResetCoordinator> logger)
     {
         _storage = storage;
         _timerService = timerService;
-        _combatState = combatState;
         _teamStatsManager = teamStatsManager;
         _snapshotService = snapshotService;
         _logger = logger;
@@ -42,9 +38,6 @@ public class ResetCoordinator : IResetCoordinator
 
         // Start new section in timer service
         _timerService.StartNewSection();
-
-        // Reset section state
-        _combatState.ResetSectionState();
 
         // Reset team stats
         _teamStatsManager.ResetTeamStats();
@@ -62,9 +55,6 @@ public class ResetCoordinator : IResetCoordinator
         // Reset timer service
         _timerService.Reset();
         _logger.LogInformation("Timer service reset");
-
-        // Reset all state
-        _combatState.ResetAllState();
 
         // Reset team stats
         _teamStatsManager.ResetTeamStats();
@@ -99,7 +89,6 @@ public class ResetCoordinator : IResetCoordinator
                 {
                     _snapshotService.SaveCurrentSnapshot(_storage, battleDuration, minimalDuration);
                     _logger.LogInformation("Current snapshot saved successfully");
-                    _combatState.SkipNextSnapshotSave = true;
                 }
                 else
                 {

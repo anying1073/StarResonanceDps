@@ -3,6 +3,7 @@ using StarResonanceDpsAnalysis.Core;
 using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
+using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine.DataSource;
 
 namespace StarResonanceDpsAnalysis.WPF.Services;
 
@@ -18,17 +19,11 @@ public class DpsDataProcessor : IDpsDataProcessor
         _logger = logger;
     }
 
-    public Dictionary<StatisticType, Dictionary<long, DpsDataProcessed>> PreProcessData(
+    public StatisticDictionary PreProcessData(
         IReadOnlyDictionary<long, PlayerStatistics> data,
         bool includeNpcData)
     {
-        var result = new Dictionary<StatisticType, Dictionary<long, DpsDataProcessed>>
-        {
-            [StatisticType.Damage] = new(),
-            [StatisticType.Healing] = new(),
-            [StatisticType.TakenDamage] = new(),
-            [StatisticType.NpcTakenDamage] = new()
-        };
+        var result = new StatisticDictionary();
 
         foreach (var playerStats in data.Values)
         {
@@ -74,36 +69,20 @@ public class DpsDataProcessor : IDpsDataProcessor
         return result;
     }
 
-    public TeamTotalStats CalculateTeamTotal(
-        IReadOnlyDictionary<long, PlayerStatistics> data,
-        StatisticType statisticType)
+    public TeamTotalStats CalculateTeamTotal(IReadOnlyDictionary<long, DpsDataProcessed> data)
     {
         ulong totalValue = 0;
         double maxDuration = 0;
         var playerCount = 0;
         var npcCount = 0;
 
-        foreach (var dpsData in data.Values)
+        foreach (var d in data.Values)
         {
-            // Skip based on statistic type
-            if (dpsData.IsNpc && statisticType != StatisticType.NpcTakenDamage)
-                continue;
-            if (!dpsData.IsNpc && statisticType == StatisticType.NpcTakenDamage)
-                continue;
-
+            var dpsData = d.OriginalData;
             if (dpsData.IsNpc) npcCount++;
             else playerCount++;
 
-            ulong value = statisticType switch
-            {
-                StatisticType.Damage => (ulong)Math.Max(0, dpsData.AttackDamage.Total),
-                StatisticType.Healing => (ulong)Math.Max(0, dpsData.Healing.Total),
-                StatisticType.TakenDamage => (ulong)Math.Max(0, dpsData.TakenDamage.Total),
-                StatisticType.NpcTakenDamage => (ulong)Math.Max(0, dpsData.TakenDamage.Total),
-                _ => 0
-            };
-
-            totalValue += value;
+            totalValue += d.Value;
 
             var elapsedTicks = dpsData.ElapsedTicks();
             if (elapsedTicks > 0)

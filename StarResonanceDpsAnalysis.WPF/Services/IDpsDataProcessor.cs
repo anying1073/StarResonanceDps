@@ -5,6 +5,7 @@ using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
+using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine.DataSource;
 
 namespace StarResonanceDpsAnalysis.WPF.Services;
 
@@ -17,16 +18,14 @@ public interface IDpsDataProcessor
     /// <summary>
     /// Pre-process data for all statistic types to avoid redundant iterations
     /// </summary>
-    Dictionary<StatisticType, Dictionary<long, DpsDataProcessed>> PreProcessData(
+    StatisticDictionary PreProcessData(
         IReadOnlyDictionary<long, PlayerStatistics> data,
         bool includeNpcData);
     
     /// <summary>
     /// Calculate team total statistics
     /// </summary>
-    TeamTotalStats CalculateTeamTotal(
-        IReadOnlyDictionary<long, PlayerStatistics> data,
-        StatisticType statisticType);
+    TeamTotalStats CalculateTeamTotal(IReadOnlyDictionary<long, DpsDataProcessed> data);
 }
 
 /// <summary>
