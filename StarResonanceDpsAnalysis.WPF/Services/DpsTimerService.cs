@@ -49,6 +49,7 @@ public class DpsTimerService : IDpsTimerService
 
     public void Reset()
     {
+        Stop();
         _sectionStartElapsed = TimeSpan.Zero;
         _totalCombatDuration = TimeSpan.Zero;
         BattleDuration = TimeSpan.Zero;
