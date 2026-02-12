@@ -2,6 +2,7 @@
   <!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
   <PropertyGroup>
     <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">3.0.0.1</AssemblyVersion>
+    <LangVersion>latest</LangVersion>
 
 
   </PropertyGroup>
