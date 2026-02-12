@@ -349,6 +349,10 @@ public static class DataStorage
                 ForceNewBattleSection = false;
             }
         }
+        else
+        {
+            sectionFlag = true;
+        }
 
         // 如果目标是玩家
         if (log.IsTargetPlayer)

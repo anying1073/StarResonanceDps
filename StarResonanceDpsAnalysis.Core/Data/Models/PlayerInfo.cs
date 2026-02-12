@@ -6,10 +6,10 @@ namespace StarResonanceDpsAnalysis.Core.Data.Models;
 public class PlayerInfo
 {
     private ClassSpec _spec;
-    public long UID { get; internal set; }
-    public string? Name { get; internal set; }
-    public int? ProfessionID { get; internal set; }
-    public string? SubProfessionName { get; internal set; }
+    public long UID { get; set; }
+    public string? Name { get; set; }
+    public int? ProfessionID { get; set; }
+    public string? SubProfessionName { get; set; }
 
     /// <summary>
     /// 职业流派
@@ -28,19 +28,19 @@ public class PlayerInfo
 
     public Classes Class => Spec != ClassSpec.Unknown ? Spec.GetClasses() : ProfessionID.GetClassNameById();
 
-    public int? CombatPower { get; internal set; }
-    public int? Level { get; internal set; }
-    public int? RankLevel { get; internal set; }
-    public int? Critical { get; internal set; }
-    public int? Lucky { get; internal set; }
-    public long? MaxHP { get; internal set; }
-    public long? HP { get; internal set; }
-    public int ElementFlag { get; internal set; }
-    public int ReductionLevel { get; internal set; }
-    public int EnergyFlag { get; internal set; }
-    public int NpcTemplateId { get; internal set; }
-    public int? SeasonStrength { get; internal set; }
-    public int SeasonLevel { get; internal set; }
-    public bool CombatState { get; internal set; }
-    public long CombatStateTime { get; internal set; }
+    public int? CombatPower { get; set; }
+    public int? Level { get; set; }
+    public int? RankLevel { get; set; }
+    public int? Critical { get; set; }
+    public int? Lucky { get; set; }
+    public long? MaxHP { get; set; }
+    public long? HP { get; set; }
+    public int ElementFlag { get; set; }
+    public int ReductionLevel { get; set; }
+    public int EnergyFlag { get; set; }
+    public int NpcTemplateId { get; set; }
+    public int? SeasonStrength { get; set; }
+    public int SeasonLevel { get; set; }
+    public bool CombatState { get; set; }
+    public long CombatStateTime { get; set; }
 }

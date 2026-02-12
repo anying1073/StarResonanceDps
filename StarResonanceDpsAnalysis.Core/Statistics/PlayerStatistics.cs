@@ -9,10 +9,10 @@ public sealed class PlayerStatistics
     public long Uid { get; }
 
     // Statistics by type
-    public StatisticValues AttackDamage { get; } = new();
-    public StatisticValues TakenDamage { get; } = new();
-    public StatisticValues Healing { get; } = new();
-    
+    public StatisticValues AttackDamage { get; set; } = new();
+    public StatisticValues TakenDamage { get; set; } = new();
+    public StatisticValues Healing { get; set; } = new();
+
     // Delta time series data managers for incremental values (ONLY delta tracking)
     private readonly ITimeSeriesSampleManager _deltaDpsSamples;
     private readonly ITimeSeriesSampleManager _deltaHpsSamples;
@@ -27,10 +27,10 @@ public sealed class PlayerStatistics
 
     // Previous values for delta calculation
     private DeltaTrackingSnapshot _previousSnapshot;
-    
+
     // Track last recorded tick to prevent duplicate sample recordings
     private long _lastRecordedTick;
-    
+
     // Flag to control delta tracking
     private bool _isDeltaTrackingEnabled = true;
 
@@ -39,6 +39,7 @@ public sealed class PlayerStatistics
     /// </summary>
     /// <param name="uid">Player unique identifier</param>
     /// <param name="timeSeriesCapacity">Maximum samples to store. Set to null for unlimited storage.</param>
+    [Newtonsoft.Json.JsonConstructor]
     public PlayerStatistics(long uid, int? timeSeriesCapacity = 300)
     {
         Uid = uid;
@@ -61,6 +62,14 @@ public sealed class PlayerStatistics
         _deltaDtpsSamples = sampleManagerFactory();
     }
 
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //[Obsolete("Do not use this ctor directly, it is just for json deserialization")]
+    //public PlayerStatistics() : this(0)
+    //{
+    //}
+
     /// <summary>
     /// Get or create skill statistics (for damage skills)
     /// </summary>
@@ -68,7 +77,7 @@ public sealed class PlayerStatistics
     {
         return AttackDamage.Skills.GetOrAdd(skillId, static id => new SkillStatistics(id));
     }
-    
+
     /// <summary>
     /// Get or create healing skill statistics
     /// </summary>
@@ -76,7 +85,7 @@ public sealed class PlayerStatistics
     {
         return Healing.Skills.GetOrAdd(skillId, static id => new SkillStatistics(id));
     }
-    
+
     /// <summary>
     /// Get or create taken damage skill statistics
     /// </summary>
@@ -101,7 +110,7 @@ public sealed class PlayerStatistics
         {
             return;
         }
-        
+
         if (IsFirstUpdate())
         {
             InitializeDeltaTracking();
@@ -116,7 +125,7 @@ public sealed class PlayerStatistics
 
         var deltas = CalculateDeltas();
         ApplyDeltaValues(deltas, elapsed.Value);
-        
+
         // Record delta values to time series
         RecordDeltaSamples(deltas, elapsed.Value);
     }
@@ -129,7 +138,7 @@ public sealed class PlayerStatistics
     {
         _isDeltaTrackingEnabled = false;
     }
-    
+
     /// <summary>
     /// Resume delta tracking (called when new section starts)
     /// </summary>
@@ -197,25 +206,25 @@ public sealed class PlayerStatistics
             TakenDamageTotal = TakenDamage.Total,
             Tick = LastTick
         };
-        
+
         // Record initial sample at the first update
         // Calculate time from start
-        var currentTime = StartTick.HasValue 
-            ? TimeSpan.FromTicks(LastTick - StartTick.Value) 
+        var currentTime = StartTick.HasValue
+            ? TimeSpan.FromTicks(LastTick - StartTick.Value)
             : TimeSpan.Zero;
-        
+
         // Calculate elapsed time for DPS calculation
-        var elapsedSeconds = StartTick.HasValue 
-            ? (LastTick - StartTick.Value) / (double)TimeSpan.TicksPerSecond 
+        var elapsedSeconds = StartTick.HasValue
+            ? (LastTick - StartTick.Value) / (double)TimeSpan.TicksPerSecond
             : 1.0; // Default to 1 second if no start time
-        
+
         if (elapsedSeconds > 0)
         {
             // Record initial values as first delta samples
             _deltaDpsSamples.AddSample(currentTime, AttackDamage.Total / elapsedSeconds);
             _deltaHpsSamples.AddSample(currentTime, Healing.Total / elapsedSeconds);
             _deltaDtpsSamples.AddSample(currentTime, TakenDamage.Total / elapsedSeconds);
-            
+
             // Update last recorded tick to prevent duplicates
             _lastRecordedTick = LastTick;
         }
@@ -257,17 +266,17 @@ public sealed class PlayerStatistics
         {
             return; // Already recorded samples at this tick
         }
-        
+
         // Calculate time from start (assuming LastTick represents current time)
-        var currentTime = StartTick.HasValue 
-            ? TimeSpan.FromTicks(LastTick - StartTick.Value) 
+        var currentTime = StartTick.HasValue
+            ? TimeSpan.FromTicks(LastTick - StartTick.Value)
             : TimeSpan.Zero;
-        
+
         // Record delta values per second to time series
         _deltaDpsSamples.AddSample(currentTime, deltas.Damage / seconds);
         _deltaHpsSamples.AddSample(currentTime, deltas.Healing / seconds);
         _deltaDtpsSamples.AddSample(currentTime, deltas.TakenDamage / seconds);
-        
+
         // Update last recorded tick to prevent duplicates
         _lastRecordedTick = LastTick;
     }
