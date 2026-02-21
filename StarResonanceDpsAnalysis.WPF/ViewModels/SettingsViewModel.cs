@@ -40,6 +40,7 @@ public partial class SettingsViewModel : BaseViewModel
         new(Language.ZhCn, Language.ZhCn.GetLocalizedDescription()),
         new(Language.EnUs, Language.EnUs.GetLocalizedDescription()),
         new(Language.PtBr, Language.PtBr.GetLocalizedDescription()),
+        new(Language.JaJp, Language.JaJp.GetLocalizedDescription()),
         new(Language.KoKr, Language.KoKr.GetLocalizedDescription())
     ];
 

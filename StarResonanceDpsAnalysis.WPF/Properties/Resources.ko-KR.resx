@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="App_Name" xml:space="preserve">
-    <value>StarResonance ToolBox</value>
-  </data>
   <data name="Menu_Settings" xml:space="preserve">
     <value>설정</value>
   </data>
@@ -423,188 +420,11 @@
   <data name="Window_About_Title" xml:space="preserve">
     <value>정보</value>
   </data>
-  <data name="About_Intro_Primary" xml:space="preserve">
-    <value>BPSR 플레이어를 위한 전투 데이터 분석 도구입니다.</value>
-  </data>
-  <data name="About_Intro_Details" xml:space="preserve">
-    <value>이 도구는 게임 클라이언트를 수정하지 않으며, 게임 서비스 약관을 위반하지 않습니다. 전투 데이터를 이해하고 불필요한 피로를 줄이며, 게임 경험을 향상하는 것이 목적입니다. 데이터를 이용해 전투력 차별 등 커뮤니티를 해치는 행동은 절대 삼가 주십시오.</value>
-  </data>
-  <data name="About_Version_Label" xml:space="preserve">
-    <value>현재 버전:</value>
-  </data>
-  <data name="About_Developers_Label" xml:space="preserve">
-    <value>이번 버전의 개발자(순서 무관):</value>
-  </data>
-  <data name="About_Developer_Lead" xml:space="preserve">
-    <value>惊奇猫猫盒 (anying1073: 프로젝트 개시자)</value>
-  </data>
-  <data name="About_Developer_RocyJune" xml:space="preserve">
-    <value>露詩（Rocy-June）</value>
-  </data>
-  <data name="About_Developer_QingLan" xml:space="preserve">
-    <value>青岚宗王腾</value>
-  </data>
-  <data name="About_Developer_Ihonliu" xml:space="preserve">
-    <value>尻鸭（ihonliu）</value>
-  </data>
-  <data name="About_OpenSource_Prefix" xml:space="preserve">
-    <value>이 프로젝트는 다음 주소에서 오픈 소스로 공개됩니다:</value>
-  </data>
-  <data name="About_OpenSource_RepositoryUrl" xml:space="preserve">
-    <value>https://github.com/anying1073/StarResonanceDps</value>
-  </data>
-  <data name="About_OpenSource_Suffix" xml:space="preserve">
-    <value>. 문제가 있다면 해당 저장소에 이슈를 등록해 주세요.</value>
-  </data>
-  <data name="About_Contribution" xml:space="preserve">
-    <value>기여를 원하시면 저장소를 포크한 뒤 Pull Request를 보내 주세요.</value>
-  </data>
-  <data name="About_Community_Invite" xml:space="preserve">
-    <value>GitHub에 접속하기 어렵거나 파티원을 찾고 싶다면 QQ 그룹에 참여해 주세요:</value>
-  </data>
-  <data name="About_Community_GroupOne" xml:space="preserve">
-    <value>678150498 (그룹 1)</value>
-  </data>
-  <data name="About_Community_GroupTwo" xml:space="preserve">
-    <value>1022797551 (그룹 2)</value>
-  </data>
-  <data name="About_Thanks_Prefix" xml:space="preserve">
-    <value>다음 프로젝트에 특별히 감사드립니다:</value>
-  </data>
-  <data name="About_Thanks_RepositoryUrl" xml:space="preserve">
-    <value>https://github.com/dmlgzs/StarResonanceDamageCounter</value>
-  </data>
-  <data name="About_Thanks_Suffix" xml:space="preserve">
-    <value>이 프로젝트에 많은 영감과 도움을 주었습니다.</value>
-  </data>
-  <data name="About_Copyright" xml:space="preserve">
-    <value>Copyright (C) 2025 anying1073/StarResonanceDps Team.</value>
-  </data>
-  <data name="About_PoweredBy" xml:space="preserve">
-    <value>.NET 8 기반, GNU AGPL v3 라이선스.</value>
-  </data>
   <data name="Window_DamageReference_Title" xml:space="preserve">
     <value>피해 참고</value>
   </data>
-  <data name="DamageReference_Header_Title" xml:space="preserve">
-    <value>스킬 상세</value>
-  </data>
-  <data name="DamageReference_Ribbon_Title" xml:space="preserve">
-    <value>피해 참고표</value>
-  </data>
-  <data name="DamageReference_Classes_All" xml:space="preserve">
-    <value>전체 직업</value>
-  </data>
-  <data name="Classes_Stormblade" xml:space="preserve">
-    <value>Stormblade</value>
-  </data>
-  <data name="Classes_FrostMage" xml:space="preserve">
-    <value>Frost Mage</value>
-  </data>
-  <data name="Classes_WindKnight" xml:space="preserve">
-    <value>Wind Knight</value>
-  </data>
-  <data name="Classes_VerdantOracle" xml:space="preserve">
-    <value>Verdant Oracle</value>
-  </data>
-  <data name="Classes_HeavyGuardian" xml:space="preserve">
-    <value>Heavy Guardian</value>
-  </data>
-  <data name="Classes_Marksman" xml:space="preserve">
-    <value>Marksman</value>
-  </data>
-  <data name="Classes_ShieldKnight" xml:space="preserve">
-    <value>Shield Knight</value>
-  </data>
-  <data name="Classes_SoulMusician" xml:space="preserve">
-    <value>Soul Musician</value>
-  </data>
-  <data name="DamageReference_Table_Title" xml:space="preserve">
-    <value>피해 참고표</value>
-  </data>
-  <data name="DamageReference_NoData" xml:space="preserve">
-    <value>표시할 데이터가 없습니다</value>
-  </data>
-  <data name="DamageReference_Disclaimer" xml:space="preserve">
-    <value>이 데이터는 오로지 참고와 즐거움을 위한 것입니다. 전투력 차별 등 커뮤니티를 해치는 행동에 사용을 금지하며, 위반 시 해당 기능 사용 권한이 영구 박탈될 수 있습니다.</value>
-  </data>
   <data name="Window_Debug_Title" xml:space="preserve">
     <value>디버그 창</value>
-  </data>
-  <data name="Debug_LoadPcap" xml:space="preserve">
-    <value>PCAP 불러오기</value>
-  </data>
-  <data name="Debug_AddSampleData" xml:space="preserve">
-    <value>AddSampleData</value>
-  </data>
-  <data name="Debug_ClearLogs" xml:space="preserve">
-    <value>Clear Logs</value>
-  </data>
-  <data name="Debug_AddTestLog" xml:space="preserve">
-    <value>테스트 로그 추가</value>
-  </data>
-  <data name="Debug_SaveLogs" xml:space="preserve">
-    <value>로그 저장</value>
-  </data>
-  <data name="Debug_AutoScroll" xml:space="preserve">
-    <value>자동 스크롤</value>
-  </data>
-  <data name="Debug_Filter_Level" xml:space="preserve">
-    <value>Level:</value>
-  </data>
-  <data name="Debug_Filter_Label" xml:space="preserve">
-    <value>Filter:</value>
-  </data>
-  <data name="Debug_Filter_Tooltip" xml:space="preserve">
-    <value>Filter logs by message or category content</value>
-  </data>
-  <data name="Debug_Header_Time" xml:space="preserve">
-    <value>시간</value>
-  </data>
-  <data name="Debug_Header_Level" xml:space="preserve">
-    <value>등급</value>
-  </data>
-  <data name="Debug_Header_Category" xml:space="preserve">
-    <value>분류</value>
-  </data>
-  <data name="Debug_Header_Message" xml:space="preserve">
-    <value>메시지</value>
-  </data>
-  <data name="Debug_Status_TotalPrefix" xml:space="preserve">
-    <value>총합:</value>
-  </data>
-  <data name="Debug_Status_TotalSuffix" xml:space="preserve">
-    <value> 개 로그</value>
-  </data>
-  <data name="Debug_Status_FilteredPrefix" xml:space="preserve">
-    <value>필터링:</value>
-  </data>
-  <data name="Debug_Status_FilteredSuffix" xml:space="preserve">
-    <value> 개 로그</value>
-  </data>
-  <data name="Debug_Status_LastPrefix" xml:space="preserve">
-    <value>마지막:</value>
-  </data>
-  <data name="Debug_ThemeTestText" xml:space="preserve">
-    <value>테마 전환 테스트 텍스트</value>
-  </data>
-  <data name="Debug_Button_PcapTest" xml:space="preserve">
-    <value>Pcap 테스트</value>
-  </data>
-  <data name="Debug_Button_SkillBreakdown" xml:space="preserve">
-    <value>스킬 상세 창</value>
-  </data>
-  <data name="Debug_Button_DamageReference" xml:space="preserve">
-    <value>피해 참고 창</value>
-  </data>
-  <data name="Debug_Button_Settings" xml:space="preserve">
-    <value>설정 창</value>
-  </data>
-  <data name="Debug_Button_About" xml:space="preserve">
-    <value>정보 창</value>
-  </data>
-  <data name="Debug_Group_Title" xml:space="preserve">
-    <value>디버그 도구</value>
   </data>
   <data name="MainView_Header_Title" xml:space="preserve">
     <value>StarResonance ToolBox</value>
@@ -629,9 +449,6 @@
   </data>
   <data name="MainView_Plugin_AutoStart" xml:space="preserve">
     <value>툴박스 실행 시 함께 시작</value>
-  </data>
-  <data name="Common_Action_Open" xml:space="preserve">
-    <value>실행</value>
   </data>
   <data name="MainView_Plugin_ModuleSolver_Title" xml:space="preserve">
     <value>모듈 계산기</value>
@@ -831,34 +648,11 @@
   <data name="DpsStatistics_TestButton_Tooltip" xml:space="preserve">
     <value>테스트 데이터 추가</value>
   </data>
-  <data name="Common_SkillDisplayLimitChanged" xml:space="preserve">
-    <value>스킬 표시 개수 변경:</value>
-  </data>
-  <data name="Common_SkillDisplayLimitSaved" xml:space="preserve">
-    <value>스킬 표시 개수가 설정에 저장됨:</value>
-  </data>
-  <data name="Common_SkillListRefreshed" xml:space="preserve">
-    <value>모든 슬롯의 스킬 목록이 새로고침됨</value>
-  </data>
-  <data name="Command_OpenSkillLog" xml:space="preserve">
-    <value>스킬 로그 창 열기</value>
-  </data>
   <data name="Warning_UidNotConfigured" xml:space="preserve">
     <value>UID가 설정되지 않아 개인 훈련 모드를 사용할 수 없습니다.</value>
   </data>
-  <data name="Dialog_UidRequired_Title" xml:space="preserve">
-    <value>캐릭터 UID 필요</value>
-  </data>
-  <data name="Dialog_UidRequired_Message" xml:space="preserve">
-    <value>설정에서 캐릭터 UID를 먼저 설정해야 개인 훈련 모드를 사용할 수 있습니다.
-
-UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value>
-  </data>
   <data name="Info_OpeningPersonalDps" xml:space="preserve">
     <value>개인 훈련 모드 여는 중</value>
-  </data>
-  <data name="Common_Dash" xml:space="preserve">
-    <value>-</value>
   </data>
   <data name="SkillBreakdown_Section_DamageDistribution" xml:space="preserve">
     <value>피해 분포</value>
@@ -905,57 +699,6 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
     <value>이 칸을 선택한 뒤 단축키를 누르세요 (예: Ctrl+F9). Delete 키로 삭제할 수 있습니다.</value>
   </data>
-  <data name="ClassSpec_Unknown" xml:space="preserve">
-    <value>Unknown</value>
-  </data>
-  <data name="ClassSpec_ShieldKnightRecovery" xml:space="preserve">
-    <value>Recovery</value>
-  </data>
-  <data name="ClassSpec_ShieldKnightShield" xml:space="preserve">
-    <value>Shield</value>
-  </data>
-  <data name="ClassSpec_HeavyGuardianEarthfort" xml:space="preserve">
-    <value>Earthfort</value>
-  </data>
-  <data name="ClassSpec_HeavyGuardianBlock" xml:space="preserve">
-    <value>Block</value>
-  </data>
-  <data name="ClassSpec_StormbladeIaidoSlash" xml:space="preserve">
-    <value>IaidoSlash</value>
-  </data>
-  <data name="ClassSpec_StormbladeMoonStrike" xml:space="preserve">
-    <value>MoonStrike</value>
-  </data>
-  <data name="ClassSpec_WindKnightVanGuard" xml:space="preserve">
-    <value>VanGuard</value>
-  </data>
-  <data name="ClassSpec_WindKnightSkyward" xml:space="preserve">
-    <value>Skyward</value>
-  </data>
-  <data name="ClassSpec_FrostMageIcicle" xml:space="preserve">
-    <value>Icicle</value>
-  </data>
-  <data name="ClassSpec_FrostMageFrostBeam" xml:space="preserve">
-    <value>FrostBeam</value>
-  </data>
-  <data name="ClassSpec_MarksmanWildpack" xml:space="preserve">
-    <value>Wildpack</value>
-  </data>
-  <data name="ClassSpec_MarksmanFalconry" xml:space="preserve">
-    <value>Falconry</value>
-  </data>
-  <data name="ClassSpec_VerdantOracleSmite" xml:space="preserve">
-    <value>Smite</value>
-  </data>
-  <data name="ClassSpec_VerdantOracleLifeBind" xml:space="preserve">
-    <value>LifeBind</value>
-  </data>
-  <data name="ClassSpec_SoulMusicianDissonance" xml:space="preserve">
-    <value>Dissonance</value>
-  </data>
-  <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
-    <value>Concerto</value>
-  </data>
   <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
     <value>네트워크 어댑터 자동 선택에 실패했습니다. 적절한 네트워크 연결이 있는지 확인하세요.</value>
   </data>
@@ -964,15 +707,6 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   </data>
   <data name="Window_BossTracker_Title" xml:space="preserve">
     <value>월드 보스 상태 보기</value>
-  </data>
-  <data name="Debug_Localization_Language" xml:space="preserve">
-    <value>언어:</value>
-  </data>
-  <data name="Debug_Localization_TestKey" xml:space="preserve">
-    <value>테스트 키:</value>
-  </data>
-  <data name="Debug_Localization_Test" xml:space="preserve">
-    <value>테스트</value>
   </data>
   <data name="MainView_Plugin_Search_PlaceHolder" xml:space="preserve">
     <value>검색...</value>
@@ -1015,12 +749,6 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   </data>
   <data name="MainView_Plugin_ThirdPartySdkTips" xml:space="preserve">
     <value>플러그인 SDK가 곧 제공될 예정입니다!</value>
-  </data>
-  <data name="App_Exit_Confirm_Title" xml:space="preserve">
-    <value>확인</value>
-  </data>
-  <data name="App_Exit_Confirm_Content" xml:space="preserve">
-    <value>애플리케이션을 종료하시겠습니까?</value>
   </data>
   <data name="Settings_Combat_DpsUpdateMode" xml:space="preserve">
     <value>DPS 갱신 모드</value>
@@ -1083,9 +811,6 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   </data>
   <data name="Settings_Common_Records" xml:space="preserve">
     <value>개</value>
-  </data>
-  <data name="Debug_Localization_Apply" xml:space="preserve">
-    <value>적용</value>
   </data>
   <data name="Settings_Language_Korean" xml:space="preserve">
     <value>한국어</value>
@@ -1158,15 +883,6 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   </data>
   <data name="SkillBreakdown_Chart_DpsSeriesXAxis" xml:space="preserve">
     <value>시간 (초)</value>
-  </data>
-  <data name="Common_HitType_Lucky" xml:space="preserve">
-    <value>행운</value>
-  </data>
-  <data name="Common_HitType_Critical" xml:space="preserve">
-    <value>치명타</value>
-  </data>
-  <data name="Common_HitType_Normal" xml:space="preserve">
-    <value>일반</value>
   </data>
   <data name="Settings_PlayerInfoCustomization_Title" xml:space="preserve">
     <value>플레이어 정보 표시</value>
@@ -1280,6 +996,305 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   <data name="SkillBreakdown_Label_ValuePercentToTotal" xml:space="preserve">
     <value>퍼센트</value>
   </data>
+  <data name="Menu_About" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Settings_Section_ClassColors_Title" xml:space="preserve">
+    <value>직업 색상</value>
+  </data>
+  <data name="Settings_Section_ClassColors_Description" xml:space="preserve">
+    <value>각 직업의 색상 커스터마이징</value>
+  </data>
+  <data name="Settings_ClassColors_Reset_Tooltip" xml:space="preserve">
+    <value>Valores Padrão</value>
+  </data>
+  <data name="Settings_ClassColors_Reset" xml:space="preserve">
+    <value>Redefinir</value>
+  </data>
+  <data name="App_Name" xml:space="preserve">
+    <value>StarResonance ToolBox</value>
+  </data>
+  <data name="About_Intro_Primary" xml:space="preserve">
+    <value>BPSR 플레이어를 위한 전투 데이터 분석 도구입니다.</value>
+  </data>
+  <data name="About_Intro_Details" xml:space="preserve">
+    <value>이 도구는 게임 클라이언트를 수정하지 않으며, 게임 서비스 약관을 위반하지 않습니다. 전투 데이터를 이해하고 불필요한 피로를 줄이며, 게임 경험을 향상하는 것이 목적입니다. 데이터를 이용해 전투력 차별 등 커뮤니티를 해치는 행동은 절대 삼가 주십시오.</value>
+  </data>
+  <data name="About_Version_Label" xml:space="preserve">
+    <value>현재 버전:</value>
+  </data>
+  <data name="About_Developers_Label" xml:space="preserve">
+    <value>이번 버전의 개발자(순서 무관):</value>
+  </data>
+  <data name="About_Developer_Lead" xml:space="preserve">
+    <value>惊奇猫猫盒 (anying1073: 프로젝트 개시자)</value>
+  </data>
+  <data name="About_Developer_RocyJune" xml:space="preserve">
+    <value>露詩（Rocy-June）</value>
+  </data>
+  <data name="About_Developer_QingLan" xml:space="preserve">
+    <value>青岚宗王腾</value>
+  </data>
+  <data name="About_Developer_Ihonliu" xml:space="preserve">
+    <value>尻鸭（ihonliu）</value>
+  </data>
+  <data name="About_OpenSource_Prefix" xml:space="preserve">
+    <value>이 프로젝트는 다음 주소에서 오픈 소스로 공개됩니다:</value>
+  </data>
+  <data name="About_OpenSource_RepositoryUrl" xml:space="preserve">
+    <value>https://github.com/anying1073/StarResonanceDps</value>
+  </data>
+  <data name="About_OpenSource_Suffix" xml:space="preserve">
+    <value>. 문제가 있다면 해당 저장소에 이슈를 등록해 주세요.</value>
+  </data>
+  <data name="About_Contribution" xml:space="preserve">
+    <value>기여를 원하시면 저장소를 포크한 뒤 Pull Request를 보내 주세요.</value>
+  </data>
+  <data name="About_Community_Invite" xml:space="preserve">
+    <value>GitHub에 접속하기 어렵거나 파티원을 찾고 싶다면 QQ 그룹에 참여해 주세요:</value>
+  </data>
+  <data name="About_Community_GroupOne" xml:space="preserve">
+    <value>678150498 (그룹 1)</value>
+  </data>
+  <data name="About_Community_GroupTwo" xml:space="preserve">
+    <value>1022797551 (그룹 2)</value>
+  </data>
+  <data name="About_Thanks_Prefix" xml:space="preserve">
+    <value>다음 프로젝트에 특별히 감사드립니다:</value>
+  </data>
+  <data name="About_Thanks_RepositoryUrl" xml:space="preserve">
+    <value>https://github.com/dmlgzs/StarResonanceDamageCounter</value>
+  </data>
+  <data name="About_Thanks_Suffix" xml:space="preserve">
+    <value>이 프로젝트에 많은 영감과 도움을 주었습니다.</value>
+  </data>
+  <data name="About_Copyright" xml:space="preserve">
+    <value>Copyright (C) 2025 anying1073/StarResonanceDps Team.</value>
+  </data>
+  <data name="About_PoweredBy" xml:space="preserve">
+    <value>.NET 8 기반, GNU AGPL v3 라이선스.</value>
+  </data>
+  <data name="DamageReference_Header_Title" xml:space="preserve">
+    <value>스킬 상세</value>
+  </data>
+  <data name="DamageReference_Ribbon_Title" xml:space="preserve">
+    <value>피해 참고표</value>
+  </data>
+  <data name="DamageReference_Classes_All" xml:space="preserve">
+    <value>전체 직업</value>
+  </data>
+  <data name="Classes_Stormblade" xml:space="preserve">
+    <value>Stormblade</value>
+  </data>
+  <data name="Classes_FrostMage" xml:space="preserve">
+    <value>Frost Mage</value>
+  </data>
+  <data name="Classes_WindKnight" xml:space="preserve">
+    <value>Wind Knight</value>
+  </data>
+  <data name="Classes_VerdantOracle" xml:space="preserve">
+    <value>Verdant Oracle</value>
+  </data>
+  <data name="Classes_HeavyGuardian" xml:space="preserve">
+    <value>Heavy Guardian</value>
+  </data>
+  <data name="Classes_Marksman" xml:space="preserve">
+    <value>Marksman</value>
+  </data>
+  <data name="Classes_ShieldKnight" xml:space="preserve">
+    <value>Shield Knight</value>
+  </data>
+  <data name="Classes_SoulMusician" xml:space="preserve">
+    <value>Soul Musician</value>
+  </data>
+  <data name="DamageReference_Table_Title" xml:space="preserve">
+    <value>피해 참고표</value>
+  </data>
+  <data name="DamageReference_NoData" xml:space="preserve">
+    <value>표시할 데이터가 없습니다</value>
+  </data>
+  <data name="DamageReference_Disclaimer" xml:space="preserve">
+    <value>이 데이터는 오로지 참고와 즐거움을 위한 것입니다. 전투력 차별 등 커뮤니티를 해치는 행동에 사용을 금지하며, 위반 시 해당 기능 사용 권한이 영구 박탈될 수 있습니다.</value>
+  </data>
+  <data name="Debug_LoadPcap" xml:space="preserve">
+    <value>PCAP 불러오기</value>
+  </data>
+  <data name="Debug_AddSampleData" xml:space="preserve">
+    <value>AddSampleData</value>
+  </data>
+  <data name="Debug_ClearLogs" xml:space="preserve">
+    <value>Clear Logs</value>
+  </data>
+  <data name="Debug_AddTestLog" xml:space="preserve">
+    <value>테스트 로그 추가</value>
+  </data>
+  <data name="Debug_SaveLogs" xml:space="preserve">
+    <value>로그 저장</value>
+  </data>
+  <data name="Debug_AutoScroll" xml:space="preserve">
+    <value>자동 스크롤</value>
+  </data>
+  <data name="Debug_Filter_Level" xml:space="preserve">
+    <value>Level:</value>
+  </data>
+  <data name="Debug_Filter_Label" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
+  <data name="Debug_Filter_Tooltip" xml:space="preserve">
+    <value>Filter logs by message or category content</value>
+  </data>
+  <data name="Debug_Header_Time" xml:space="preserve">
+    <value>시간</value>
+  </data>
+  <data name="Debug_Header_Level" xml:space="preserve">
+    <value>등급</value>
+  </data>
+  <data name="Debug_Header_Category" xml:space="preserve">
+    <value>분류</value>
+  </data>
+  <data name="Debug_Header_Message" xml:space="preserve">
+    <value>메시지</value>
+  </data>
+  <data name="Debug_Status_TotalPrefix" xml:space="preserve">
+    <value>총합:</value>
+  </data>
+  <data name="Debug_Status_TotalSuffix" xml:space="preserve">
+    <value> 개 로그</value>
+  </data>
+  <data name="Debug_Status_FilteredPrefix" xml:space="preserve">
+    <value>필터링:</value>
+  </data>
+  <data name="Debug_Status_FilteredSuffix" xml:space="preserve">
+    <value> 개 로그</value>
+  </data>
+  <data name="Debug_Status_LastPrefix" xml:space="preserve">
+    <value>마지막:</value>
+  </data>
+  <data name="Debug_ThemeTestText" xml:space="preserve">
+    <value>테마 전환 테스트 텍스트</value>
+  </data>
+  <data name="Debug_Button_PcapTest" xml:space="preserve">
+    <value>Pcap 테스트</value>
+  </data>
+  <data name="Debug_Button_SkillBreakdown" xml:space="preserve">
+    <value>스킬 상세 창</value>
+  </data>
+  <data name="Debug_Button_DamageReference" xml:space="preserve">
+    <value>피해 참고 창</value>
+  </data>
+  <data name="Debug_Button_Settings" xml:space="preserve">
+    <value>설정 창</value>
+  </data>
+  <data name="Debug_Button_About" xml:space="preserve">
+    <value>정보 창</value>
+  </data>
+  <data name="Debug_Group_Title" xml:space="preserve">
+    <value>디버그 도구</value>
+  </data>
+  <data name="Common_Action_Open" xml:space="preserve">
+    <value>실행</value>
+  </data>
+  <data name="Common_SkillDisplayLimitChanged" xml:space="preserve">
+    <value>스킬 표시 개수 변경:</value>
+  </data>
+  <data name="Common_SkillDisplayLimitSaved" xml:space="preserve">
+    <value>스킬 표시 개수가 설정에 저장됨:</value>
+  </data>
+  <data name="Common_SkillListRefreshed" xml:space="preserve">
+    <value>모든 슬롯의 스킬 목록이 새로고침됨</value>
+  </data>
+  <data name="Command_OpenSkillLog" xml:space="preserve">
+    <value>스킬 로그 창 열기</value>
+  </data>
+  <data name="Dialog_UidRequired_Title" xml:space="preserve">
+    <value>캐릭터 UID 필요</value>
+  </data>
+  <data name="Dialog_UidRequired_Message" xml:space="preserve">
+    <value>설정에서 캐릭터 UID를 먼저 설정해야 개인 훈련 모드를 사용할 수 있습니다.
+
+UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value>
+  </data>
+  <data name="Common_Dash" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="ClassSpec_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ClassSpec_ShieldKnightRecovery" xml:space="preserve">
+    <value>Recovery</value>
+  </data>
+  <data name="ClassSpec_ShieldKnightShield" xml:space="preserve">
+    <value>Shield</value>
+  </data>
+  <data name="ClassSpec_HeavyGuardianEarthfort" xml:space="preserve">
+    <value>Earthfort</value>
+  </data>
+  <data name="ClassSpec_HeavyGuardianBlock" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="ClassSpec_StormbladeIaidoSlash" xml:space="preserve">
+    <value>IaidoSlash</value>
+  </data>
+  <data name="ClassSpec_StormbladeMoonStrike" xml:space="preserve">
+    <value>MoonStrike</value>
+  </data>
+  <data name="ClassSpec_WindKnightVanGuard" xml:space="preserve">
+    <value>VanGuard</value>
+  </data>
+  <data name="ClassSpec_WindKnightSkyward" xml:space="preserve">
+    <value>Skyward</value>
+  </data>
+  <data name="ClassSpec_FrostMageIcicle" xml:space="preserve">
+    <value>Icicle</value>
+  </data>
+  <data name="ClassSpec_FrostMageFrostBeam" xml:space="preserve">
+    <value>FrostBeam</value>
+  </data>
+  <data name="ClassSpec_MarksmanWildpack" xml:space="preserve">
+    <value>Wildpack</value>
+  </data>
+  <data name="ClassSpec_MarksmanFalconry" xml:space="preserve">
+    <value>Falconry</value>
+  </data>
+  <data name="ClassSpec_VerdantOracleSmite" xml:space="preserve">
+    <value>Smite</value>
+  </data>
+  <data name="ClassSpec_VerdantOracleLifeBind" xml:space="preserve">
+    <value>LifeBind</value>
+  </data>
+  <data name="ClassSpec_SoulMusicianDissonance" xml:space="preserve">
+    <value>Dissonance</value>
+  </data>
+  <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
+    <value>Concerto</value>
+  </data>
+  <data name="Debug_Localization_Language" xml:space="preserve">
+    <value>언어:</value>
+  </data>
+  <data name="Debug_Localization_TestKey" xml:space="preserve">
+    <value>테스트 키:</value>
+  </data>
+  <data name="Debug_Localization_Test" xml:space="preserve">
+    <value>테스트</value>
+  </data>
+  <data name="App_Exit_Confirm_Title" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="App_Exit_Confirm_Content" xml:space="preserve">
+    <value>애플리케이션을 종료하시겠습니까?</value>
+  </data>
+  <data name="Debug_Localization_Apply" xml:space="preserve">
+    <value>적용</value>
+  </data>
+  <data name="Common_HitType_Lucky" xml:space="preserve">
+    <value>행운</value>
+  </data>
+  <data name="Common_HitType_Critical" xml:space="preserve">
+    <value>치명타</value>
+  </data>
+  <data name="Common_HitType_Normal" xml:space="preserve">
+    <value>일반</value>
+  </data>
   <data name="App_RestartAsAdmin_Message" xml:space="preserve">
     <value>일부 기능은 관리자 권한이 필요할 수 있습니다.
 
@@ -1300,19 +1315,7 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   <data name="App_PrivilegeLevel_Standard" xml:space="preserve">
     <value>표준 사용자</value>
   </data>
-  <data name="Menu_About" xml:space="preserve">
-    <value>정보</value>
-  </data>
-  <data name="Settings_Section_ClassColors_Title" xml:space="preserve">
-    <value>직업 색상</value>
-  </data>
-  <data name="Settings_Section_ClassColors_Description" xml:space="preserve">
-    <value>각 직업의 색상 커스터마이징</value>
-  </data>
-  <data name="Settings_ClassColors_Reset_Tooltip" xml:space="preserve">
-    <value>Valores Padrão</value>
-  </data>
-  <data name="Settings_ClassColors_Reset" xml:space="preserve">
-    <value>Redefinir</value>
+  <data name="Settings_Language_Japanese" xml:space="preserve">
+    <value>日本語</value>
   </data>
 </root>

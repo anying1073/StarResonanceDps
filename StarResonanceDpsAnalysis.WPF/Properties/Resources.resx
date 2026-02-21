@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="App_Name" xml:space="preserve">
-    <value>StarResonance ToolBox</value>
-  </data>
   <data name="Menu_Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
@@ -423,188 +420,11 @@
   <data name="Window_About_Title" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="About_Intro_Primary" xml:space="preserve">
-    <value>A combat data analytics tool built for BPSR players.</value>
-  </data>
-  <data name="About_Intro_Details" xml:space="preserve">
-    <value>This tool requires no client modifications and stays within the game's terms of service. It helps players understand combat data, reduce unnecessary effort, and improve the gameplay experience. Please do not use the results for power discrimination or any behaviour that harms the community.</value>
-  </data>
-  <data name="About_Version_Label" xml:space="preserve">
-    <value>Current version:</value>
-  </data>
-  <data name="About_Developers_Label" xml:space="preserve">
-    <value>Contributors for this release (in no particular order):</value>
-  </data>
-  <data name="About_Developer_Lead" xml:space="preserve">
-    <value>惊奇猫猫盒 (anying1073: project founder)</value>
-  </data>
-  <data name="About_Developer_RocyJune" xml:space="preserve">
-    <value>露詩（Rocy-June）</value>
-  </data>
-  <data name="About_Developer_QingLan" xml:space="preserve">
-    <value>青岚宗王腾</value>
-  </data>
-  <data name="About_Developer_Ihonliu" xml:space="preserve">
-    <value>尻鸭（ihonliu）</value>
-  </data>
-  <data name="About_OpenSource_Prefix" xml:space="preserve">
-    <value>This project is open source at</value>
-  </data>
-  <data name="About_OpenSource_RepositoryUrl" xml:space="preserve">
-    <value>https://github.com/anying1073/StarResonanceDps</value>
-  </data>
-  <data name="About_OpenSource_Suffix" xml:space="preserve">
-    <value>, If you encounter any issues, please open an issue there.</value>
-  </data>
-  <data name="About_Contribution" xml:space="preserve">
-    <value>To contribute, please fork the repository and submit a pull request.</value>
-  </data>
-  <data name="About_Community_Invite" xml:space="preserve">
-    <value>If you cannot access GitHub or want to find teammates, join the Tencent QQ groups:</value>
-  </data>
-  <data name="About_Community_GroupOne" xml:space="preserve">
-    <value>678150498 (Group 1)</value>
-  </data>
-  <data name="About_Community_GroupTwo" xml:space="preserve">
-    <value>1022797551 (Group 2)</value>
-  </data>
-  <data name="About_Thanks_Prefix" xml:space="preserve">
-    <value>Special thanks to</value>
-  </data>
-  <data name="About_Thanks_RepositoryUrl" xml:space="preserve">
-    <value>https://github.com/dmlgzs/StarResonanceDamageCounter</value>
-  </data>
-  <data name="About_Thanks_Suffix" xml:space="preserve">
-    <value>for supporting and inspiring this project.</value>
-  </data>
-  <data name="About_Copyright" xml:space="preserve">
-    <value>Copyright (C) 2025 anying1073/StarResonanceDps Team.</value>
-  </data>
-  <data name="About_PoweredBy" xml:space="preserve">
-    <value>Powered by .NET 8, Licensed under the GNU AGPL v3.</value>
-  </data>
   <data name="Window_DamageReference_Title" xml:space="preserve">
     <value>Damage Reference</value>
   </data>
-  <data name="DamageReference_Header_Title" xml:space="preserve">
-    <value>Skill Breakdown</value>
-  </data>
-  <data name="DamageReference_Ribbon_Title" xml:space="preserve">
-    <value>Damage Reference</value>
-  </data>
-  <data name="DamageReference_Classes_All" xml:space="preserve">
-    <value>All Classes</value>
-  </data>
-  <data name="Classes_Stormblade" xml:space="preserve">
-    <value>Stormblade</value>
-  </data>
-  <data name="Classes_FrostMage" xml:space="preserve">
-    <value>Frost Mage</value>
-  </data>
-  <data name="Classes_WindKnight" xml:space="preserve">
-    <value>Wind Knight</value>
-  </data>
-  <data name="Classes_VerdantOracle" xml:space="preserve">
-    <value>Verdant Oracle</value>
-  </data>
-  <data name="Classes_HeavyGuardian" xml:space="preserve">
-    <value>Heavy Guardian</value>
-  </data>
-  <data name="Classes_Marksman" xml:space="preserve">
-    <value>Marksman</value>
-  </data>
-  <data name="Classes_ShieldKnight" xml:space="preserve">
-    <value>Shield Knight</value>
-  </data>
-  <data name="Classes_SoulMusician" xml:space="preserve">
-    <value>Soul Musician</value>
-  </data>
-  <data name="DamageReference_Table_Title" xml:space="preserve">
-    <value>Damage Reference</value>
-  </data>
-  <data name="DamageReference_NoData" xml:space="preserve">
-    <value>No data yet</value>
-  </data>
-  <data name="DamageReference_Disclaimer" xml:space="preserve">
-    <value>Data is for entertainment and reference only. Do not use it for power discrimination or any behaviour that harms the community; violations will result in permanent revocation.</value>
-  </data>
   <data name="Window_Debug_Title" xml:space="preserve">
     <value>Debug View</value>
-  </data>
-  <data name="Debug_LoadPcap" xml:space="preserve">
-    <value>Load PCAP</value>
-  </data>
-  <data name="Debug_AddSampleData" xml:space="preserve">
-    <value>AddSampleData</value>
-  </data>
-  <data name="Debug_ClearLogs" xml:space="preserve">
-    <value>Clear Logs</value>
-  </data>
-  <data name="Debug_AddTestLog" xml:space="preserve">
-    <value>Add Test Log</value>
-  </data>
-  <data name="Debug_SaveLogs" xml:space="preserve">
-    <value>Save Logs</value>
-  </data>
-  <data name="Debug_AutoScroll" xml:space="preserve">
-    <value>Auto Scroll</value>
-  </data>
-  <data name="Debug_Filter_Level" xml:space="preserve">
-    <value>Level:</value>
-  </data>
-  <data name="Debug_Filter_Label" xml:space="preserve">
-    <value>Filter:</value>
-  </data>
-  <data name="Debug_Filter_Tooltip" xml:space="preserve">
-    <value>Filter logs by message or category content</value>
-  </data>
-  <data name="Debug_Header_Time" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="Debug_Header_Level" xml:space="preserve">
-    <value>Level</value>
-  </data>
-  <data name="Debug_Header_Category" xml:space="preserve">
-    <value>Category</value>
-  </data>
-  <data name="Debug_Header_Message" xml:space="preserve">
-    <value>Message</value>
-  </data>
-  <data name="Debug_Status_TotalPrefix" xml:space="preserve">
-    <value>Total: </value>
-  </data>
-  <data name="Debug_Status_TotalSuffix" xml:space="preserve">
-    <value> logs</value>
-  </data>
-  <data name="Debug_Status_FilteredPrefix" xml:space="preserve">
-    <value>Filtered: </value>
-  </data>
-  <data name="Debug_Status_FilteredSuffix" xml:space="preserve">
-    <value> logs</value>
-  </data>
-  <data name="Debug_Status_LastPrefix" xml:space="preserve">
-    <value>Last: </value>
-  </data>
-  <data name="Debug_ThemeTestText" xml:space="preserve">
-    <value>Theme switch test text</value>
-  </data>
-  <data name="Debug_Button_PcapTest" xml:space="preserve">
-    <value>Test Pcap</value>
-  </data>
-  <data name="Debug_Button_SkillBreakdown" xml:space="preserve">
-    <value>Skill Breakdown View</value>
-  </data>
-  <data name="Debug_Button_DamageReference" xml:space="preserve">
-    <value>Damage Reference View</value>
-  </data>
-  <data name="Debug_Button_Settings" xml:space="preserve">
-    <value>Settings View</value>
-  </data>
-  <data name="Debug_Button_About" xml:space="preserve">
-    <value>About View</value>
-  </data>
-  <data name="Debug_Group_Title" xml:space="preserve">
-    <value>Debug utilities</value>
   </data>
   <data name="MainView_Header_Title" xml:space="preserve">
     <value>StarResonance ToolBox</value>
@@ -629,9 +449,6 @@
   </data>
   <data name="MainView_Plugin_AutoStart" xml:space="preserve">
     <value>Auto start</value>
-  </data>
-  <data name="Common_Action_Open" xml:space="preserve">
-    <value>Launch</value>
   </data>
   <data name="MainView_Plugin_ModuleSolver_Title" xml:space="preserve">
     <value>Module Solver</value>
@@ -831,34 +648,11 @@
   <data name="DpsStatistics_TestButton_Tooltip" xml:space="preserve">
     <value>Add Test Item</value>
   </data>
-  <data name="Common_SkillDisplayLimitChanged" xml:space="preserve">
-    <value>Skill display limit set to</value>
-  </data>
-  <data name="Common_SkillDisplayLimitSaved" xml:space="preserve">
-    <value>Skill display limit saved to config:</value>
-  </data>
-  <data name="Common_SkillListRefreshed" xml:space="preserve">
-    <value>Skill list refreshed for all slots</value>
-  </data>
-  <data name="Command_OpenSkillLog" xml:space="preserve">
-    <value>Open skill log window</value>
-  </data>
   <data name="Warning_UidNotConfigured" xml:space="preserve">
     <value>Tried to open personal training mode without UID configured</value>
   </data>
-  <data name="Dialog_UidRequired_Title" xml:space="preserve">
-    <value>Character UID required</value>
-  </data>
-  <data name="Dialog_UidRequired_Message" xml:space="preserve">
-    <value>Please configure your character UID in Settings before using personal training mode.
-
-How to get UID: in game, the bottom-left player number is your UID.</value>
-  </data>
   <data name="Info_OpeningPersonalDps" xml:space="preserve">
     <value>Opening personal training mode</value>
-  </data>
-  <data name="Common_Dash" xml:space="preserve">
-    <value>-</value>
   </data>
   <data name="SkillBreakdown_Section_DamageDistribution" xml:space="preserve">
     <value>Damage distribution</value>
@@ -907,74 +701,6 @@ How to get UID: in game, the bottom-left player number is your UID.</value>
   <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
     <value>Focus this box and press a shortcut (e.g. Ctrl+F9). Press Delete to clear.</value>
   </data>
-  <data name="ClassSpec_Unknown" xml:space="preserve">
-    <value>Unknown</value>
-    <comment>Unknown = 0</comment>
-  </data>
-  <data name="ClassSpec_ShieldKnightRecovery" xml:space="preserve">
-    <value>Recovery</value>
-    <comment>ShieldKnightRecovery</comment>
-  </data>
-  <data name="ClassSpec_ShieldKnightShield" xml:space="preserve">
-    <value>Shield</value>
-    <comment>ShieldKnightShield</comment>
-  </data>
-  <data name="ClassSpec_HeavyGuardianEarthfort" xml:space="preserve">
-    <value>Earthfort</value>
-    <comment>HeavyGuardianEarthfort</comment>
-  </data>
-  <data name="ClassSpec_HeavyGuardianBlock" xml:space="preserve">
-    <value>Block</value>
-    <comment>HeavyGuardianBlock</comment>
-  </data>
-  <data name="ClassSpec_StormbladeIaidoSlash" xml:space="preserve">
-    <value>IaidoSlash</value>
-    <comment>StormbladeIaidoSlash</comment>
-  </data>
-  <data name="ClassSpec_StormbladeMoonStrike" xml:space="preserve">
-    <value>MoonStrike</value>
-    <comment>StormbladeMoonStrike</comment>
-  </data>
-  <data name="ClassSpec_WindKnightVanGuard" xml:space="preserve">
-    <value>VanGuard</value>
-    <comment>WindKnightVanGuard</comment>
-  </data>
-  <data name="ClassSpec_WindKnightSkyward" xml:space="preserve">
-    <value>Skyward</value>
-    <comment>WindKnightSkyward</comment>
-  </data>
-  <data name="ClassSpec_FrostMageIcicle" xml:space="preserve">
-    <value>Icicle</value>
-    <comment>FrostMageIcicle</comment>
-  </data>
-  <data name="ClassSpec_FrostMageFrostBeam" xml:space="preserve">
-    <value>FrostBeam</value>
-    <comment>FrostMageFrostBeam</comment>
-  </data>
-  <data name="ClassSpec_MarksmanWildpack" xml:space="preserve">
-    <value>Wildpack</value>
-    <comment>MarksmanWildpack</comment>
-  </data>
-  <data name="ClassSpec_MarksmanFalconry" xml:space="preserve">
-    <value>Falconry</value>
-    <comment>MarksmanFalconry</comment>
-  </data>
-  <data name="ClassSpec_VerdantOracleSmite" xml:space="preserve">
-    <value>Smite</value>
-    <comment>VerdantOracleSmite</comment>
-  </data>
-  <data name="ClassSpec_VerdantOracleLifeBind" xml:space="preserve">
-    <value>LifeBind</value>
-    <comment>VerdantOracleLifeBind</comment>
-  </data>
-  <data name="ClassSpec_SoulMusicianDissonance" xml:space="preserve">
-    <value>Dissonance</value>
-    <comment>SoulMusicianDissonance</comment>
-  </data>
-  <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
-    <value>Concerto</value>
-    <comment>SoulMusicianConcerto</comment>
-  </data>
   <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
     <value>Network adapter auto select failed, please check you have proper network connections</value>
   </data>
@@ -983,15 +709,6 @@ How to get UID: in game, the bottom-left player number is your UID.</value>
   </data>
   <data name="Window_BossTracker_Title" xml:space="preserve">
     <value>Boss Status Tracker</value>
-  </data>
-  <data name="Debug_Localization_Language" xml:space="preserve">
-    <value>Language:</value>
-  </data>
-  <data name="Debug_Localization_TestKey" xml:space="preserve">
-    <value>Test Key:</value>
-  </data>
-  <data name="Debug_Localization_Test" xml:space="preserve">
-    <value>Test</value>
   </data>
   <data name="MainView_Plugin_Search_PlaceHolder" xml:space="preserve">
     <value>Search...</value>
@@ -1034,12 +751,6 @@ How to get UID: in game, the bottom-left player number is your UID.</value>
   </data>
   <data name="MainView_Plugin_ThirdPartySdkTips" xml:space="preserve">
     <value>Plugin SDK coming soon!</value>
-  </data>
-  <data name="App_Exit_Confirm_Title" xml:space="preserve">
-    <value>Confirmation</value>
-  </data>
-  <data name="App_Exit_Confirm_Content" xml:space="preserve">
-    <value>Close application?</value>
   </data>
   <data name="Settings_Combat_DpsUpdateMode" xml:space="preserve">
     <value>DPS Update Mode</value>
@@ -1102,9 +813,6 @@ How to get: After a fight, your character will automatically appear in the stats
   </data>
   <data name="Settings_Common_Records" xml:space="preserve">
     <value>records</value>
-  </data>
-  <data name="Debug_Localization_Apply" xml:space="preserve">
-    <value>Apply</value>
   </data>
   <data name="Settings_Language_Korean" xml:space="preserve">
     <value>한국어</value>
@@ -1177,15 +885,6 @@ How to get: After a fight, your character will automatically appear in the stats
   </data>
   <data name="SkillBreakdown_Chart_DpsSeriesXAxis" xml:space="preserve">
     <value>Time (s)</value>
-  </data>
-  <data name="Common_HitType_Lucky" xml:space="preserve">
-    <value>Lucky</value>
-  </data>
-  <data name="Common_HitType_Critical" xml:space="preserve">
-    <value>Crit</value>
-  </data>
-  <data name="Common_HitType_Normal" xml:space="preserve">
-    <value>Normal</value>
   </data>
   <data name="Settings_PlayerInfoCustomization_Title" xml:space="preserve">
     <value>Player info display</value>
@@ -1310,26 +1009,6 @@ How to get: After a fight, your character will automatically appear in the stats
   <data name="SkillBreakdown_Label_ValuePercentToTotal" xml:space="preserve">
     <value>Percent</value>
   </data>
-  <data name="App_RestartAsAdmin_Message" xml:space="preserve">
-    <value>Some features may require administrator privileges.
-
-Would you like to restart the application as administrator?</value>
-  </data>
-  <data name="App_RestartAsAdmin_Title" xml:space="preserve">
-    <value>Administrator Privileges</value>
-  </data>
-  <data name="App_AlreadyAdmin_Title" xml:space="preserve">
-    <value>Already Administrator</value>
-  </data>
-  <data name="App_AlreadyAdmin_Message" xml:space="preserve">
-    <value>This application is already running with administrator privileges.</value>
-  </data>
-  <data name="App_PrivilegeLevel_Admin" xml:space="preserve">
-    <value>Administrator</value>
-  </data>
-  <data name="App_PrivilegeLevel_Standard" xml:space="preserve">
-    <value>Standard User</value>
-  </data>
   <data name="DpsStatistics_CurrentPlayerRank" xml:space="preserve">
     <value>CurrentPlayerRank</value>
   </data>
@@ -1350,5 +1029,329 @@ Would you like to restart the application as administrator?</value>
   </data>
   <data name="PreviewVersion" xml:space="preserve">
     <value>PreviewVersion:{0}</value>
+  </data>
+  <data name="App_Name" xml:space="preserve">
+    <value>StarResonance ToolBox</value>
+  </data>
+  <data name="About_Intro_Primary" xml:space="preserve">
+    <value>A combat data analytics tool built for BPSR players.</value>
+  </data>
+  <data name="About_Intro_Details" xml:space="preserve">
+    <value>This tool requires no client modifications and stays within the game's terms of service. It helps players understand combat data, reduce unnecessary effort, and improve the gameplay experience. Please do not use the results for power discrimination or any behaviour that harms the community.</value>
+  </data>
+  <data name="About_Version_Label" xml:space="preserve">
+    <value>Current version:</value>
+  </data>
+  <data name="About_Developers_Label" xml:space="preserve">
+    <value>Contributors for this release (in no particular order):</value>
+  </data>
+  <data name="About_Developer_Lead" xml:space="preserve">
+    <value>惊奇猫猫盒 (anying1073: project founder)</value>
+  </data>
+  <data name="About_Developer_RocyJune" xml:space="preserve">
+    <value>露詩（Rocy-June）</value>
+  </data>
+  <data name="About_Developer_QingLan" xml:space="preserve">
+    <value>青岚宗王腾</value>
+  </data>
+  <data name="About_Developer_Ihonliu" xml:space="preserve">
+    <value>尻鸭（ihonliu）</value>
+  </data>
+  <data name="About_OpenSource_Prefix" xml:space="preserve">
+    <value>This project is open source at</value>
+  </data>
+  <data name="About_OpenSource_RepositoryUrl" xml:space="preserve">
+    <value>https://github.com/anying1073/StarResonanceDps</value>
+  </data>
+  <data name="About_OpenSource_Suffix" xml:space="preserve">
+    <value>, If you encounter any issues, please open an issue there.</value>
+  </data>
+  <data name="About_Contribution" xml:space="preserve">
+    <value>To contribute, please fork the repository and submit a pull request.</value>
+  </data>
+  <data name="About_Community_Invite" xml:space="preserve">
+    <value>If you cannot access GitHub or want to find teammates, join the Tencent QQ groups:</value>
+  </data>
+  <data name="About_Community_GroupOne" xml:space="preserve">
+    <value>678150498 (Group 1)</value>
+  </data>
+  <data name="About_Community_GroupTwo" xml:space="preserve">
+    <value>1022797551 (Group 2)</value>
+  </data>
+  <data name="About_Thanks_Prefix" xml:space="preserve">
+    <value>Special thanks to</value>
+  </data>
+  <data name="About_Thanks_RepositoryUrl" xml:space="preserve">
+    <value>https://github.com/dmlgzs/StarResonanceDamageCounter</value>
+  </data>
+  <data name="About_Thanks_Suffix" xml:space="preserve">
+    <value>for supporting and inspiring this project.</value>
+  </data>
+  <data name="About_Copyright" xml:space="preserve">
+    <value>Copyright (C) 2025 anying1073/StarResonanceDps Team.</value>
+  </data>
+  <data name="About_PoweredBy" xml:space="preserve">
+    <value>Powered by .NET 8, Licensed under the GNU AGPL v3.</value>
+  </data>
+  <data name="DamageReference_Header_Title" xml:space="preserve">
+    <value>Skill Breakdown</value>
+  </data>
+  <data name="DamageReference_Ribbon_Title" xml:space="preserve">
+    <value>Damage Reference</value>
+  </data>
+  <data name="DamageReference_Classes_All" xml:space="preserve">
+    <value>All Classes</value>
+  </data>
+  <data name="Classes_Stormblade" xml:space="preserve">
+    <value>Stormblade</value>
+  </data>
+  <data name="Classes_FrostMage" xml:space="preserve">
+    <value>Frost Mage</value>
+  </data>
+  <data name="Classes_WindKnight" xml:space="preserve">
+    <value>Wind Knight</value>
+  </data>
+  <data name="Classes_VerdantOracle" xml:space="preserve">
+    <value>Verdant Oracle</value>
+  </data>
+  <data name="Classes_HeavyGuardian" xml:space="preserve">
+    <value>Heavy Guardian</value>
+  </data>
+  <data name="Classes_Marksman" xml:space="preserve">
+    <value>Marksman</value>
+  </data>
+  <data name="Classes_ShieldKnight" xml:space="preserve">
+    <value>Shield Knight</value>
+  </data>
+  <data name="Classes_SoulMusician" xml:space="preserve">
+    <value>Soul Musician</value>
+  </data>
+  <data name="DamageReference_Table_Title" xml:space="preserve">
+    <value>Damage Reference</value>
+  </data>
+  <data name="DamageReference_NoData" xml:space="preserve">
+    <value>No data yet</value>
+  </data>
+  <data name="DamageReference_Disclaimer" xml:space="preserve">
+    <value>Data is for entertainment and reference only. Do not use it for power discrimination or any behaviour that harms the community; violations will result in permanent revocation.</value>
+  </data>
+  <data name="Debug_LoadPcap" xml:space="preserve">
+    <value>Load PCAP</value>
+  </data>
+  <data name="Debug_AddSampleData" xml:space="preserve">
+    <value>AddSampleData</value>
+  </data>
+  <data name="Debug_ClearLogs" xml:space="preserve">
+    <value>Clear Logs</value>
+  </data>
+  <data name="Debug_AddTestLog" xml:space="preserve">
+    <value>Add Test Log</value>
+  </data>
+  <data name="Debug_SaveLogs" xml:space="preserve">
+    <value>Save Logs</value>
+  </data>
+  <data name="Debug_AutoScroll" xml:space="preserve">
+    <value>Auto Scroll</value>
+  </data>
+  <data name="Debug_Filter_Level" xml:space="preserve">
+    <value>Level:</value>
+  </data>
+  <data name="Debug_Filter_Label" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
+  <data name="Debug_Filter_Tooltip" xml:space="preserve">
+    <value>Filter logs by message or category content</value>
+  </data>
+  <data name="Debug_Header_Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Debug_Header_Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Debug_Header_Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Debug_Header_Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Debug_Status_TotalPrefix" xml:space="preserve">
+    <value>Total: </value>
+  </data>
+  <data name="Debug_Status_TotalSuffix" xml:space="preserve">
+    <value> logs</value>
+  </data>
+  <data name="Debug_Status_FilteredPrefix" xml:space="preserve">
+    <value>Filtered: </value>
+  </data>
+  <data name="Debug_Status_FilteredSuffix" xml:space="preserve">
+    <value> logs</value>
+  </data>
+  <data name="Debug_Status_LastPrefix" xml:space="preserve">
+    <value>Last: </value>
+  </data>
+  <data name="Debug_ThemeTestText" xml:space="preserve">
+    <value>Theme switch test text</value>
+  </data>
+  <data name="Debug_Button_PcapTest" xml:space="preserve">
+    <value>Test Pcap</value>
+  </data>
+  <data name="Debug_Button_SkillBreakdown" xml:space="preserve">
+    <value>Skill Breakdown View</value>
+  </data>
+  <data name="Debug_Button_DamageReference" xml:space="preserve">
+    <value>Damage Reference View</value>
+  </data>
+  <data name="Debug_Button_Settings" xml:space="preserve">
+    <value>Settings View</value>
+  </data>
+  <data name="Debug_Button_About" xml:space="preserve">
+    <value>About View</value>
+  </data>
+  <data name="Debug_Group_Title" xml:space="preserve">
+    <value>Debug utilities</value>
+  </data>
+  <data name="Common_Action_Open" xml:space="preserve">
+    <value>Launch</value>
+  </data>
+  <data name="Common_SkillDisplayLimitChanged" xml:space="preserve">
+    <value>Skill display limit set to</value>
+  </data>
+  <data name="Common_SkillDisplayLimitSaved" xml:space="preserve">
+    <value>Skill display limit saved to config:</value>
+  </data>
+  <data name="Common_SkillListRefreshed" xml:space="preserve">
+    <value>Skill list refreshed for all slots</value>
+  </data>
+  <data name="Command_OpenSkillLog" xml:space="preserve">
+    <value>Open skill log window</value>
+  </data>
+  <data name="Dialog_UidRequired_Title" xml:space="preserve">
+    <value>Character UID required</value>
+  </data>
+  <data name="Dialog_UidRequired_Message" xml:space="preserve">
+    <value>Please configure your character UID in Settings before using personal training mode.
+
+How to get UID: in game, the bottom-left player number is your UID.</value>
+  </data>
+  <data name="Common_Dash" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="ClassSpec_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+    <comment>Unknown = 0</comment>
+  </data>
+  <data name="ClassSpec_ShieldKnightRecovery" xml:space="preserve">
+    <value>Recovery</value>
+    <comment>ShieldKnightRecovery</comment>
+  </data>
+  <data name="ClassSpec_ShieldKnightShield" xml:space="preserve">
+    <value>Shield</value>
+    <comment>ShieldKnightShield</comment>
+  </data>
+  <data name="ClassSpec_HeavyGuardianEarthfort" xml:space="preserve">
+    <value>Earthfort</value>
+    <comment>HeavyGuardianEarthfort</comment>
+  </data>
+  <data name="ClassSpec_HeavyGuardianBlock" xml:space="preserve">
+    <value>Block</value>
+    <comment>HeavyGuardianBlock</comment>
+  </data>
+  <data name="ClassSpec_StormbladeIaidoSlash" xml:space="preserve">
+    <value>IaidoSlash</value>
+    <comment>StormbladeIaidoSlash</comment>
+  </data>
+  <data name="ClassSpec_StormbladeMoonStrike" xml:space="preserve">
+    <value>MoonStrike</value>
+    <comment>StormbladeMoonStrike</comment>
+  </data>
+  <data name="ClassSpec_WindKnightVanGuard" xml:space="preserve">
+    <value>VanGuard</value>
+    <comment>WindKnightVanGuard</comment>
+  </data>
+  <data name="ClassSpec_WindKnightSkyward" xml:space="preserve">
+    <value>Skyward</value>
+    <comment>WindKnightSkyward</comment>
+  </data>
+  <data name="ClassSpec_FrostMageIcicle" xml:space="preserve">
+    <value>Icicle</value>
+    <comment>FrostMageIcicle</comment>
+  </data>
+  <data name="ClassSpec_FrostMageFrostBeam" xml:space="preserve">
+    <value>FrostBeam</value>
+    <comment>FrostMageFrostBeam</comment>
+  </data>
+  <data name="ClassSpec_MarksmanWildpack" xml:space="preserve">
+    <value>Wildpack</value>
+    <comment>MarksmanWildpack</comment>
+  </data>
+  <data name="ClassSpec_MarksmanFalconry" xml:space="preserve">
+    <value>Falconry</value>
+    <comment>MarksmanFalconry</comment>
+  </data>
+  <data name="ClassSpec_VerdantOracleSmite" xml:space="preserve">
+    <value>Smite</value>
+    <comment>VerdantOracleSmite</comment>
+  </data>
+  <data name="ClassSpec_VerdantOracleLifeBind" xml:space="preserve">
+    <value>LifeBind</value>
+    <comment>VerdantOracleLifeBind</comment>
+  </data>
+  <data name="ClassSpec_SoulMusicianDissonance" xml:space="preserve">
+    <value>Dissonance</value>
+    <comment>SoulMusicianDissonance</comment>
+  </data>
+  <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
+    <value>Concerto</value>
+    <comment>SoulMusicianConcerto</comment>
+  </data>
+  <data name="Debug_Localization_Language" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="Debug_Localization_TestKey" xml:space="preserve">
+    <value>Test Key:</value>
+  </data>
+  <data name="Debug_Localization_Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="App_Exit_Confirm_Title" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="App_Exit_Confirm_Content" xml:space="preserve">
+    <value>Close application?</value>
+  </data>
+  <data name="Debug_Localization_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Common_HitType_Lucky" xml:space="preserve">
+    <value>Lucky</value>
+  </data>
+  <data name="Common_HitType_Critical" xml:space="preserve">
+    <value>Crit</value>
+  </data>
+  <data name="Common_HitType_Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="App_RestartAsAdmin_Message" xml:space="preserve">
+    <value>Some features may require administrator privileges.
+
+Would you like to restart the application as administrator?</value>
+  </data>
+  <data name="App_RestartAsAdmin_Title" xml:space="preserve">
+    <value>Administrator Privileges</value>
+  </data>
+  <data name="App_AlreadyAdmin_Title" xml:space="preserve">
+    <value>Already Administrator</value>
+  </data>
+  <data name="App_AlreadyAdmin_Message" xml:space="preserve">
+    <value>This application is already running with administrator privileges.</value>
+  </data>
+  <data name="App_PrivilegeLevel_Admin" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="App_PrivilegeLevel_Standard" xml:space="preserve">
+    <value>Standard User</value>
+  </data>
+  <data name="Settings_Language_Japanese" xml:space="preserve">
+    <value />
   </data>
 </root>

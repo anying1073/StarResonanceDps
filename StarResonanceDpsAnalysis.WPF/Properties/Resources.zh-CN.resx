@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="App_Name" xml:space="preserve">
-    <value>星痕工具箱</value>
-  </data>
   <data name="Menu_Settings" xml:space="preserve">
     <value>设置</value>
   </data>
@@ -423,188 +420,11 @@
   <data name="Window_About_Title" xml:space="preserve">
     <value>关于</value>
   </data>
-  <data name="About_Intro_Primary" xml:space="preserve">
-    <value>一款专为《星痕共鸣》玩家打造的战斗数据统计工具。</value>
-  </data>
-  <data name="About_Intro_Details" xml:space="preserve">
-    <value>该工具无需修改游戏客户端，不违反游戏服务条款。该工具旨在帮助玩家更好地理解战斗数据，减少不必要的精力消耗，提升游戏体验。使用该工具前，请确保不会将数据结果用于战力歧视等破坏游戏社区环境的行为。</value>
-  </data>
-  <data name="About_Version_Label" xml:space="preserve">
-    <value>当前版本号：</value>
-  </data>
-  <data name="About_Developers_Label" xml:space="preserve">
-    <value>当前版本的开发者们（排名不分先后）:</value>
-  </data>
-  <data name="About_Developer_Lead" xml:space="preserve">
-    <value>惊奇猫猫盒（anying1073：项目发起者）</value>
-  </data>
-  <data name="About_Developer_RocyJune" xml:space="preserve">
-    <value>露詩（Rocy-June）</value>
-  </data>
-  <data name="About_Developer_QingLan" xml:space="preserve">
-    <value>青岚宗王腾</value>
-  </data>
-  <data name="About_Developer_Ihonliu" xml:space="preserve">
-    <value>尻鸭（ihonliu）</value>
-  </data>
-  <data name="About_OpenSource_Prefix" xml:space="preserve">
-    <value>本项目于</value>
-  </data>
-  <data name="About_OpenSource_RepositoryUrl" xml:space="preserve">
-    <value>https://github.com/anying1073/StarResonanceDps</value>
-  </data>
-  <data name="About_OpenSource_Suffix" xml:space="preserve">
-    <value>中开源，如在使用中遇到问题可以直接提出 Issue。</value>
-  </data>
-  <data name="About_Contribution" xml:space="preserve">
-    <value>如果你想为本项目贡献代码，欢迎 Fork 之后提交 Pull Request。</value>
-  </data>
-  <data name="About_Community_Invite" xml:space="preserve">
-    <value>无法访问 GitHub 或者想要寻求游戏伙伴也可以加QQ群：</value>
-  </data>
-  <data name="About_Community_GroupOne" xml:space="preserve">
-    <value>678150498（1群）</value>
-  </data>
-  <data name="About_Community_GroupTwo" xml:space="preserve">
-    <value>1022797551（2群）</value>
-  </data>
-  <data name="About_Thanks_Prefix" xml:space="preserve">
-    <value>在此感谢</value>
-  </data>
-  <data name="About_Thanks_RepositoryUrl" xml:space="preserve">
-    <value>https://github.com/dmlgzs/StarResonanceDamageCounter</value>
-  </data>
-  <data name="About_Thanks_Suffix" xml:space="preserve">
-    <value>项目对于本项目的帮助于支持</value>
-  </data>
-  <data name="About_Copyright" xml:space="preserve">
-    <value>Copyright (C) 2025 anying1073/StarResonanceDps Team.</value>
-  </data>
-  <data name="About_PoweredBy" xml:space="preserve">
-    <value>Powered by .NET 8, Licensed under the GNU AGPL v3.</value>
-  </data>
   <data name="Window_DamageReference_Title" xml:space="preserve">
     <value>伤害参考</value>
   </data>
-  <data name="DamageReference_Header_Title" xml:space="preserve">
-    <value>Skill Breakdown</value>
-  </data>
-  <data name="DamageReference_Ribbon_Title" xml:space="preserve">
-    <value>伤害参考</value>
-  </data>
-  <data name="DamageReference_Classes_All" xml:space="preserve">
-    <value>全职业</value>
-  </data>
-  <data name="Classes_Stormblade" xml:space="preserve">
-    <value>雷影剑士</value>
-  </data>
-  <data name="Classes_FrostMage" xml:space="preserve">
-    <value>冰魔导师</value>
-  </data>
-  <data name="Classes_WindKnight" xml:space="preserve">
-    <value>青岚骑士</value>
-  </data>
-  <data name="Classes_VerdantOracle" xml:space="preserve">
-    <value>森语者</value>
-  </data>
-  <data name="Classes_HeavyGuardian" xml:space="preserve">
-    <value>巨刃守护者</value>
-  </data>
-  <data name="Classes_Marksman" xml:space="preserve">
-    <value>神射手</value>
-  </data>
-  <data name="Classes_ShieldKnight" xml:space="preserve">
-    <value>神盾骑士</value>
-  </data>
-  <data name="Classes_SoulMusician" xml:space="preserve">
-    <value>灵魂乐手</value>
-  </data>
-  <data name="DamageReference_Table_Title" xml:space="preserve">
-    <value>伤害参考</value>
-  </data>
-  <data name="DamageReference_NoData" xml:space="preserve">
-    <value>暂无数据</value>
-  </data>
-  <data name="DamageReference_Disclaimer" xml:space="preserve">
-    <value>以上数据仅供娱乐与参考，严禁用于战力歧视等破坏游戏社区环境的行为；一经发现，永久取消该功能的使用资格。</value>
-  </data>
   <data name="Window_Debug_Title" xml:space="preserve">
     <value>调试窗口</value>
-  </data>
-  <data name="Debug_LoadPcap" xml:space="preserve">
-    <value>加载 PCAP</value>
-  </data>
-  <data name="Debug_AddSampleData" xml:space="preserve">
-    <value>AddSampleData</value>
-  </data>
-  <data name="Debug_ClearLogs" xml:space="preserve">
-    <value>Clear Logs</value>
-  </data>
-  <data name="Debug_AddTestLog" xml:space="preserve">
-    <value>Add Test Log</value>
-  </data>
-  <data name="Debug_SaveLogs" xml:space="preserve">
-    <value>Save Logs</value>
-  </data>
-  <data name="Debug_AutoScroll" xml:space="preserve">
-    <value>Auto Scroll</value>
-  </data>
-  <data name="Debug_Filter_Level" xml:space="preserve">
-    <value>Level:</value>
-  </data>
-  <data name="Debug_Filter_Label" xml:space="preserve">
-    <value>Filter:</value>
-  </data>
-  <data name="Debug_Filter_Tooltip" xml:space="preserve">
-    <value>Filter logs by message or category content</value>
-  </data>
-  <data name="Debug_Header_Time" xml:space="preserve">
-    <value>时间</value>
-  </data>
-  <data name="Debug_Header_Level" xml:space="preserve">
-    <value>等级</value>
-  </data>
-  <data name="Debug_Header_Category" xml:space="preserve">
-    <value>分类</value>
-  </data>
-  <data name="Debug_Header_Message" xml:space="preserve">
-    <value>信息</value>
-  </data>
-  <data name="Debug_Status_TotalPrefix" xml:space="preserve">
-    <value>总计：</value>
-  </data>
-  <data name="Debug_Status_TotalSuffix" xml:space="preserve">
-    <value> 条日志</value>
-  </data>
-  <data name="Debug_Status_FilteredPrefix" xml:space="preserve">
-    <value>过滤：</value>
-  </data>
-  <data name="Debug_Status_FilteredSuffix" xml:space="preserve">
-    <value> 条日志</value>
-  </data>
-  <data name="Debug_Status_LastPrefix" xml:space="preserve">
-    <value>最新：</value>
-  </data>
-  <data name="Debug_ThemeTestText" xml:space="preserve">
-    <value>主题切换测试文本</value>
-  </data>
-  <data name="Debug_Button_PcapTest" xml:space="preserve">
-    <value>Pcap 测试</value>
-  </data>
-  <data name="Debug_Button_SkillBreakdown" xml:space="preserve">
-    <value>技能详情窗口</value>
-  </data>
-  <data name="Debug_Button_DamageReference" xml:space="preserve">
-    <value>伤害参考窗口</value>
-  </data>
-  <data name="Debug_Button_Settings" xml:space="preserve">
-    <value>设置窗口</value>
-  </data>
-  <data name="Debug_Button_About" xml:space="preserve">
-    <value>关于窗口</value>
-  </data>
-  <data name="Debug_Group_Title" xml:space="preserve">
-    <value>调试功能</value>
   </data>
   <data name="MainView_Header_Title" xml:space="preserve">
     <value>星痕工具箱</value>
@@ -629,9 +449,6 @@
   </data>
   <data name="MainView_Plugin_AutoStart" xml:space="preserve">
     <value>跟随软件本体自启动</value>
-  </data>
-  <data name="Common_Action_Open" xml:space="preserve">
-    <value>启动</value>
   </data>
   <data name="MainView_Plugin_ModuleSolver_Title" xml:space="preserve">
     <value>模组求解器</value>
@@ -831,34 +648,11 @@
   <data name="DpsStatistics_TestButton_Tooltip" xml:space="preserve">
     <value>添加测试数据</value>
   </data>
-  <data name="Common_SkillDisplayLimitChanged" xml:space="preserve">
-    <value>修改技能显示条数为</value>
-  </data>
-  <data name="Common_SkillDisplayLimitSaved" xml:space="preserve">
-    <value>技能显示数量已保存到配置:</value>
-  </data>
-  <data name="Common_SkillListRefreshed" xml:space="preserve">
-    <value>技能显示条数已更新,所有slot的FilteredSkillList已刷新</value>
-  </data>
-  <data name="Command_OpenSkillLog" xml:space="preserve">
-    <value>打开技能日记窗口</value>
-  </data>
   <data name="Warning_UidNotConfigured" xml:space="preserve">
     <value>尝试打开个人打桩模式但UID未设置</value>
   </data>
-  <data name="Dialog_UidRequired_Title" xml:space="preserve">
-    <value>需要设置角色 UID</value>
-  </data>
-  <data name="Dialog_UidRequired_Message" xml:space="preserve">
-    <value>请先在设置中配置您的角色UID，才能使用个人打桩模式。
-
-如何获取UID：进入游戏后，左下角玩家编号就是UID</value>
-  </data>
   <data name="Info_OpeningPersonalDps" xml:space="preserve">
     <value>打开个人打桩模式</value>
-  </data>
-  <data name="Common_Dash" xml:space="preserve">
-    <value>-</value>
   </data>
   <data name="SkillBreakdown_Section_DamageDistribution" xml:space="preserve">
     <value>伤害分布</value>
@@ -905,57 +699,6 @@
   <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
     <value>在此聚焦并按下组合键（例如 Ctrl+F9）。按 Delete 清除。</value>
   </data>
-  <data name="ClassSpec_Unknown" xml:space="preserve">
-    <value>未知</value>
-  </data>
-  <data name="ClassSpec_ShieldKnightRecovery" xml:space="preserve">
-    <value>防盾</value>
-  </data>
-  <data name="ClassSpec_ShieldKnightShield" xml:space="preserve">
-    <value>光盾</value>
-  </data>
-  <data name="ClassSpec_HeavyGuardianEarthfort" xml:space="preserve">
-    <value>岩盾</value>
-  </data>
-  <data name="ClassSpec_HeavyGuardianBlock" xml:space="preserve">
-    <value>格挡</value>
-  </data>
-  <data name="ClassSpec_StormbladeIaidoSlash" xml:space="preserve">
-    <value>居合</value>
-  </data>
-  <data name="ClassSpec_StormbladeMoonStrike" xml:space="preserve">
-    <value>月刃</value>
-  </data>
-  <data name="ClassSpec_WindKnightVanGuard" xml:space="preserve">
-    <value>重装</value>
-  </data>
-  <data name="ClassSpec_WindKnightSkyward" xml:space="preserve">
-    <value>空枪</value>
-  </data>
-  <data name="ClassSpec_FrostMageIcicle" xml:space="preserve">
-    <value>冰矛</value>
-  </data>
-  <data name="ClassSpec_FrostMageFrostBeam" xml:space="preserve">
-    <value>射线</value>
-  </data>
-  <data name="ClassSpec_MarksmanWildpack" xml:space="preserve">
-    <value>狼弓</value>
-  </data>
-  <data name="ClassSpec_MarksmanFalconry" xml:space="preserve">
-    <value>鹰弓</value>
-  </data>
-  <data name="ClassSpec_VerdantOracleSmite" xml:space="preserve">
-    <value>惩击</value>
-  </data>
-  <data name="ClassSpec_VerdantOracleLifeBind" xml:space="preserve">
-    <value>愈合</value>
-  </data>
-  <data name="ClassSpec_SoulMusicianDissonance" xml:space="preserve">
-    <value>狂音</value>
-  </data>
-  <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
-    <value>协奏</value>
-  </data>
   <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
     <value>网卡自动选择失败，请检查您的网络连接是否正常</value>
   </data>
@@ -964,15 +707,6 @@
   </data>
   <data name="Window_BossTracker_Title" xml:space="preserve">
     <value>野外Boss状态查看器</value>
-  </data>
-  <data name="Debug_Localization_Language" xml:space="preserve">
-    <value>语言：</value>
-  </data>
-  <data name="Debug_Localization_TestKey" xml:space="preserve">
-    <value>测试键：</value>
-  </data>
-  <data name="Debug_Localization_Test" xml:space="preserve">
-    <value>测试</value>
   </data>
   <data name="MainView_Plugin_Search_PlaceHolder" xml:space="preserve">
     <value>搜索...</value>
@@ -1015,12 +749,6 @@
   </data>
   <data name="MainView_Plugin_ThirdPartySdkTips" xml:space="preserve">
     <value>第三方插件 SDK 功能即将开放，敬请期待。</value>
-  </data>
-  <data name="App_Exit_Confirm_Title" xml:space="preserve">
-    <value>确认</value>
-  </data>
-  <data name="App_Exit_Confirm_Content" xml:space="preserve">
-    <value>确定退出？</value>
   </data>
   <data name="Settings_Combat_DpsUpdateMode" xml:space="preserve">
     <value>DPS更新模式</value>
@@ -1083,9 +811,6 @@
   </data>
   <data name="Settings_Common_Records" xml:space="preserve">
     <value>条</value>
-  </data>
-  <data name="Debug_Localization_Apply" xml:space="preserve">
-    <value>应用</value>
   </data>
   <data name="Settings_Language_Korean" xml:space="preserve">
     <value>한국어</value>
@@ -1158,15 +883,6 @@
   </data>
   <data name="SkillBreakdown_Chart_DpsSeriesXAxis" xml:space="preserve">
     <value>时间（秒）</value>
-  </data>
-  <data name="Common_HitType_Lucky" xml:space="preserve">
-    <value>幸运伤害</value>
-  </data>
-  <data name="Common_HitType_Critical" xml:space="preserve">
-    <value>暴击伤害</value>
-  </data>
-  <data name="Common_HitType_Normal" xml:space="preserve">
-    <value>普通伤害</value>
   </data>
   <data name="Settings_PlayerInfoCustomization_Title" xml:space="preserve">
     <value>玩家信息显示</value>
@@ -1285,26 +1001,6 @@
   <data name="SkillBreakdown_Label_ValuePercentToTotal" xml:space="preserve">
     <value>百分比</value>
   </data>
-  <data name="App_RestartAsAdmin_Message" xml:space="preserve">
-    <value>某些功能可能需要管理员权限。
-
-是否要以管理员身份重新启动应用程序？</value>
-  </data>
-  <data name="App_RestartAsAdmin_Title" xml:space="preserve">
-    <value>管理员权限</value>
-  </data>
-  <data name="App_AlreadyAdmin_Title" xml:space="preserve">
-    <value>已是管理员</value>
-  </data>
-  <data name="App_AlreadyAdmin_Message" xml:space="preserve">
-    <value>此应用程序已以管理员权限运行。</value>
-  </data>
-  <data name="App_PrivilegeLevel_Admin" xml:space="preserve">
-    <value>管理员</value>
-  </data>
-  <data name="App_PrivilegeLevel_Standard" xml:space="preserve">
-    <value>标准用户</value>
-  </data>
   <data name="DpsStatistics_CurrentPlayerRank" xml:space="preserve">
     <value>当前玩家排名</value>
   </data>
@@ -1325,5 +1021,312 @@
   </data>
   <data name="PreviewVersion" xml:space="preserve">
     <value>预览版本:{0}</value>
+  </data>
+  <data name="App_Name" xml:space="preserve">
+    <value>星痕工具箱</value>
+  </data>
+  <data name="About_Intro_Primary" xml:space="preserve">
+    <value>一款专为《星痕共鸣》玩家打造的战斗数据统计工具。</value>
+  </data>
+  <data name="About_Intro_Details" xml:space="preserve">
+    <value>该工具无需修改游戏客户端，不违反游戏服务条款。该工具旨在帮助玩家更好地理解战斗数据，减少不必要的精力消耗，提升游戏体验。使用该工具前，请确保不会将数据结果用于战力歧视等破坏游戏社区环境的行为。</value>
+  </data>
+  <data name="About_Version_Label" xml:space="preserve">
+    <value>当前版本号：</value>
+  </data>
+  <data name="About_Developers_Label" xml:space="preserve">
+    <value>当前版本的开发者们（排名不分先后）:</value>
+  </data>
+  <data name="About_Developer_Lead" xml:space="preserve">
+    <value>惊奇猫猫盒（anying1073：项目发起者）</value>
+  </data>
+  <data name="About_Developer_RocyJune" xml:space="preserve">
+    <value>露詩（Rocy-June）</value>
+  </data>
+  <data name="About_Developer_QingLan" xml:space="preserve">
+    <value>青岚宗王腾</value>
+  </data>
+  <data name="About_Developer_Ihonliu" xml:space="preserve">
+    <value>尻鸭（ihonliu）</value>
+  </data>
+  <data name="About_OpenSource_Prefix" xml:space="preserve">
+    <value>本项目于</value>
+  </data>
+  <data name="About_OpenSource_RepositoryUrl" xml:space="preserve">
+    <value>https://github.com/anying1073/StarResonanceDps</value>
+  </data>
+  <data name="About_OpenSource_Suffix" xml:space="preserve">
+    <value>中开源，如在使用中遇到问题可以直接提出 Issue。</value>
+  </data>
+  <data name="About_Contribution" xml:space="preserve">
+    <value>如果你想为本项目贡献代码，欢迎 Fork 之后提交 Pull Request。</value>
+  </data>
+  <data name="About_Community_Invite" xml:space="preserve">
+    <value>无法访问 GitHub 或者想要寻求游戏伙伴也可以加QQ群：</value>
+  </data>
+  <data name="About_Community_GroupOne" xml:space="preserve">
+    <value>678150498（1群）</value>
+  </data>
+  <data name="About_Community_GroupTwo" xml:space="preserve">
+    <value>1022797551（2群）</value>
+  </data>
+  <data name="About_Thanks_Prefix" xml:space="preserve">
+    <value>在此感谢</value>
+  </data>
+  <data name="About_Thanks_RepositoryUrl" xml:space="preserve">
+    <value>https://github.com/dmlgzs/StarResonanceDamageCounter</value>
+  </data>
+  <data name="About_Thanks_Suffix" xml:space="preserve">
+    <value>项目对于本项目的帮助于支持</value>
+  </data>
+  <data name="About_Copyright" xml:space="preserve">
+    <value>Copyright (C) 2025 anying1073/StarResonanceDps Team.</value>
+  </data>
+  <data name="About_PoweredBy" xml:space="preserve">
+    <value>Powered by .NET 8, Licensed under the GNU AGPL v3.</value>
+  </data>
+  <data name="DamageReference_Header_Title" xml:space="preserve">
+    <value>Skill Breakdown</value>
+  </data>
+  <data name="DamageReference_Ribbon_Title" xml:space="preserve">
+    <value>伤害参考</value>
+  </data>
+  <data name="DamageReference_Classes_All" xml:space="preserve">
+    <value>全职业</value>
+  </data>
+  <data name="Classes_Stormblade" xml:space="preserve">
+    <value>雷影剑士</value>
+  </data>
+  <data name="Classes_FrostMage" xml:space="preserve">
+    <value>冰魔导师</value>
+  </data>
+  <data name="Classes_WindKnight" xml:space="preserve">
+    <value>青岚骑士</value>
+  </data>
+  <data name="Classes_VerdantOracle" xml:space="preserve">
+    <value>森语者</value>
+  </data>
+  <data name="Classes_HeavyGuardian" xml:space="preserve">
+    <value>巨刃守护者</value>
+  </data>
+  <data name="Classes_Marksman" xml:space="preserve">
+    <value>神射手</value>
+  </data>
+  <data name="Classes_ShieldKnight" xml:space="preserve">
+    <value>神盾骑士</value>
+  </data>
+  <data name="Classes_SoulMusician" xml:space="preserve">
+    <value>灵魂乐手</value>
+  </data>
+  <data name="DamageReference_Table_Title" xml:space="preserve">
+    <value>伤害参考</value>
+  </data>
+  <data name="DamageReference_NoData" xml:space="preserve">
+    <value>暂无数据</value>
+  </data>
+  <data name="DamageReference_Disclaimer" xml:space="preserve">
+    <value>以上数据仅供娱乐与参考，严禁用于战力歧视等破坏游戏社区环境的行为；一经发现，永久取消该功能的使用资格。</value>
+  </data>
+  <data name="Debug_LoadPcap" xml:space="preserve">
+    <value>加载 PCAP</value>
+  </data>
+  <data name="Debug_AddSampleData" xml:space="preserve">
+    <value>AddSampleData</value>
+  </data>
+  <data name="Debug_ClearLogs" xml:space="preserve">
+    <value>Clear Logs</value>
+  </data>
+  <data name="Debug_AddTestLog" xml:space="preserve">
+    <value>Add Test Log</value>
+  </data>
+  <data name="Debug_SaveLogs" xml:space="preserve">
+    <value>Save Logs</value>
+  </data>
+  <data name="Debug_AutoScroll" xml:space="preserve">
+    <value>Auto Scroll</value>
+  </data>
+  <data name="Debug_Filter_Level" xml:space="preserve">
+    <value>Level:</value>
+  </data>
+  <data name="Debug_Filter_Label" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
+  <data name="Debug_Filter_Tooltip" xml:space="preserve">
+    <value>Filter logs by message or category content</value>
+  </data>
+  <data name="Debug_Header_Time" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="Debug_Header_Level" xml:space="preserve">
+    <value>等级</value>
+  </data>
+  <data name="Debug_Header_Category" xml:space="preserve">
+    <value>分类</value>
+  </data>
+  <data name="Debug_Header_Message" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="Debug_Status_TotalPrefix" xml:space="preserve">
+    <value>总计：</value>
+  </data>
+  <data name="Debug_Status_TotalSuffix" xml:space="preserve">
+    <value> 条日志</value>
+  </data>
+  <data name="Debug_Status_FilteredPrefix" xml:space="preserve">
+    <value>过滤：</value>
+  </data>
+  <data name="Debug_Status_FilteredSuffix" xml:space="preserve">
+    <value> 条日志</value>
+  </data>
+  <data name="Debug_Status_LastPrefix" xml:space="preserve">
+    <value>最新：</value>
+  </data>
+  <data name="Debug_ThemeTestText" xml:space="preserve">
+    <value>主题切换测试文本</value>
+  </data>
+  <data name="Debug_Button_PcapTest" xml:space="preserve">
+    <value>Pcap 测试</value>
+  </data>
+  <data name="Debug_Button_SkillBreakdown" xml:space="preserve">
+    <value>技能详情窗口</value>
+  </data>
+  <data name="Debug_Button_DamageReference" xml:space="preserve">
+    <value>伤害参考窗口</value>
+  </data>
+  <data name="Debug_Button_Settings" xml:space="preserve">
+    <value>设置窗口</value>
+  </data>
+  <data name="Debug_Button_About" xml:space="preserve">
+    <value>关于窗口</value>
+  </data>
+  <data name="Debug_Group_Title" xml:space="preserve">
+    <value>调试功能</value>
+  </data>
+  <data name="Common_Action_Open" xml:space="preserve">
+    <value>启动</value>
+  </data>
+  <data name="Common_SkillDisplayLimitChanged" xml:space="preserve">
+    <value>修改技能显示条数为</value>
+  </data>
+  <data name="Common_SkillDisplayLimitSaved" xml:space="preserve">
+    <value>技能显示数量已保存到配置:</value>
+  </data>
+  <data name="Common_SkillListRefreshed" xml:space="preserve">
+    <value>技能显示条数已更新,所有slot的FilteredSkillList已刷新</value>
+  </data>
+  <data name="Command_OpenSkillLog" xml:space="preserve">
+    <value>打开技能日记窗口</value>
+  </data>
+  <data name="Dialog_UidRequired_Title" xml:space="preserve">
+    <value>需要设置角色 UID</value>
+  </data>
+  <data name="Dialog_UidRequired_Message" xml:space="preserve">
+    <value>请先在设置中配置您的角色UID，才能使用个人打桩模式。
+
+如何获取UID：进入游戏后，左下角玩家编号就是UID</value>
+  </data>
+  <data name="Common_Dash" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="ClassSpec_Unknown" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="ClassSpec_ShieldKnightRecovery" xml:space="preserve">
+    <value>防盾</value>
+  </data>
+  <data name="ClassSpec_ShieldKnightShield" xml:space="preserve">
+    <value>光盾</value>
+  </data>
+  <data name="ClassSpec_HeavyGuardianEarthfort" xml:space="preserve">
+    <value>岩盾</value>
+  </data>
+  <data name="ClassSpec_HeavyGuardianBlock" xml:space="preserve">
+    <value>格挡</value>
+  </data>
+  <data name="ClassSpec_StormbladeIaidoSlash" xml:space="preserve">
+    <value>居合</value>
+  </data>
+  <data name="ClassSpec_StormbladeMoonStrike" xml:space="preserve">
+    <value>月刃</value>
+  </data>
+  <data name="ClassSpec_WindKnightVanGuard" xml:space="preserve">
+    <value>重装</value>
+  </data>
+  <data name="ClassSpec_WindKnightSkyward" xml:space="preserve">
+    <value>空枪</value>
+  </data>
+  <data name="ClassSpec_FrostMageIcicle" xml:space="preserve">
+    <value>冰矛</value>
+  </data>
+  <data name="ClassSpec_FrostMageFrostBeam" xml:space="preserve">
+    <value>射线</value>
+  </data>
+  <data name="ClassSpec_MarksmanWildpack" xml:space="preserve">
+    <value>狼弓</value>
+  </data>
+  <data name="ClassSpec_MarksmanFalconry" xml:space="preserve">
+    <value>鹰弓</value>
+  </data>
+  <data name="ClassSpec_VerdantOracleSmite" xml:space="preserve">
+    <value>惩击</value>
+  </data>
+  <data name="ClassSpec_VerdantOracleLifeBind" xml:space="preserve">
+    <value>愈合</value>
+  </data>
+  <data name="ClassSpec_SoulMusicianDissonance" xml:space="preserve">
+    <value>狂音</value>
+  </data>
+  <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
+    <value>协奏</value>
+  </data>
+  <data name="Debug_Localization_Language" xml:space="preserve">
+    <value>语言：</value>
+  </data>
+  <data name="Debug_Localization_TestKey" xml:space="preserve">
+    <value>测试键：</value>
+  </data>
+  <data name="Debug_Localization_Test" xml:space="preserve">
+    <value>测试</value>
+  </data>
+  <data name="App_Exit_Confirm_Title" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="App_Exit_Confirm_Content" xml:space="preserve">
+    <value>确定退出？</value>
+  </data>
+  <data name="Debug_Localization_Apply" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="Common_HitType_Lucky" xml:space="preserve">
+    <value>幸运伤害</value>
+  </data>
+  <data name="Common_HitType_Critical" xml:space="preserve">
+    <value>暴击伤害</value>
+  </data>
+  <data name="Common_HitType_Normal" xml:space="preserve">
+    <value>普通伤害</value>
+  </data>
+  <data name="App_RestartAsAdmin_Message" xml:space="preserve">
+    <value>某些功能可能需要管理员权限。
+
+是否要以管理员身份重新启动应用程序？</value>
+  </data>
+  <data name="App_RestartAsAdmin_Title" xml:space="preserve">
+    <value>管理员权限</value>
+  </data>
+  <data name="App_AlreadyAdmin_Title" xml:space="preserve">
+    <value>已是管理员</value>
+  </data>
+  <data name="App_AlreadyAdmin_Message" xml:space="preserve">
+    <value>此应用程序已以管理员权限运行。</value>
+  </data>
+  <data name="App_PrivilegeLevel_Admin" xml:space="preserve">
+    <value>管理员</value>
+  </data>
+  <data name="App_PrivilegeLevel_Standard" xml:space="preserve">
+    <value>标准用户</value>
+  </data>
+  <data name="Settings_Language_Japanese" xml:space="preserve">
+    <value>日本語</value>
   </data>
 </root>
