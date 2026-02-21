@@ -13,5 +13,5 @@ public enum DataSourceMode
     Active = 1,
 
     Paused = 1 << 3,
-    Snapshot = Paused | 1,
+    History = Paused | 1,
 }

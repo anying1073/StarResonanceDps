@@ -212,7 +212,7 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
             try
             {
                 return _dict.Keys.ToList();
-            } // snapshot
+            } // History
             finally
             {
                 _rw.ExitReadLock();
@@ -228,7 +228,7 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
             try
             {
                 return _dict.Values.ToList();
-            } // snapshot
+            } // History
             finally
             {
                 _rw.ExitReadLock();
@@ -453,9 +453,9 @@ public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, INo
         _rw.EnterReadLock();
         try
         {
-            // return a snapshot enumerator to avoid locking during enumeration
-            var snapshot = _dict.ToList();
-            return snapshot.GetEnumerator();
+            // return a History enumerator to avoid locking during enumeration
+            var History = _dict.ToList();
+            return History.GetEnumerator();
         }
         finally
         {

@@ -17,7 +17,7 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 /// This is the core file containing field definitions, constructor, and essential methods
 /// Business logic is distributed across partial class files:
 /// - DpsStatisticsViewModel.Commands.cs: UI command methods
-/// - DpsStatisticsViewModel.Snapshot.cs: Snapshot viewing functionality
+/// - DpsStatisticsViewModel.History.cs: History viewing functionality
 /// - DpsStatisticsViewModel.StorageHandlers.cs: Data storage event handlers
 /// - DpsStatisticsViewModel.DataProcessing.cs: Data update and processing
 /// - DpsStatisticsViewModel.Configuration.cs: Configuration and settings
@@ -42,11 +42,11 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     // ===== Observable Properties =====
     [ObservableProperty] private AppConfig _appConfig = new();
     [ObservableProperty] private TimeSpan _battleDuration;
-    [ObservableProperty] private BattleSnapshotData? _currentSnapshot;
+    [ObservableProperty] private BattleHistoryData? _currentHistory;
     [ObservableProperty] private int _debugUpdateCount;
     [ObservableProperty] private bool _isIncludeNpcData;
     [ObservableProperty] private bool _isServerConnected;
-    [ObservableProperty] private bool _isViewingSnapshot;
+    [ObservableProperty] private bool _isViewingHistory;
     [ObservableProperty] private ScopeTime _scopeTime = ScopeTime.Current;
     [ObservableProperty] private bool _showContextMenu;
     [ObservableProperty] private bool _showTeamTotalDamage;
@@ -66,7 +66,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     public DpsStatisticsSubViewModel CurrentStatisticData => StatisticData[StatisticIndex];
     public DebugFunctions DebugFunctions { get; }
     public DpsStatisticsOptions Options { get; } = new();
-    public BattleSnapshotService SnapshotService { get; }
+    public BattleHistoryService HistoryService { get; }
     public Dictionary<StatisticType, DpsStatisticsSubViewModel> StatisticData { get; }
 
     // Engine instance (initialized in constructor)
@@ -81,7 +81,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         IApplicationControlService appControlService,
         Dispatcher dispatcher,
         DebugFunctions debugFunctions,
-        BattleSnapshotService snapshotService,
+        BattleHistoryService historyService,
         LocalizationManager localizationManager,
         IMessageDialogService messageDialogService,
         IDpsTimerService timerService,
@@ -99,7 +99,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         _localizationManager = localizationManager;
         _messageDialogService = messageDialogService;
         DebugFunctions = debugFunctions;
-        SnapshotService = snapshotService;
+        HistoryService = historyService;
         _timerService = timerService;
         _dataProcessor = dataProcessor;
         _teamStatsManager = teamStatsManager;
@@ -178,10 +178,10 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _timerService.Stop();
         }
 
-        // Use ResetCoordinator to handle snapshot save + reset
-        _resetCoordinator.ResetWithSnapshot(
+        // Use ResetCoordinator to handle History save + reset
+        _resetCoordinator.ResetWithHistory(
             ScopeTime,
-            saveSnapshot: true,
+            saveHistory: true,
             BattleDuration,
             Options.MinimalDurationInSeconds);
 
@@ -206,9 +206,9 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
             _logger.LogInformation("ResetAll: Stopped all existing update mechanisms (using DpsUpdateCoordinator)");
 
             UpdateBattleDuration();
-            if (IsViewingSnapshot)
+            if (IsViewingHistory)
             {
-                ExitSnapshotViewMode();
+                ExitHistoryViewMode();
             }
 
             _logger.LogInformation(
@@ -228,9 +228,9 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
 
         // Delegate to ResetCoordinator
         _resetCoordinator.ResetCurrentSection();
-        if (IsViewingSnapshot)
+        if (IsViewingHistory)
         {
-            ExitSnapshotViewMode();
+            ExitHistoryViewMode();
         }
         ResetSubViewModelsIfInCurrentScope();
         ResetBattleDurationIfInCurrentScope();

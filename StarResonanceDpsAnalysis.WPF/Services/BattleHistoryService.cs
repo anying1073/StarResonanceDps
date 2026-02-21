@@ -11,51 +11,51 @@ using StarResonanceDpsAnalysis.WPF.Models;
 
 namespace StarResonanceDpsAnalysis.WPF.Services;
 
-public record SnapshotInfo(string Title, string FilePath)
+public record HistoryInfo(string Title, string FilePath)
 {
-    public static SnapshotInfo FromSnapshotData(BattleSnapshotData d)
+    public static HistoryInfo FromHistory(BattleHistoryData d)
     {
-        return new SnapshotInfo($"{d.StartedAt:HH:mm:ss} ({d.Duration:mm\\:ss}", d.FilePath);
+        return new HistoryInfo($"{d.StartedAt:HH:mm:ss} ({d.Duration:mm\\:ss}", d.FilePath);
     }
 }
 
 /// <summary>
 /// 战斗快照服务 - 负责保存和加载战斗快照
 /// </summary>
-public class BattleSnapshotService
+public class BattleHistoryService
 {
     private const int AbsoluteMinDurationSeconds = 10; // 绝对最小战斗时长(秒),低于此值的战斗永远不保存
     private readonly IConfigManager _configManager;
-    private readonly ILogger<BattleSnapshotService> _logger;
-    private readonly string _snapshotDirectory;
+    private readonly ILogger<BattleHistoryService> _logger;
+    private readonly string _historyDirectory;
 
-    public BattleSnapshotService(ILogger<BattleSnapshotService> logger, IConfigManager configManager)
+    public BattleHistoryService(ILogger<BattleHistoryService> logger, IConfigManager configManager)
     {
         _logger = logger;
         _configManager = configManager;
-        _snapshotDirectory = Path.Combine(Environment.CurrentDirectory, "BattleSnapshots");
+        _historyDirectory = Path.Combine(Environment.CurrentDirectory, "BattleHistory");
 
         // 确保目录存在
-        if (!Directory.Exists(_snapshotDirectory))
+        if (!Directory.Exists(_historyDirectory))
         {
-            Directory.CreateDirectory(_snapshotDirectory);
+            Directory.CreateDirectory(_historyDirectory);
         }
 
         // 启动时加载现有快照
-        LoadSnapshots();
+        LoadHistory();
     }
 
-    private int MaxSnapshots => _configManager.CurrentConfig.MaxHistoryCount;
+    private int MaxHistorys => _configManager.CurrentConfig.MaxHistoryCount;
 
     /// <summary>
     /// 当前战斗快照列表(最新的N条，N由配置决定)
     /// </summary>
-    public List<SnapshotInfo> CurrentSnapshots { get; } = new();
+    public List<HistoryInfo> CurrentHistory { get; } = new();
 
     /// <summary>
     /// 全程快照列表(最新的N条，N由配置决定)
     /// </summary>
-    public List<SnapshotInfo> TotalSnapshots { get; } = new();
+    public List<HistoryInfo> TotalHistorys { get; } = new();
 
     /// <summary>
     /// 保存当前战斗快照
@@ -64,7 +64,7 @@ public class BattleSnapshotService
     /// <param name="duration">战斗时长</param>
     /// <param name="minDurationSeconds">用户设置的最小时长(秒),0表示记录所有(默认记录所有)</param>
     /// <param name="forceUseFullData">强制使用FullDpsData(用于脱战时sectioned数据已被清空的情况)</param>
-    public void SaveCurrentSnapshot(IDataStorage storage, TimeSpan duration, int minDurationSeconds = 0,
+    public void SaveCurrentHistory(IDataStorage storage, TimeSpan duration, int minDurationSeconds = 0,
         bool forceUseFullData = false)
     {
         // ⭐ 硬性限制: 低于10秒的战斗永远不保存
@@ -87,29 +87,29 @@ public class BattleSnapshotService
         {
             // ⭐ 关键修复: 如果forceUseFullData=true,则使用FullDpsData创建快照
             var scope = forceUseFullData ? ScopeTime.Total : ScopeTime.Current;
-            var snapshot = CreateSnapshot(storage, duration, scope);
+            var History = CreateHistory(storage, duration, scope);
 
             // 保存到磁盘
-            SaveSnapshotToDisk(snapshot);
+            SaveHistoryToDisk(History);
 
             // 添加到内存列表(插入到开头)
-            CurrentSnapshots.Insert(0, SnapshotInfo.FromSnapshotData(snapshot));
+            CurrentHistory.Insert(0, HistoryInfo.FromHistory(History));
 
             // ⭐ 只保留最新的8条,超出的释放内存并删除磁盘文件
-            while (CurrentSnapshots.Count > MaxSnapshots)
+            while (CurrentHistory.Count > MaxHistorys)
             {
-                var oldest = CurrentSnapshots[CurrentSnapshots.Count - 1];
-                CurrentSnapshots.RemoveAt(CurrentSnapshots.Count - 1);
+                var oldest = CurrentHistory[CurrentHistory.Count - 1];
+                CurrentHistory.RemoveAt(CurrentHistory.Count - 1);
 
                 // 删除对应的磁盘文件
-                TryDeleteSnapshotFile(oldest.FilePath);
+                TryDeleteHistoryFile(oldest.FilePath);
 
                 _logger.LogDebug("移除旧快照: {Time}, 文件已删除", oldest.FilePath);
             }
 
             _logger.LogInformation("保存当前战斗快照成功: {Time}, 时长: {Duration:F1}秒, 数据源: {Source}, 当前保存数量: {Count}/{Max}",
-                snapshot.StartedAt, duration.TotalSeconds, forceUseFullData ? "FullData" : "SectionedData",
-                CurrentSnapshots.Count, MaxSnapshots);
+                History.StartedAt, duration.TotalSeconds, forceUseFullData ? "FullData" : "SectionedData",
+                CurrentHistory.Count, MaxHistorys);
         }
         catch (Exception ex)
         {
@@ -123,7 +123,7 @@ public class BattleSnapshotService
     /// <param name="storage">数据存储</param>
     /// <param name="duration">战斗时长</param>
     /// <param name="minDurationSeconds">用户设置的最小时长(秒),0表示记录所有(默认记录所有)</param>
-    public void SaveTotalSnapshot(IDataStorage storage, TimeSpan duration, int minDurationSeconds = 0)
+    public void SaveTotalHistory(IDataStorage storage, TimeSpan duration, int minDurationSeconds = 0)
     {
         // ? 硬性限制: 低于10秒的战斗永远不保存
         if (duration.TotalSeconds < AbsoluteMinDurationSeconds)
@@ -143,28 +143,28 @@ public class BattleSnapshotService
 
         try
         {
-            var snapshot = CreateSnapshot(storage, duration, ScopeTime.Current);
+            var History = CreateHistory(storage, duration, ScopeTime.Current);
 
             // 保存到磁盘
-            SaveSnapshotToDisk(snapshot);
+            SaveHistoryToDisk(History);
 
             // 添加到内存列表(插入到开头)
-            TotalSnapshots.Insert(0, SnapshotInfo.FromSnapshotData(snapshot));
+            TotalHistorys.Insert(0, HistoryInfo.FromHistory(History));
 
             // ? 只保留最新的8条,超出的释放内存并删除磁盘文件
-            while (TotalSnapshots.Count > MaxSnapshots)
+            while (TotalHistorys.Count > MaxHistorys)
             {
-                var oldest = TotalSnapshots[TotalSnapshots.Count - 1];
-                TotalSnapshots.RemoveAt(TotalSnapshots.Count - 1);
+                var oldest = TotalHistorys[TotalHistorys.Count - 1];
+                TotalHistorys.RemoveAt(TotalHistorys.Count - 1);
 
                 // 删除对应的磁盘文件
-                TryDeleteSnapshotFile(oldest.FilePath);
+                TryDeleteHistoryFile(oldest.FilePath);
 
                 _logger.LogDebug("移除旧快照: {Time}, 文件已删除", oldest.FilePath);
             }
 
             _logger.LogInformation("保存全程快照成功: {Time}, 时长: {Duration:F1}秒, 当前保存数量: {Count}/{Max}",
-                snapshot.StartedAt, duration.TotalSeconds, TotalSnapshots.Count, MaxSnapshots);
+                History.StartedAt, duration.TotalSeconds, TotalHistorys.Count, MaxHistorys);
         }
         catch (Exception ex)
         {
@@ -172,7 +172,7 @@ public class BattleSnapshotService
         }
     }
 
-    public BattleSnapshotData? LoadSnapshot(string filePath)
+    public BattleHistoryData? LoadHistory(string filePath)
     {
         try
         {
@@ -183,12 +183,12 @@ public class BattleSnapshotService
             }
 
             var json = File.ReadAllText(filePath);
-            //var snapshot = JsonSerializer.Deserialize<BattleSnapshotData>(json);
-            var snapshot = JsonConvert.DeserializeObject<BattleSnapshotData>(json);
+            //var History = JsonSerializer.Deserialize<BattleHistoryData>(json);
+            var History = JsonConvert.DeserializeObject<BattleHistoryData>(json);
 
-            if (snapshot != null)
+            if (History != null)
             {
-                snapshot.FilePath = filePath;
+                History.FilePath = filePath;
                 _logger.LogDebug("成功加载快照: {File}", filePath);
             }
             else
@@ -196,7 +196,7 @@ public class BattleSnapshotService
                 _logger.LogWarning("反序列化快照失败: {File}", filePath);
             }
 
-            return snapshot;
+            return History;
         }
         catch (Exception ex)
         {
@@ -208,7 +208,7 @@ public class BattleSnapshotService
     /// <summary>
     /// 创建快照
     /// </summary>
-    private BattleSnapshotData CreateSnapshot(IDataStorage storage, TimeSpan duration, ScopeTime scopeType)
+    private BattleHistoryData CreateHistory(IDataStorage storage, TimeSpan duration, ScopeTime scopeType)
     {
         var now = DateTime.Now;
         var players = new Dictionary<long, PlayerInfo>();
@@ -237,7 +237,7 @@ public class BattleSnapshotService
             statistics[dpsData.Uid] = dpsData;
         }
 
-        return new BattleSnapshotData
+        return new BattleHistoryData
         {
             ScopeType = scopeType,
             StartedAt = now.AddTicks(-duration.Ticks),
@@ -254,30 +254,30 @@ public class BattleSnapshotService
     /// <summary>
     /// 保存快照到磁盘
     /// </summary>
-    private void SaveSnapshotToDisk(BattleSnapshotData snapshot)
+    private void SaveHistoryToDisk(BattleHistoryData history)
     {
-        var fileName = $"{snapshot.ScopeType}_{snapshot.StartedAt:yyyy-MM-dd_HH-mm-ss}.json";
-        var filePath = Path.Combine(_snapshotDirectory, fileName);
+        var fileName = $"{history.ScopeType}_{history.StartedAt:yyyy-MM-dd_HH-mm-ss}.json";
+        var filePath = Path.Combine(_historyDirectory, fileName);
 
-        var json = JsonConvert.SerializeObject(snapshot);
+        var json = JsonConvert.SerializeObject(history);
 
         File.WriteAllText(filePath, json);
-        snapshot.FilePath = filePath;
+        history.FilePath = filePath;
     }
 
     /// <summary>
     /// 从磁盘加载快照
     /// </summary>
-    private void LoadSnapshots()
+    private void LoadHistory()
     {
         try
         {
-            if (!Directory.Exists(_snapshotDirectory))
+            if (!Directory.Exists(_historyDirectory))
             {
                 return;
             }
 
-            var files = Directory.GetFiles(_snapshotDirectory, "*.json")
+            var files = Directory.GetFiles(_historyDirectory, "*.json")
                 .OrderByDescending(f => File.GetCreationTime(f))
                 .ToList();
 
@@ -286,22 +286,22 @@ public class BattleSnapshotService
                 try
                 {
                     var json = File.ReadAllText(file);
-                    //var snapshot = JsonSerializer.Deserialize<BattleSnapshotData>(json);
+                    //var History = JsonSerializer.Deserialize<BattleHistoryData>(json);
                     var settings = new JsonSerializerSettings( )
                     {
                         ContractResolver = new PrivateSetterContractResolver()
                     };
-                    var snapshot = JsonConvert.DeserializeObject<BattleSnapshotData>(json, settings);
+                    var History = JsonConvert.DeserializeObject<BattleHistoryData>(json, settings);
 
-                    if (snapshot == null) continue;
+                    if (History == null) continue;
 
-                    snapshot.FilePath = file;
+                    History.FilePath = file;
 
-                    if (snapshot.ScopeType == ScopeTime.Current)
+                    if (History.ScopeType == ScopeTime.Current)
                     {
-                        if (CurrentSnapshots.Count < MaxSnapshots)
+                        if (CurrentHistory.Count < MaxHistorys)
                         {
-                            CurrentSnapshots.Add(SnapshotInfo.FromSnapshotData(snapshot));
+                            CurrentHistory.Add(HistoryInfo.FromHistory(History));
                         }
                         else
                         {
@@ -312,9 +312,9 @@ public class BattleSnapshotService
                     }
                     else
                     {
-                        if (TotalSnapshots.Count < MaxSnapshots)
+                        if (TotalHistorys.Count < MaxHistorys)
                         {
-                            TotalSnapshots.Add(SnapshotInfo.FromSnapshotData(snapshot));
+                            TotalHistorys.Add(HistoryInfo.FromHistory(History));
                         }
                         else
                         {
@@ -340,7 +340,7 @@ public class BattleSnapshotService
             }
 
             _logger.LogInformation("加载快照完成: 当前={Current}/{MaxCurrent}, 全程={Total}/{MaxTotal}",
-                CurrentSnapshots.Count, MaxSnapshots, TotalSnapshots.Count, MaxSnapshots);
+                CurrentHistory.Count, MaxHistorys, TotalHistorys.Count, MaxHistorys);
         }
         catch (Exception ex)
         {
@@ -351,7 +351,7 @@ public class BattleSnapshotService
     /// <summary>
     /// 尝试删除快照文件
     /// </summary>
-    private void TryDeleteSnapshotFile(string filePath)
+    private void TryDeleteHistoryFile(string filePath)
     {
         try
         {
@@ -371,7 +371,7 @@ public class BattleSnapshotService
 /// <summary>
 /// 快照数据模型
 /// </summary>
-public class BattleSnapshotData
+public class BattleHistoryData
 {
     public ScopeTime ScopeType { get; set; }
     public DateTime StartedAt { get; set; }
@@ -396,7 +396,7 @@ public class BattleSnapshotData
     public string DisplayLabel =>
         $"{(ScopeType == ScopeTime.Current ? "当前" : "全程")} {StartedAt:HH:mm:ss} ({Duration:mm\\:ss})";
 
-     public static explicit operator SnapshotInfo(BattleSnapshotData d) => SnapshotInfo.FromSnapshotData(d);
+     public static explicit operator HistoryInfo(BattleHistoryData d) => HistoryInfo.FromHistory(d);
 }
 
 public class PrivateSetterContractResolver : DefaultContractResolver

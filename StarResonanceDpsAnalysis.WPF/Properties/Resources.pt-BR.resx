@@ -171,22 +171,22 @@
   <data name="Menu_History_Total" xml:space="preserve">
     <value>Batalha completa</value>
   </data>
-  <data name="Menu_ExitSnapshotMode" xml:space="preserve">
+  <data name="Menu_ExitHistoryMode" xml:space="preserve">
     <value>Sair do modo de instantâneo</value>
   </data>
-  <data name="DpsStatistics_Snapshot_ViewFull_Title" xml:space="preserve">
+  <data name="DpsStatistics_History_ViewFull_Title" xml:space="preserve">
     <value>Ver instantâneo completo</value>
   </data>
-  <data name="DpsStatistics_Snapshot_ViewFull_EmptyMessage" xml:space="preserve">
+  <data name="DpsStatistics_History_ViewFull_EmptyMessage" xml:space="preserve">
     <value>Não há dados de instantâneo completo disponíveis.</value>
   </data>
-  <data name="DpsStatistics_Snapshot_ViewCurrent_Title" xml:space="preserve">
+  <data name="DpsStatistics_History_ViewCurrent_Title" xml:space="preserve">
     <value>Ver instantâneo de batalha</value>
   </data>
-  <data name="DpsStatistics_Snapshot_ViewCurrent_EmptyMessage" xml:space="preserve">
+  <data name="DpsStatistics_History_ViewCurrent_EmptyMessage" xml:space="preserve">
     <value>Não há dados de instantâneo de batalha disponíveis.</value>
   </data>
-  <data name="DpsStatistics_Snapshot_Label" xml:space="preserve">
+  <data name="DpsStatistics_History_Label" xml:space="preserve">
     <value>[Instantâneo]</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">

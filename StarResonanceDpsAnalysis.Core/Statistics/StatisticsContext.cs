@@ -75,7 +75,7 @@ public sealed class StatisticsContext
     }
     
     /// <summary>
-    /// Get all full battle logs (returns snapshot)
+    /// Get all full battle logs (returns History)
     /// </summary>
     public IReadOnlyList<BattleLog> FullBattleLogs
     {
@@ -89,7 +89,7 @@ public sealed class StatisticsContext
     }
     
     /// <summary>
-    /// Get all section battle logs (returns snapshot)
+    /// Get all section battle logs (returns History)
     /// </summary>
     public IReadOnlyList<BattleLog> SectionBattleLogs
     {
@@ -146,7 +146,7 @@ public sealed class StatisticsContext
     public bool CombatStarted { get; set; }
 
     /// <summary>
-    /// Get all full statistics (returns snapshot)
+    /// Get all full statistics (returns History)
     /// </summary>
     public IReadOnlyDictionary<long, PlayerStatistics> FullStatistics
     {
@@ -160,7 +160,7 @@ public sealed class StatisticsContext
     }
     
     /// <summary>
-    /// Get all section statistics (returns snapshot)
+    /// Get all section statistics (returns History)
     /// </summary>
     public IReadOnlyDictionary<long, PlayerStatistics> SectionStatistics
     {

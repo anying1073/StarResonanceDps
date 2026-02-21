@@ -26,7 +26,7 @@ public sealed class PlayerStatistics
     public bool IsNpc { get; set; }
 
     // Previous values for delta calculation
-    private DeltaTrackingSnapshot _previousSnapshot;
+    private DeltaTrackingHistory _previousHistory;
 
     // Track last recorded tick to prevent duplicate sample recordings
     private long _lastRecordedTick;
@@ -153,7 +153,7 @@ public sealed class PlayerStatistics
     /// </summary>
     public void ResetDeltaTracking()
     {
-        _previousSnapshot = default;
+        _previousHistory = default;
         ClearDeltaValues();
         _isDeltaTrackingEnabled = true; // Re-enable tracking on reset
     }
@@ -195,11 +195,11 @@ public sealed class PlayerStatistics
 
     #region Delta Calculation Helpers
 
-    private bool IsFirstUpdate() => _previousSnapshot.Tick == 0;
+    private bool IsFirstUpdate() => _previousHistory.Tick == 0;
 
     private void InitializeDeltaTracking()
     {
-        _previousSnapshot = new DeltaTrackingSnapshot
+        _previousHistory = new DeltaTrackingHistory
         {
             DamageTotal = AttackDamage.Total,
             HealingTotal = Healing.Total,
@@ -232,7 +232,7 @@ public sealed class PlayerStatistics
 
     private double? CalculateElapsedTime()
     {
-        var tickDelta = LastTick - _previousSnapshot.Tick;
+        var tickDelta = LastTick - _previousHistory.Tick;
         if (tickDelta <= 0)
         {
             return null; // No time elapsed
@@ -244,9 +244,9 @@ public sealed class PlayerStatistics
     {
         return new DeltaValues
         {
-            Damage = AttackDamage.Total - _previousSnapshot.DamageTotal,
-            Healing = Healing.Total - _previousSnapshot.HealingTotal,
-            TakenDamage = TakenDamage.Total - _previousSnapshot.TakenDamageTotal
+            Damage = AttackDamage.Total - _previousHistory.DamageTotal,
+            Healing = Healing.Total - _previousHistory.HealingTotal,
+            TakenDamage = TakenDamage.Total - _previousHistory.TakenDamageTotal
         };
     }
 
@@ -289,9 +289,9 @@ public sealed class PlayerStatistics
     }
 
     /// <summary>
-    /// Snapshot of previous state for delta calculation
+    /// History of previous state for delta calculation
     /// </summary>
-    private struct DeltaTrackingSnapshot
+    private struct DeltaTrackingHistory
     {
         public long DamageTotal { get; init; }
         public long HealingTotal { get; init; }
@@ -300,7 +300,7 @@ public sealed class PlayerStatistics
     }
 
     /// <summary>
-    /// Delta values between two snapshots
+    /// Delta values between two Historys
     /// </summary>
     private struct DeltaValues
     {

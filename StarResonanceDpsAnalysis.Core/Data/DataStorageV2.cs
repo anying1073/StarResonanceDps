@@ -719,7 +719,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     }
 
     /// <summary>
-    /// Get all battle logs (for snapshots, etc.)
+    /// Get all battle logs (for Historys, etc.)
     /// </summary>
     public IReadOnlyList<BattleLog> GetBattleLogs(bool fullSession)
     {

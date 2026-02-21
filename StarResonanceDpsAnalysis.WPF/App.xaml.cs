@@ -140,7 +140,7 @@ public partial class App : Application
                 // ? Register new DPS services (SOLID refactoring)
                 services.AddDpsServices();
 
-                services.AddSingleton<BattleSnapshotService>();
+                services.AddSingleton<BattleHistoryService>();
                 services.AddSingleton<ISkillLogService, SkillLogService>();
 
                 services.AddSingleton<DebugFunctions>();

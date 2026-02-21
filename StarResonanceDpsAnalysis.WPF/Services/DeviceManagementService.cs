@@ -54,7 +54,7 @@ public class DeviceManagementService(
         }
         else
         {
-            // Create and start watcher, then apply ports filter snapshot
+            // Create and start watcher, then apply ports filter History
             if (_portsWatcher == null)
             {
                 _portsWatcher = new ProcessPortsWatcher(["star.exe", "BPSR_STEAM.exe", "BPSR_EPIC.exe", "BPSR.exe"]);
@@ -184,7 +184,7 @@ public class DeviceManagementService(
         {
             // Start the watcher after capture is active to avoid missing early events
             _portsWatcher.Start();
-            // Immediately apply current snapshot (if any)
+            // Immediately apply current History (if any)
             ApplyProcessPortsFilter(_portsWatcher.TcpPorts, _portsWatcher.UdpPorts);
         }
 

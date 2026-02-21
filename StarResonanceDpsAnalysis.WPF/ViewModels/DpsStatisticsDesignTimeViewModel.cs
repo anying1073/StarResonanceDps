@@ -38,13 +38,13 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
             LocalizationManager.Instance,
             null!,
             new DesignDataStorage()),
-        new DesignBattleSnapshotService(),
+        new DesignBattleHistoryService(),
         LocalizationManager.Instance,
         new MessageDialogService(null!),
         new DesignTimerService(),
         new DesignDataProcessor(),
         new DesignTeamStatsManager(),
-        new DataSourceEngine(new DesignDataStorage(), new DesignDataProcessor(), new DesignBattleSnapshotService(), NullLogger<DataSourceEngine>.Instance),
+        new DataSourceEngine(new DesignDataStorage(), new DesignDataProcessor(), new DesignBattleHistoryService(), NullLogger<DataSourceEngine>.Instance),
         new DesignResetCoordinator())
     {
         // Initialize AppConfig
@@ -124,14 +124,14 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
         public void ResetCurrentSection() { }
         public void ResetAll() { }
         public void Reset(ScopeTime scope) { }
-        public void ResetWithSnapshot(ScopeTime scope, bool saveSnapshot, TimeSpan battleDuration, int minimalDuration) { }
+        public void ResetWithHistory(ScopeTime scope, bool saveHistory, TimeSpan battleDuration, int minimalDuration) { }
     }
 
     // 修复: 设计时快照服务（添加 IConfigManager 参数）
-    private sealed class DesignBattleSnapshotService : BattleSnapshotService
+    private sealed class DesignBattleHistoryService : BattleHistoryService
     {
-        public DesignBattleSnapshotService() : base(
-            NullLogger<BattleSnapshotService>.Instance,
+        public DesignBattleHistoryService() : base(
+            NullLogger<BattleHistoryService>.Instance,
             new DesignConfigManager()) // 新增：传入配置管理器
         {
         }

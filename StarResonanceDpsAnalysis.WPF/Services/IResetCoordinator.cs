@@ -25,11 +25,11 @@ public interface IResetCoordinator
     void Reset(ScopeTime scope);
 
     /// <summary>
-    /// Reset with optional snapshot save
+    /// Reset with optional History save
     /// </summary>
     /// <param name="scope">Scope to reset</param>
-    /// <param name="saveSnapshot">Whether to save snapshot before reset</param>
-    /// <param name="battleDuration">Current battle duration for snapshot</param>
-    /// <param name="minimalDuration">Minimal duration threshold for snapshot</param>
-    void ResetWithSnapshot(ScopeTime scope, bool saveSnapshot, TimeSpan battleDuration, int minimalDuration);
+    /// <param name="saveHistory">Whether to save History before reset</param>
+    /// <param name="battleDuration">Current battle duration for History</param>
+    /// <param name="minimalDuration">Minimal duration threshold for History</param>
+    void ResetWithHistory(ScopeTime scope, bool saveHistory, TimeSpan battleDuration, int minimalDuration);
 }

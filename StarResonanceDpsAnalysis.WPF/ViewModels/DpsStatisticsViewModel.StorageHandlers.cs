@@ -58,7 +58,7 @@ public partial class DpsStatisticsViewModel
                     _storage.GetStatisticsCount(false),
                     duration.TotalSeconds);
 
-                SnapshotService.SaveCurrentSnapshot(_storage, duration, Options.MinimalDurationInSeconds);
+                HistoryService.SaveCurrentHistory(_storage, duration, Options.MinimalDurationInSeconds);
 
                 _logger.LogInformation("? 脱战自动保存快照成功");
             }
@@ -130,7 +130,7 @@ public partial class DpsStatisticsViewModel
 
             try
             {
-                SnapshotService.SaveTotalSnapshot(_storage, BattleDuration, Options.MinimalDurationInSeconds);
+                HistoryService.SaveTotalHistory(_storage, BattleDuration, Options.MinimalDurationInSeconds);
                 _logger.LogInformation("服务器切换时保存全程快照成功");
             }
             catch (Exception ex)

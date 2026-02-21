@@ -713,12 +713,12 @@
                                     <MenuItem Header="{lex:Loc {x:Static loc:ResourcesKeys.Menu_History}}">
                                         <!-- 当前战斗历史子菜单 -->
                                         <MenuItem Header="{lex:Loc {x:Static loc:ResourcesKeys.Menu_History_Current}}"
-                                                  ItemsSource="{Binding SnapshotService.CurrentSnapshots}">
+                                                  ItemsSource="{Binding HistoryService.CurrentHistory}">
                                             <MenuItem.ItemContainerStyle>
                                                 <Style TargetType="MenuItem" BasedOn="{StaticResource ModernMenuItem}">
                                                     <Setter Property="Header" Value="{Binding Title}" />
                                                     <!-- ContextMenu.DataContext is set to PlacementTarget.DataContext, so bind directly -->
-                                                    <Setter Property="Command" Value="{Binding DataContext.LoadSnapshotCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}" />
+                                                    <Setter Property="Command" Value="{Binding DataContext.LoadHistoryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}" />
                                                     <Setter Property="CommandParameter" Value="{Binding}" />
                                                 </Style>
                                             </MenuItem.ItemContainerStyle>
@@ -726,12 +726,12 @@
 
                                         <!-- 全程历史子菜单 -->
                                         <MenuItem Header="{lex:Loc {x:Static loc:ResourcesKeys.Menu_History_Total}}"
-                                                  ItemsSource="{Binding SnapshotService.TotalSnapshots}">
+                                                  ItemsSource="{Binding HistoryService.TotalHistorys}">
                                             <MenuItem.ItemContainerStyle>
                                                 <Style TargetType="MenuItem" BasedOn="{StaticResource ModernMenuItem}">
                                                     <Setter Property="Header" Value="{Binding Title}" />
                                                     <!-- ContextMenu.DataContext is set to PlacementTarget.DataContext, so bind directly -->
-                                                    <Setter Property="Command" Value="{Binding DataContext.LoadSnapshotCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}" />
+                                                    <Setter Property="Command" Value="{Binding DataContext.LoadHistoryCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ContextMenu}}" />
                                                     <Setter Property="CommandParameter" Value="{Binding}" />
                                                 </Style>
                                             </MenuItem.ItemContainerStyle>
@@ -740,9 +740,9 @@
 
                                     <!-- 退出快照查看模式(只在快照模式时显示) -->
                                     <MenuItem
-                                        Command="{Binding ExitSnapshotViewModeCommand}"
-                                        Header="{lex:Loc {x:Static loc:ResourcesKeys.Menu_ExitSnapshotMode}}"
-                                        Visibility="{Binding IsViewingSnapshot, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        Command="{Binding ExitHistoryViewModeCommand}"
+                                        Header="{lex:Loc {x:Static loc:ResourcesKeys.Menu_ExitHistoryMode}}"
+                                        Visibility="{Binding IsViewingHistory, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                     <Separator />
                                     <MenuItem Command="{Binding ShowAboutCommand}" Header="{lex:Loc {x:Static loc:ResourcesKeys.Menu_About}}" />
@@ -907,8 +907,8 @@
                             
                             <!-- 快照模式下显示[快照],战斗模式下显示排名 -->
                             <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource SnapshotOrRankConverter}" StringFormat="{}[{0}]">
-                                    <Binding Path="IsViewingSnapshot" />
+                                <MultiBinding Converter="{StaticResource HistoryOrRankConverter}" StringFormat="{}[{0}]">
+                                    <Binding Path="IsViewingHistory" />
                                     <Binding Path="CurrentStatisticData.CurrentPlayerRank" />
                                 </MultiBinding>
                             </TextBlock.Text>

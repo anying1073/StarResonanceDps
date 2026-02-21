@@ -6,9 +6,9 @@ using StarResonanceDpsAnalysis.WPF.Services;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine.DataSource;
 
-public sealed class SnapshotDpsDataSource(
+public sealed class HistoryDpsDataSource(
     DataSourceEngine engine,
-    BattleSnapshotService service,
+    BattleHistoryService service,
     ILogger logger,
     IDpsDataProcessor processor) : IDpsDataSource
 {
@@ -19,9 +19,9 @@ public sealed class SnapshotDpsDataSource(
 
     private string _filePath = string.Empty;
     private RawDict _rawDict = new Dictionary<long, PlayerStatistics>();
-    private BattleSnapshotData? _snapshotData;
+    private BattleHistoryData? _HistoryData;
 
-    public DataSourceMode Mode => DataSourceMode.Snapshot;
+    public DataSourceMode Mode => DataSourceMode.History;
     public ScopeTime Scope { get; set; } = ScopeTime.Current;
 
     public void SetEnable(bool enable)
@@ -76,10 +76,10 @@ public sealed class SnapshotDpsDataSource(
 
     public IReadOnlyDictionary<long, PlayerInfo> GetPlayerInfoDictionary()
     {
-        return _snapshotData?.Players ?? new Dictionary<long, PlayerInfo>();
+        return _HistoryData?.Players ?? new Dictionary<long, PlayerInfo>();
     }
 
-    public void SetSnapshotFilePath(string filePath)
+    public void SetHistoryFilePath(string filePath)
     {
         lock (_syncRoot)
         {
@@ -92,15 +92,15 @@ public sealed class SnapshotDpsDataSource(
     private (StatisticDictionary data, RawDict raw) FetchData()
     {
         var includeNpc = engine.IncludeNpcData;
-        var snapshot = service.LoadSnapshot(_filePath);
-        if (snapshot == null)
+        var History = service.LoadHistory(_filePath);
+        if (History == null)
         {
-            logger.LogWarning("Snapshot file not found");
+            logger.LogWarning("History file not found");
             return (new StatisticDictionary(), new Dictionary<long, PlayerStatistics>());
         }
 
-        _snapshotData = snapshot;
-        var processed = processor.PreProcessData(snapshot.Statistics, includeNpc);
-        return (processed, snapshot.Statistics);
+        _HistoryData = History;
+        var processed = processor.PreProcessData(History.Statistics, includeNpc);
+        return (processed, History.Statistics);
     }
 }

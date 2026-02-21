@@ -23,7 +23,7 @@ public sealed class SyncContainerDataProcessor(IDataStorage storage, ILogger? lo
 
         var playerUid = vData.CharId;
 
-        // Capture previous snapshot for concise diff logging
+        // Capture previous History for concise diff logging
         var prev = storage.CurrentPlayerInfo;
         var prevName = prev.Name;
         var prevLevel = prev.Level;

@@ -6,7 +6,7 @@ using StarResonanceDpsAnalysis.WPF.Properties;
 
 namespace StarResonanceDpsAnalysis.WPF.Converters;
 
-public sealed class SnapshotOrRankConverter : IMultiValueConverter
+public sealed class HistoryOrRankConverter : IMultiValueConverter
 {
     public object? Convert(object?[]? values, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -15,16 +15,16 @@ public sealed class SnapshotOrRankConverter : IMultiValueConverter
             return null;
         }
 
-        // 第一个参数: IsViewingSnapshot (是否在快照模式)
-        var isSnapshot = values[0] is true;
+        // 第一个参数: IsViewingHistory (是否在快照模式)
+        var isHistory = values[0] is true;
         
         // 如果是快照模式,显示本地化标签
-        if (isSnapshot)
+        if (isHistory)
         {
             return LocalizationManager.Instance.GetString(
-                ResourcesKeys.DpsStatistics_Snapshot_Label,
+                ResourcesKeys.DpsStatistics_History_Label,
                 culture,
-                "Snapshot");
+                "History");
         }
 
         // 战斗模式下,直接返回排名字符串(已经包含方括号)

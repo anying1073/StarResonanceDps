@@ -171,22 +171,22 @@
   <data name="Menu_History_Total" xml:space="preserve">
     <value>전체 전투</value>
   </data>
-  <data name="Menu_ExitSnapshotMode" xml:space="preserve">
+  <data name="Menu_ExitHistoryMode" xml:space="preserve">
     <value>스냅샷 모드 종료</value>
   </data>
-  <data name="DpsStatistics_Snapshot_ViewFull_Title" xml:space="preserve">
+  <data name="DpsStatistics_History_ViewFull_Title" xml:space="preserve">
     <value>전체 스냅샷 보기</value>
   </data>
-  <data name="DpsStatistics_Snapshot_ViewFull_EmptyMessage" xml:space="preserve">
+  <data name="DpsStatistics_History_ViewFull_EmptyMessage" xml:space="preserve">
     <value>사용 가능한 전체 스냅샷 데이터가 없습니다.</value>
   </data>
-  <data name="DpsStatistics_Snapshot_ViewCurrent_Title" xml:space="preserve">
+  <data name="DpsStatistics_History_ViewCurrent_Title" xml:space="preserve">
     <value>전투 스냅샷 보기</value>
   </data>
-  <data name="DpsStatistics_Snapshot_ViewCurrent_EmptyMessage" xml:space="preserve">
+  <data name="DpsStatistics_History_ViewCurrent_EmptyMessage" xml:space="preserve">
     <value>사용 가능한 전투 스냅샷 데이터가 없습니다.</value>
   </data>
-  <data name="DpsStatistics_Snapshot_Label" xml:space="preserve">
+  <data name="DpsStatistics_History_Label" xml:space="preserve">
     <value>[스냅샷]</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">

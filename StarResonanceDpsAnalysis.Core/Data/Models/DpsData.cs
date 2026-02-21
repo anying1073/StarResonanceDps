@@ -132,7 +132,7 @@ public class DpsData
         // Add to mutable list for internal processing
         BattleLogs.Add(log);
 
-        // Update immutable snapshot atomically
+        // Update immutable History atomically
         ImmutableList<BattleLog> current, updated;
         do
         {
@@ -151,7 +151,7 @@ public class DpsData
         // Add to mutable list
         BattleLogs.AddRange(logsArray);
 
-        // Update immutable snapshot atomically
+        // Update immutable History atomically
         ImmutableList<BattleLog> current, updated;
         do
         {

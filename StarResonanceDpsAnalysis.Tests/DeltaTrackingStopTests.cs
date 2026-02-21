@@ -90,7 +90,7 @@ public class DeltaTrackingStopTests
         
         // Assert
         // After reset, delta should be 0 initially, then recalculate
-        // Since reset clears the snapshot, first update after reset will initialize
+        // Since reset clears the History, first update after reset will initialize
         Assert.Equal(0, stats.AttackDamage.DeltaValuePerSecond); // First update initializes
         
         // Add more damage and update again
