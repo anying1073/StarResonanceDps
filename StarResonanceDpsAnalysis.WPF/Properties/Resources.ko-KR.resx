@@ -187,7 +187,7 @@
     <value>사용 가능한 전투 스냅샷 데이터가 없습니다.</value>
   </data>
   <data name="DpsStatistics_History_Label" xml:space="preserve">
-    <value>[스냅샷]</value>
+    <value>스냅샷</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">
     <value>팀:</value>

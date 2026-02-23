@@ -17,13 +17,13 @@ public partial class DataStatisticsViewModel : BaseViewModel
     [ObservableProperty] private long _critValue;
     [ObservableProperty] private long _luckyValue;
 
-    public double LuckyRate => Hits > 0 ? (double)LuckyCount / Hits : double.NaN;
+    public double LuckyRate => Hits > 0 ? (double)LuckyCount / Hits : 0;
 
-    public double CritRate => Hits > 0 ? (double)CritCount / Hits : double.NaN;
+    public double CritRate => Hits > 0 ? (double)CritCount / Hits : 0;
 
     public int NormalCount => Hits - CritCount;
     
-    public double NormalRate => Hits > 0 ? (double)NormalCount / Hits : double.NaN;
+    public double NormalRate => Hits > 0 ? (double)NormalCount / Hits : 0;
 
     partial void OnCritCountChanged(int value)
     {

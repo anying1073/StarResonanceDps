@@ -187,7 +187,7 @@
     <value>No battle History data available.</value>
   </data>
   <data name="DpsStatistics_History_Label" xml:space="preserve">
-    <value>[History]</value>
+    <value>History</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">
     <value>Team:</value>
@@ -280,7 +280,7 @@
     <value>[Clear data after combat] resets only the current data, not the total.</value>
   </data>
   <data name="Settings_NetworkAdapter_Label" xml:space="preserve">
-    <value>Capture Adapter</value>
+    <value>Network Adapter</value>
   </data>
   <data name="Settings_Combat_ClearAfterBattle" xml:space="preserve">
     <value>Clear data after combat</value>
@@ -1352,6 +1352,6 @@ Would you like to restart the application as administrator?</value>
     <value>Standard User</value>
   </data>
   <data name="Settings_Language_Japanese" xml:space="preserve">
-    <value />
+    <value>日本語</value>
   </data>
 </root>

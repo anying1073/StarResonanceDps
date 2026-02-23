@@ -187,7 +187,7 @@
     <value>当前没有可用的战斗快照数据。</value>
   </data>
   <data name="DpsStatistics_History_Label" xml:space="preserve">
-    <value>[快照]</value>
+    <value>快照</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">
     <value>队伍:</value>

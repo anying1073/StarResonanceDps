@@ -23,7 +23,7 @@ public sealed class HistoryOrRankConverter : IMultiValueConverter
         {
             return LocalizationManager.Instance.GetString(
                 ResourcesKeys.DpsStatistics_History_Label,
-                culture,
+                null,
                 "History");
         }
 

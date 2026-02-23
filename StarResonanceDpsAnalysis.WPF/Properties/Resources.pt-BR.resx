@@ -187,7 +187,7 @@
     <value>Não há dados de instantâneo de batalha disponíveis.</value>
   </data>
   <data name="DpsStatistics_History_Label" xml:space="preserve">
-    <value>[Instantâneo]</value>
+    <value>Instantâneo</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">
     <value>Equipe:</value>

@@ -48,7 +48,7 @@ public sealed class TakenDamageCalculator : IStatisticsCalculator
 
         var values = stats.TakenDamage;
         values.Total += log.Value;
-        values.ValuePerSecond = ticks > 0 ? (double)values.Total * TimeSpan.TicksPerSecond / ticks : double.NaN;
+        values.ValuePerSecond = ticks > 0 ? (double)values.Total * TimeSpan.TicksPerSecond / ticks : 0;
 
         // Update skill breakdown
         var skill = stats.GetOrCreateTakenSkill(log.SkillID);
