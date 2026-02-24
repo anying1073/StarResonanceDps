@@ -340,7 +340,7 @@
     <value>DPS表示方式</value>
   </data>
   <data name="Settings_Display_DpsMode_Tooltip" xml:space="preserve">
-    <value>DPSの算出方法：総ダメージ÷時間、または全体平均DPS。</value>
+    <value>DPSの算出方法：総ダメージ÷時間、または全体平均DPS</value>
   </data>
   <data name="Settings_Display_DpsMode_On" xml:space="preserve">
     <value>全体平均DPS</value>
@@ -355,7 +355,7 @@
     <value>時系列データのサンプル数</value>
   </data>
   <data name="Settings_Display_TimeSeriesCapacity_Tooltip" xml:space="preserve">
-    <value>DPS/HPS/DTPSの推移グラフに保存する最大データ点数です。増やすほど履歴は長くなりますがメモリを使用します（範囲：50～1000）。</value>
+    <value>DPS/HPS/DTPSの推移グラフに保存する最大サンプル数です。値を大きくすると保持できる履歴が長くなりますが、メモリ使用量も増えます（範囲：50～1000）</value>
   </data>
   <data name="Settings_Common_Samples" xml:space="preserve">
     <value>サンプル</value>
@@ -439,7 +439,7 @@
     <value>ちょ、DPS見ないで！</value>
   </data>
   <data name="MainView_Plugin_DpsTool_Description" xml:space="preserve">
-    <value>DPS統計とスキル内訳ツールを提供します</value>
+    <value>DPS統計やスキル内訳などの機能を搭載しています</value>
   </data>
   <data name="MainView_Plugin_Label_Author" xml:space="preserve">
     <value>作者：</value>
@@ -553,7 +553,7 @@
     <value>スキル詳細</value>
   </data>
   <data name="SkillBreakdown_Header_Title" xml:space="preserve">
-    <value>スキル内訳</value>
+    <value>スキル詳細</value>
   </data>
   <data name="SkillBreakdown_Card_RealtimeChart" xml:space="preserve">
     <value>リアルタイムDPS/HPS/DTPSグラフ</value>
@@ -562,13 +562,13 @@
     <value>ここに折れ線グラフが表示されます</value>
   </data>
   <data name="SkillBreakdown_Card_ShareChart" xml:space="preserve">
-    <value>スキル貢献度グラフ</value>
+    <value>スキル割合グラフ</value>
   </data>
   <data name="SkillBreakdown_Placeholder_PieChart" xml:space="preserve">
     <value>ここに円グラフが表示されます</value>
   </data>
   <data name="SkillBreakdown_Card_DamageDistribution" xml:space="preserve">
-    <value>ダメージ分布</value>
+    <value>ダメージ内訳</value>
   </data>
   <data name="SkillBreakdown_Placeholder_BarChart" xml:space="preserve">
     <value>ここに棒グラフが表示されます</value>
@@ -655,7 +655,7 @@
     <value>個人トレーニングモードを開く</value>
   </data>
   <data name="SkillBreakdown_Section_DamageDistribution" xml:space="preserve">
-    <value>ダメージ分布</value>
+    <value>ダメージ内訳</value>
   </data>
   <data name="StatisticType_Damage" xml:space="preserve">
     <value>ダメージ</value>
@@ -756,7 +756,7 @@
     <value>DPS更新方式</value>
   </data>
   <data name="Settings_Combat_DpsUpdateMode_Tooltip" xml:space="preserve">
-    <value>リアルタイム方式：イベントで更新
+    <value>リアルタイム方式：イベント発生時に更新
 
 タイマー方式：一定間隔で更新
 （CPU負荷が低く、更新間隔を設定できます）</value>
@@ -771,8 +771,8 @@
     <value>DPS更新間隔</value>
   </data>
   <data name="Settings_Combat_DpsUpdateInterval_Tooltip" xml:space="preserve">
-    <value>タイマー方式でのみ有効です
-推奨：500～2000ミリ秒</value>
+    <value>タイマー方式でのみ有効
+推奨値：500～2000ミリ秒</value>
   </data>
   <data name="Settings_Common_Milliseconds" xml:space="preserve">
     <value>ミリ秒</value>
@@ -784,7 +784,7 @@
     <value>トレーニングモード</value>
   </data>
   <data name="MainView_Plugin_Training_Description" xml:space="preserve">
-    <value>トレーニングモードを提供し、スキルのダメージ分布の分析や、各クラスのランキング機能を備えています</value>
+    <value>トレーニングモードを搭載し、スキルダメージ内訳の分析や各クラスのランキング表示に対応しています</value>
   </data>
   <data name="Settings_Shortcut_ToggleDps" xml:space="preserve">
     <value>DPSウィンドウを切り替え</value>
@@ -830,7 +830,7 @@
     <value>総ヒット数</value>
   </data>
   <data name="SkillBreakdown_Section_DamageSkillsAnalysis" xml:space="preserve">
-    <value>ダメージスキル分析</value>
+    <value>スキル別ダメージ分析</value>
   </data>
   <data name="SkillBreakdown_Chart_RealTimeDps" xml:space="preserve">
     <value>リアルタイムDPS</value>
@@ -839,10 +839,10 @@
     <value>ズームをリセット</value>
   </data>
   <data name="SkillBreakdown_Chart_SkillDamageDistribution" xml:space="preserve">
-    <value>スキル別ダメージ分布</value>
+    <value>スキル別ダメージ内訳</value>
   </data>
   <data name="SkillBreakdown_Chart_HitTypeDistribution" xml:space="preserve">
-    <value>ヒット種別分布</value>
+    <value>ヒット種別内訳</value>
   </data>
   <data name="SkillBreakdown_Label_TotalHealing" xml:space="preserve">
     <value>総回復量</value>
@@ -860,10 +860,10 @@
     <value>リアルタイムHPS</value>
   </data>
   <data name="SkillBreakdown_Chart_HealingDistribution" xml:space="preserve">
-    <value>回復分布</value>
+    <value>回復内訳</value>
   </data>
   <data name="SkillBreakdown_Chart_HealTypeDistribution" xml:space="preserve">
-    <value>回復種別分布</value>
+    <value>回復種別内訳</value>
   </data>
   <data name="SkillBreakdown_Label_TotalDamageTaken" xml:space="preserve">
     <value>総被ダメージ</value>
@@ -881,7 +881,7 @@
     <value>リアルタイムDTPS</value>
   </data>
   <data name="SkillBreakdown_Chart_DamageSourcesDistribution" xml:space="preserve">
-    <value>被ダメージ要因分布</value>
+    <value>被ダメージ要因内訳</value>
   </data>
   <data name="SkillBreakdown_Chart_DpsSeriesXAxis" xml:space="preserve">
     <value>時間（秒）</value>
@@ -1218,9 +1218,9 @@
     <value>キャラクターUIDの設定が必要です</value>
   </data>
   <data name="Dialog_UidRequired_Message" xml:space="preserve">
-    <value>個人トレーニングモードを使用するには、先に設定でキャラクターUIDを登録してください。
+    <value>個人トレーニングモードを使用するには、設定画面でキャラクターUIDを登録してください。
 
-UIDの確認方法：ゲームに入ったら、画面左下に表示されるプレイヤー番号がUIDです。</value>
+UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤー番号がUIDです。</value>
   </data>
   <data name="Common_Dash" xml:space="preserve">
     <value>-</value>
