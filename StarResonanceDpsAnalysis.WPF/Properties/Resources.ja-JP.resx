@@ -127,7 +127,7 @@
     <value>総ダメージを表示</value>
   </data>
   <data name="Menu_Personal_Training_Mode" xml:space="preserve">
-    <value>ソロ/トレーニングモード</value>
+    <value>個人トレーニングモード</value>
   </data>
   <data name="Menu_SkillDiary" xml:space="preserve">
     <value>スキルログ</value>
@@ -247,13 +247,13 @@
     <value>基本設定</value>
   </data>
   <data name="Settings_Section_Basic_Sub" xml:space="preserve">
-    <value>自動検出に失敗した場合は手動で調整してください</value>
+    <value>自動検出できない場合は、手動で設定してください</value>
   </data>
   <data name="Settings_Section_Shortcut_Title" xml:space="preserve">
     <value>ショートカット</value>
   </data>
   <data name="Settings_Section_Shortcut_Sub" xml:space="preserve">
-    <value>選択したショートカットを消すには［Delete］を押してください</value>
+    <value>選択中のショートカットは [Delete] キーで削除できます</value>
   </data>
   <data name="Settings_Shortcut_MouseThrough" xml:space="preserve">
     <value>マウス透過</value>
@@ -277,7 +277,7 @@
     <value>戦闘設定</value>
   </data>
   <data name="Settings_Section_Combat_Sub" xml:space="preserve">
-    <value>戦闘後は画面のみをクリア、履歴は残ります</value>
+    <value>戦闘後は画面のみをクリアし、履歴は保持します</value>
   </data>
   <data name="Settings_NetworkAdapter_Label" xml:space="preserve">
     <value>ネットワークアダプター</value>
@@ -289,7 +289,7 @@
     <value>秒</value>
   </data>
   <data name="Settings_Combat_ClearAfterTeleport" xml:space="preserve">
-    <value>マップ切替時にリセット</value>
+    <value>マップ切り替え時にリセット</value>
   </data>
   <data name="Settings_Switch_On" xml:space="preserve">
     <value>オン</value>
@@ -352,7 +352,7 @@
     <value>オン＝総ダメージ÷時間、オフ＝全体平均DPS（ValuePerSecond）</value>
   </data>
   <data name="Settings_Display_TimeSeriesCapacity" xml:space="preserve">
-    <value>時系列サンプル数</value>
+    <value>時系列データのサンプル数</value>
   </data>
   <data name="Settings_Display_TimeSeriesCapacity_Tooltip" xml:space="preserve">
     <value>DPS/HPS/DTPSの推移グラフに保存する最大データ点数です。増やすほど履歴は長くなりますがメモリを使用します（範囲：50～1000）。</value>
@@ -379,7 +379,7 @@
     <value>表示設定</value>
   </data>
   <data name="Settings_Section_Language_Description" xml:space="preserve">
-    <value>インターフェース表示に関する設定</value>
+    <value>インターフェースに関する設定</value>
   </data>
   <data name="Settings_Language_Auto" xml:space="preserve">
     <value>システムと同じ</value>
@@ -394,10 +394,10 @@
     <value>Português (Brasil)</value>
   </data>
   <data name="NumberDisplay_Wan" xml:space="preserve">
-    <value>桁数日本語表記 (万億兆)</value>
+    <value>日本語表記の桁略記 (万億兆)</value>
   </data>
   <data name="NumberDisplay_KMB" xml:space="preserve">
-    <value>桁数英語表記 (KMBT)</value>
+    <value>英語表記の桁略記 (KMBT)</value>
   </data>
   <data name="NumberSuffix_K" xml:space="preserve">
     <value>K</value>
@@ -726,10 +726,10 @@
     <value>テーマ設定</value>
   </data>
   <data name="Settings_Section_Theme_Description" xml:space="preserve">
-    <value>ツールボックスの見た目をカスタマイズする設定</value>
+    <value>ツールボックスの外観をカスタマイズ</value>
   </data>
   <data name="Settings_Theme_WindowColor" xml:space="preserve">
-    <value>ウィンドウカラー</value>
+    <value>ウィンドウの色</value>
   </data>
   <data name="Settings_Theme_BackgroundImage" xml:space="preserve">
     <value>背景画像</value>
@@ -796,7 +796,7 @@
     <value>キャラクター設定</value>
   </data>
   <data name="Settings_Section_Character_Sub" xml:space="preserve">
-    <value>ソロ/トレーニングモード用にキャラクターUIDの設定</value>
+    <value>個人トレーニングモードで使用するキャラクターUIDの設定</value>
   </data>
   <data name="Settings_Character_Uid" xml:space="preserve">
     <value>キャラクターUID</value>
@@ -806,7 +806,7 @@
 確認方法：戦闘後、統計ウィンドウに現在のキャラクターが自動表示されます</value>
   </data>
   <data name="Settings_Combat_MaxHistoryCount" xml:space="preserve">
-    <value>履歴保存上限</value>
+    <value>履歴の保存上限</value>
   </data>
   <data name="Settings_Combat_MaxHistoryCount_Tooltip" xml:space="preserve">
     <value>保存する戦闘履歴の最大件数（5～50）</value>
@@ -890,10 +890,10 @@
     <value>プレイヤー情報の表示</value>
   </data>
   <data name="Settings_PlayerInfoCustomization_Description" xml:space="preserve">
-    <value>プレイヤー情報の表示形式をカスタマイズする設定</value>
+    <value>プレイヤー情報の表示形式をカスタマイズ</value>
   </data>
   <data name="Settings_PlayerInfo_UseCustomFormat" xml:space="preserve">
-    <value>カスタム形式を有効化</value>
+    <value>カスタム形式を有効にする</value>
   </data>
   <data name="Settings_PlayerInfo_QuickPresets" xml:space="preserve">
     <value>クイックプリセット</value>
@@ -911,13 +911,13 @@
     <value>名前のみ</value>
   </data>
   <data name="Settings_PlayerInfo_AddFields" xml:space="preserve">
-    <value>情報フィールドを追加</value>
+    <value>表示項目を追加</value>
   </data>
   <data name="Settings_PlayerInfo_AddSeparators" xml:space="preserve">
     <value>区切り文字を追加</value>
   </data>
   <data name="Settings_PlayerInfo_FormatString" xml:space="preserve">
-    <value>カスタム形式文字列</value>
+    <value>カスタム形式の文字列</value>
   </data>
   <data name="Settings_PlayerInfo_FormatString_Tooltip" xml:space="preserve">
     <value>上級者向け：{Name}、{Spec}、{PowerLevel} などのプレースホルダーを使って形式文字列を直接編集できます。</value>
@@ -1020,7 +1020,7 @@
     <value>クラスカラー設定</value>
   </data>
   <data name="Settings_Section_ClassColors_Description" xml:space="preserve">
-    <value>各クラスの色をカスタマイズする設定</value>
+    <value>各クラスの色をカスタマイズ</value>
   </data>
   <data name="Settings_ClassColors_Reset_Tooltip" xml:space="preserve">
     <value>色を既定に戻す</value>
@@ -1035,10 +1035,10 @@
     <value>スタレゾツールボックス</value>
   </data>
   <data name="About_Intro_Primary" xml:space="preserve">
-    <value>『ブループロトコル：スターレゾナンス』プレイヤー向けの戦闘データ集計ツールです。</value>
+    <value>『ブループロトコル：スターレゾナンス』のプレイヤー向けの戦闘データ集計ツールです。</value>
   </data>
   <data name="About_Intro_Details" xml:space="preserve">
-    <value>本ツールはゲームクライアントを改変せず、ゲームの利用規約（サービス条款）にも抵触しません。戦闘データの理解をサポートし、不要な手間を減らして、より快適なプレイ体験を目指しています。ご利用の際は、取得したデータを差別などゲームコミュニティの環境を損なう目的で使用しないようお願いします。</value>
+    <value>本ツールはゲームクライアントを改変せず、ゲームの利用規約にも違反しません。戦闘データの分析を支援し、プレイヤーの負担を減らすことで、より快適なプレイ体験を目指しています。ご利用にあたっては、取得したデータを差別や誹謗中傷など、ゲームコミュニティの健全な環境を損なう目的で使用しないようお願いいたします。</value>
   </data>
   <data name="About_Version_Label" xml:space="preserve">
     <value>現在のバージョン：</value>
@@ -1053,13 +1053,13 @@
     <value>https://github.com/anying1073/StarResonanceDps</value>
   </data>
   <data name="About_OpenSource_Suffix" xml:space="preserve">
-    <value>でオープンソースとして公開しています。使用中に問題があれば、Issue でご報告ください。</value>
+    <value>でオープンソースとして公開しています。ご利用中に不具合や問題が発生した場合は、Issueでご報告ください。</value>
   </data>
   <data name="About_Contribution" xml:space="preserve">
-    <value>開発に参加したい場合は、Fork のうえ Pull Request をお送りください。</value>
+    <value>開発に参加したい場合は、Fork のうえ Pull Requestを作成してください。</value>
   </data>
   <data name="About_Community_Invite" xml:space="preserve">
-    <value>GitHub にアクセスできない場合やソフトの入手を希望する場合は、QQグループに参加してください：</value>
+    <value>中国語圏の開発コミュニティ（QQグループ）に興味のある方は、ぜひご参加ください:</value>
   </data>
   <data name="About_Community_GroupOne" xml:space="preserve">
     <value>678150498 (グループ1)</value>
@@ -1074,7 +1074,7 @@
     <value>https://github.com/dmlgzs/StarResonanceDamageCounter</value>
   </data>
   <data name="About_Thanks_Suffix" xml:space="preserve">
-    <value>本プロジェクトの開発にあたり、多大なご協力ご支援をいただきました。</value>
+    <value>本プロジェクトの開発にあたり、多大なるご協力・ご支援を賜りました。</value>
   </data>
   <data name="About_Copyright" xml:space="preserve">
     <value>Copyright (C) 2025 anying1073/StarResonanceDps Team.</value>
