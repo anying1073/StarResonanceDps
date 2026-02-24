@@ -239,7 +239,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <ctrl:Header Title="{lex:Loc Key={x:Static loc:ResourcesKeys.Window_Settings_Title}}" Grid.Row="0" />
+            <ctrl:Header Title="{lex:Loc Key={x:Static loc:ResourcesKeys.Window_Settings_Title}}" Grid.Row="0" Height="30" VerticalAlignment="Top" />
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
