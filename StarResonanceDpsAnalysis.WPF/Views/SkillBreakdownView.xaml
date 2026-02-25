@@ -244,6 +244,8 @@
                         CritRate="{Binding Stats.CritRate}"
                         CritRateLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_CritRate}}"
                         AverageLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_Average}}"
+                        CritLuckyCount="{Binding Stats.CritLuckyCount}"
+                        CritLuckyRate="{Binding Stats.CritLuckyRate}"
                         Average="{Binding Stats.Average}"
                         LuckyCount="{Binding Stats.LuckyCount}"
                         LuckyRate="{Binding Stats.LuckyRate}"

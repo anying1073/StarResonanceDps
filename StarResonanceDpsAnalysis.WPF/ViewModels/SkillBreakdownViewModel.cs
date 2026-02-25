@@ -182,6 +182,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
             HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
             HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
             HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
+            HitTypeCriticalLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_CriticalLucky),
             StatisticType = statisticType,
         });
     }
@@ -296,6 +297,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 
         var crit = (double)stat.CritCount / stat.Hits * 100;
         var lucky = (double)stat.LuckyCount / stat.Hits * 100;
+        var critLucky = (double) stat.CritLuckyCount / stat.Hits * 100;
         var normal = 100 - crit - lucky;
 
         target.SetHitTypeDistribution(normal, crit, lucky);

@@ -21,11 +21,13 @@ public static class StatisticsToViewModelConverter
             Total = stats.Total,
             Hits = stats.HitCount,
             CritCount = stats.CritCount,
-            LuckyCount = stats.LuckyCount + stats.CritAndLuckyCount,
+            LuckyCount = stats.LuckyCount,
+            CritLuckyCount = stats.CritAndLuckyCount,
             Average = durationSeconds > 0 ? stats.Total / durationSeconds : double.NaN,
             NormalValue = stats.NormalValue,
             CritValue = stats.CritValue,
-            LuckyValue = stats.LuckyValue + stats.CritAndLuckyValue
+            LuckyValue = stats.LuckyValue,
+            CritLuckyValue = stats.CritAndLuckyValue,
         };
     }
 
