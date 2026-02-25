@@ -12,10 +12,12 @@ public partial class DataStatisticsViewModel : BaseViewModel
     [ObservableProperty] private int _critCount;
     [ObservableProperty] private int _hits;
     [ObservableProperty] private int _luckyCount;
+    [ObservableProperty] private int _critLuckyCount;
     [ObservableProperty] private long _total;
     [ObservableProperty] private long _normalValue;
     [ObservableProperty] private long _critValue;
     [ObservableProperty] private long _luckyValue;
+    [ObservableProperty] private long _critLuckyValue;
 
     public double LuckyRate => Hits > 0 ? (double)LuckyCount / Hits : 0;
 

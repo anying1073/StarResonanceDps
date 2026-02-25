@@ -48,6 +48,33 @@ public class ChartPanel : Control
         set => SetValue(LuckyPercentageProperty, value);
     }
 
+    public static readonly DependencyProperty CritLuckyCountProperty = DependencyProperty.Register(
+        nameof(CritLuckyCount), typeof(long), typeof(ChartPanel), new PropertyMetadata(default(long)));
+
+    public long CritLuckyCount
+    {
+        get => (long)GetValue(CritLuckyCountProperty);
+        set => SetValue(CritLuckyCountProperty, value);
+    }
+
+    public static readonly DependencyProperty CritLuckyRateProperty = DependencyProperty.Register(
+        nameof(CritLuckyRate), typeof(double), typeof(ChartPanel), new PropertyMetadata(default(double)));
+
+    public double CritLuckyRate
+    {
+        get => (double)GetValue(CritLuckyRateProperty);
+        set => SetValue(CritLuckyRateProperty, value);
+    }
+
+    public static readonly DependencyProperty CritLuckyPercentageProperty = DependencyProperty.Register(
+        nameof(CritLuckyPercentage), typeof(double), typeof(ChartPanel), new PropertyMetadata(default(double)));
+
+    public double CritLuckyPercentage
+    {
+        get => (double)GetValue(CritLuckyPercentageProperty);
+        set => SetValue(CritLuckyPercentageProperty, value);
+    }
+
     public static readonly DependencyProperty CritCountProperty = DependencyProperty.Register(
         nameof(CritCount), typeof(long), typeof(ChartPanel), new PropertyMetadata(default(long)));
 
@@ -64,15 +91,6 @@ public class ChartPanel : Control
     {
         get => (double)GetValue(CritRateProperty);
         set => SetValue(CritRateProperty, value);
-    }
-
-    public static readonly DependencyProperty CritPercentageProperty = DependencyProperty.Register(
-        nameof(CritPercentage), typeof(double), typeof(ChartPanel), new PropertyMetadata(default(double)));
-
-    public double CritPercentage
-    {
-        get => (double)GetValue(CritPercentageProperty);
-        set => SetValue(CritPercentageProperty, value);
     }
 
     public static readonly DependencyProperty NormalCountProperty = DependencyProperty.Register(

@@ -558,7 +558,17 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Lucky に類似しているローカライズされた文字列を検索します。
+        ///  Looks up a localized string similar to CritLukcy.
+        /// </summary>
+        public static string Common_HitType_CriticalLucky {
+            get {
+                return ResourceManager.GetString("Common_HitType_CriticalLucky", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///  Lucky に類似しているローカライズされた文字列を検索します。
+        ///  Looks up a localized string similar to Lucky.
         /// </summary>
         public static string Common_HitType_Lucky {
             get {
@@ -3283,7 +3293,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   crits Number に類似しているローカライズされた文字列を検索します。
+        ///   Looks up a localized string similar to CritLucky rate.
+        /// </summary>
+        public static string SkillBreakdown_Suffix_CritLucky {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Suffix_CritLucky", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///  crits Number に類似しているローカライズされた文字列を検索します。 Looks up a localized string similar to crits Number.
         /// </summary>
         public static string SkillBreakdown_Suffix_Crits {
             get {

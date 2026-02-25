@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -136,6 +136,33 @@ public class TabContentPanel : Control
     {
         get => (double)GetValue(LuckyRateProperty);
         set => SetValue(LuckyRateProperty, value);
+    }
+
+    public static readonly DependencyProperty CritLuckyCountProperty = DependencyProperty.Register(
+       nameof(CritLuckyCount), typeof(long), typeof(TabContentPanel), new PropertyMetadata(default(long)));
+
+    public long CritLuckyCount
+    {
+        get => (long)GetValue(CritLuckyCountProperty);
+        set => SetValue(CritLuckyCountProperty, value);
+    }
+
+    public static readonly DependencyProperty CritLuckyRateProperty = DependencyProperty.Register(
+        nameof(CritLuckyRate), typeof(double), typeof(TabContentPanel), new PropertyMetadata(default(double)));
+
+    public double CritLuckyRate
+    {
+        get => (double)GetValue(CritLuckyRateProperty);
+        set => SetValue(CritLuckyRateProperty, value);
+    }
+
+    public static readonly DependencyProperty CritLuckyPercentageProperty = DependencyProperty.Register(
+        nameof(CritLuckyPercentage), typeof(double), typeof(TabContentPanel), new PropertyMetadata(default(double)));
+
+    public double CritLuckyPercentage
+    {
+        get => (double)GetValue(CritLuckyPercentageProperty);
+        set => SetValue(CritLuckyPercentageProperty, value);
     }
 
     public static readonly DependencyProperty NormalCountProperty = DependencyProperty.Register(

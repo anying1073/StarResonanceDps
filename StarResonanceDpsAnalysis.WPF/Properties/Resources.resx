@@ -1345,4 +1345,10 @@ Would you like to restart the application as administrator?</value>
   <data name="About_Founder" xml:space="preserve">
     <value>Project founder</value>
   </data>
+  <data name="Common_HitType_CriticalLucky" xml:space="preserve">
+    <value>CritLukcy</value>
+  </data>
+  <data name="SkillBreakdown_Suffix_CritLucky" xml:space="preserve">
+    <value>CritLucky rate</value>
+  </data>
 </root>

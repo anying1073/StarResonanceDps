@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -23,6 +23,7 @@ public record PlotOptions
     public string? HitTypeCritical { get; set; }
     public string? HitTypeLucky { get; set; }
     public required StatisticType StatisticType { get; set; }
+    public string? HitTypeCriticalLucky { get; set; }
 }
 
 public partial class PlotViewModel : BaseViewModel
