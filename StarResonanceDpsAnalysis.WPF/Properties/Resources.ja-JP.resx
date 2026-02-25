@@ -1348,6 +1348,15 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   <data name="About_Founder" xml:space="preserve">
     <value>プロジェクト発起人</value>
   </data>
+  <data name="Menu_Select_Training_Dummy" xml:space="preserve">
+    <value>ダミーを選択</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Enemy" xml:space="preserve">
+    <value>精鋭エネミー（ダミー）</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Tank" xml:space="preserve">
+    <value>精鋭防御（ダミー）</value>
+  </data>
   <data name="DpsDetail_Popup_TotalDamage" xml:space="preserve">
     <value>総ダメージ：</value>
   </data>
@@ -1359,14 +1368,5 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="DpsDetail_Popup_Average" xml:space="preserve">
     <value>  平均：</value>
-  </data>
-  <data name="Menu_Select_Training_Dummy" xml:space="preserve">
-    <value>ダミーを選択</value>
-  </data>
-  <data name="Menu_Training_Dummy_Elite_Enemy" xml:space="preserve">
-    <value>精鋭エネミー（ダミー）</value>
-  </data>
-  <data name="Menu_Training_Dummy_Elite_Tank" xml:space="preserve">
-    <value>精鋭防御（ダミー）</value>
   </data>
 </root>

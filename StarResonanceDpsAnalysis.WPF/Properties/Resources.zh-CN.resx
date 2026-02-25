@@ -1341,4 +1341,10 @@
   <data name="DpsDetail_Popup_Average" xml:space="preserve">
     <value>  平均：</value>
   </data>
+  <data name="Common_HitType_CriticalLucky" xml:space="preserve">
+    <value>暴击幸运伤害</value>
+  </data>
+  <data name="SkillBreakdown_Suffix_CritLucky" xml:space="preserve">
+    <value>暴击幸运数</value>
+  </data>
 </root>

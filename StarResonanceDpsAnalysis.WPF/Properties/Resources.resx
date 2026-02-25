@@ -1345,6 +1345,15 @@ Would you like to restart the application as administrator?</value>
   <data name="About_Founder" xml:space="preserve">
     <value>Project founder</value>
   </data>
+  <data name="Menu_Select_Training_Dummy" xml:space="preserve">
+    <value>Select Dummy</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Enemy" xml:space="preserve">
+    <value>Elite Enemy</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Tank" xml:space="preserve">
+    <value>Elite Tank</value>
+  </data>
   <data name="DpsDetail_Popup_TotalDamage" xml:space="preserve">
     <value>Total Damage:</value>
   </data>
@@ -1357,13 +1366,10 @@ Would you like to restart the application as administrator?</value>
   <data name="DpsDetail_Popup_Average" xml:space="preserve">
     <value>  Average:</value>
   </data>
-  <data name="Menu_Select_Training_Dummy" xml:space="preserve">
-    <value>Select Dummy</value>
+  <data name="Common_HitType_CriticalLucky" xml:space="preserve">
+    <value>CritLukcy</value>
   </data>
-  <data name="Menu_Training_Dummy_Elite_Enemy" xml:space="preserve">
-    <value>Elite Enemy</value>
-  </data>
-  <data name="Menu_Training_Dummy_Elite_Tank" xml:space="preserve">
-    <value>Elite Tank</value>
+  <data name="SkillBreakdown_Suffix_CritLucky" xml:space="preserve">
+    <value>CritLucky rate</value>
   </data>
 </root>
