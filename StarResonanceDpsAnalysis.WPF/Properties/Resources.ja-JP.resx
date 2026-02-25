@@ -950,13 +950,13 @@
     <value>平均</value>
   </data>
   <data name="SkillLog_Title" xml:space="preserve">
-    <value>バトルログ</value>
+    <value>スキルログ</value>
   </data>
   <data name="SkillLog_Header_Title" xml:space="preserve">
-    <value>バトルログ</value>
+    <value>スキルログ</value>
   </data>
   <data name="SkillLog_Header_Status" xml:space="preserve">
-    <value>システムオンライン</value>
+    <value>システム稼働中</value>
   </data>
   <data name="SkillLog_Popup_TotalDamage" xml:space="preserve">
     <value>総ダメージ</value>
@@ -983,7 +983,7 @@
     <value>接続：安定</value>
   </data>
   <data name="SkillLog_Footer_Logging" xml:space="preserve">
-    <value>ログ記録：有効</value>
+    <value>ログ記録中</value>
   </data>
   <data name="SkillLog_Button_Clear" xml:space="preserve">
     <value>ログをクリア</value>
