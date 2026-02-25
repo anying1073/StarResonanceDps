@@ -938,6 +938,42 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///     Average: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DpsDetail_Popup_Average {
+            get {
+                return ResourceManager.GetString("DpsDetail_Popup_Average", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Crit に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DpsDetail_Popup_Critical {
+            get {
+                return ResourceManager.GetString("DpsDetail_Popup_Critical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Hits: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DpsDetail_Popup_HitCount {
+            get {
+                return ResourceManager.GetString("DpsDetail_Popup_HitCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Total Damage: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DpsDetail_Popup_TotalDamage {
+            get {
+                return ResourceManager.GetString("DpsDetail_Popup_TotalDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   CurrentPlayerRank に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsStatistics_CurrentPlayerRank {
@@ -1532,6 +1568,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Select Dummy に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Menu_Select_Training_Dummy {
+            get {
+                return ResourceManager.GetString("Menu_Select_Training_Dummy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Menu_Settings {
@@ -1636,6 +1681,24 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string Menu_Training {
             get {
                 return ResourceManager.GetString("Menu_Training", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Elite Enemy に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Menu_Training_Dummy_Elite_Enemy {
+            get {
+                return ResourceManager.GetString("Menu_Training_Dummy_Elite_Enemy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Elite Tank に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Menu_Training_Dummy_Elite_Tank {
+            get {
+                return ResourceManager.GetString("Menu_Training_Dummy_Elite_Tank", resourceCulture);
             }
         }
         

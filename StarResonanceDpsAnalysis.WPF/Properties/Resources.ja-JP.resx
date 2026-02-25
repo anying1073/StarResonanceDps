@@ -169,16 +169,16 @@
     <value>現在の戦闘</value>
   </data>
   <data name="Menu_History_Total" xml:space="preserve">
-    <value>すべての戦闘</value>
+    <value>エリア累積戦闘</value>
   </data>
   <data name="Menu_ExitHistoryMode" xml:space="preserve">
     <value>履歴表示モードを終了</value>
   </data>
   <data name="DpsStatistics_History_ViewFull_Title" xml:space="preserve">
-    <value>［すべての戦闘］履歴を表示</value>
+    <value>［エリア累積戦闘］履歴を表示</value>
   </data>
   <data name="DpsStatistics_History_ViewFull_EmptyMessage" xml:space="preserve">
-    <value>［すべての戦闘］履歴がありません。</value>
+    <value>［エリア累積戦闘］履歴がありません。</value>
   </data>
   <data name="DpsStatistics_History_ViewCurrent_Title" xml:space="preserve">
     <value>［現在の戦闘］履歴を表示</value>
@@ -355,7 +355,9 @@
     <value>時系列データのサンプル数</value>
   </data>
   <data name="Settings_Display_TimeSeriesCapacity_Tooltip" xml:space="preserve">
-    <value>DPS/HPS/DTPSの推移グラフに保存する最大サンプル数です。値を大きくすると保持できる履歴が長くなりますが、メモリ使用量も増えます（範囲：50～1000）</value>
+    <value>DPS/HPS/DTPSの推移グラフに保存する最大サンプル数
+（値を大きくすると保持できる履歴が長くなりますが、メモリ使用量も増えます）
+範囲：50～1000</value>
   </data>
   <data name="Settings_Common_Samples" xml:space="preserve">
     <value>サンプル</value>
@@ -741,7 +743,7 @@
     <value>変更を破棄</value>
   </data>
   <data name="Settings_CancelConfirm_Message" xml:space="preserve">
-    <value>変更をすべて破棄しますか？保存していない変更は失われます。</value>
+    <value>変更を破棄しますか？ 保存していない変更は失われます。</value>
   </data>
   <data name="MainView_Plugin_AutoRunState_Enabled" xml:space="preserve">
     <value>自動オン</value>
@@ -1345,5 +1347,26 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="About_Founder" xml:space="preserve">
     <value>プロジェクト発起人</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalDamage" xml:space="preserve">
+    <value>総ダメージ：</value>
+  </data>
+  <data name="DpsDetail_Popup_HitCount" xml:space="preserve">
+    <value>ヒット：</value>
+  </data>
+  <data name="DpsDetail_Popup_Critical" xml:space="preserve">
+    <value>  会心：</value>
+  </data>
+  <data name="DpsDetail_Popup_Average" xml:space="preserve">
+    <value>  平均：</value>
+  </data>
+  <data name="Menu_Select_Training_Dummy" xml:space="preserve">
+    <value>ダミーを選択</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Enemy" xml:space="preserve">
+    <value>精鋭エネミー（ダミー）</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Tank" xml:space="preserve">
+    <value>精鋭防御（ダミー）</value>
   </data>
 </root>

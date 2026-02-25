@@ -1309,4 +1309,16 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   <data name="About_Founder" xml:space="preserve">
     <value>프로젝트 개시자</value>
   </data>
+  <data name="DpsDetail_Popup_TotalDamage" xml:space="preserve">
+    <value>총 피해량：</value>
+  </data>
+  <data name="DpsDetail_Popup_HitCount" xml:space="preserve">
+    <value>타수：</value>
+  </data>
+  <data name="DpsDetail_Popup_Critical" xml:space="preserve">
+    <value>  치명타：</value>
+  </data>
+  <data name="DpsDetail_Popup_Average" xml:space="preserve">
+    <value>  평균：</value>
+  </data>
 </root>

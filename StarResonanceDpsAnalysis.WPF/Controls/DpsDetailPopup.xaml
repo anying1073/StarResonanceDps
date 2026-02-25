@@ -3,6 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:loc="clr-namespace:StarResonanceDpsAnalysis.WPF.Properties"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
     xmlns:converters="clr-namespace:StarResonanceDpsAnalysis.WPF.Converters"
@@ -76,7 +78,7 @@
                     FontWeight="Normal"
                     Foreground="#AAAAAA"
                     Style="{StaticResource FooterTextContent}"
-                    Text="技能详情" />
+                    Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Window_SkillBreakdown_Title}}" />
             </StackPanel>
 
             <!--  技能列表  -->
@@ -97,7 +99,7 @@
                                 Margin="0,2,0,0"
                                 FontSize="12"
                                 Style="{StaticResource FooterTextContent}">
-                                <Run Foreground="#CCCCCC" Text="总伤害：" />
+                                <Run Foreground="#CCCCCC" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.DpsDetail_Popup_TotalDamage}}" />
                                 <Run Foreground="White" FontWeight="SemiBold">
                                     <Run.Text>
                                         <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
@@ -114,12 +116,12 @@
                                 Margin="0,1,0,0"
                                 FontSize="11"
                                 Style="{StaticResource FooterTextContent}">
-                                <Run Foreground="#AAAAAA" Text="命中：" />
+                                <Run Foreground="#AAAAAA" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.DpsDetail_Popup_HitCount}}" />
                                 <Run Foreground="#DDDDDD" Text="{Binding HitCount}" />
-                                <Run Foreground="#AAAAAA" Text="  暴击：" />
+                                <Run Foreground="#AAAAAA" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.DpsDetail_Popup_Critical}}" />
                                 <Run Foreground="#DDDDDD" Text="{Binding CritCount}" />
                                 <Run Foreground="#DDDDDD" Text="{Binding CritRate, StringFormat={}({0:P1})}" />
-                                <Run Foreground="#AAAAAA" Text="  平均：" />
+                                <Run Foreground="#AAAAAA" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.DpsDetail_Popup_Average}}" />
                                 <Run Foreground="#DDDDDD" Text="{Binding Average, StringFormat={}{0:N1}}" />
                             </TextBlock>
                         </StackPanel>

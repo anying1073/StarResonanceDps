@@ -310,19 +310,19 @@
                                     <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" BasedOn="{StaticResource ModernMenuSeparator}" TargetType="Separator" />
                                 </ContextMenu.Resources>
                                 <MenuItem
-                                    Header="打桩模式"
+                                    Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Training}}"
                                     IsCheckable="True"
                                     IsChecked="{Binding EnableTrainingMode}" />
 
                                 <!-- 木桩选择菜单 -->
-                                <MenuItem Header="木桩选择">
+                                <MenuItem Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Select_Training_Dummy}}">
                                     <MenuItem
-                                        Header="中间木桩"
+                                        Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Training_Dummy_Elite_Enemy}}"
                                         IsCheckable="True"
                                         IsChecked="{Binding SelectedDummyTarget, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Center}"
                                         StaysOpenOnClick="True" />
                                     <MenuItem
-                                        Header="T木桩"
+                                        Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Training_Dummy_Elite_Tank}}"
                                         IsCheckable="True"
                                         IsChecked="{Binding SelectedDummyTarget, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=TDummy}"
                                         StaysOpenOnClick="True" />
@@ -330,11 +330,11 @@
 
                                 <MenuItem
                                     Command="{Binding ClearCommand}"
-                                    Header="清空" />
+                                    Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_PlayerInfo_Clear}}" />
                                 <Separator />
                                 <MenuItem
                                     Command="{Binding CloseWindowCommand}"
-                                    Header="关闭" />
+                                    Header="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillLog_Button_Close}}" />
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>

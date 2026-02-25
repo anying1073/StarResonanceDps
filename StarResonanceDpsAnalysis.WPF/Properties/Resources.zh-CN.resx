@@ -1320,4 +1320,25 @@
   <data name="About_Founder" xml:space="preserve">
     <value>项目发起者</value>
   </data>
+  <data name="Menu_Select_Training_Dummy" xml:space="preserve">
+    <value>木桩选择</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Enemy" xml:space="preserve">
+    <value>中间木桩</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Tank" xml:space="preserve">
+    <value>T木桩</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalDamage" xml:space="preserve">
+    <value>总伤害：</value>
+  </data>
+  <data name="DpsDetail_Popup_HitCount" xml:space="preserve">
+    <value>命中：</value>
+  </data>
+  <data name="DpsDetail_Popup_Critical" xml:space="preserve">
+    <value>  暴击：</value>
+  </data>
+  <data name="DpsDetail_Popup_Average" xml:space="preserve">
+    <value>  平均：</value>
+  </data>
 </root>

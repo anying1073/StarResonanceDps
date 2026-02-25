@@ -1286,4 +1286,16 @@ Como obter o UID: no jogo, o número do jogador no canto inferior esquerdo é o 
   <data name="About_Founder" xml:space="preserve">
     <value>fundador do projeto</value>
   </data>
+  <data name="DpsDetail_Popup_TotalDamage" xml:space="preserve">
+    <value>Dano total:</value>
+  </data>
+  <data name="DpsDetail_Popup_HitCount" xml:space="preserve">
+    <value>Acertos:</value>
+  </data>
+  <data name="DpsDetail_Popup_Critical" xml:space="preserve">
+    <value>  Crítico:</value>
+  </data>
+  <data name="DpsDetail_Popup_Average" xml:space="preserve">
+    <value>  Média:</value>
+  </data>
 </root>
