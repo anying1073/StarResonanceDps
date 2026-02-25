@@ -14,18 +14,12 @@ namespace StarResonanceDpsAnalysis.Core.Data;
 /// </summary>
 public static class DataStorage
 {
-    private static readonly StatisticsEngine _engine = new();
+    //private static readonly StatisticsEngine _engine = new();
+    private static readonly StatisticsAdapter Adapter = new();
     private static readonly object SectionTimeoutLock = new();
     private static Timer? _sectionTimeoutTimer;
     private static DateTime _lastLogWallClockAtUtc = DateTime.MinValue;
     private static bool _isSectionTimedOut;
-
-    static DataStorage()
-    {
-        _engine.RegisterCalculator(new AttackDamageCalculator());
-        _engine.RegisterCalculator(new HealingCalculator());
-        _engine.RegisterCalculator(new TakenDamageCalculator());
-    }
 
     /// <summary>
     /// 当前玩家信息
@@ -58,7 +52,7 @@ public static class DataStorage
     public static ReadOnlyDictionary<long, DpsData> ReadOnlyFullDpsDatas => FullDpsDatas.AsReadOnly();
 
     public static IReadOnlyDictionary<long, PlayerStatistics> ReadOnlyFullPlayerStatistics =>
-        _engine.GetFullStatistics();
+        Adapter.GetStatistics(true);
 
     /// <summary>
     /// 只读全程玩家DPS列表; 注意! 频繁读取该属性可能会导致性能问题!
@@ -76,7 +70,7 @@ public static class DataStorage
     public static ReadOnlyDictionary<long, DpsData> ReadOnlySectionedDpsDatas => SectionedDpsDatas.AsReadOnly();
 
     public static IReadOnlyDictionary<long, PlayerStatistics> ReadOnlySectionedPlayerStatistics =>
-        _engine.GetSectionStatistics();
+        Adapter.GetStatistics(false);
 
     /// <summary>
     /// 阶段性只读玩家DPS列表; 注意! 频繁读取该属性可能会导致性能问题!
@@ -415,7 +409,7 @@ public static class DataStorage
             }
         }
 
-        _engine.ProcessBattleLog(log);
+        Adapter.ProcessLog(log);
         // 最后一个日志赋值
         UpdateLastLogState(log);
 
@@ -456,13 +450,8 @@ public static class DataStorage
     private static void EnsureSectionMonitorStarted()
     {
         if (_sectionTimeoutTimer != null) return;
-        _sectionTimeoutTimer = new Timer(static _ => SectionTimeoutTick(), null, TimeSpan.FromSeconds(1),
+        _sectionTimeoutTimer = new Timer(static _ => CheckSectionTimeout(), null, TimeSpan.FromSeconds(1),
             TimeSpan.FromSeconds(1));
-    }
-
-    private static void SectionTimeoutTick()
-    {
-        CheckSectionTimeout();
     }
 
     private static void CheckSectionTimeout()
@@ -481,7 +470,7 @@ public static class DataStorage
 
         if (DateTime.UtcNow - last <= SectionTimeout) return;
 
-        if (_engine.GetSectionStatisticsCount() == 0)
+        if (Adapter.GetStatisticsCount(false) == 0)
         {
             lock (SectionTimeoutLock)
             {
@@ -604,7 +593,7 @@ public static class DataStorage
         ForceNewBattleSection = true;
         SectionedDpsDatas.Clear();
         FullDpsDatas.Clear();
-        _engine.ClearAll();
+        Adapter.ClearAll();
 
         try
         {
@@ -630,7 +619,7 @@ public static class DataStorage
     private static void PrivateClearDpsData()
     {
         SectionedDpsDatas.Clear();
-        _engine.ResetSection();
+        Adapter.ResetSection();
 
         try
         {
@@ -771,7 +760,7 @@ public static class DataStorage
         if (prev == combatState) return;
         Debug.WriteLine($"PlayerCombatState:[{uid}] {prev} -> {combatState}");
         PlayerInfoDatas[uid].CombatState = combatState;
-        if (CurrentPlayerInfo.UID != 0) _engine.SetCombatState(combatState);
+        if (CurrentPlayerInfo.UID != 0) Adapter.SetCombatState(combatState);
         TriggerPlayerInfoUpdated(uid);
     }
 
@@ -918,27 +907,21 @@ public static class DataStorage
 
     public static IReadOnlyDictionary<long, PlayerStatistics> GetStatistics(bool fullSession)
     {
-        return fullSession ? _engine.GetFullStatistics() : _engine.GetSectionStatistics();
+        return Adapter.GetStatistics(fullSession);
     }
 
     public static IReadOnlyList<BattleLog> GetBattleLogs(bool fullSession)
     {
-        return fullSession ? _engine.GetFullBattleLogs() : _engine.GetSectionBattleLogs();
+        return Adapter.GetBattleLogs(fullSession);
     }
 
     public static IReadOnlyList<BattleLog> GetBattleLogsForPlayer(long uid, bool fullSession)
     {
-        var allLogs = fullSession
-            ? _engine.GetFullBattleLogs()
-            : _engine.GetSectionBattleLogs();
-
-        return allLogs
-            .Where(log => log.AttackerUuid == uid || log.TargetUuid == uid)
-            .ToList();
+        return Adapter.GetBattleLogsForPlayer(uid, fullSession);
     }
 
     public static int GetStatisticsCount(bool fullSession)
     {
-        return fullSession ? _engine.GetFullStatisticsCount() : _engine.GetSectionStatisticsCount();
+        return Adapter.GetStatisticsCount(fullSession);
     }
 }

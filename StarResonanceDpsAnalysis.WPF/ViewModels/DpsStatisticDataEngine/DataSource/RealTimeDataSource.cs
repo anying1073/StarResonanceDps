@@ -141,9 +141,9 @@ public abstract class RealTimeDataSource : IDpsDataSource, IDisposable
 
     protected void OnNewSection()
     {
+        if (!Enable) return;
         lock (SyncRoot)
         {
-            if (!Enable) return;
             Reset();
         }
     }
@@ -151,5 +151,7 @@ public abstract class RealTimeDataSource : IDpsDataSource, IDisposable
     public void Dispose()
     {
         DataStorage.NewSectionCreated -= OnNewSection;
+
+        GC.SuppressFinalize(this);
     }
 }

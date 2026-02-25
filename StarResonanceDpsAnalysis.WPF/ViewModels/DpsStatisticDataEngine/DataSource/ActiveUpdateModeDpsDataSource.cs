@@ -19,6 +19,9 @@ public sealed partial class ActiveUpdateModeDpsDataSource : RealTimeDataSource
         _timer = new DispatcherTimer();
         SetUpdateInterval(500);
         _timer.Tick += TimerOnTick;
+
+        dataStorage.SectionEnded += StopRefresh;
+        dataStorage.NewSectionCreated += StartRefresh;
     }
 
     [Conditional("DEBUG")]
@@ -40,7 +43,6 @@ public sealed partial class ActiveUpdateModeDpsDataSource : RealTimeDataSource
     public override void SetEnable(bool enable)
     {
         base.SetEnable(enable);
-        _timer.IsEnabled = enable;
         lock (SyncRoot)
         {
             if (!enable)
@@ -56,6 +58,16 @@ public sealed partial class ActiveUpdateModeDpsDataSource : RealTimeDataSource
         _timer.Interval = TimeSpan.FromMilliseconds(updateInterval);
     }
 
+    private void StartRefresh()
+    {
+        Refresh();
+        _timer.Start();
+    }
+
+    private void StopRefresh()
+    {
+        _timer.Stop();
+    }
 
     [LoggerMessage(LogLevel.Trace, "Timer tick triggered")]
     private partial void LogTickTrace();

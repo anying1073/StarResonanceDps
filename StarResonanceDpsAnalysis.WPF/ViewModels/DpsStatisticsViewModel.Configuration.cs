@@ -46,7 +46,8 @@ public partial class DpsStatisticsViewModel
 
         _dataSourceEngine.Configure(new DataSourceEngineParam()
         {
-            Mode = AppConfig.DpsUpdateMode.ToDataSourceMode()
+            Mode = AppConfig.DpsUpdateMode.ToDataSourceMode(),
+            ActiveUpdateInterval = AppConfig.DpsUpdateInterval,
         });
 
         _logger.LogInformation("Update mode configuration complete. Mode: {Mode}, DataSourceEngine Mode: {CurrentMode}",
