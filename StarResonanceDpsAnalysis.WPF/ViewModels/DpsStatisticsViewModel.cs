@@ -59,6 +59,7 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
     // ===== Private State Fields =====
     private int _indicatorHoverCount;
     private bool _isInitialized;
+    private DispatcherTimer _battleDurationUpdateTimer;
 
     // ===== Public Properties =====
     public DpsStatisticsSubViewModel CurrentStatisticData => StatisticData[StatisticIndex];
@@ -102,6 +103,11 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         _dataProcessor = dataProcessor;
         _teamStatsManager = teamStatsManager;
         _resetCoordinator = resetCoordinator;
+        _battleDurationUpdateTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(500)
+        };
+        _battleDurationUpdateTimer.Tick += (_, _) => { UpdateBattleDuration(); };
 
         StatisticData = new Dictionary<StatisticType, DpsStatisticsSubViewModel>
         {
@@ -324,4 +330,13 @@ public partial class DpsStatisticsViewModel : BaseViewModel, IDisposable
         }
     }
 
+    private void StartBattleDurationUpdate()
+    {
+        _battleDurationUpdateTimer.Start();
+    }
+
+    private void StopBattleDurationUpdate()
+    {
+        _battleDurationUpdateTimer.Stop();
+    }
 }

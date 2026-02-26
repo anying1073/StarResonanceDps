@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using StarResonanceDpsAnalysis.WPF.Logging;
 using StarResonanceDpsAnalysis.WPF.Models;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -14,7 +13,7 @@ public partial class DpsStatisticsViewModel
     protected void UpdateData()
     {
         _logger.LogTrace("Update data");
-        _dataSourceEngine.DeliverProcessedData();
+        _dataSourceEngine.CurrentSource.Refresh();
     }
 
     private void UpdateTeamTotalStats(IReadOnlyDictionary<long, DpsDataProcessed> data)
@@ -81,9 +80,6 @@ public partial class DpsStatisticsViewModel
             // Update team totals
             var teamStats = _dataProcessor.CalculateTeamTotal(processedByType[StatisticIndex]);
             _teamStatsManager.UpdateTeamStats(teamStats, StatisticIndex, processedByType.Count > 0);
-
-            // Update duration
-            UpdateBattleDuration();
         }
     }
 }

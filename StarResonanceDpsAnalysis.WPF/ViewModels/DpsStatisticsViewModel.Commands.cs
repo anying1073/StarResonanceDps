@@ -133,7 +133,7 @@ public partial class DpsStatisticsViewModel
 
         _logger.LogDebug(WpfLogEvents.VmLoaded, "DpsStatisticsViewModel loaded");
 
-        UpdateBattleDuration();
+        StartBattleDurationUpdate();
 
         // Configure update mode based on settings
         ConfigureDpsUpdateMode();

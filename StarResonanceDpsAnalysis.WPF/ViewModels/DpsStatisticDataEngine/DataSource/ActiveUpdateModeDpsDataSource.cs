@@ -36,6 +36,7 @@ public sealed partial class ActiveUpdateModeDpsDataSource : RealTimeDataSource
 
     private void TimerOnTick(object? sender, EventArgs e)
     {
+        if (!Enable) return;
         TickLog();
         Refresh();
     }
@@ -60,8 +61,8 @@ public sealed partial class ActiveUpdateModeDpsDataSource : RealTimeDataSource
 
     private void StartRefresh()
     {
-        Refresh();
         _timer.Start();
+        Refresh();
     }
 
     private void StopRefresh()
