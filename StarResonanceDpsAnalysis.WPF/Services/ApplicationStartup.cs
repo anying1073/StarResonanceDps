@@ -119,7 +119,8 @@ public sealed class ApplicationStartup : IApplicationStartup
             _logger.LogInformation(WpfLogEvents.StartupAdapter, "Activating adapter: {Name}", target.Name);
             _deviceManagementService.SetActiveNetworkAdapter(target);
             _configManager.CurrentConfig.PreferredNetworkAdapter = target;
-            await _configManager.SaveAsync().ConfigureAwait(false);
+            //await _configManager.SaveAsync().ConfigureAwait(false);
+            _ = _configManager.SaveAsync();
         }
         else
         {
