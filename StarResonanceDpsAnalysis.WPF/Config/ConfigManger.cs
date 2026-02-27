@@ -60,7 +60,7 @@ public class ConfigManger : IConfigManager
 
             //// Force configuration reload (the file watcher should pick this up automatically)
             //// But we can also manually notify if needed
-            OnConfigurationChanged(newConfig);
+            //OnConfigurationChanged(newConfig);
         }
         catch (Exception ex)
         {

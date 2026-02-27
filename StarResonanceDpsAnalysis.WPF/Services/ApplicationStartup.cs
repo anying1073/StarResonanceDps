@@ -110,17 +110,19 @@ public sealed class ApplicationStartup : IApplicationStartup
         // If preferred not found, try automatic selection via routing
         target ??= await _deviceManagementService.GetAutoSelectedNetworkAdapterAsync();
 
-        //target ??= adapters.Count > 0
-        //    ? new NetworkAdapterInfo(adapters[0].name, adapters[0].description)
-        //    : null;
+        target ??= adapters.Count > 0
+            ? new NetworkAdapterInfo(adapters[0].name, adapters[0].description)
+            : null;
 
         if (target != null)
         {
             _logger.LogInformation(WpfLogEvents.StartupAdapter, "Activating adapter: {Name}", target.Name);
             _deviceManagementService.SetActiveNetworkAdapter(target);
-            _configManager.CurrentConfig.PreferredNetworkAdapter = target;
-            //await _configManager.SaveAsync().ConfigureAwait(false);
-            _ = _configManager.SaveAsync();
+            if (_configManager.CurrentConfig.PreferredNetworkAdapter != target)
+            {
+                _configManager.CurrentConfig.PreferredNetworkAdapter = target;
+                await _configManager.SaveAsync().ConfigureAwait(false);
+            }
         }
         else
         {
