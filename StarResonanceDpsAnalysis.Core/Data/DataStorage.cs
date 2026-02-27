@@ -333,6 +333,7 @@ public static partial class DataStorage
         }
     }
 
+    private static bool HasCausedDamage = false;
     /// <summary>
     /// 添加战斗日志 (会自动创建日志分段)
     /// </summary>
@@ -359,6 +360,16 @@ public static partial class DataStorage
         {
             sectionFlag = true;
         }
+
+        if (log.IsHeal)
+        {
+            if (!HasCausedDamage) return;
+        }
+        else
+        {
+            HasCausedDamage = true;
+        }
+
 
         // 如果创建新战斗分段
         if (sectionFlag)
@@ -654,6 +665,7 @@ public static partial class DataStorage
     {
         SectionedDpsDatas.Clear();
         Adapter.ResetSection();
+        HasCausedDamage = false;
 
         try
         {
