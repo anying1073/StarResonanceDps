@@ -41,21 +41,26 @@ public sealed class StatisticsAdapter
         }
     }
 
-    /// <summary>
-    /// Record DPS/HPS/DTPS samples for all players
-    /// Records samples for BOTH full session and current section simultaneously
-    /// Should be called periodically (e.g., every update cycle)
-    /// </summary>
-    /// <param name="sectionDuration">Time elapsed since section start</param>
-    public void RecordSamples(TimeSpan sectionDuration)
+    public void StartSampleRecording(int intervalMilliseconds)
     {
-        // Get statistics for both scopes
-        var fullStats = _engine.GetFullStatistics();
-        var sectionStats = _engine.GetSectionStatistics();
+        _sampleRecorder.Start(
+            () => _engine.GetSectionStatistics(),
+            () => _engine.GetFullStatistics(),
+            TimeSpan.FromMilliseconds(Math.Max(1, intervalMilliseconds)));
+    }
 
-        // Record samples (UpdateDeltaValues is called inside RecordSamples)
-        _sampleRecorder.RecordSamples(fullStats, sectionDuration);
-        _sampleRecorder.RecordSamples(sectionStats, sectionDuration);
+    public void StopSampleRecording()
+    {
+        _sampleRecorder.Stop();
+    }
+
+    /// <summary>
+    /// Set combat state
+    /// </summary>
+    /// <param name="state"></param>
+    public void SetCombatState(bool state)
+    {
+        _engine.SetCombatState(state);
     }
 
     /// <summary>

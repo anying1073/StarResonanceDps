@@ -20,11 +20,34 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+
+      - name: Generate changelog since last tag
+        id: changelog
+        shell: pwsh
+        run: |
+          git fetch --tags --force
+          $lastTag = git tag --sort=-creatordate | Select-Object -First 1
+          if ([string]::IsNullOrWhiteSpace($lastTag)) {
+            $lastTag = "(none)"
+            $changes = "No previous tags found."
+          } else {
+            $changes = git log "$lastTag..HEAD" --pretty=format:"* %s (%h)"
+            if ([string]::IsNullOrWhiteSpace($changes)) {
+              $changes = "No changes since last tag."
+            }
+          }
+
+          "last_tag=$lastTag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "changes<<EOF" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          $changes | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "EOF" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
       - name: Restore dependencies
         run: dotnet restore StarResonanceDpsAnalysis.slnx
@@ -74,6 +97,8 @@ jobs:
             • Commit Author: ${{ steps.commit.outputs.author }}
             • Commit Message: ${{ steps.commit.outputs.message }}
             • Commit Description: ${{ steps.commit.outputs.body }}
+            • Changes since ${{ steps.changelog.outputs.last_tag }}
+            ${{ steps.changelog.outputs.changes }}
           files: |
             StarResonanceDpsAnalysis-${{ github.run_number }}.zip
         env:

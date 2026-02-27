@@ -6,12 +6,14 @@ namespace StarResonanceDpsAnalysis.Core.Statistics;
 /// </summary>
 public interface ISampleRecorder
 {
-    /// <summary>
-    /// Record samples for all players in the statistics
-    /// </summary>
-    /// <param name="statistics">Player statistics dictionary</param>
-    /// <param name="sectionDuration">Time elapsed since section start</param>
-    void RecordSamples(IReadOnlyDictionary<long, PlayerStatistics> statistics, TimeSpan sectionDuration);
+    void Add(PlayerStatistics stat);
+
+    void Start(
+        Func<IReadOnlyDictionary<long, PlayerStatistics>> sectionStatisticsProvider,
+        Func<IReadOnlyDictionary<long, PlayerStatistics>> totalStatisticsProvider,
+        TimeSpan interval);
+
+    void Stop();
 }
 
 /// <summary>
@@ -22,37 +24,79 @@ public interface ISampleRecorder
 /// </summary>
 public sealed class PeriodicSampleRecorder : ISampleRecorder
 {
-    /// <summary>
-    /// Creates a periodic sample recorder
-    /// </summary>
-    public PeriodicSampleRecorder()
+    private readonly object _syncRoot = new();
+    private Timer? _timer;
+    private Func<IReadOnlyDictionary<long, PlayerStatistics>>? _sectionProvider;
+    private Func<IReadOnlyDictionary<long, PlayerStatistics>>? _totalProvider;
+    private TimeSpan _interval = TimeSpan.FromSeconds(1);
+    private int _isRecording;
+
+    public PeriodicSampleRecorder(int intervalMilliseconds = 1000)
     {
+        _interval = TimeSpan.FromMilliseconds(Math.Max(1, intervalMilliseconds));
     }
 
-    public void RecordSamples(IReadOnlyDictionary<long, PlayerStatistics> statistics, TimeSpan sectionDuration)
+    public void Add(PlayerStatistics stat)
     {
-        foreach (var playerStats in statistics.Values)
+        _ = stat;
+    }
+
+    public void Start(
+        Func<IReadOnlyDictionary<long, PlayerStatistics>> sectionStatisticsProvider,
+        Func<IReadOnlyDictionary<long, PlayerStatistics>> totalStatisticsProvider,
+        TimeSpan interval)
+    {
+        if (sectionStatisticsProvider == null) throw new ArgumentNullException(nameof(sectionStatisticsProvider));
+        if (totalStatisticsProvider == null) throw new ArgumentNullException(nameof(totalStatisticsProvider));
+
+        lock (_syncRoot)
         {
-            // Update delta values - this automatically records delta samples to time series
-            playerStats.UpdateDeltaValues();
+            _sectionProvider = sectionStatisticsProvider;
+            _totalProvider = totalStatisticsProvider;
+            _interval = interval <= TimeSpan.Zero ? TimeSpan.FromMilliseconds(1) : interval;
+            _timer ??= new Timer(RecordSamples, null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            _timer.Change(_interval, _interval);
         }
     }
-}
 
-/// <summary>
-/// Records delta samples for comparison and analysis
-/// Useful for detecting burst patterns
-/// Note: Delta values are automatically recorded in UpdateDeltaValues(), 
-/// so this recorder only needs to trigger the update.
-/// </summary>
-public sealed class HybridSampleRecorder : ISampleRecorder
-{
-    public void RecordSamples(IReadOnlyDictionary<long, PlayerStatistics> statistics, TimeSpan sectionDuration)
+    public void Stop()
     {
-        foreach (var playerStats in statistics.Values)
+        lock (_syncRoot)
         {
-            // Update delta values - this automatically records delta samples to time series
-            playerStats.UpdateDeltaValues();
+            _timer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+        }
+    }
+
+    private void RecordSamples(object? state)
+    {
+        if (Interlocked.Exchange(ref _isRecording, 1) == 1)
+        {
+            return;
+        }
+
+        try
+        {
+            var sectionStats = _sectionProvider?.Invoke();
+            if (sectionStats != null)
+            {
+                foreach (var playerStats in sectionStats.Values)
+                {
+                    playerStats.UpdateDeltaValues();
+                }
+            }
+
+            var totalStats = _totalProvider?.Invoke();
+            if (totalStats != null)
+            {
+                foreach (var playerStats in totalStats.Values)
+                {
+                    playerStats.UpdateDeltaValues();
+                }
+            }
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _isRecording, 0);
         }
     }
 }
