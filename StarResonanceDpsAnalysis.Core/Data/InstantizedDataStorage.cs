@@ -65,6 +65,12 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         set => DataStorage.IsServerConnected = value;
     }
 
+    public int SampleRecordingInterval
+    {
+        get => DataStorage.SampleRecordingInterval;
+        set => DataStorage.SampleRecordingInterval = value;
+    }
+
     // Dispose: detach all wrappers from DataStorage static events
     public void Dispose()
     {

@@ -1,18 +1,19 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Extends.Data;
 using StarResonanceDpsAnalysis.Core.Statistics;
-using StarResonanceDpsAnalysis.Core.Statistics.Calculators;
 
 namespace StarResonanceDpsAnalysis.Core.Data;
 
 /// <summary>
 /// 数据存储
 /// </summary>
-public static class DataStorage
+public static partial class DataStorage
 {
     //private static readonly StatisticsEngine _engine = new();
     private static readonly StatisticsAdapter Adapter = new();
@@ -20,6 +21,8 @@ public static class DataStorage
     private static Timer? _sectionTimeoutTimer;
     private static DateTime _lastLogWallClockAtUtc = DateTime.MinValue;
     private static bool _isSectionTimedOut;
+    private static int _sampleRecordingInterval = 1000;
+    private static bool _isSampleRecordingStarted;
 
     /// <summary>
     /// 当前玩家信息
@@ -81,6 +84,28 @@ public static class DataStorage
     /// 战斗日志分段超时时间 (默认: 5000ms)
     /// </summary>
     public static TimeSpan SectionTimeout { get; set; } = TimeSpan.FromMilliseconds(5000);
+
+    /// <summary>
+    /// Sample recording interval in milliseconds
+    /// </summary>
+    public static int SampleRecordingInterval
+    {
+        get => _sampleRecordingInterval;
+        set
+        {
+            var clamped = Math.Max(1, value);
+            if (_sampleRecordingInterval == clamped) return;
+            Logger.LogInformation("Sample recording interval changed {oldValue} -> {newValue}",
+                _sampleRecordingInterval, clamped);
+            _sampleRecordingInterval = clamped;
+            if (_isSampleRecordingStarted)
+            {
+                Adapter.StartSampleRecording(_sampleRecordingInterval);
+            }
+        }
+    }
+
+    public static ILogger<IDataStorage> Logger { get; set; } = NullLogger<IDataStorage>.Instance;
 
     /// <summary>
     /// 强制新分段标记
@@ -413,6 +438,8 @@ public static class DataStorage
         // 最后一个日志赋值
         UpdateLastLogState(log);
 
+        EnsureSampleRecordingStarted();
+
         try
         {
             // 触发战斗日志创建事件
@@ -487,6 +514,13 @@ public static class DataStorage
         }
 
         RaiseSectionEnded();
+    }
+
+    private static void EnsureSampleRecordingStarted()
+    {
+        if (_isSampleRecordingStarted) return;
+        Adapter.StartSampleRecording(_sampleRecordingInterval);
+        _isSampleRecordingStarted = true;
     }
 
     private static void UpdateLastLogState(BattleLog log)

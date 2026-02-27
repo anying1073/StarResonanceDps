@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Analyze;
 using StarResonanceDpsAnalysis.Core.Analyze.Models;
@@ -26,11 +27,6 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     // ===== Statistics Engine =====
     private readonly StatisticsAdapter _statisticsAdapter = new(logger);
     
-    // ===== Sample Recording Control =====
-    private readonly object _sampleRecordingLock = new();
-    private DateTime _lastSampleRecordTime = DateTime.MinValue;
-    private int _sampleRecordingIntervalMs = 1000; // Default: 1 second
-
     private bool _disposed;
     private bool _hasPendingBattleLogEvents;
     private bool _hasPendingDataEvents;
@@ -38,35 +34,13 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     private bool _hasPendingPlayerInfoEvents;
     private bool _isServerConnected;
     private DateTime _lastLogWallClockAtUtc = DateTime.MinValue;
+    private int _sampleRecordingInterval = 1000;
+    private bool _isSampleRecordingStarted;
 
     // ===== Section timeout state =====
     private Timer? _sectionTimeoutTimer;
     private bool _isSectionTimedOut;
     
-    /// <summary>
-    /// Sample recording interval in milliseconds (controlled by DpsUpdateInterval)
-    /// Default: 1000ms (1 second)
-    /// Range: 100ms - 5000ms
-    /// </summary>
-    public int SampleRecordingInterval
-    {
-        get
-        {
-            lock (_sampleRecordingLock)
-            {
-                return _sampleRecordingIntervalMs;
-            }
-        }
-        set
-        {
-            lock (_sampleRecordingLock)
-            {
-                _sampleRecordingIntervalMs = Math.Clamp(value, 100, 5000);
-                logger.LogDebug("Sample recording interval updated to {Interval}ms", _sampleRecordingIntervalMs);
-            }
-        }
-    }
-
     /// <summary>
     /// 玩家信息字典 (Key: UID)
     /// </summary>
@@ -83,11 +57,6 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     private bool ForceNewBattleSection { get; set; }
 
     /// <summary>
-    /// 当前玩家UUID
-    /// </summary>
-    public long CurrentPlayerUUID { get; set; }
-
-    /// <summary>
     /// 当前玩家信息
     /// </summary>
     public PlayerInfo CurrentPlayerInfo { get; private set; } = new();
@@ -101,6 +70,24 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     /// 战斗日志分段超时时间 (默认: 5000ms)
     /// </summary>
     public TimeSpan SectionTimeout { get; set; } = TimeSpan.FromMilliseconds(10000);
+
+    /// <summary>
+    /// Sample recording interval in milliseconds
+    /// </summary>
+    public int SampleRecordingInterval
+    {
+        get => _sampleRecordingInterval;
+        set
+        {
+            var clamped = Math.Max(1, value);
+            if (_sampleRecordingInterval == clamped) return;
+            _sampleRecordingInterval = clamped;
+            if (_isSampleRecordingStarted)
+            {
+                _statisticsAdapter.StartSampleRecording(_sampleRecordingInterval);
+            }
+        }
+    }
 
     /// <summary>
     /// 是否正在监听服务器
@@ -245,6 +232,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         _disposed = true;
         try
         {
+            _statisticsAdapter.StopSampleRecording();
             _sectionTimeoutTimer?.Dispose();
         }
         catch (Exception ex)
@@ -315,6 +303,13 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         
         // ⭐ Raise SectionEnded event to notify UI
         RaiseSectionEnded();
+    }
+
+    private void EnsureSampleRecordingStarted()
+    {
+        if (_isSampleRecordingStarted) return;
+        _statisticsAdapter.StartSampleRecording(_sampleRecordingInterval);
+        _isSampleRecordingStarted = true;
     }
 
     private void TriggerPlayerInfoUpdated(long uid)
@@ -450,6 +445,8 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
 
             UpdateLastLogState(log);
         }
+
+        EnsureSampleRecordingStarted();
     }
 
     private bool CheckAndHandleSectionTimeout(BattleLog log)
@@ -791,31 +788,6 @@ public partial class DataStorageV2
     {
         try
         {
-            // ⭐ Record samples with interval control
-            // Only record if enough time has elapsed since last recording
-            bool shouldRecord = false;
-            lock (_sampleRecordingLock)
-            {
-                var now = DateTime.UtcNow;
-                var elapsed = now - _lastSampleRecordTime;
-                
-                // Record if interval has passed or this is the first recording
-                if (_lastSampleRecordTime == DateTime.MinValue || 
-                    elapsed.TotalMilliseconds >= _sampleRecordingIntervalMs)
-                {
-                    shouldRecord = true;
-                    _lastSampleRecordTime = now;
-                }
-            }
-            
-            if (shouldRecord)
-            {
-                // Calculate section duration for sample recording
-                var sectionDuration = CalculateSectionDuration();
-                _statisticsAdapter.RecordSamples(sectionDuration);
-                logger.LogTrace("Samples recorded at interval {Interval}ms", _sampleRecordingIntervalMs);
-            }
-            
             DpsDataUpdated?.Invoke();
         }
         catch (Exception ex)

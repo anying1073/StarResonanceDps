@@ -15,6 +15,11 @@ public interface IDataStorage : IDisposable
 
     bool IsServerConnected { get; set; }
 
+    /// <summary>
+    /// Sample recording interval in milliseconds
+    /// </summary>
+    int SampleRecordingInterval { get; set; }
+
     event ServerConnectionStateChangedEventHandler? ServerConnectionStateChanged;
     event PlayerInfoUpdatedEventHandler? PlayerInfoUpdated;
     event NewSectionCreatedEventHandler? NewSectionCreated;
