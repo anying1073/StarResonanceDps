@@ -61,7 +61,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         _tankingTabViewModel.Plot.DamageDisplayMode = _appConfig.DamageDisplayType;
 
         // ? 初始化更新定时器
-        InitializeUpdateTimer();
+        //InitializeUpdateTimer();
     }
 
     /// <summary>

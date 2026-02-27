@@ -197,6 +197,7 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
 
         public IReadOnlyList<DpsData> ReadOnlySectionedDpsDataList { get; } = [];
         public bool IsServerConnected => false;
+        public int SampleRecordingInterval { get; set; }
         public PlayerInfo CurrentPlayerInfo { get; } = new();
 
         public ReadOnlyDictionary<long, PlayerInfo> ReadOnlyPlayerInfoDatas { get; } =

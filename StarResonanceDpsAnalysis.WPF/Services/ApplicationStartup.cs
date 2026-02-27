@@ -69,12 +69,9 @@ public sealed class ApplicationStartup : IApplicationStartup
                 StatisticsConfiguration.TimeSeriesSampleCapacity);
 
             // ? Configure sample recording interval from DpsUpdateInterval
-            if (_dataStorage is DataStorageV2 storageV2)
-            {
-                storageV2.SampleRecordingInterval = _configManager.CurrentConfig.DpsUpdateInterval;
-                _logger.LogInformation("Sample recording interval configured: {Interval}ms",
-                    storageV2.SampleRecordingInterval);
-            }
+            _dataStorage.SampleRecordingInterval = _configManager.CurrentConfig.DpsUpdateInterval;
+            _logger.LogInformation("Sample recording interval configured: {Interval}ms",
+                _dataStorage.SampleRecordingInterval);
 
             // Apply localization
             _localization.Initialize(_configManager.CurrentConfig.Language);
@@ -111,21 +108,18 @@ public sealed class ApplicationStartup : IApplicationStartup
         }
 
         // If preferred not found, try automatic selection via routing
-        if (target == null)
-        {
-            target = await _deviceManagementService.GetAutoSelectedNetworkAdapterAsync();
-        }
+        target ??= await _deviceManagementService.GetAutoSelectedNetworkAdapterAsync();
 
-        target ??= adapters.Count > 0
-            ? new NetworkAdapterInfo(adapters[0].name, adapters[0].description)
-            : null;
+        //target ??= adapters.Count > 0
+        //    ? new NetworkAdapterInfo(adapters[0].name, adapters[0].description)
+        //    : null;
 
         if (target != null)
         {
             _logger.LogInformation(WpfLogEvents.StartupAdapter, "Activating adapter: {Name}", target.Name);
             _deviceManagementService.SetActiveNetworkAdapter(target);
             _configManager.CurrentConfig.PreferredNetworkAdapter = target;
-            _ = _configManager.SaveAsync();
+            await _configManager.SaveAsync().ConfigureAwait(false);
         }
         else
         {
@@ -150,3 +144,4 @@ public sealed class ApplicationStartup : IApplicationStartup
         }
     }
 }
+

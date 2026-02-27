@@ -413,9 +413,9 @@ public partial class SettingsViewModel : BaseViewModel
         else if (e.PropertyName == nameof(AppConfig.DpsUpdateInterval))
         {
             // Update sample recording interval when DpsUpdateInterval changes
-            if (_isLoaded && _dataStorage is DataStorageV2 storageV2)
+            if (_isLoaded)
             {
-                storageV2.SampleRecordingInterval = config.DpsUpdateInterval;
+                _dataStorage.SampleRecordingInterval = config.DpsUpdateInterval;
             }
         }
 
@@ -800,7 +800,7 @@ internal sealed class DesignDataStorage : IDataStorage
     public IReadOnlyList<DpsData> ReadOnlySectionedDpsDataList => Array.Empty<DpsData>();
     public TimeSpan SectionTimeout { get; set; }
     public bool IsServerConnected { get; set; }
-    public long CurrentPlayerUUID { get; set; }
+    public int SampleRecordingInterval { get; set; }
 
 #pragma warning disable CS0067
     public event ServerConnectionStateChangedEventHandler? ServerConnectionStateChanged;

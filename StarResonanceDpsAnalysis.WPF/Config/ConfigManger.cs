@@ -58,9 +58,9 @@ public class ConfigManger : IConfigManager
                 await writer.WriteAsync(updatedJson);
             }
 
-            // Force configuration reload (the file watcher should pick this up automatically)
-            // But we can also manually notify if needed
-            OnConfigurationChanged(newConfig);
+            //// Force configuration reload (the file watcher should pick this up automatically)
+            //// But we can also manually notify if needed
+            //OnConfigurationChanged(newConfig);
         }
         catch (Exception ex)
         {
