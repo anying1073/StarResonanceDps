@@ -259,7 +259,7 @@
     <value>マウス透過</value>
   </data>
   <data name="Settings_Shortcut_ClearData" xml:space="preserve">
-    <value>データをクリア</value>
+    <value>画面をクリア</value>
   </data>
   <data name="Settings_Shortcut_MouseThrough_Tooltip" xml:space="preserve">
     <value>この欄を選択してショートカット（例：Ctrl+F6）を押してください。解除するにはDeleteを押します。</value>
@@ -1214,7 +1214,7 @@
     <value>全スロットのスキル一覧を更新しました</value>
   </data>
   <data name="Command_OpenSkillLog" xml:space="preserve">
-    <value>スキルログウィンドウを開く</value>
+    <value>スキルログを開く</value>
   </data>
   <data name="Dialog_UidRequired_Title" xml:space="preserve">
     <value>キャラクターUIDの設定が必要です</value>
@@ -1368,5 +1368,13 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="DpsDetail_Popup_Average" xml:space="preserve">
     <value>  平均：</value>
+<<<<<<< HEAD
+=======
+  </data>
+  <data name="Dialog_UidRequired_Message2" xml:space="preserve">
+    <value>スキルログを使用するには、設定画面でキャラクターUIDを登録してください。
+
+UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤー番号がUIDです。</value>
+>>>>>>> abe1d2e88d37d82c72c2fe076c48027f976be5c1
   </data>
 </root>

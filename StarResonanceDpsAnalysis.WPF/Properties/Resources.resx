@@ -1372,4 +1372,9 @@ Would you like to restart the application as administrator?</value>
   <data name="SkillBreakdown_Suffix_CritLucky" xml:space="preserve">
     <value>CritLucky rate</value>
   </data>
+  <data name="Dialog_UidRequired_Message2" xml:space="preserve">
+    <value>Please configure your character UID in Settings before using skill log.
+
+How to get UID: in game, the bottom-left player number is your UID.</value>
+  </data>
 </root>

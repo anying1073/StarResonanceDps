@@ -1,13 +1,14 @@
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.WPF.Config;
+using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.Services;
 using StarResonanceDpsAnalysis.WPF.Views;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -39,36 +40,6 @@ public partial class SkillLogViewModel : ObservableObject
         _skillLogService = skillLogService;
         _configManager = configManager;
         _windowManagementService = windowManagementService;
-        
-        // ¼ì²é UID ÊÇ·ñÒÑÉèÖÃ
-        CheckUidConfiguration();
-    }
-
-    private void CheckUidConfiguration()
-    {
-        if (_configManager == null)
-            return;
-            
-        var currentUid = _configManager.CurrentConfig.Uid;
-        if (currentUid == 0)
-        {
-            Application.Current?.Dispatcher.BeginInvoke(() =>
-            {
-                var result = MessageBox.Show(
-                    "¼ì²âµ½Äú»¹Î´ÉèÖÃ½ÇÉ« UID£¬¼¼ÄÜÈÕ¼ÇĞèÒª UID ²ÅÄÜÕı³£¹¤×÷¡£\n\n" +
-                    "ÈçºÎ»ñÈ¡ UID£º½øÈëÓÎÏ·ºó£¬×óÏÂ½ÇÍæ¼Ò±àºÅ¾ÍÊÇ UID\n\n" +
-                    "ÊÇ·ñÏÖÔÚÇ°ÍùÉèÖÃ£¿",
-                    "ĞèÒªÉèÖÃ UID",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Information);
-
-                if (result == MessageBoxResult.Yes && _windowManagementService != null)
-                {
-                    _windowManagementService.SettingsView.Show();
-                    _windowManagementService.SettingsView.Activate();
-                }
-            });
-        }
     }
 
     [RelayCommand]
@@ -80,7 +51,7 @@ public partial class SkillLogViewModel : ObservableObject
     [RelayCommand]
     private void Close()
     {
-        // ²éÕÒ²¢¹Ø±Õ SkillLogView ´°¿Ú
+        // æŸ¥æ‰¾å¹¶å…³é—­ SkillLogView çª—å£
         var window = Application.Current?.Windows.OfType<SkillLogView>().FirstOrDefault();
         window?.Close();
     }

@@ -1347,4 +1347,9 @@
   <data name="SkillBreakdown_Suffix_CritLucky" xml:space="preserve">
     <value>暴击幸运数</value>
   </data>
+  <data name="Dialog_UidRequired_Message2" xml:space="preserve">
+    <value>请先在设置中配置您的角色UID，才能使用技能日记。
+
+如何获取UID：进入游戏后，左下角玩家编号就是UID</value>
+  </data>
 </root>

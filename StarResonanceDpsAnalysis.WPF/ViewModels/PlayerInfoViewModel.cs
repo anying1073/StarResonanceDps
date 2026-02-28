@@ -13,6 +13,31 @@ public partial class PlayerInfoViewModel : BaseViewModel
 {
     private readonly LocalizationManager _localizationManager;
 
+    // NPC名（中国語）→ Classes_xxx の対応表（同じインデックスで対応）
+    private static readonly string[] SpecialNpcChineseNames =
+    [
+        "冰魔导师",
+        "巨刃守护者",
+        "神射手",
+        "神盾骑士",
+        "灵魂乐手",
+        "雷影剑士",
+        "森语者",
+        "青岚骑士"
+    ];
+
+    private static readonly string[] SpecialNpcResxKeys =
+    [
+        "Classes_FrostMage",
+        "Classes_HeavyGuardian",
+        "Classes_Marksman",
+        "Classes_ShieldKnight",
+        "Classes_SoulMusician",
+        "Classes_Stormblade",
+        "Classes_VerdantOracle",
+        "Classes_WindKnight"
+    ];
+
     [ObservableProperty] private Classes _class = Classes.Unknown;
 
     /// <summary>
@@ -83,7 +108,40 @@ public partial class PlayerInfoViewModel : BaseViewModel
         }
 
         // 原有逻辑: 使用字段可见性配置
-        PlayerInfo = $"{GetName()} - {GetSpec()} ({PowerLevel}-S{SeasonStrength})";
+        PlayerInfo = $"{GetFinalName()} - {GetSpec()} ({PowerLevel}-S{SeasonStrength})";
+    }
+
+    /// <summary>
+    /// 最終的に処理した名前（GetNameの結果）をベースに、
+    /// 特定の中国語名なら Classes_xxx の resx キーで再翻訳する。
+    /// </summary>
+    private string GetFinalName()
+    {
+        var processedName = GetName();
+        return TranslateSpecialNpcNameIfNeeded(processedName);
+    }
+
+    /// <summary>
+    /// NPC名が特定の中国語クラス名なら、対応する Classes_xxx の resx キーに変換して現在言語で再翻訳
+    /// 一致しなければ、そのまま返す
+    /// </summary>
+    private string TranslateSpecialNpcNameIfNeeded(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return name;
+        }
+
+        for (var i = 0; i < SpecialNpcChineseNames.Length && i < SpecialNpcResxKeys.Length; i++)
+        {
+            if (name == SpecialNpcChineseNames[i])
+            {
+                // resxキーを現在言語で解決。キー未存在時は元の名前をそのまま返す
+                return _localizationManager.GetString(SpecialNpcResxKeys[i], null, name);
+            }
+        }
+
+        return name;
     }
 
     /// <summary>
@@ -154,14 +212,19 @@ public partial class PlayerInfoViewModel : BaseViewModel
 
     [GeneratedRegex(@"\{Uid\}", RegexOptions.IgnoreCase)]
     private static partial Regex GetUidRegex();
+
     [GeneratedRegex(@"\s+")]
     private static partial Regex GetCollapseWhitespaceRegex();
+
     [GeneratedRegex(@"\(\s*\)")]
     private static partial Regex GetEmptyParenthesisRegex();
+
     [GeneratedRegex(@"\[\s*\]")]
     private static partial Regex GetEmptyBracketRegex();
+
     [GeneratedRegex(@"\s*-\s*-\s*")]
     private static partial Regex GetRepeatedHyphensRegex();
+
     [GeneratedRegex(@"^\s*-\s*|\s*-\s*$")]
     private static partial Regex GetLeadingOrTrailingHyphenRegex();
 
