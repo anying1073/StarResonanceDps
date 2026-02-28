@@ -938,6 +938,17 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Please configure your character UID in Settings before using skill log.
+        ///
+        ///How to get UID: in game, the bottom-left player number is your UID. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Dialog_UidRequired_Message2 {
+            get {
+                return ResourceManager.GetString("Dialog_UidRequired_Message2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Character UID required に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Dialog_UidRequired_Title {

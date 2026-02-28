@@ -1321,4 +1321,9 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   <data name="DpsDetail_Popup_Average" xml:space="preserve">
     <value>  평균：</value>
   </data>
+  <data name="Dialog_UidRequired_Message2" xml:space="preserve">
+    <value>설정에서 캐릭터 UID를 먼저 설정해야 스킬 로그를 사용할 수 있습니다.
+
+UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value>
+  </data>
 </root>

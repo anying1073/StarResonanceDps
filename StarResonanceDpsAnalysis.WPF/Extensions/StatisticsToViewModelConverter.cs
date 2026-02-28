@@ -2,6 +2,7 @@ using StarResonanceDpsAnalysis.Core;
 using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
+using System.Globalization;
 
 namespace StarResonanceDpsAnalysis.WPF.Extensions;
 
