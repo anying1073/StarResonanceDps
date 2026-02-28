@@ -124,7 +124,7 @@
     <value>보스만 집계하기</value>
   </data>
   <data name="Menu_ShowTotal" xml:space="preserve">
-    <value>총 피해량 표시</value>
+    <value>총 대미지 표시</value>
   </data>
   <data name="Menu_Personal_Training_Mode" xml:space="preserve">
     <value>개인/훈련 모드</value>
@@ -172,7 +172,7 @@
     <value>전체 전투</value>
   </data>
   <data name="Menu_ExitHistoryMode" xml:space="preserve">
-    <value>스냅샷 모드 종료</value>
+    <value>기록 모드 종료</value>
   </data>
   <data name="DpsStatistics_History_ViewFull_Title" xml:space="preserve">
     <value>전체 스냅샷 보기</value>
@@ -190,19 +190,19 @@
     <value>스냅샷</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">
-    <value>팀:</value>
+    <value>파티:</value>
   </data>
   <data name="DpsStatistics_TeamLabel_Damage" xml:space="preserve">
-    <value>팀 DPS</value>
+    <value>파티 DPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_Healing" xml:space="preserve">
-    <value>팀 치유</value>
+    <value>파티 치유량</value>
   </data>
   <data name="DpsStatistics_TeamLabel_TakenDamage" xml:space="preserve">
-    <value>팀 피해량</value>
+    <value>파티 받은 대미지</value>
   </data>
   <data name="DpsStatistics_TeamLabel_NpcTakenDamage" xml:space="preserve">
-    <value>NPC 피해량</value>
+    <value>NPC 받은 대미지</value>
   </data>
   <data name="PlayerInfo_Guild_Unknown" xml:space="preserve">
     <value>알 수 없음</value>
@@ -220,7 +220,7 @@
     <value>테스트 치유 스킬 {0}</value>
   </data>
   <data name="DpsStatistics_Test_Taken_Skill_Format" xml:space="preserve">
-    <value>테스트 피해 스킬 {0}</value>
+    <value>테스트 대미지 스킬 {0}</value>
   </data>
   <data name="Menu_Exit" xml:space="preserve">
     <value>종료</value>
@@ -277,19 +277,19 @@
     <value>전투 설정</value>
   </data>
   <data name="Settings_Section_Combat_Sub" xml:space="preserve">
-    <value>[전투 종료 시 데이터 초기화]는 현재 전투만 초기화하며, 전체 누적값은 유지됩니다.</value>
+    <value>전투 종료 시 초기화는 현재 전투만 초기화하며, 전체 통계는 유지됩니다.</value>
   </data>
   <data name="Settings_NetworkAdapter_Label" xml:space="preserve">
     <value>캡처 어댑터</value>
   </data>
   <data name="Settings_Combat_ClearAfterBattle" xml:space="preserve">
-    <value>전투 종료 시 데이터 초기화</value>
+    <value>전투 종료 시 초기화</value>
   </data>
   <data name="Settings_Common_Seconds" xml:space="preserve">
     <value>초</value>
   </data>
   <data name="Settings_Combat_ClearAfterTeleport" xml:space="preserve">
-    <value>맵 변경 시 전체 데이터 초기화</value>
+    <value>맵 이동 시 전체 데이터 초기화</value>
   </data>
   <data name="Settings_Switch_On" xml:space="preserve">
     <value>켜짐</value>
@@ -304,7 +304,7 @@
     <value>오버레이 투명도</value>
   </data>
   <data name="Settings_Display_PlayerNameMask" xml:space="preserve">
-    <value>플레이어 이름 익명 처리</value>
+    <value>이름 익명 처리</value>
   </data>
   <data name="Settings_Display_MarqueeText" xml:space="preserve">
     <value>긴 이름 스크롤</value>
@@ -313,34 +313,34 @@
     <value>플레이어 이름이 표시 영역을 초과하면 자동 스크롤을 활성화합니다.</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Default_Tooltip" xml:space="preserve">
-    <value>플레이어이름 - 서리 마법사 (25000-8)</value>
+    <value>플레이어 이름 - 프로스트 메이지 (25000-8)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Simple_Tooltip" xml:space="preserve">
-    <value>플레이어이름 (25000)</value>
+    <value>플레이어 이름 (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Detailed_Tooltip" xml:space="preserve">
-    <value>플레이어이름 - 서리 마법사 [S8 Lv50] (25000)</value>
+    <value>플레이어 이름 - 프로스트 메이지 [S8 Lv50] (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_NameOnly_Tooltip" xml:space="preserve">
-    <value>플레이어이름</value>
+    <value>플레이어 이름</value>
   </data>
   <data name="Settings_PlayerInfo_Separator_Space" xml:space="preserve">
     <value>공백</value>
   </data>
   <data name="Settings_Display_ShowDamage" xml:space="preserve">
-    <value>총 피해량 표시</value>
+    <value>총 대미지 표시</value>
   </data>
   <data name="Settings_Display_ShowDps" xml:space="preserve">
     <value>DPS 표시</value>
   </data>
   <data name="Settings_Display_ShowPercentage" xml:space="preserve">
-    <value>피해 비율 표시</value>
+    <value>대미지 비율 표시</value>
   </data>
   <data name="Settings_Display_DpsMode" xml:space="preserve">
     <value>DPS 표시 방식</value>
   </data>
   <data name="Settings_Display_DpsMode_Tooltip" xml:space="preserve">
-    <value>DPS 계산 방식을 선택하세요: 누적 피해/전투 시간 또는 전체 평균 DPS.</value>
+    <value>DPS 계산 방식을 선택하세요: 누적 대미지/전투 시간 또는 전체 평균 DPS.</value>
   </data>
   <data name="Settings_Display_DpsMode_On" xml:space="preserve">
     <value>전체 DPS</value>
@@ -349,13 +349,13 @@
     <value>누적/시간</value>
   </data>
   <data name="Settings_Display_DpsMode_Switch_Tooltip" xml:space="preserve">
-    <value>켬 = 누적 피해 / 시간, 끔 = 전체 평균 DPS(ValuePerSecond).</value>
+    <value>켜짐 = 누적 대미지 / 시간, 꺼짐 = 전체 평균 DPS(ValuePerSecond).</value>
   </data>
   <data name="Settings_Display_TimeSeriesCapacity" xml:space="preserve">
-    <value>시계열 샘플 용량</value>
+    <value>그래프 데이터 포인트 수</value>
   </data>
   <data name="Settings_Display_TimeSeriesCapacity_Tooltip" xml:space="preserve">
-    <value>DPS/HPS/DTPS 추세 차트에 저장할 데이터 포인트 최대값입니다. 값이 클수록 더 많은 기록을 표시하지만 메모리를 더 사용합니다. 범위: 50-1000 샘플.</value>
+    <value>DPS/HPS/DTPS 추세 차트에 저장할 데이터 포인트 최대값입니다. 값이 클수록 더 많은 기록을 표시하지만 메모리 사용량이 증가합니다. 범위: 50-1000 샘플.</value>
   </data>
   <data name="Settings_Common_Samples" xml:space="preserve">
     <value>샘플</value>
@@ -373,7 +373,7 @@
     <value>전투 데이터를 이용해 전투력 차별 등 커뮤니티를 해치는 행동을 하지 마세요.</value>
   </data>
   <data name="Menu_TemporaryMaskPlayerName" xml:space="preserve">
-    <value>임시 마스킹</value>
+    <value>임시 익명 처리</value>
   </data>
   <data name="Settings_Section_Language_Title" xml:space="preserve">
     <value>표시 설정</value>
@@ -421,7 +421,7 @@
     <value>정보</value>
   </data>
   <data name="Window_DamageReference_Title" xml:space="preserve">
-    <value>피해 참고</value>
+    <value>대미지 참고</value>
   </data>
   <data name="Window_Debug_Title" xml:space="preserve">
     <value>디버그 창</value>
@@ -463,10 +463,10 @@
     <value>여러 플레이어의 제보를 바탕으로 각 채널 월드 보스 생존 정보를 제공합니다</value>
   </data>
   <data name="MainView_Plugin_PigTracker_Title" xml:space="preserve">
-    <value>돼지 나보 상태 보기</value>
+    <value>우리보・나보 상태 보기</value>
   </data>
   <data name="MainView_Plugin_PigTracker_Description" xml:space="preserve">
-    <value>커뮤니티 제보를 통해 돼지 나보의 동선과 위치를 공유합니다</value>
+    <value>커뮤니티 제보를 통해 우리보 나보의 동선과 위치를 공유합니다</value>
   </data>
   <data name="MainView_Debug_Group_Title" xml:space="preserve">
     <value>디버그 도구</value>
@@ -481,7 +481,7 @@
     <value>스킬 상세 창</value>
   </data>
   <data name="MainView_Debug_Button_DamageReference" xml:space="preserve">
-    <value>피해 참고 창</value>
+    <value>대미지 참고 창</value>
   </data>
   <data name="MainView_Debug_Button_Settings" xml:space="preserve">
     <value>설정 창</value>
@@ -568,22 +568,22 @@
     <value>여기에 원형 차트가 있다고 상상해보세요</value>
   </data>
   <data name="SkillBreakdown_Card_DamageDistribution" xml:space="preserve">
-    <value>피해 분포</value>
+    <value>대미지 분포</value>
   </data>
   <data name="SkillBreakdown_Placeholder_BarChart" xml:space="preserve">
     <value>여기에 막대 차트가 있다고 상상해보세요</value>
   </data>
   <data name="SkillBreakdown_Section_DamageInfo" xml:space="preserve">
-    <value>피해 정보</value>
+    <value>대미지 정보</value>
   </data>
   <data name="SkillBreakdown_Label_TotalDamage" xml:space="preserve">
-    <value>총 피해량</value>
+    <value>총 대미지</value>
   </data>
   <data name="SkillBreakdown_Label_Dps" xml:space="preserve">
     <value>DPS</value>
   </data>
   <data name="SkillBreakdown_Label_HitCount" xml:space="preserve">
-    <value>타수</value>
+    <value>적중 수</value>
   </data>
   <data name="SkillBreakdown_Label_CritRate" xml:space="preserve">
     <value>치명타 확률</value>
@@ -595,22 +595,22 @@
     <value>치명타 횟수</value>
   </data>
   <data name="SkillBreakdown_Label_NormalDamage" xml:space="preserve">
-    <value>일반 피해</value>
+    <value>일반 대미지</value>
   </data>
   <data name="SkillBreakdown_Label_CritDamage" xml:space="preserve">
-    <value>치명타 피해</value>
+    <value>치명타 대미지</value>
   </data>
   <data name="SkillBreakdown_Label_LuckCount" xml:space="preserve">
     <value>행운 횟수</value>
   </data>
   <data name="SkillBreakdown_Label_LuckDamage" xml:space="preserve">
-    <value>행운 피해</value>
+    <value>행운 대미지</value>
   </data>
   <data name="SkillBreakdown_Label_Others" xml:space="preserve">
     <value>기타</value>
   </data>
   <data name="SkillBreakdown_Label_AverageDamage" xml:space="preserve">
-    <value>평균 피해</value>
+    <value>평균 대미지</value>
   </data>
   <data name="SkillBreakdown_Label_DamageTakenCount" xml:space="preserve">
     <value>피격 횟수</value>
@@ -619,7 +619,7 @@
     <value>여기에 데이터 표가 있다고 상상해보세요</value>
   </data>
   <data name="SkillBreakdown_Tab_Output" xml:space="preserve">
-    <value>공격</value>
+    <value>DPS</value>
   </data>
   <data name="SkillBreakdown_Tab_Healing" xml:space="preserve">
     <value>치유</value>
@@ -655,31 +655,31 @@
     <value>개인 훈련 모드 여는 중</value>
   </data>
   <data name="SkillBreakdown_Section_DamageDistribution" xml:space="preserve">
-    <value>피해 분포</value>
+    <value>대미지 분포</value>
   </data>
   <data name="StatisticType_Damage" xml:space="preserve">
-    <value>피해</value>
+    <value>대미지</value>
   </data>
   <data name="StatisticType_Healing" xml:space="preserve">
     <value>치유</value>
   </data>
   <data name="StatisticType_TakenDamage" xml:space="preserve">
-    <value>받은 피해</value>
+    <value>받은 대미지</value>
   </data>
   <data name="StatisticType_NpcTakenDamage" xml:space="preserve">
-    <value>NPC 받은 피해</value>
+    <value>NPC 받은 대미지</value>
   </data>
   <data name="DpsStatistics_TeamTotal_Damage" xml:space="preserve">
-    <value>팀 DPS</value>
+    <value>파티 DPS</value>
   </data>
   <data name="DpsStatistics_TeamTotal_Healing" xml:space="preserve">
-    <value>팀 치유</value>
+    <value>파티 치유량</value>
   </data>
   <data name="DpsStatistics_TeamTotal_TakenDamage" xml:space="preserve">
-    <value>팀 받은 피해</value>
+    <value>파티 받은 대미지</value>
   </data>
   <data name="DpsStatistics_TeamTotal_NpcTakenDamage" xml:space="preserve">
-    <value>NPC 받은 피해</value>
+    <value>NPC 받은 대미지</value>
   </data>
   <data name="ScopeTime_Current" xml:space="preserve">
     <value>현재</value>
@@ -694,7 +694,7 @@
     <value>항상 위에 두기</value>
   </data>
   <data name="DpsStatistics_Indicator_WindowTopMost_Tooltip" xml:space="preserve">
-    <value>창을 항상 위에 고정/해제</value>
+    <value>창을 항상 위에 고정</value>
   </data>
   <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
     <value>이 칸을 선택한 뒤 단축키를 누르세요 (예: Ctrl+F9). Delete 키로 삭제할 수 있습니다.</value>
@@ -724,7 +724,7 @@
     <value>테마 설정</value>
   </data>
   <data name="Settings_Section_Theme_Description" xml:space="preserve">
-    <value>툴박스를 더 나답게 꾸며 보세요</value>
+    <value>툴박스를 더 개성 있게 꾸며 보세요</value>
   </data>
   <data name="Settings_Theme_WindowColor" xml:space="preserve">
     <value>창 색상</value>
@@ -769,7 +769,7 @@
     <value>DPS 갱신 간격</value>
   </data>
   <data name="Settings_Combat_DpsUpdateInterval_Tooltip" xml:space="preserve">
-    <value>능동 모드에서만 적용됩니다.
+    <value>실시간 모드에서만 적용됩니다.
 권장 값: 500~2000 밀리초</value>
   </data>
   <data name="Settings_Common_Milliseconds" xml:space="preserve">
@@ -782,7 +782,7 @@
     <value>훈련 모드</value>
   </data>
   <data name="MainView_Plugin_Training_Description" xml:space="preserve">
-    <value>훈련 모드, 스킬 피해 분포 분석 및 직업별 랭킹 기능을 제공합니다</value>
+    <value>훈련 모드, 스킬 대미지 분포 분석 및 직업별 랭킹 기능을 제공합니다</value>
   </data>
   <data name="Settings_Shortcut_ToggleDps" xml:space="preserve">
     <value>DPS 창 토글</value>
@@ -825,7 +825,7 @@
     <value>평균 DPS</value>
   </data>
   <data name="SkillBreakdown_Label_TotalHits" xml:space="preserve">
-    <value>총 타수</value>
+    <value>총 적중</value>
   </data>
   <data name="SkillBreakdown_Section_DamageSkillsAnalysis" xml:space="preserve">
     <value>공격 스킬 분석</value>
@@ -837,10 +837,10 @@
     <value>확대/축소 초기화</value>
   </data>
   <data name="SkillBreakdown_Chart_SkillDamageDistribution" xml:space="preserve">
-    <value>스킬 피해 비율</value>
+    <value>스킬 대미지 비율</value>
   </data>
   <data name="SkillBreakdown_Chart_HitTypeDistribution" xml:space="preserve">
-    <value>타격 유형 분포</value>
+    <value>적중 유형 분포</value>
   </data>
   <data name="SkillBreakdown_Label_TotalHealing" xml:space="preserve">
     <value>총 치유량</value>
@@ -864,7 +864,7 @@
     <value>치유 유형 분포</value>
   </data>
   <data name="SkillBreakdown_Label_TotalDamageTaken" xml:space="preserve">
-    <value>총 받은 피해</value>
+    <value>총 받은 대미지</value>
   </data>
   <data name="SkillBreakdown_Label_AverageDtps" xml:space="preserve">
     <value>평균 DTPS</value>
@@ -873,13 +873,13 @@
     <value>총 피격 횟수</value>
   </data>
   <data name="SkillBreakdown_Section_DamageTakenAnalysis" xml:space="preserve">
-    <value>받은 피해 분석</value>
+    <value>받은 대미지 분석</value>
   </data>
   <data name="SkillBreakdown_Chart_RealTimeDtps" xml:space="preserve">
     <value>실시간 DTPS</value>
   </data>
   <data name="SkillBreakdown_Chart_DamageSourcesDistribution" xml:space="preserve">
-    <value>피해 원인 분포</value>
+    <value>대미지 원인 분포</value>
   </data>
   <data name="SkillBreakdown_Chart_DpsSeriesXAxis" xml:space="preserve">
     <value>시간 (초)</value>
@@ -929,6 +929,12 @@
   <data name="Settings_PlayerInfo_Preview" xml:space="preserve">
     <value>실시간 미리보기</value>
   </data>
+  <data name="SkillBreakdown_Suffix_Crits" xml:space="preserve">
+    <value>치명타 횟수</value>
+  </data>
+  <data name="SkillBreakdown_Suffix_Lucky" xml:space="preserve">
+    <value>행운 횟수</value>
+  </data>
   <data name="SkillBreakdown_Label_Average" xml:space="preserve">
     <value>평균</value>
   </data>
@@ -942,13 +948,13 @@
     <value>시스템 온라인</value>
   </data>
   <data name="SkillLog_Popup_TotalDamage" xml:space="preserve">
-    <value>총 피해량</value>
+    <value>총 대미지</value>
   </data>
   <data name="SkillLog_Popup_HitCount" xml:space="preserve">
     <value>명중 횟수</value>
   </data>
   <data name="SkillLog_Popup_AvgDamage" xml:space="preserve">
-    <value>평균 피해량</value>
+    <value>평균 대미지</value>
   </data>
   <data name="SkillLog_Popup_Critical" xml:space="preserve">
     <value>치명타 횟수</value>
@@ -957,16 +963,16 @@
     <value>행운 타격</value>
   </data>
   <data name="SkillLog_Label_Damage" xml:space="preserve">
-    <value>피해량</value>
+    <value>대미지</value>
   </data>
   <data name="SkillLog_Label_Heal" xml:space="preserve">
     <value>회복량</value>
   </data>
   <data name="SkillLog_Footer_Connection" xml:space="preserve">
-    <value>연결 상태: 안정적</value>
+    <value>연결 : 양호</value>
   </data>
   <data name="SkillLog_Footer_Logging" xml:space="preserve">
-    <value>로그 사용 중</value>
+    <value>로그 기록 중</value>
   </data>
   <data name="SkillLog_Button_Clear" xml:space="preserve">
     <value>로그 초기화</value>
@@ -975,10 +981,10 @@
     <value>닫기</value>
   </data>
   <data name="SkillLog_Popup_CritDamage" xml:space="preserve">
-    <value>치명타 피해량</value>
+    <value>치명타 대미지</value>
   </data>
   <data name="SkillLog_Popup_LuckyDamage" xml:space="preserve">
-    <value>행운 피해량</value>
+    <value>행운 대미지</value>
   </data>
   <data name="SkillBreakdown_Label_Percentage" xml:space="preserve">
     <value>비율</value>
@@ -989,12 +995,14 @@
   <data name="SkillBreakdown_Label_Uid" xml:space="preserve">
     <value>UID</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SkillBreakdown_Label_Power" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SkillBreakdown_Label_Power" xml:space="preserve">
+    <value>능력 등급</value>
   </data>
   <data name="SkillBreakdown_Label_ValuePercentToTotal" xml:space="preserve">
-    <value>퍼센트</value>
+    <value>비율</value>
+  </data>
+  <data name="DpsStatistics_CurrentPlayerRank" xml:space="preserve">
+    <value>현재 순위</value>
   </data>
   <data name="Menu_About" xml:space="preserve">
     <value>정보</value>
@@ -1006,10 +1014,13 @@
     <value>각 직업의 색상 커스터마이징</value>
   </data>
   <data name="Settings_ClassColors_Reset_Tooltip" xml:space="preserve">
-    <value>Valores Padrão</value>
+    <value>색상을 기본값으로 되돌리기</value>
   </data>
   <data name="Settings_ClassColors_Reset" xml:space="preserve">
-    <value>Redefinir</value>
+    <value>리셋</value>
+  </data>
+  <data name="PreviewVersion" xml:space="preserve">
+    <value>프리뷰 버전:{0}</value>
   </data>
   <data name="App_Name" xml:space="preserve">
     <value>StarResonance ToolBox</value>
@@ -1033,7 +1044,7 @@
     <value>https://github.com/anying1073/StarResonanceDps</value>
   </data>
   <data name="About_OpenSource_Suffix" xml:space="preserve">
-    <value>. 문제가 있다면 해당 저장소에 이슈를 등록해 주세요.</value>
+    <value>에서 오픈 소스로 공개되어 있으며, 문제가 있다면 Issue를 등록해 주세요.</value>
   </data>
   <data name="About_Contribution" xml:space="preserve">
     <value>기여를 원하시면 저장소를 포크한 뒤 Pull Request를 보내 주세요.</value>
@@ -1066,37 +1077,37 @@
     <value>스킬 상세</value>
   </data>
   <data name="DamageReference_Ribbon_Title" xml:space="preserve">
-    <value>피해 참고표</value>
+    <value>대미지 참고표</value>
   </data>
   <data name="DamageReference_Classes_All" xml:space="preserve">
     <value>전체 직업</value>
   </data>
   <data name="Classes_Stormblade" xml:space="preserve">
-    <value>Stormblade</value>
+    <value>스톰 블레이드</value>
   </data>
   <data name="Classes_FrostMage" xml:space="preserve">
-    <value>Frost Mage</value>
+    <value>프로스트 메이지</value>
   </data>
   <data name="Classes_WindKnight" xml:space="preserve">
-    <value>Wind Knight</value>
+    <value>윈드 나이트</value>
   </data>
   <data name="Classes_VerdantOracle" xml:space="preserve">
-    <value>Verdant Oracle</value>
+    <value>실반 오라클</value>
   </data>
   <data name="Classes_HeavyGuardian" xml:space="preserve">
-    <value>Heavy Guardian</value>
+    <value>헤비 가디언</value>
   </data>
   <data name="Classes_Marksman" xml:space="preserve">
-    <value>Marksman</value>
+    <value>디바인 아처</value>
   </data>
   <data name="Classes_ShieldKnight" xml:space="preserve">
-    <value>Shield Knight</value>
+    <value>쉴드 나이트</value>
   </data>
   <data name="Classes_SoulMusician" xml:space="preserve">
-    <value>Soul Musician</value>
+    <value>비트 퍼포머</value>
   </data>
   <data name="DamageReference_Table_Title" xml:space="preserve">
-    <value>피해 참고표</value>
+    <value>대미지 참고표</value>
   </data>
   <data name="DamageReference_NoData" xml:space="preserve">
     <value>표시할 데이터가 없습니다</value>
@@ -1108,10 +1119,10 @@
     <value>PCAP 불러오기</value>
   </data>
   <data name="Debug_AddSampleData" xml:space="preserve">
-    <value>AddSampleData</value>
+    <value>샘플 데이터 추가</value>
   </data>
   <data name="Debug_ClearLogs" xml:space="preserve">
-    <value>Clear Logs</value>
+    <value>로그 지우기</value>
   </data>
   <data name="Debug_AddTestLog" xml:space="preserve">
     <value>테스트 로그 추가</value>
@@ -1123,13 +1134,13 @@
     <value>자동 스크롤</value>
   </data>
   <data name="Debug_Filter_Level" xml:space="preserve">
-    <value>Level:</value>
+    <value>레벨:</value>
   </data>
   <data name="Debug_Filter_Label" xml:space="preserve">
-    <value>Filter:</value>
+    <value>필터:</value>
   </data>
   <data name="Debug_Filter_Tooltip" xml:space="preserve">
-    <value>Filter logs by message or category content</value>
+    <value>메시지 또는 카테고리로 로그를 필터링</value>
   </data>
   <data name="Debug_Header_Time" xml:space="preserve">
     <value>시간</value>
@@ -1168,7 +1179,7 @@
     <value>스킬 상세 창</value>
   </data>
   <data name="Debug_Button_DamageReference" xml:space="preserve">
-    <value>피해 참고 창</value>
+    <value>대미지 참고 창</value>
   </data>
   <data name="Debug_Button_Settings" xml:space="preserve">
     <value>설정 창</value>
@@ -1206,55 +1217,55 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
     <value>-</value>
   </data>
   <data name="ClassSpec_Unknown" xml:space="preserve">
-    <value>Unknown</value>
+    <value>알 수 없음</value>
   </data>
   <data name="ClassSpec_ShieldKnightRecovery" xml:space="preserve">
-    <value>Recovery</value>
+    <value>신성</value>
   </data>
   <data name="ClassSpec_ShieldKnightShield" xml:space="preserve">
-    <value>Shield</value>
+    <value>광휘</value>
   </data>
   <data name="ClassSpec_HeavyGuardianEarthfort" xml:space="preserve">
-    <value>Earthfort</value>
+    <value>암석</value>
   </data>
   <data name="ClassSpec_HeavyGuardianBlock" xml:space="preserve">
-    <value>Block</value>
+    <value>가드</value>
   </data>
   <data name="ClassSpec_StormbladeIaidoSlash" xml:space="preserve">
-    <value>IaidoSlash</value>
+    <value>발도</value>
   </data>
   <data name="ClassSpec_StormbladeMoonStrike" xml:space="preserve">
-    <value>MoonStrike</value>
+    <value>월광</value>
   </data>
   <data name="ClassSpec_WindKnightVanGuard" xml:space="preserve">
-    <value>VanGuard</value>
+    <value>땅창</value>
   </data>
   <data name="ClassSpec_WindKnightSkyward" xml:space="preserve">
-    <value>Skyward</value>
+    <value>날창</value>
   </data>
   <data name="ClassSpec_FrostMageIcicle" xml:space="preserve">
-    <value>Icicle</value>
+    <value>얼창</value>
   </data>
   <data name="ClassSpec_FrostMageFrostBeam" xml:space="preserve">
-    <value>FrostBeam</value>
+    <value>얼빔</value>
   </data>
   <data name="ClassSpec_MarksmanWildpack" xml:space="preserve">
-    <value>Wildpack</value>
+    <value>늑활</value>
   </data>
   <data name="ClassSpec_MarksmanFalconry" xml:space="preserve">
-    <value>Falconry</value>
+    <value>매활</value>
   </data>
   <data name="ClassSpec_VerdantOracleSmite" xml:space="preserve">
-    <value>Smite</value>
+    <value>심판</value>
   </data>
   <data name="ClassSpec_VerdantOracleLifeBind" xml:space="preserve">
-    <value>LifeBind</value>
+    <value>치유</value>
   </data>
   <data name="ClassSpec_SoulMusicianDissonance" xml:space="preserve">
-    <value>Dissonance</value>
+    <value>음파</value>
   </data>
   <data name="ClassSpec_SoulMusicianConcerto" xml:space="preserve">
-    <value>Concerto</value>
+    <value>협주</value>
   </data>
   <data name="Debug_Localization_Language" xml:space="preserve">
     <value>언어:</value>
@@ -1310,7 +1321,7 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
     <value>프로젝트 개시자</value>
   </data>
   <data name="DpsDetail_Popup_TotalDamage" xml:space="preserve">
-    <value>총 피해량：</value>
+    <value>총 대미지：</value>
   </data>
   <data name="DpsDetail_Popup_HitCount" xml:space="preserve">
     <value>타수：</value>
@@ -1320,6 +1331,12 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   </data>
   <data name="DpsDetail_Popup_Average" xml:space="preserve">
     <value>  평균：</value>
+  </data>
+  <data name="Common_HitType_CriticalLucky" xml:space="preserve">
+    <value>치명타 행운 대미지</value>
+  </data>
+  <data name="SkillBreakdown_Suffix_CritLucky" xml:space="preserve">
+    <value>치명타 행운 횟수</value>
   </data>
   <data name="Dialog_UidRequired_Message2" xml:space="preserve">
     <value>설정에서 캐릭터 UID를 먼저 설정해야 스킬 로그를 사용할 수 있습니다.
