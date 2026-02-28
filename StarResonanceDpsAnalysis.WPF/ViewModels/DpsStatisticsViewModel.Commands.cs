@@ -143,7 +143,30 @@ public partial class DpsStatisticsViewModel
     [RelayCommand]
     private void OpenSkillLog()
     {
-        _logger.LogInformation(_localizationManager.GetString(ResourcesKeys.Command_OpenSkillLog, defaultValue: "Open skill log window"));
+        var userUid = _storage.CurrentPlayerInfo.UID > 0 ? _storage.CurrentPlayerInfo.UID : _configManager.CurrentConfig.Uid;
+
+        if (userUid <= 0)
+        {
+            // UID not configured, show prompt and open settings
+            _logger.LogWarning(_localizationManager.GetString(ResourcesKeys.Warning_UidNotConfigured, defaultValue: "Tried to open skill log without UID configured"));
+
+            _messageDialogService.Show(
+                _localizationManager.GetString(ResourcesKeys.Dialog_UidRequired_Title, defaultValue: "Character UID required"),
+                _localizationManager.GetString(ResourcesKeys.Dialog_UidRequired_Message2,
+                    defaultValue: "Please configure your character UID in Settings before using skill log.\n\nHow to get UID: in game, the bottom-left player number is your UID."),
+                _windowManagement.DpsStatisticsView);
+
+            // Open settings page (character settings area)
+            _windowManagement.SettingsView.Show();
+            _windowManagement.SettingsView.Activate(); // Ensure window is brought to front
+
+            return; // Don't open personal DPS window
+        }
+
+        // UID is configured, open personal DPS window normally
+        _logger.LogInformation("{Message}, UID={Uid}",
+            _localizationManager.GetString(ResourcesKeys.Command_OpenSkillLog, defaultValue: "Open skill log window"),
+            userUid);
         _windowManagement.SkillLogView.Show();
         _windowManagement.SkillLogView.Activate();
     }
