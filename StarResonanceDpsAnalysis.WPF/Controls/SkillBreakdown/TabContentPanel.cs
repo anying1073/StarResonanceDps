@@ -27,6 +27,96 @@ public class TabContentPanel : Control
         set => SetValue(ItemTemplateProperty, value);
     }
 
+    public static readonly DependencyProperty AverageSortLabelKeyProperty =
+    DependencyProperty.Register(
+        nameof(AverageSortLabelKey),
+        typeof(string),
+        typeof(TabContentPanel),
+        new PropertyMetadata("SkillBreakdown_Label_AverageDps"));
+
+    public string AverageSortLabelKey
+    {
+        get => (string)GetValue(AverageSortLabelKeyProperty);
+        set => SetValue(AverageSortLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty AverageColumnLabelKeyProperty =
+        DependencyProperty.Register(
+            nameof(AverageColumnLabelKey),
+            typeof(string),
+            typeof(TabContentPanel),
+            new PropertyMetadata("SkillBreakdown_Label_AverageDamage"));
+
+    public string AverageColumnLabelKey
+    {
+        get => (string)GetValue(AverageColumnLabelKeyProperty);
+        set => SetValue(AverageColumnLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty NormalHitTypeLabelKeyProperty =
+    DependencyProperty.Register(
+        nameof(NormalHitTypeLabelKey),
+        typeof(string),
+        typeof(TabContentPanel),
+        new PropertyMetadata("Common_HitType_Normal"));
+
+    public string NormalHitTypeLabelKey
+    {
+        get => (string)GetValue(NormalHitTypeLabelKeyProperty);
+        set => SetValue(NormalHitTypeLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty LuckyHitTypeLabelKeyProperty =
+        DependencyProperty.Register(
+            nameof(LuckyHitTypeLabelKey),
+            typeof(string),
+            typeof(TabContentPanel),
+            new PropertyMetadata("Common_HitType_Lucky"));
+
+    public string LuckyHitTypeLabelKey
+    {
+        get => (string)GetValue(LuckyHitTypeLabelKeyProperty);
+        set => SetValue(LuckyHitTypeLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty CriticalHitTypeLabelKeyProperty =
+        DependencyProperty.Register(
+            nameof(CriticalHitTypeLabelKey),
+            typeof(string),
+            typeof(TabContentPanel),
+            new PropertyMetadata("Common_HitType_Critical"));
+
+    public string CriticalHitTypeLabelKey
+    {
+        get => (string)GetValue(CriticalHitTypeLabelKeyProperty);
+        set => SetValue(CriticalHitTypeLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty HitCountLabelKeyProperty =
+    DependencyProperty.Register(
+        nameof(HitCountLabelKey),
+        typeof(string),
+        typeof(TabContentPanel),
+        new PropertyMetadata("SkillBreakdown_Label_HitCount"));
+
+    public string HitCountLabelKey
+    {
+        get => (string)GetValue(HitCountLabelKeyProperty);
+        set => SetValue(HitCountLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty HitsLabelKeyProperty =
+    DependencyProperty.Register(
+        nameof(HitsLabelKey),
+        typeof(string),
+        typeof(TabContentPanel),
+        new PropertyMetadata("SkillBreakdown_Label_TotalHits"));
+
+    public string HitsLabelKey
+    {
+        get => (string)GetValue(HitsLabelKeyProperty);
+        set => SetValue(HitsLabelKeyProperty, value);
+    }
 
     #region SkillStats
 

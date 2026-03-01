@@ -848,8 +848,8 @@ Como obter: Após uma luta, seu personagem aparecerá automaticamente na janela 
   <data name="SkillBreakdown_Label_AverageHps" xml:space="preserve">
     <value>HPS médio</value>
   </data>
-  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
-    <value>Total de curas</value>
+  <data name="SkillBreakdown_Label_HealCount" xml:space="preserve">
+    <value>Acertos de curas</value>
   </data>
   <data name="SkillBreakdown_Section_HealingSkillsAnalysis" xml:space="preserve">
     <value>Análise de habilidades de cura</value>
@@ -868,9 +868,6 @@ Como obter: Após uma luta, seu personagem aparecerá automaticamente na janela 
   </data>
   <data name="SkillBreakdown_Label_AverageDtps" xml:space="preserve">
     <value>DTPS médio</value>
-  </data>
-  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
-    <value>Total de golpes recebidos</value>
   </data>
   <data name="SkillBreakdown_Section_DamageTakenAnalysis" xml:space="preserve">
     <value>Análise de dano recebido</value>
@@ -1305,5 +1302,32 @@ Como obter o UID: no jogo, o número do jogador no canto inferior esquerdo é o 
   </data>
   <data name="Settings_PlayerUid_Get" xml:space="preserve">
     <value>Pegar</value>
+  </data>
+  <data name="Common_HitType_CriticalHeal" xml:space="preserve">
+    <value>Crítico</value>
+  </data>
+  <data name="Common_HitType_LuckyHeal" xml:space="preserve">
+    <value>Sorte</value>
+  </data>
+  <data name="Common_HitType_NormalHeal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
+    <value>Total de golpes recebidos</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
+    <value>Total de curas</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalHealing" xml:space="preserve">
+    <value>Cura total:</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalDamageTaken" xml:space="preserve">
+    <value>Dano total recebido:</value>
+  </data>
+  <data name="DpsDetail_Popup_HealCount" xml:space="preserve">
+    <value>Acertos de curas:</value>
+  </data>
+  <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
+    <value>Vezes atingido:</value>
   </data>
 </root>

@@ -121,7 +121,7 @@ public class SkillStatsSummaryPanel : Control
         set => SetValue(LuckyRateProperty, value);
     }
 
-    // ? ÐÂÔö£ºÆÕÍ¨ÉËº¦
+    // ? æ–°å¢žï¼šæ™®é€šä¼¤å®³
     public static readonly DependencyProperty NormalDamageProperty = DependencyProperty.Register(
         nameof(NormalDamage), typeof(long), typeof(SkillStatsSummaryPanel), new PropertyMetadata(default(long)));
 
@@ -131,7 +131,7 @@ public class SkillStatsSummaryPanel : Control
         set => SetValue(NormalDamageProperty, value);
     }
 
-    // ? ÐÂÔö£º±©»÷ÉËº¦
+    // ? æ–°å¢žï¼šæš´å‡»ä¼¤å®³
     public static readonly DependencyProperty CritDamageProperty = DependencyProperty.Register(
         nameof(CritDamage), typeof(long), typeof(SkillStatsSummaryPanel), new PropertyMetadata(default(long)));
 
@@ -141,7 +141,7 @@ public class SkillStatsSummaryPanel : Control
         set => SetValue(CritDamageProperty, value);
     }
 
-    // ? ÐÂÔö£ºÐÒÔËÉËº¦
+    // ? æ–°å¢žï¼šå¹¸è¿ä¼¤å®³
     public static readonly DependencyProperty LuckyDamageProperty = DependencyProperty.Register(
         nameof(LuckyDamage), typeof(long), typeof(SkillStatsSummaryPanel), new PropertyMetadata(default(long)));
 
@@ -151,7 +151,7 @@ public class SkillStatsSummaryPanel : Control
         set => SetValue(LuckyDamageProperty, value);
     }
 
-    // ? ÐÂÔö£ºÆÕÍ¨Êý¾Ý±êÇ©£¨ÓÃÓÚÏÔÊ¾"ÆÕÍ¨ÉËº¦"/"ÆÕÍ¨ÖÎÁÆ"/"ÆÕÍ¨³ÐÉË"£©
+    // ? æ–°å¢žï¼šæ™®é€šæ•°æ®æ ‡ç­¾ï¼ˆç”¨äºŽæ˜¾ç¤º"æ™®é€šä¼¤å®³"/"æ™®é€šæ²»ç–—"/"æ™®é€šæ‰¿ä¼¤"ï¼‰
     public static readonly DependencyProperty NormalLabelProperty = DependencyProperty.Register(
         nameof(NormalLabel), typeof(string), typeof(SkillStatsSummaryPanel), new PropertyMetadata(default(string?)));
 
@@ -161,7 +161,7 @@ public class SkillStatsSummaryPanel : Control
         set => SetValue(NormalLabelProperty, value);
     }
 
-    // ? ÐÂÔö£º±©»÷Êý¾Ý±êÇ©
+    // ? æ–°å¢žï¼šæš´å‡»æ•°æ®æ ‡ç­¾
     public static readonly DependencyProperty CritLabelProperty = DependencyProperty.Register(
         nameof(CritLabel), typeof(string), typeof(SkillStatsSummaryPanel), new PropertyMetadata(default(string?)));
 
@@ -171,7 +171,7 @@ public class SkillStatsSummaryPanel : Control
         set => SetValue(CritLabelProperty, value);
     }
 
-    // ? ÐÂÔö£ºÐÒÔËÊý¾Ý±êÇ©
+    // ? æ–°å¢žï¼šå¹¸è¿æ•°æ®æ ‡ç­¾
     public static readonly DependencyProperty LuckyLabelProperty = DependencyProperty.Register(
         nameof(LuckyLabel), typeof(string), typeof(SkillStatsSummaryPanel), new PropertyMetadata(default(string?)));
 
@@ -179,5 +179,57 @@ public class SkillStatsSummaryPanel : Control
     {
         get => (string?)GetValue(LuckyLabelProperty);
         set => SetValue(LuckyLabelProperty, value);
+    }
+
+    public static readonly DependencyProperty NormalHitTypeLabelKeyProperty =
+    DependencyProperty.Register(
+        nameof(NormalHitTypeLabelKey),
+        typeof(string),
+        typeof(SkillStatsSummaryPanel),
+        new PropertyMetadata("Common_HitType_Normal"));
+
+    public string NormalHitTypeLabelKey
+    {
+        get => (string)GetValue(NormalHitTypeLabelKeyProperty);
+        set => SetValue(NormalHitTypeLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty LuckyHitTypeLabelKeyProperty =
+        DependencyProperty.Register(
+            nameof(LuckyHitTypeLabelKey),
+            typeof(string),
+            typeof(SkillStatsSummaryPanel),
+            new PropertyMetadata("Common_HitType_Lucky"));
+
+    public string LuckyHitTypeLabelKey
+    {
+        get => (string)GetValue(LuckyHitTypeLabelKeyProperty);
+        set => SetValue(LuckyHitTypeLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty CriticalHitTypeLabelKeyProperty =
+        DependencyProperty.Register(
+            nameof(CriticalHitTypeLabelKey),
+            typeof(string),
+            typeof(SkillStatsSummaryPanel),
+            new PropertyMetadata("Common_HitType_Critical"));
+
+    public string CriticalHitTypeLabelKey
+    {
+        get => (string)GetValue(CriticalHitTypeLabelKeyProperty);
+        set => SetValue(CriticalHitTypeLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty HitsLabelKeyProperty =
+    DependencyProperty.Register(
+        nameof(HitsLabelKey),
+        typeof(string),
+        typeof(SkillStatsSummaryPanel),
+        new PropertyMetadata("SkillBreakdown_Label_HitCount"));
+
+    public string HitsLabelKey
+    {
+        get => (string)GetValue(HitsLabelKeyProperty);
+        set => SetValue(HitsLabelKeyProperty, value);
     }
 }

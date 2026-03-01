@@ -558,7 +558,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CritLukcy.
+        ///   Crit に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Common_HitType_CriticalHeal {
+            get {
+                return ResourceManager.GetString("Common_HitType_CriticalHeal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   CritLukcy に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Common_HitType_CriticalLucky {
             get {
@@ -576,7 +585,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Normal.
+        ///   Lucky に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Common_HitType_LuckyHeal {
+            get {
+                return ResourceManager.GetString("Common_HitType_LuckyHeal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Normal に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Common_HitType_Normal {
             get {
@@ -585,7 +603,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skill display limit set to.
+        ///    に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Common_HitType_NormalHeal {
+            get {
+                return ResourceManager.GetString("Common_HitType_NormalHeal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Skill display limit set to に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Common_SkillDisplayLimitChanged {
             get {
@@ -956,7 +983,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Crit.
+        ///    Crit: に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsDetail_Popup_Critical {
             get {
@@ -965,7 +992,25 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hits:.
+        ///   Hits Taken: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DpsDetail_Popup_DamageTakenCount {
+            get {
+                return ResourceManager.GetString("DpsDetail_Popup_DamageTakenCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Heals: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DpsDetail_Popup_HealCount {
+            get {
+                return ResourceManager.GetString("DpsDetail_Popup_HealCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Hits: に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsDetail_Popup_HitCount {
             get {
@@ -983,7 +1028,25 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CurrentPlayerRank.
+        ///   Total Damage Taken: に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DpsDetail_Popup_TotalDamageTaken {
+            get {
+                return ResourceManager.GetString("DpsDetail_Popup_TotalDamageTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Total Healing に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DpsDetail_Popup_TotalHealing {
+            get {
+                return ResourceManager.GetString("DpsDetail_Popup_TotalHealing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   CurrentPlayerRank に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsStatistics_CurrentPlayerRank {
             get {
@@ -2995,7 +3058,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skill Breakdown.
+        ///   Taken Type Distribution に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SkillBreakdown_Chart_TakenTypeDistribution {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Chart_TakenTypeDistribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Skill Breakdown に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Header_Title {
             get {
@@ -3013,7 +3085,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Average hit.
+        ///   Average damage に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Label_AverageDamage {
             get {
@@ -3040,7 +3112,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Average HPS.
+        ///   Average healing に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SkillBreakdown_Label_AverageHealing {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Label_AverageHealing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Average HPS に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Label_AverageHps {
             get {
@@ -3049,7 +3130,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Critical hits.
+        ///   Average damage taken に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SkillBreakdown_Label_AverageTaken {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Label_AverageTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Critical hits に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Label_CritCount {
             get {
@@ -3076,7 +3166,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Times hit.
+        ///   Hits Taken に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Label_DamageTakenCount {
             get {
@@ -3094,7 +3184,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hits.
+        ///   Heals に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SkillBreakdown_Label_HealCount {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Label_HealCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Hits に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Label_HitCount {
             get {
@@ -3130,7 +3229,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Normal damage.
+        ///   Normal hits に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SkillBreakdown_Label_NormalCount {
+            get {
+                return ResourceManager.GetString("SkillBreakdown_Label_NormalCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Normal rate に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Label_NormalDamage {
             get {

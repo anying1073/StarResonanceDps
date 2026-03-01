@@ -218,7 +218,7 @@
 
                                         <!-- Sort by AverageDps -->
                                         <RadioButton
-                                            Content="{lex:Loc Key=SkillBreakdown_Label_AverageDps}"
+                                            Content="{lex:Loc {Binding AverageSortLabelKey, RelativeSource={RelativeSource TemplatedParent}}}"
                                             GroupName="SortGroup"
                                             IsChecked="{Binding SortMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static skillBreakdown:SkillSortMode.AverageDamage}}"
                                             Style="{StaticResource SortRadioButtonStyle}" />
@@ -231,6 +231,7 @@
                         <Border Grid.Row="1" Style="{StaticResource SkillListBorder}">
                             <DataGrid
                                 x:Name="SkillDataGrid"
+                                Tag="{Binding AverageColumnLabelKey, RelativeSource={RelativeSource TemplatedParent}}"
                                 ItemsSource="{Binding SkillItems, RelativeSource={RelativeSource TemplatedParent}}"
                                 Style="{StaticResource SkillListDataGridStyle}">
                                 <DataGrid.Columns>
@@ -307,7 +308,7 @@
                                     <!-- Hit Count Column -->
                                     <DataGridTemplateColumn Width="100">
                                         <DataGridTemplateColumn.Header>
-                                            <TextBlock Text="{lex:Loc Key=SkillBreakdown_Label_HitCount}" />
+                                            <TextBlock Text="{lex:Loc {Binding HitCountLabelKey, RelativeSource={RelativeSource AncestorType={x:Type skillBreakdown:SkillListPanel}}}}" />
                                         </DataGridTemplateColumn.Header>
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
@@ -317,14 +318,9 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
                                                 <Border Padding="16,8">
-                                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                                        <TextBlock
-                                                            Style="{StaticResource StatColumnText}"
-                                                            Text="{Binding HitCount, StringFormat={}{0:N0}}" />
-                                                        <TextBlock
-                                                            Style="{StaticResource StatColumnLightText}"
-                                                            Text="{lex:Loc Key=SkillBreakdown_Unit_Hits}" />
-                                                    </StackPanel>
+                                                    <TextBlock
+                                                        Style="{StaticResource StatColumnText}"
+                                                        Text="{Binding HitCount, StringFormat={}{0:N0}}" />
                                                 </Border>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
@@ -357,9 +353,9 @@
                                     </DataGridTemplateColumn>
 
                                     <!-- Average Column -->
-                                    <DataGridTemplateColumn Width="100">
+                                    <DataGridTemplateColumn Width="120">
                                         <DataGridTemplateColumn.Header>
-                                            <TextBlock Text="{lex:Loc Key=SkillBreakdown_Label_AverageDamage}" />
+                                            <TextBlock Text="{lex:Loc {Binding Tag, RelativeSource={RelativeSource AncestorType=DataGrid}}}" />
                                         </DataGridTemplateColumn.Header>
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
@@ -378,7 +374,7 @@
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <!--Percent To Max Column-->
-                                    <DataGridTemplateColumn Width="100">
+                                    <DataGridTemplateColumn Width="80">
                                         <DataGridTemplateColumn.Header>
                                             <TextBlock Text="{lex:Loc Key={x:Static properties:ResourcesKeys.SkillBreakdown_Label_ValuePercentToTotal}}" />
                                         </DataGridTemplateColumn.Header>

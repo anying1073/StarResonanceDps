@@ -20,6 +20,7 @@
 
     <UserControl.Resources>
         <converters:ConditionalPercentToColorConverter x:Key="BgColorConverter" />
+        <converters:StatisticIndexToPopupLabelKeyConverter x:Key="StatisticIndexToPopupLabelKeyConverter" />
     </UserControl.Resources>
 
     <!--  唯一的Border  -->
@@ -99,7 +100,11 @@
                                 Margin="0,2,0,0"
                                 FontSize="12"
                                 Style="{StaticResource FooterTextContent}">
-                                <Run Foreground="#CCCCCC" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.DpsDetail_Popup_TotalDamage}}" />
+                                <Run Foreground="#CCCCCC"
+                                     Text="{lex:Loc {Binding DataContext.StatisticIndex,
+                                     RelativeSource={RelativeSource AncestorType=Window},
+                                     Converter={StaticResource StatisticIndexToPopupLabelKeyConverter},
+                                     ConverterParameter=Total}}" />
                                 <Run Foreground="White" FontWeight="SemiBold">
                                     <Run.Text>
                                         <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
@@ -116,7 +121,11 @@
                                 Margin="0,1,0,0"
                                 FontSize="11"
                                 Style="{StaticResource FooterTextContent}">
-                                <Run Foreground="#AAAAAA" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.DpsDetail_Popup_HitCount}}" />
+                                <Run Foreground="#AAAAAA"
+                                    Text="{lex:Loc {Binding DataContext.StatisticIndex,
+                                    RelativeSource={RelativeSource AncestorType=Window},
+                                    Converter={StaticResource StatisticIndexToPopupLabelKeyConverter},
+                                    ConverterParameter=HitCount}}" />
                                 <Run Foreground="#DDDDDD" Text="{Binding HitCount}" />
                                 <Run Foreground="#AAAAAA" Text="{lex:Loc Key={x:Static loc:ResourcesKeys.DpsDetail_Popup_Critical}}" />
                                 <Run Foreground="#DDDDDD" Text="{Binding CritCount}" />

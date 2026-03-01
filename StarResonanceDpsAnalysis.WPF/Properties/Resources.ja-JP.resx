@@ -597,7 +597,7 @@
     <value>会心回数</value>
   </data>
   <data name="SkillBreakdown_Label_NormalDamage" xml:space="preserve">
-    <value>通常ダメージ</value>
+    <value>通常率</value>
   </data>
   <data name="SkillBreakdown_Label_CritDamage" xml:space="preserve">
     <value>会心ダメージ</value>
@@ -832,7 +832,7 @@
     <value>総ヒット数</value>
   </data>
   <data name="SkillBreakdown_Section_DamageSkillsAnalysis" xml:space="preserve">
-    <value>スキル別ダメージ分析</value>
+    <value>スキル別ダメージ</value>
   </data>
   <data name="SkillBreakdown_Chart_RealTimeDps" xml:space="preserve">
     <value>リアルタイムDPS</value>
@@ -841,10 +841,10 @@
     <value>ズームをリセット</value>
   </data>
   <data name="SkillBreakdown_Chart_SkillDamageDistribution" xml:space="preserve">
-    <value>スキル別ダメージ内訳</value>
+    <value>スキル別ダメージ割合</value>
   </data>
   <data name="SkillBreakdown_Chart_HitTypeDistribution" xml:space="preserve">
-    <value>ヒット種別内訳</value>
+    <value>ヒット数内訳</value>
   </data>
   <data name="SkillBreakdown_Label_TotalHealing" xml:space="preserve">
     <value>総回復量</value>
@@ -852,20 +852,20 @@
   <data name="SkillBreakdown_Label_AverageHps" xml:space="preserve">
     <value>平均HPS</value>
   </data>
-  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
-    <value>総回復回数</value>
+  <data name="SkillBreakdown_Label_HealCount" xml:space="preserve">
+    <value>回復回数</value>
   </data>
   <data name="SkillBreakdown_Section_HealingSkillsAnalysis" xml:space="preserve">
-    <value>回復スキル分析</value>
+    <value>スキル別回復量</value>
   </data>
   <data name="SkillBreakdown_Chart_RealTimeHps" xml:space="preserve">
     <value>リアルタイムHPS</value>
   </data>
   <data name="SkillBreakdown_Chart_HealingDistribution" xml:space="preserve">
-    <value>回復内訳</value>
+    <value>スキル別回復量割合</value>
   </data>
   <data name="SkillBreakdown_Chart_HealTypeDistribution" xml:space="preserve">
-    <value>回復種別内訳</value>
+    <value>回復回数内訳</value>
   </data>
   <data name="SkillBreakdown_Label_TotalDamageTaken" xml:space="preserve">
     <value>総被ダメージ</value>
@@ -873,17 +873,14 @@
   <data name="SkillBreakdown_Label_AverageDtps" xml:space="preserve">
     <value>平均DTPS</value>
   </data>
-  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
-    <value>総被弾回数</value>
-  </data>
   <data name="SkillBreakdown_Section_DamageTakenAnalysis" xml:space="preserve">
-    <value>被ダメージ分析</value>
+    <value>スキル別被ダメージ</value>
   </data>
   <data name="SkillBreakdown_Chart_RealTimeDtps" xml:space="preserve">
     <value>リアルタイムDTPS</value>
   </data>
   <data name="SkillBreakdown_Chart_DamageSourcesDistribution" xml:space="preserve">
-    <value>被ダメージ要因内訳</value>
+    <value>スキル別被ダメージ割合</value>
   </data>
   <data name="SkillBreakdown_Chart_DpsSeriesXAxis" xml:space="preserve">
     <value>時間（秒）</value>
@@ -1369,9 +1366,54 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   <data name="DpsDetail_Popup_Average" xml:space="preserve">
     <value>  平均：</value>
   </data>
+  <data name="Common_HitType_CriticalLucky" xml:space="preserve">
+    <value>会心幸運回数</value>
+  </data>
+  <data name="SkillBreakdown_Suffix_CritLucky" xml:space="preserve">
+    <value>会心幸運率</value>
+  </data>
   <data name="Dialog_UidRequired_Message2" xml:space="preserve">
     <value>スキルログを使用するには、設定画面でキャラクターUIDを登録してください。
 
 UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤー番号がUIDです。</value>
+  </data>
+  <data name="SkillBreakdown_Label_AverageHealing" xml:space="preserve">
+    <value>平均回復量</value>
+  </data>
+  <data name="SkillBreakdown_Label_AverageTaken" xml:space="preserve">
+    <value>平均被ダメージ</value>
+  </data>
+  <data name="SkillBreakdown_Chart_TakenTypeDistribution" xml:space="preserve">
+    <value>被弾回数内訳</value>
+  </data>
+  <data name="Common_HitType_CriticalHeal" xml:space="preserve">
+    <value>会心回復量</value>
+  </data>
+  <data name="Common_HitType_LuckyHeal" xml:space="preserve">
+    <value>幸運回復量</value>
+  </data>
+  <data name="Common_HitType_NormalHeal" xml:space="preserve">
+    <value>通常回復量</value>
+  </data>
+  <data name="SkillBreakdown_Label_NormalCount" xml:space="preserve">
+    <value>通常回数</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
+    <value>総被弾回数</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
+    <value>総回復回数</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalHealing" xml:space="preserve">
+    <value>総回復量：</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalDamageTaken" xml:space="preserve">
+    <value>総被ダメージ：</value>
+  </data>
+  <data name="DpsDetail_Popup_HealCount" xml:space="preserve">
+    <value>回復回数：</value>
+  </data>
+  <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
+    <value>被弾回数：</value>
   </data>
 </root>

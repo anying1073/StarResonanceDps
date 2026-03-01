@@ -19,7 +19,7 @@
                                     <GradientStop Offset="1" Color="#FFFFFF" />
                                 </LinearGradientBrush>
                             </Border.Background>
-                            
+
                             <skillBreakdown:SkillStatsSummaryPanel
                                 Margin="16,16,16,16"
                                 AverageLabel="{TemplateBinding AverageLabel}"
@@ -29,6 +29,7 @@
                                 CritRate="{TemplateBinding CritRate}"
                                 HitsLabel="{TemplateBinding HitsLabel}"
                                 Hits="{TemplateBinding Hits}"
+                                HitsLabelKey="{TemplateBinding HitsLabelKey}"
                                 LuckyCountLabel="{TemplateBinding LuckyCountLabel}"
                                 LuckyCount="{TemplateBinding LuckyCount}"
                                 LuckyRate="{TemplateBinding LuckyRate}"
@@ -36,8 +37,11 @@
                                 Total="{TemplateBinding Total}"
                                 NormalDamage="{TemplateBinding NormalDamage}"
                                 CritDamage="{TemplateBinding CritDamage}"
-                                LuckyDamage="{TemplateBinding LuckyDamage}" />
-                            
+                                LuckyDamage="{TemplateBinding LuckyDamage}"
+                                NormalHitTypeLabelKey="{TemplateBinding NormalHitTypeLabelKey}"
+                                LuckyHitTypeLabelKey="{TemplateBinding LuckyHitTypeLabelKey}"
+                                CriticalHitTypeLabelKey="{TemplateBinding CriticalHitTypeLabelKey}" />
+
                         </Border>
 
                         <Border Grid.Row="1" Height="1" Background="#E8E8E8" />
@@ -83,6 +87,9 @@
                                 SkillItems="{TemplateBinding SkillItems}"
                                 SectionTitle="{TemplateBinding SkillListTitle}"
                                 ItemTemplate="{TemplateBinding ItemTemplate}"
+                                HitCountLabelKey="{TemplateBinding HitCountLabelKey}"
+                                AverageSortLabelKey="{TemplateBinding AverageSortLabelKey}"
+                                AverageColumnLabelKey="{TemplateBinding AverageColumnLabelKey}"
                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Grid>
                     </Grid>

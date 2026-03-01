@@ -33,8 +33,8 @@ public class SkillListPanel : Control
         new PropertyMetadata(default(ObservableCollection<SkillItemViewModel>), OnSkillItemsChanged));
 
     public static readonly DependencyProperty SortModeProperty = DependencyProperty.Register(
-        nameof(SortMode), 
-        typeof(SkillSortMode), 
+        nameof(SortMode),
+        typeof(SkillSortMode),
         typeof(SkillListPanel),
         new PropertyMetadata(SkillSortMode.Total, OnSortModeChanged));
 
@@ -111,5 +111,44 @@ public class SkillListPanel : Control
         }
 
         view.Refresh();
+    }
+
+    public static readonly DependencyProperty AverageSortLabelKeyProperty =
+    DependencyProperty.Register(
+        nameof(AverageSortLabelKey),
+        typeof(string),
+        typeof(SkillListPanel),
+        new PropertyMetadata("SkillBreakdown_Label_AverageDps"));
+
+    public string AverageSortLabelKey
+    {
+        get => (string)GetValue(AverageSortLabelKeyProperty);
+        set => SetValue(AverageSortLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty AverageColumnLabelKeyProperty =
+        DependencyProperty.Register(
+            nameof(AverageColumnLabelKey),
+            typeof(string),
+            typeof(SkillListPanel),
+            new PropertyMetadata("SkillBreakdown_Label_AverageDamage"));
+
+    public string AverageColumnLabelKey
+    {
+        get => (string)GetValue(AverageColumnLabelKeyProperty);
+        set => SetValue(AverageColumnLabelKeyProperty, value);
+    }
+
+    public static readonly DependencyProperty HitCountLabelKeyProperty =
+    DependencyProperty.Register(
+        nameof(HitCountLabelKey),
+        typeof(string),
+        typeof(SkillListPanel),
+        new PropertyMetadata("SkillBreakdown_Label_HitCount"));
+
+    public string HitCountLabelKey
+    {
+        get => (string)GetValue(HitCountLabelKeyProperty);
+        set => SetValue(HitCountLabelKeyProperty, value);
     }
 }

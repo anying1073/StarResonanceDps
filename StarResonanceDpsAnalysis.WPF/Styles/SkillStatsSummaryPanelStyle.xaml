@@ -32,7 +32,7 @@
                                         </Run.Text>
                                     </Run>
                                     <Run Text=" " />
-                                    <Run Text="{lex:Loc Key={x:Static properties:ResourcesKeys.Common_HitType_Normal}}" />
+                                    <Run Text="{lex:Loc {Binding NormalHitTypeLabelKey, RelativeSource={RelativeSource TemplatedParent}}}" />
                                 </TextBlock>
                             </StackPanel>
                         </Border>
@@ -59,7 +59,7 @@
                                         </Run.Text>
                                     </Run>
                                     <Run Text=" " />
-                                    <Run Text="{lex:Loc Key={x:Static properties:ResourcesKeys.Common_HitType_Lucky}}" />
+                                    <Run Text="{lex:Loc {Binding LuckyHitTypeLabelKey, RelativeSource={RelativeSource TemplatedParent}}}" />
                                 </TextBlock>
                             </StackPanel>
                         </Border>
@@ -68,7 +68,7 @@
                         <Border Style="{StaticResource StatCardBorder}">
                             <StackPanel>
                                 <TextBlock Style="{StaticResource StatValueText}" Text="{Binding Hits, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding HitsLabel}" />
+                                <TextBlock Style="{StaticResource StatLabelText}" Text="{lex:Loc {Binding HitsLabelKey, RelativeSource={RelativeSource TemplatedParent}}}" />
                                 <TextBlock Style="{StaticResource StatSubText}" HorizontalAlignment="Center">
                                     <Run>
                                         <Run.Text>
@@ -79,7 +79,7 @@
                                         </Run.Text>
                                     </Run>
                                     <Run Text=" " />
-                                    <Run Text="{lex:Loc Key={x:Static properties:ResourcesKeys.Common_HitType_Critical}}" />
+                                    <Run Text="{lex:Loc {Binding CriticalHitTypeLabelKey, RelativeSource={RelativeSource TemplatedParent}}}" />
                                 </TextBlock>
                             </StackPanel>
                         </Border>
@@ -87,7 +87,7 @@
                         <!-- 4. 暴击率 -->
                         <Border Style="{StaticResource StatCardBorder}">
                             <StackPanel>
-                                <TextBlock Style="{StaticResource StatValueText}" Foreground="#10B981" Text="{Binding CritRate, StringFormat={}{0:P1}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Style="{StaticResource StatValueText}" Foreground="#FACC15" Text="{Binding CritRate, StringFormat={}{0:P1}, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding CritRateLabel}" />
                                 <TextBlock Style="{StaticResource StatSubText}" HorizontalAlignment="Center">
                                     <Run Text="{Binding CritCount, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
@@ -100,7 +100,7 @@
                         <!-- 5. 幸运次数 -->
                         <Border Style="{StaticResource StatCardBorder}">
                             <StackPanel>
-                                <TextBlock Style="{StaticResource StatValueText}" Foreground="#FACC15" Text="{Binding LuckyCount, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Style="{StaticResource StatValueText}" Foreground="#10B981" Text="{Binding LuckyCount, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding LuckyCountLabel}" />
                                 <TextBlock Style="{StaticResource StatSubText}" HorizontalAlignment="Center">
                                     <Run Text="{Binding LuckyRate, StringFormat={}{0:P1}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />

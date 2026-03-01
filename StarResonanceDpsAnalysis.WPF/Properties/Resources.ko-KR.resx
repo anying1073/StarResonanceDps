@@ -848,8 +848,8 @@
   <data name="SkillBreakdown_Label_AverageHps" xml:space="preserve">
     <value>평균 HPS</value>
   </data>
-  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
-    <value>총 치유 횟수</value>
+  <data name="SkillBreakdown_Label_HealCount" xml:space="preserve">
+    <value>치유 횟수</value>
   </data>
   <data name="SkillBreakdown_Section_HealingSkillsAnalysis" xml:space="preserve">
     <value>치유 스킬 분석</value>
@@ -868,9 +868,6 @@
   </data>
   <data name="SkillBreakdown_Label_AverageDtps" xml:space="preserve">
     <value>평균 DTPS</value>
-  </data>
-  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
-    <value>총 피격 횟수</value>
   </data>
   <data name="SkillBreakdown_Section_DamageTakenAnalysis" xml:space="preserve">
     <value>받은 피해 분석</value>
@@ -1328,5 +1325,32 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   </data>
   <data name="Settings_PlayerUid_Get" xml:space="preserve">
     <value>얻다</value>
+  </data>
+  <data name="Common_HitType_CriticalHeal" xml:space="preserve">
+    <value>치명타</value>
+  </data>
+  <data name="Common_HitType_LuckyHeal" xml:space="preserve">
+    <value>행운</value>
+  </data>
+  <data name="Common_HitType_NormalHeal" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
+    <value>총 피격 횟수</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
+    <value>총 치유 횟수</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalHealing" xml:space="preserve">
+    <value>총 치유량：</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalDamageTaken" xml:space="preserve">
+    <value>총 받은 피해：</value>
+  </data>
+  <data name="DpsDetail_Popup_HealCount" xml:space="preserve">
+    <value>치유 횟수：</value>
+  </data>
+  <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
+    <value>피격 횟수：</value>
   </data>
 </root>

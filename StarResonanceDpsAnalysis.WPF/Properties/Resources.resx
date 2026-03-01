@@ -595,7 +595,7 @@
     <value>Critical hits</value>
   </data>
   <data name="SkillBreakdown_Label_NormalDamage" xml:space="preserve">
-    <value>Normal damage</value>
+    <value>Normal rate</value>
   </data>
   <data name="SkillBreakdown_Label_CritDamage" xml:space="preserve">
     <value>Critical damage</value>
@@ -610,10 +610,10 @@
     <value>Others</value>
   </data>
   <data name="SkillBreakdown_Label_AverageDamage" xml:space="preserve">
-    <value>Average hit</value>
+    <value>Average damage</value>
   </data>
   <data name="SkillBreakdown_Label_DamageTakenCount" xml:space="preserve">
-    <value>Times hit</value>
+    <value>Hits Taken</value>
   </data>
   <data name="SkillBreakdown_Placeholder_Form" xml:space="preserve">
     <value>Imagine a data table here</value>
@@ -850,8 +850,8 @@ How to get: After a fight, your character will automatically appear in the stats
   <data name="SkillBreakdown_Label_AverageHps" xml:space="preserve">
     <value>Average HPS</value>
   </data>
-  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
-    <value>Total Heals</value>
+  <data name="SkillBreakdown_Label_HealCount" xml:space="preserve">
+    <value>Heals</value>
   </data>
   <data name="SkillBreakdown_Section_HealingSkillsAnalysis" xml:space="preserve">
     <value>Healing Skills Analysis</value>
@@ -870,9 +870,6 @@ How to get: After a fight, your character will automatically appear in the stats
   </data>
   <data name="SkillBreakdown_Label_AverageDtps" xml:space="preserve">
     <value>Average DTPS</value>
-  </data>
-  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
-    <value>Total Hits Taken</value>
   </data>
   <data name="SkillBreakdown_Section_DamageTakenAnalysis" xml:space="preserve">
     <value>Damage Taken Analysis</value>
@@ -1361,7 +1358,7 @@ Would you like to restart the application as administrator?</value>
     <value>Hits:</value>
   </data>
   <data name="DpsDetail_Popup_Critical" xml:space="preserve">
-    <value>Crit</value>
+    <value> Crit:</value>
   </data>
   <data name="DpsDetail_Popup_Average" xml:space="preserve">
     <value>  Average:</value>
@@ -1379,5 +1376,43 @@ How to get UID: in game, the bottom-left player number is your UID.</value>
   </data>
   <data name="Settings_PlayerUid_Get" xml:space="preserve">
     <value>Get</value>
+  <data name="SkillBreakdown_Label_AverageHealing" xml:space="preserve">
+    <value>Average healing</value>
+  </data>
+  <data name="SkillBreakdown_Label_AverageTaken" xml:space="preserve">
+    <value>Average damage taken</value>
+  </data>
+  <data name="SkillBreakdown_Chart_TakenTypeDistribution" xml:space="preserve">
+    <value>Taken Type Distribution</value>
+  </data>
+  <data name="Common_HitType_CriticalHeal" xml:space="preserve">
+    <value>Crit</value>
+  </data>
+  <data name="Common_HitType_LuckyHeal" xml:space="preserve">
+    <value>Lucky</value>
+  </data>
+  <data name="Common_HitType_NormalHeal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SkillBreakdown_Label_NormalCount" xml:space="preserve">
+    <value>Normal hits</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
+    <value>Total Hits Taken</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
+    <value>Total Heals</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalHealing" xml:space="preserve">
+    <value>Total Healing</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalDamageTaken" xml:space="preserve">
+    <value>Total Damage Taken:</value>
+  </data>
+  <data name="DpsDetail_Popup_HealCount" xml:space="preserve">
+    <value>Heals:</value>
+  </data>
+  <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
+    <value>Hits Taken:</value>
   </data>
 </root>

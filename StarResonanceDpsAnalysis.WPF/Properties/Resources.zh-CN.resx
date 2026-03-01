@@ -595,7 +595,7 @@
     <value>暴击次数</value>
   </data>
   <data name="SkillBreakdown_Label_NormalDamage" xml:space="preserve">
-    <value>普通伤害</value>
+    <value>普通率</value>
   </data>
   <data name="SkillBreakdown_Label_CritDamage" xml:space="preserve">
     <value>暴击伤害</value>
@@ -848,8 +848,8 @@
   <data name="SkillBreakdown_Label_AverageHps" xml:space="preserve">
     <value>平均 HPS</value>
   </data>
-  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
-    <value>总治疗次数</value>
+  <data name="SkillBreakdown_Label_HealCount" xml:space="preserve">
+    <value>治疗次数</value>
   </data>
   <data name="SkillBreakdown_Section_HealingSkillsAnalysis" xml:space="preserve">
     <value>治疗技能分析</value>
@@ -868,9 +868,6 @@
   </data>
   <data name="SkillBreakdown_Label_AverageDtps" xml:space="preserve">
     <value>平均 DTPS</value>
-  </data>
-  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
-    <value>总受击次数</value>
   </data>
   <data name="SkillBreakdown_Section_DamageTakenAnalysis" xml:space="preserve">
     <value>承伤分析</value>
@@ -1342,10 +1339,10 @@
     <value>  平均：</value>
   </data>
   <data name="Common_HitType_CriticalLucky" xml:space="preserve">
-    <value>暴击幸运伤害</value>
+    <value>暴击幸运次数</value>
   </data>
   <data name="SkillBreakdown_Suffix_CritLucky" xml:space="preserve">
-    <value>暴击幸运数</value>
+    <value>暴击幸运率</value>
   </data>
   <data name="Dialog_UidRequired_Message2" xml:space="preserve">
     <value>请先在设置中配置您的角色UID，才能使用技能日记。
@@ -1354,5 +1351,44 @@
   </data>
   <data name="Settings_PlayerUid_Get" xml:space="preserve">
     <value>获取</value>
+  </data>
+  <data name="SkillBreakdown_Label_AverageHealing" xml:space="preserve">
+    <value>平均治疗量</value>
+  </data>
+  <data name="SkillBreakdown_Label_AverageTaken" xml:space="preserve">
+    <value>平均承受伤害</value>
+  </data>
+  <data name="SkillBreakdown_Chart_TakenTypeDistribution" xml:space="preserve">
+    <value>承伤类型分布</value>
+  </data>
+  <data name="Common_HitType_CriticalHeal" xml:space="preserve">
+    <value>暴击治疗量</value>
+  </data>
+  <data name="Common_HitType_LuckyHeal" xml:space="preserve">
+    <value>幸运治疗量</value>
+  </data>
+  <data name="Common_HitType_NormalHeal" xml:space="preserve">
+    <value>普通治疗量</value>
+  </data>
+  <data name="SkillBreakdown_Label_NormalCount" xml:space="preserve">
+    <value>普通次数</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
+    <value>总受击次数</value>
+  </data>
+  <data name="SkillBreakdown_Label_TotalHeals" xml:space="preserve">
+    <value>总治疗次数</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalHealing" xml:space="preserve">
+    <value>总治疗量：</value>
+  </data>
+  <data name="DpsDetail_Popup_TotalDamageTaken" xml:space="preserve">
+    <value>总承受伤害：</value>
+  </data>
+  <data name="DpsDetail_Popup_HealCount" xml:space="preserve">
+    <value>治疗次数：</value>
+  </data>
+  <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
+    <value>受击次数：</value>
   </data>
 </root>

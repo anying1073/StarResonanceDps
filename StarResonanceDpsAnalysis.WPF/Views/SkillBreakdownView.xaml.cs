@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using StarResonanceDpsAnalysis.WPF.ViewModels;
+using StarResonanceDpsAnalysis.WPF.Controls.SkillBreakdown;
 
 namespace StarResonanceDpsAnalysis.WPF.Views;
 
@@ -36,10 +37,56 @@ public partial class SkillBreakdownView : Window
 
     private void TabSelector_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is not ToggleButton tb || !int.TryParse(tb.Tag?.ToString(), out var index)) return;
+        if (sender is not ToggleButton tb || !int.TryParse(tb.Tag?.ToString(), out var index))
+            return;
 
-        // Update TabControl selection
         MainTabControl.SelectedIndex = index;
+
+        if (MainTabControl.SelectedContent is not TabContentPanel panel)
+            return;
+
+        switch (index)
+        {
+            case 0: // Damage
+                panel.HitsLabelKey = "SkillBreakdown_Label_TotalHits";
+                panel.HitCountLabelKey = "SkillBreakdown_Label_HitCount";
+                panel.AverageSortLabelKey = "SkillBreakdown_Label_AverageDps";
+                panel.AverageColumnLabelKey = "SkillBreakdown_Label_AverageDamage";
+                panel.NormalHitTypeLabelKey = "Common_HitType_Normal";
+                panel.LuckyHitTypeLabelKey = "Common_HitType_Lucky";
+                panel.CriticalHitTypeLabelKey = "Common_HitType_Critical";
+                break;
+
+            case 1: // Healing
+                panel.HitsLabelKey = "SkillBreakdown_Label_TotalHeals";
+                panel.HitCountLabelKey = "SkillBreakdown_Label_HealCount";
+                panel.AverageSortLabelKey = "SkillBreakdown_Label_AverageHps";
+                panel.AverageColumnLabelKey = "SkillBreakdown_Label_AverageHealing";
+                panel.NormalHitTypeLabelKey = "Common_HitType_NormalHeal";
+                panel.LuckyHitTypeLabelKey = "Common_HitType_LuckyHeal";
+                panel.CriticalHitTypeLabelKey = "Common_HitType_CriticalHeal";
+                break;
+
+            case 2: // Taken
+                panel.HitsLabelKey = "SkillBreakdown_Label_TotalHitsTaken";
+                panel.HitCountLabelKey = "SkillBreakdown_Label_DamageTakenCount";
+                panel.AverageSortLabelKey = "SkillBreakdown_Label_AverageDtps";
+                panel.AverageColumnLabelKey = "SkillBreakdown_Label_AverageTaken";
+                panel.NormalHitTypeLabelKey = "Common_HitType_Normal";
+                panel.LuckyHitTypeLabelKey = "Common_HitType_Lucky";
+                panel.CriticalHitTypeLabelKey = "Common_HitType_Critical";
+                break;
+
+            default:
+                panel.HitsLabelKey = "SkillBreakdown_Label_TotalHits";
+                panel.HitCountLabelKey = "SkillBreakdown_Label_HitCount";
+                panel.AverageSortLabelKey = "SkillBreakdown_Label_AverageDps";
+                panel.AverageColumnLabelKey = "SkillBreakdown_Label_AverageDamage";
+                panel.NormalHitTypeLabelKey = "Common_HitType_Normal";
+                panel.LuckyHitTypeLabelKey = "Common_HitType_Lucky";
+                panel.CriticalHitTypeLabelKey = "Common_HitType_Critical";
+                break;
+        }
     }
 
     private void SyncSelectorWithTab()
