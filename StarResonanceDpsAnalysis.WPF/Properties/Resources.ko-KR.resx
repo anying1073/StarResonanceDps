@@ -1353,4 +1353,10 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
     <value>피격 횟수：</value>
   </data>
+  <data name="SkillLog_Label_CriticalHeal" xml:space="preserve">
+    <value>치명타</value>
+  </data>
+  <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
+    <value>행운</value>
+  </data>
 </root>

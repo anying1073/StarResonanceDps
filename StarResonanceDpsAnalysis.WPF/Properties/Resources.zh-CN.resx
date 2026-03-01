@@ -1391,4 +1391,10 @@
   <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
     <value>受击次数：</value>
   </data>
+  <data name="SkillLog_Label_CriticalHeal" xml:space="preserve">
+    <value>暴击治疗</value>
+  </data>
+  <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
+    <value>幸运治疗</value>
+  </data>
 </root>

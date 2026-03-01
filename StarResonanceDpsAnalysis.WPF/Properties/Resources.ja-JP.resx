@@ -277,19 +277,19 @@
     <value>戦闘設定</value>
   </data>
   <data name="Settings_Section_Combat_Sub" xml:space="preserve">
-    <value>戦闘後は画面のみをクリアし、履歴は保持します</value>
+    <value>戦闘離脱後に再計測は現在の戦闘のみを対象とし、履歴は保持します</value>
   </data>
   <data name="Settings_NetworkAdapter_Label" xml:space="preserve">
     <value>ネットワークアダプター</value>
   </data>
   <data name="Settings_Combat_ClearAfterBattle" xml:space="preserve">
-    <value>戦闘後に画面をクリア</value>
+    <value>戦闘離脱後に再計測</value>
   </data>
   <data name="Settings_Common_Seconds" xml:space="preserve">
     <value>秒</value>
   </data>
   <data name="Settings_Combat_ClearAfterTeleport" xml:space="preserve">
-    <value>マップ切り替え時にリセット</value>
+    <value>マップ移動時にエリア累積戦闘を再計測</value>
   </data>
   <data name="Settings_Switch_On" xml:space="preserve">
     <value>オン</value>
@@ -343,7 +343,7 @@
     <value>DPSの算出方法：総ダメージ÷時間、または全体平均DPS</value>
   </data>
   <data name="Settings_Display_DpsMode_On" xml:space="preserve">
-    <value>全体平均DPS</value>
+    <value>累積平均DPS</value>
   </data>
   <data name="Settings_Display_DpsMode_Off" xml:space="preserve">
     <value>総ダメージ/時間</value>
@@ -687,7 +687,7 @@
     <value>現在</value>
   </data>
   <data name="ScopeTime_Total" xml:space="preserve">
-    <value>総計</value>
+    <value>累積</value>
   </data>
   <data name="DpsStatistics_Indicator_ClickThrough_Tooltip" xml:space="preserve">
     <value>マウス透過が有効です</value>
@@ -1415,5 +1415,11 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
     <value>被弾回数：</value>
+  </data>
+  <data name="SkillLog_Label_CriticalHeal" xml:space="preserve">
+    <value>会心回復</value>
+  </data>
+  <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
+    <value>幸運回復</value>
   </data>
 </root>

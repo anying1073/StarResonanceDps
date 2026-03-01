@@ -65,7 +65,7 @@ public partial class PersonalDpsViewModel : BaseDispatcherSupportViewModel
         Dispatcher dispatcher,
         IConfigManager configManager,
         IApplicationControlService appControlService,
-        ILogger<PersonalDpsViewModel>? logger = null)
+        ILogger<PersonalDpsViewModel>? logger = null) : base(dispatcher)
     {
         _windowManagementService = windowManagementService;
         _dataStorage = dataStorage;

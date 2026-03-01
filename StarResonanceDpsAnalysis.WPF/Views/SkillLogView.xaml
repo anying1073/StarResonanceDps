@@ -270,12 +270,34 @@
                                     <!-- Crit Tag -->
                                     <Border Background="#FFEDD5" CornerRadius="2" Padding="4,1" Margin="0,0,5,0"
                                             Visibility="{Binding HasCrit, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{lex:Loc Common_HitType_Critical}" Foreground="{StaticResource SciFiAccentBrush}" FontSize="9" FontWeight="Bold"/>
+                                        <TextBlock Foreground="{StaticResource SciFiAccentBrush}" FontSize="9" FontWeight="Bold">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource NormalTextBlockBaseStyle}">
+                                                    <Setter Property="Text" Value="{lex:Loc Common_HitType_Critical}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsHeal}" Value="True">
+                                                            <Setter Property="Text" Value="{lex:Loc SkillLog_Label_CriticalHeal}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </Border>
                                     <!-- Lucky Tag -->
                                     <Border Background="#F3E8FF" CornerRadius="2" Padding="4,1" Margin="0,0,5,0"
                                             Visibility="{Binding HasLucky, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{lex:Loc Common_HitType_Lucky}" Foreground="#9F55FF" FontSize="9" FontWeight="Bold"/>
+                                        <TextBlock Foreground="#9F55FF" FontSize="9" FontWeight="Bold">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource NormalTextBlockBaseStyle}">
+                                                    <Setter Property="Text" Value="{lex:Loc Common_HitType_Lucky}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsHeal}" Value="True">
+                                                            <Setter Property="Text" Value="{lex:Loc SkillLog_Label_LuckyHeal}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </Border>
                                     <!-- Count Tag -->
                                     <TextBlock Text="{Binding Count, StringFormat='{}x{0}'}" Foreground="{StaticResource SciFiTextSubBrush}" FontSize="10"
@@ -292,11 +314,11 @@
                                         <Style TargetType="TextBlock" BasedOn="{StaticResource NormalTextBlockBaseStyle}">
                                             <Setter Property="Foreground" Value="{StaticResource SciFiTextMainBrush}"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsHeal}" Value="True">
-                                                    <Setter Property="Foreground" Value="#52C41A"/>
-                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding HasCrit}" Value="True">
                                                     <Setter Property="Foreground" Value="{StaticResource SciFiAccentBrush}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsHeal}" Value="True">
+                                                    <Setter Property="Foreground" Value="#52C41A"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

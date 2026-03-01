@@ -1330,4 +1330,10 @@ Como obter o UID: no jogo, o número do jogador no canto inferior esquerdo é o 
   <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
     <value>Vezes atingido:</value>
   </data>
+  <data name="SkillLog_Label_CriticalHeal" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
+    <value>Sorte</value>
+  </data>
 </root>

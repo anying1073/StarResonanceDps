@@ -62,7 +62,7 @@ public class SkillLogService : ISkillLogService, IDisposable
                 }
             }
 
-            if (existingItem != null)
+            if (existingItem != null && existingItem.IsHeal == battleLog.IsHeal)
             {
                 // 合并到现有记录
                 existingItem.TotalValue += battleLog.Value;

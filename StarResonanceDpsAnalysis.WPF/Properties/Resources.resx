@@ -1376,6 +1376,7 @@ How to get UID: in game, the bottom-left player number is your UID.</value>
   </data>
   <data name="Settings_PlayerUid_Get" xml:space="preserve">
     <value>Get</value>
+  </data>
   <data name="SkillBreakdown_Label_AverageHealing" xml:space="preserve">
     <value>Average healing</value>
   </data>
@@ -1389,7 +1390,7 @@ How to get UID: in game, the bottom-left player number is your UID.</value>
     <value>Crit</value>
   </data>
   <data name="Common_HitType_LuckyHeal" xml:space="preserve">
-    <value>Lucky</value>
+    <value>Lucky heal</value>
   </data>
   <data name="Common_HitType_NormalHeal" xml:space="preserve">
     <value />
@@ -1414,5 +1415,11 @@ How to get UID: in game, the bottom-left player number is your UID.</value>
   </data>
   <data name="DpsDetail_Popup_DamageTakenCount" xml:space="preserve">
     <value>Hits Taken:</value>
+  </data>
+  <data name="SkillLog_Label_CriticalHeal" xml:space="preserve">
+    <value>Crit heal</value>
+  </data>
+  <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
+    <value>Lucky heal</value>
   </data>
 </root>

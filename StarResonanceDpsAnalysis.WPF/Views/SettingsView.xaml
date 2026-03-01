@@ -1005,7 +1005,7 @@
                                     <Border Style="{StaticResource SectionFieldBorder}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="39*" />
+                                                <ColumnDefinition Width="75*" />
                                                 <ColumnDefinition Width="*" MinWidth="10" />
                                                 <ColumnDefinition Width="60*" />
                                             </Grid.ColumnDefinitions>
