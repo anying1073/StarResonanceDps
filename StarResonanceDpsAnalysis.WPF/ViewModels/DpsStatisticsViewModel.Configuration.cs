@@ -217,6 +217,8 @@ public partial class DpsStatisticsViewModel
 
     partial void OnStatisticIndexChanged(StatisticType value)
     {
+        TeamTotalLabel = GetTeamTotalLabel(value);
+
         _logger.LogDebug("OnStatisticIndexChanged: Changed to {Type}", value);
 
         OnPropertyChanged(nameof(CurrentStatisticData));

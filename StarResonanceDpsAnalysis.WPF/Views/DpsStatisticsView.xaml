@@ -419,7 +419,7 @@
                     <!--  统计类型标注  -->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="125" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />

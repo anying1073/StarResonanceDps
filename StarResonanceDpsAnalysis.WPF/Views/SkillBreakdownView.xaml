@@ -211,13 +211,126 @@
 
             <!--  Content Grid with visibility-based tab switching (prevents chart disposal issues)  -->
 
-            <ctrl:Footer
+            <Border
                 Grid.Row="3"
-                Height="50"
-                CancelClick="Footer_CancelClick"
-                CancelCommand="{Binding CancelCommand}"
-                ConfirmClick="Footer_ConfirmClick"
-                ConfirmCommand="{Binding RefreshCommand}" />
+                Padding="15"
+                Background="#FAFAFA"
+                BorderBrush="{StaticResource SciFiBorderBrush}"
+                BorderThickness="0,1,0,0"
+                CornerRadius="0,0,4,4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 左側 -->
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{lex:Loc SkillLog_Footer_Connection}" Foreground="#BBBBBB" FontSize="10" FontFamily="Consolas"/>
+                        <TextBlock Text="{lex:Loc SkillLog_Footer_Logging}" Foreground="#D0D0D0" FontSize="10" FontFamily="Consolas" Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <!-- Buttons -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <!-- Refresh Button (旧 Confirm) -->
+                        <Button
+                            Click="Footer_RefreshClick"
+                            Command="{Binding RefreshCommand}"
+                            Margin="0,0,15,0"
+                            Width="36"
+                            Height="36"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand">
+                            <Grid>
+                                <Ellipse Fill="#2196F3" Width="36" Height="36">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect
+                                BlurRadius="8"
+                                ShadowDepth="0"
+                                Opacity="0.4"
+                                Color="#2196F3" />
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <Path
+                                    Data="M12,4V1L8,5l4,4V6c3.31,0,6,2.69,6,6c0,1.01-0.25,1.97-0.7,2.8l1.46,1.46C19.54,15.03,20,13.57,20,12c0-4.42-3.58-8-8-8z M12,18c-3.31,0-6-2.69-6-6c0-1.01,0.25-1.97,0.7-2.8L5.24,7.74C4.46,8.97,4,10.43,4,12c0,4.42,3.58,8,8,8v3l4-4l-4-4V18z"
+                                    Fill="White"
+                                    Stretch="Uniform"
+                                    Margin="9" />
+                            </Grid>
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <ContentPresenter />
+                                        <Border
+                                            x:Name="Overlay"
+                                            Background="White"
+                                            Opacity="0"
+                                            CornerRadius="20"
+                                            IsHitTestVisible="False" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Overlay" Property="Opacity" Value="0.2" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="Overlay" Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <!-- Cancel Button -->
+                        <Button
+                Click="Footer_CancelClick"
+                Command="{Binding CancelCommand}"
+                Width="36"
+                Height="36"
+                Background="Transparent"
+                BorderThickness="0"
+                Cursor="Hand">
+                            <Grid>
+                                <Ellipse Fill="#F44336" Width="36" Height="36">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect
+                                BlurRadius="8"
+                                ShadowDepth="0"
+                                Opacity="0.4"
+                                Color="#F44336" />
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                                <Path
+                        Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41z"
+                        Fill="White"
+                        Stretch="Uniform"
+                        Margin="10" />
+                            </Grid>
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <ContentPresenter />
+                                        <Border
+                                x:Name="Overlay"
+                                Background="White"
+                                Opacity="0"
+                                CornerRadius="20"
+                                IsHitTestVisible="False" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Overlay" Property="Opacity" Value="0.2" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="Overlay" Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
             <TabControl
                 x:Name="MainTabControl"
                 Grid.Row="2"

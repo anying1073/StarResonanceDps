@@ -1,4 +1,3 @@
-using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -9,6 +8,8 @@ using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.Properties;
 using StarResonanceDpsAnalysis.WPF.Services;
 using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
+using System.Globalization;
+using System.Windows.Threading;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -142,7 +143,9 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         // Bind team stats manager to show team total setting
         _teamStatsManager.ShowTeamTotal = ShowTeamTotalDamage;
         _teamStatsManager.TeamStatsUpdated += OnTeamStatsUpdated;
-        TeamTotalLabel = GetTeamTotalLabel(StatisticType.Damage);
+        TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
+
+        _localizationManager.CultureChanged += OnLocalizationCultureChanged;
 
         _logger.LogDebug("DpsStatisticsViewModel constructor completed");
     }
@@ -157,6 +160,8 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         _storage.ServerConnectionStateChanged -= StorageOnServerConnectionStateChanged;
         _storage.PlayerInfoUpdated -= StorageOnPlayerInfoUpdated;
         _storage.BeforeSectionCleared -= StorageOnBeforeSectionCleared;
+
+        _localizationManager.CultureChanged -= OnLocalizationCultureChanged;
 
         foreach (var dpsStatisticsSubViewModel in StatisticData.Values)
         {
@@ -271,7 +276,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         {
             TeamTotalDamage = e.TotalDamage;
             TeamTotalDps = e.TotalDps;
-            TeamTotalLabel = GetTeamTotalLabel(e.StatisticType);
+            TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
         });
     }
 
@@ -295,6 +300,14 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
                 ResourcesKeys.DpsStatistics_TeamTotal_Damage,
                 defaultValue: "Team DPS")
         };
+    }
+
+    private void OnLocalizationCultureChanged(object? sender, CultureInfo culture)
+    {
+        InvokeOnDispatcher(() =>
+        {
+            TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
+        });
     }
 
     [RelayCommand]

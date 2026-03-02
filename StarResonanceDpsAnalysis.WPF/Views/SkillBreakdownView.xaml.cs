@@ -102,7 +102,7 @@ public partial class SkillBreakdownView : Window
         }
     }
 
-    private void Footer_ConfirmClick(object sender, RoutedEventArgs e)
+    private void Footer_RefreshClick(object sender, RoutedEventArgs e)
     {
     }
 
@@ -124,5 +124,10 @@ public partial class SkillBreakdownView : Window
     {
         if (e.ChangedButton == MouseButton.Left)
             this.DragMove();
+    }
+
+    private void Footer_Loaded(object sender, RoutedEventArgs e)
+    {
+
     }
 }

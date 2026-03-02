@@ -7,6 +7,7 @@
         xmlns:models="clr-namespace:StarResonanceDpsAnalysis.WPF.Models"
         xmlns:converters="clr-namespace:StarResonanceDpsAnalysis.WPF.Converters"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:loc="clr-namespace:StarResonanceDpsAnalysis.WPF.Properties"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:SkillLogViewModel}"
         Title="{lex:Loc SkillLog_Title}" Height="600" Width="450"
@@ -64,6 +65,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="WindowTitleText" TargetType="TextBlock" BasedOn="{StaticResource NormalTextBlockBaseStyle}">
+            <Setter Property="Foreground" Value="{StaticResource SciFiTextMainBrush}" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
     </Window.Resources>
 
     <!-- Main Container -->
@@ -94,7 +100,9 @@
                     <!-- Title Area -->
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Background="{StaticResource SciFiAccentBrush}" Width="4" Height="16" CornerRadius="2" Margin="0,0,10,0"/>
-                        <TextBlock Text="{lex:Loc SkillLog_Header_Title}" Foreground="{StaticResource SciFiTextMainBrush}" FontWeight="Bold" FontSize="16" FontFamily="Microsoft YaHei UI"/>
+                        <TextBlock 
+                            Style="{StaticResource WindowTitleText}" 
+                            Text="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillLog_Header_Title}}" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -263,8 +271,7 @@
 
                             <!-- Skill Name & Tags -->
                             <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="15,0">
-                                <TextBlock Text="{Binding SkillName}" Foreground="{StaticResource SciFiTextMainBrush}" 
-                                           FontWeight="SemiBold" FontSize="14" FontFamily="Microsoft YaHei UI"/>
+                                <TextBlock Style="{StaticResource SkillNameText}" Text="{Binding SkillName}"/>
                                 
                                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                                     <!-- Crit Tag -->

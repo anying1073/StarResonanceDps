@@ -36,6 +36,8 @@
   <ItemGroup>
     <ApplicationDefinition Remove="App.xaml" />
     <None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Black.ttf" />
+    <None Remove="Assets\Images\flushed_hover.png" />
+    <None Remove="Assets\Images\flushed_normal.png" />
     <Page Include="App.xaml" />
   </ItemGroup>
   <ItemGroup>

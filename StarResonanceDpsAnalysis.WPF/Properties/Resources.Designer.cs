@@ -3483,7 +3483,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   CritLucky rate に類似しているローカライズされた文字列を検索します。
+        ///   CritLuck rate に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Suffix_CritLucky {
             get {
