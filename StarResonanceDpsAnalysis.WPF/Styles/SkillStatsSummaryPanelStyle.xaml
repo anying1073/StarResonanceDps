@@ -96,16 +96,16 @@
                                 </TextBlock>
                             </StackPanel>
                         </Border>
-                        
-                        <!-- 5. 幸运次数 -->
+
+                        <!-- 5. 幸运率 -->
                         <Border Style="{StaticResource StatCardBorder}">
                             <StackPanel>
-                                <TextBlock Style="{StaticResource StatValueText}" Foreground="#10B981" Text="{Binding LuckyCount, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding LuckyCountLabel}" />
+                                <TextBlock Style="{StaticResource StatValueText}" Foreground="#10B981" Text="{Binding LuckyRate, StringFormat={}{0:P1}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Style="{StaticResource StatLabelText}" Text="{TemplateBinding LuckyRateLabel}" />
                                 <TextBlock Style="{StaticResource StatSubText}" HorizontalAlignment="Center">
-                                    <Run Text="{Binding LuckyRate, StringFormat={}{0:P1}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+                                    <Run Text="{Binding LuckyCount, StringFormat={}{0:N0}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
                                     <Run Text=" " />
-                                    <Run Text="{lex:Loc Key=SkillBreakdown_Suffix_Lucky}" />
+                                    <Run Text="{lex:Loc Key=SkillBreakdown_Label_LuckCount}" />
                                 </TextBlock>
                             </StackPanel>
                         </Border>

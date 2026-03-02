@@ -935,7 +935,7 @@ How to get: After a fight, your character will automatically appear in the stats
     <value>casts</value>
   </data>
   <data name="SkillBreakdown_Suffix_Crits" xml:space="preserve">
-    <value>crits Number</value>
+    <value>Crits number</value>
   </data>
   <data name="SkillBreakdown_Suffix_Lucky" xml:space="preserve">
     <value>Luck rate</value>

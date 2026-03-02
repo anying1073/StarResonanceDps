@@ -3492,7 +3492,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   crits Number に類似しているローカライズされた文字列を検索します。
+        ///   Crits number に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Suffix_Crits {
             get {

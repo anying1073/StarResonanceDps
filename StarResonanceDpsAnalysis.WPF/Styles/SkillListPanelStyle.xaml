@@ -78,7 +78,7 @@
                                         <!-- Progress Bar Background Layer (behind cells) -->
                                         <Grid Height="48" VerticalAlignment="Top" Margin="4">
                                             <Border HorizontalAlignment="Left" 
-                                                    Background="#F6FAFF" 
+                                                    Background="#EBF4FF" 
                                                     Height="48"
                                                     VerticalAlignment="Stretch"
                                                     CornerRadius="4">

@@ -246,10 +246,10 @@
                                 <Ellipse Fill="#2196F3" Width="36" Height="36">
                                     <Ellipse.Effect>
                                         <DropShadowEffect
-                                BlurRadius="8"
-                                ShadowDepth="0"
-                                Opacity="0.4"
-                                Color="#2196F3" />
+                                            BlurRadius="8"
+                                            ShadowDepth="0"
+                                            Opacity="0.4"
+                                            Color="#2196F3" />
                                     </Ellipse.Effect>
                                 </Ellipse>
                                 <Path
@@ -283,13 +283,13 @@
 
                         <!-- Cancel Button -->
                         <Button
-                Click="Footer_CancelClick"
-                Command="{Binding CancelCommand}"
-                Width="36"
-                Height="36"
-                Background="Transparent"
-                BorderThickness="0"
-                Cursor="Hand">
+                            Click="Footer_CancelClick"
+                            Command="{Binding CancelCommand}"
+                            Width="36"
+                            Height="36"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand">
                             <Grid>
                                 <Ellipse Fill="#F44336" Width="36" Height="36">
                                     <Ellipse.Effect>
@@ -335,7 +335,7 @@
                 x:Name="MainTabControl"
                 Grid.Row="2"
                 SelectedIndex="0"
-                SelectionChanged="MainTabControl_SelectionChanged">
+                SelectionChanged="MainTabControl_SelectionChanged" Cursor="Hand">
                 <TabControl.Resources>
                     <!--  Hide default tab headers since we use custom selector  -->
                     <Style TargetType="{x:Type TabControl}">
@@ -362,7 +362,7 @@
                         Average="{Binding Stats.Average}"
                         LuckyCount="{Binding Stats.LuckyCount}"
                         LuckyRate="{Binding Stats.LuckyRate}"
-                        LuckyCountLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_LuckCount}}"
+                        LuckyRateLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_LuckRate}}"
                         HitsLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_HitCount}}"
                         Hits="{Binding Stats.Hits}"
                         TotalLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_TotalDamage}}"
@@ -393,7 +393,7 @@
                         Average="{Binding Stats.Average}"
                         LuckyCount="{Binding Stats.LuckyCount}"
                         LuckyRate="{Binding Stats.LuckyRate}"
-                        LuckyCountLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_LuckCount}}"
+                        LuckyRateLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_LuckRate}}"
                         HitsLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_HitCount}}"
                         Hits="{Binding Stats.Hits}"
                         TotalLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_TotalHealing}}"
@@ -424,7 +424,7 @@
                         Average="{Binding Stats.Average}"
                         LuckyCount="{Binding Stats.LuckyCount}"
                         LuckyRate="{Binding Stats.LuckyRate}"
-                        LuckyCountLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_LuckCount}}"
+                        LuckyRateLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_LuckRate}}"
                         HitsLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_HitCount}}"
                         Hits="{Binding Stats.Hits}"
                         TotalLabel="{lex:Loc Key={x:Static loc:ResourcesKeys.SkillBreakdown_Label_TotalDamageTaken}}"

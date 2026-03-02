@@ -30,7 +30,7 @@
                                 HitsLabel="{TemplateBinding HitsLabel}"
                                 Hits="{TemplateBinding Hits}"
                                 HitsLabelKey="{TemplateBinding HitsLabelKey}"
-                                LuckyCountLabel="{TemplateBinding LuckyCountLabel}"
+                                LuckyRateLabel="{TemplateBinding LuckyRateLabel}"
                                 LuckyCount="{TemplateBinding LuckyCount}"
                                 LuckyRate="{TemplateBinding LuckyRate}"
                                 TotalLabel="{TemplateBinding TotalLabel}"

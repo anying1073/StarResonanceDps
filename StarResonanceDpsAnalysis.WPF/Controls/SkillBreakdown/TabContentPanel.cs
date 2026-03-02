@@ -210,13 +210,13 @@ public class TabContentPanel : Control
         set => SetValue(LuckyCountProperty, value);
     }
 
-    public static readonly DependencyProperty LuckyCountLabelProperty = DependencyProperty.Register(
-        nameof(LuckyCountLabel), typeof(string), typeof(TabContentPanel), new PropertyMetadata(default(string?)));
+    public static readonly DependencyProperty LuckyRateLabelProperty = DependencyProperty.Register(
+        nameof(LuckyRateLabel), typeof(string), typeof(TabContentPanel), new PropertyMetadata(default(string?)));
 
-    public string? LuckyCountLabel
+    public string? LuckyRateLabel
     {
-        get => (string?)GetValue(LuckyCountLabelProperty);
-        set => SetValue(LuckyCountLabelProperty, value);
+        get => (string?)GetValue(LuckyRateLabelProperty);
+        set => SetValue(LuckyRateLabelProperty, value);
     }
 
     public static readonly DependencyProperty LuckyRateProperty = DependencyProperty.Register(

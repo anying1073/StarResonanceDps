@@ -125,9 +125,4 @@ public partial class SkillBreakdownView : Window
         if (e.ChangedButton == MouseButton.Left)
             this.DragMove();
     }
-
-    private void Footer_Loaded(object sender, RoutedEventArgs e)
-    {
-
-    }
 }
