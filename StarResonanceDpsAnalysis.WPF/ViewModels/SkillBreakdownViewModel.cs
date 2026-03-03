@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Threading;
+using System.Linq;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using OxyPlot;
+using OxyPlot.Axes;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Statistics;
@@ -18,6 +20,7 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
 /// <summary>
 /// ViewModel for the skill breakdown view, showing detailed statistics for a player.
+/// Graph points are read directly from PlayerStatistics.
 /// </summary>
 public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 {
@@ -28,40 +31,20 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     [ObservableProperty] private StatisticType _statisticIndex;
     private PlayerStatistics? _playerStatistics;
 
-    // NEW: App configuration for number formatting
     [ObservableProperty] private Config.AppConfig _appConfig;
 
-    // 实时更新定时器
-    private DispatcherTimer? _updateTimer;
-    private const int UpdateIntervalMs = 1000; // 每秒更新一次
+    private const int TimeSeriesPointCapacity = 300;
 
-    // 一度でも時系列データを受け取ったか
-    private bool _hasSeenAnyTimeSeriesData;
-
-    // 空サンプルになったらグラフを凍結するか（今回はタイマー停止しない）
-    private bool _freezeChartAndStopTimerWhenSeriesBecomesEmpty = true;
-
-    // 空になったログを一度だけ出すためのフラグ
-    private bool _hasLoggedSeriesBecameEmpty;
-
-    // UIDごとの最後の非空折れ線キャッシュ（アプリ起動中のみ保持）
-    private sealed class FrozenSeriesCache
-    {
-        public List<DataPoint> DpsPoints { get; } = new();
-        public List<DataPoint> HpsPoints { get; } = new();
-        public List<DataPoint> DtpsPoints { get; } = new();
-    }
-
-    private static readonly Dictionary<long, FrozenSeriesCache> s_frozenSeriesByUid = new();
-
-    // NEW: Tab ViewModels for modular components
     [ObservableProperty] private TabContentViewModel _dpsTabViewModel;
     [ObservableProperty] private TabContentViewModel _healingTabViewModel;
     [ObservableProperty] private TabContentViewModel _tankingTabViewModel;
 
     /// <summary>
-    /// ViewModel for the skill breakdown view, showing detailed statistics for a player.
+    /// True when the current source is the live storage object.
+    /// False when the current source is a history snapshot loaded from JSON.
     /// </summary>
+    private bool _isLiveSource;
+
     public SkillBreakdownViewModel(
         ILogger<SkillBreakdownViewModel> logger,
         LocalizationManager localizationManager,
@@ -82,125 +65,66 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         _healingTabViewModel.Plot.DamageDisplayMode = _appConfig.DamageDisplayType;
         _tankingTabViewModel.Plot.DamageDisplayMode = _appConfig.DamageDisplayType;
 
-        InitializeUpdateTimer();
+        _storage.DpsDataUpdated += OnStorageDpsDataUpdated;
     }
 
-    /// <summary>
-    /// 初始化实时更新定时器
-    /// </summary>
-    private void InitializeUpdateTimer()
+    private void OnStorageDpsDataUpdated()
     {
-        _updateTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromMilliseconds(UpdateIntervalMs)
-        };
-        _updateTimer.Tick += UpdateTimer_Tick;
-    }
-
-    /// <summary>
-    /// 定时器回调：刷新统计数据
-    /// </summary>
-    private void UpdateTimer_Tick(object? sender, EventArgs e)
-    {
-        if (_playerStatistics == null)
+        if (!_isLiveSource || _playerStatistics == null)
         {
             return;
         }
 
-        var playerUid = _playerStatistics.Uid;
-        if (playerUid == 0)
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher != null && !dispatcher.CheckAccess())
         {
+            dispatcher.BeginInvoke(new Action(OnStorageDpsDataUpdated));
             return;
         }
 
         try
         {
-            var latestStats = _storage.GetStatistics(fullSession: false);
-            if (latestStats.TryGetValue(playerUid, out var updated))
-            {
-                var hasAnySamples = HasAnyTimeSeriesSamples(updated);
-
-                if (hasAnySamples)
-                {
-                    _hasSeenAnyTimeSeriesData = true;
-                    _hasLoggedSeriesBecameEmpty = false; // 次回空になったときにまた1回だけログを出せるようにする
-                }
-
-                _playerStatistics = updated;
-                RefreshAllStatistics();
-
-                if (!hasAnySamples && _freezeChartAndStopTimerWhenSeriesBecomesEmpty && _hasSeenAnyTimeSeriesData)
-                {
-                    // タイマーは止めない。最後の非空キャッシュで表示を維持し続ける。
-                    if (!_hasLoggedSeriesBecameEmpty)
-                    {
-                        _logger.LogDebug(
-                            "Time series became empty after having data. Freeze current chart and continue real-time update.");
-
-                        _hasLoggedSeriesBecameEmpty = true;
-                    }
-                }
-            }
+            RefreshCurrentPlayerFromStorage();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating skill breakdown data");
+            _logger.LogError(ex, "Error refreshing SkillBreakdownViewModel from live storage");
         }
     }
 
     /// <summary>
-    /// 启动实时更新
-    /// </summary>
-    public void StartRealTimeUpdate()
-    {
-        if (_updateTimer == null)
-        {
-            InitializeUpdateTimer();
-        }
-
-        _updateTimer.Start();
-        _logger.LogDebug("Started real-time update for SkillBreakdownView");
-    }
-
-    /// <summary>
-    /// 停止实时更新
-    /// </summary>
-    public void StopRealTimeUpdate()
-    {
-        _updateTimer?.Stop();
-        _logger.LogDebug("Stopped real-time update for SkillBreakdownView");
-    }
-
-    /// <summary>
-    /// Initialize from PlayerStatistics directly
+    /// Initialize from PlayerStatistics directly.
     /// </summary>
     public void InitializeFrom(
         PlayerStatistics playerStats,
         PlayerInfo? playerInfo,
         StatisticType statisticType)
     {
-        _logger.LogDebug("Initializing SkillBreakdownViewModel from PlayerStatistics for UID {Uid}",
+        _logger.LogDebug(
+            "Initializing SkillBreakdownViewModel from PlayerStatistics for UID {Uid}",
             playerStats.Uid);
 
         _playerStatistics = playerStats;
+        _isLiveSource = IsCurrentStorageInstance(playerStats);
 
-        // live samples が空でも、以前の凍結グラフキャッシュがあれば「見たことあり」扱い
-        _hasSeenAnyTimeSeriesData =
-            HasAnyTimeSeriesSamples(playerStats) || HasFrozenSeriesCache(playerStats.Uid);
-
-        _hasLoggedSeriesBecameEmpty = false;
-
-        // Update player info
         UpdatePlayerInfo(playerStats, playerInfo);
         StatisticIndex = statisticType;
 
-        // Update all statistics
+        // Always render immediately from the passed-in object first.
+        // This is important for both history snapshots and freshly opened live view.
         RefreshAllStatistics();
 
-        // 启动实时更新
-        StartRealTimeUpdate();
+        _logger.LogDebug(
+            "SkillBreakdownViewModel initialized from PlayerStatistics: {Name}, LiveSource={IsLiveSource}",
+            PlayerName,
+            _isLiveSource);
+    }
 
-        _logger.LogDebug("SkillBreakdownViewModel initialized from PlayerStatistics: {Name}", PlayerName);
+    private bool IsCurrentStorageInstance(PlayerStatistics playerStats)
+    {
+        var liveStats = _storage.GetStatistics(fullSession: false);
+        return liveStats.TryGetValue(playerStats.Uid, out var currentLiveRef)
+               && ReferenceEquals(currentLiveRef, playerStats);
     }
 
     #region Player Info Properties
@@ -222,56 +146,31 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 
     #region Private Helper Methods
 
-    private static bool HasAnyTimeSeriesSamples(PlayerStatistics stats)
+    private void RefreshCurrentPlayerFromStorage()
     {
-        return stats.GetDeltaDpsSamples().Count > 0
-            || stats.GetDeltaHpsSamples().Count > 0
-            || stats.GetDeltaDtpsSamples().Count > 0;
-    }
-
-    private static bool HasFrozenSeriesCache(long uid)
-    {
-        return s_frozenSeriesByUid.TryGetValue(uid, out var cache)
-            && (cache.DpsPoints.Count > 0
-                || cache.HpsPoints.Count > 0
-                || cache.DtpsPoints.Count > 0);
-    }
-
-    private static FrozenSeriesCache GetOrCreateFrozenSeriesCache(long uid)
-    {
-        if (!s_frozenSeriesByUid.TryGetValue(uid, out var cache))
+        if (_playerStatistics == null)
         {
-            cache = new FrozenSeriesCache();
-            s_frozenSeriesByUid[uid] = cache;
+            return;
         }
 
-        return cache;
-    }
-
-    /// <summary>
-    /// live samples が非空なら cache を更新して返す。
-    /// live samples が空なら cache をそのまま返す。
-    /// </summary>
-    private static IReadOnlyList<DataPoint> GetDisplaySeriesPoints(
-        IReadOnlyList<DpsDataPoint> liveSamples,
-        List<DataPoint> cachedPoints)
-    {
-        if (liveSamples != null && liveSamples.Count > 0)
+        var playerUid = _playerStatistics.Uid;
+        if (playerUid == 0)
         {
-            cachedPoints.Clear();
-
-            foreach (var sample in liveSamples)
-            {
-                cachedPoints.Add(new DataPoint(sample.Time.TotalSeconds, sample.Value));
-            }
+            return;
         }
 
-        return cachedPoints;
+        var latestStats = _storage.GetStatistics(fullSession: false);
+        if (latestStats.TryGetValue(playerUid, out var updated))
+        {
+            _playerStatistics = updated;
+            RefreshAllStatistics();
+            return;
+        }
+
+        // Current section was cleared or the player disappeared.
+        ClearAllStatistics();
     }
 
-    /// <summary>
-    /// Create a PlotViewModel with localized options
-    /// </summary>
     private PlotViewModel CreatePlotViewModel(string xAxisTitle, StatisticType statisticType)
     {
         return new PlotViewModel(new PlotOptions
@@ -285,9 +184,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         });
     }
 
-    /// <summary>
-    /// Update player basic information
-    /// </summary>
     private void UpdatePlayerInfo(PlayerStatistics playerStats, PlayerInfo? playerInfo)
     {
         PlayerName = playerInfo?.Name ?? $"UID: {playerStats.Uid}";
@@ -295,9 +191,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         PowerLevel = playerInfo?.CombatPower ?? 0;
     }
 
-    /// <summary>
-    /// Refresh all statistics from PlayerStatistics
-    /// </summary>
     private void RefreshAllStatistics()
     {
         if (_playerStatistics == null)
@@ -306,64 +199,48 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
             return;
         }
 
-        var duration = TimeSpan.FromTicks(_playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0));
+        var duration = TimeSpan.FromTicks(
+            Math.Max(0, _playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0)));
+
         var skillLists = _playerStatistics.ToSkillItemVmList(_localizationManager);
 
-        // UIDごとの最後の非空折れ線キャッシュ
-        var frozenCache = GetOrCreateFrozenSeriesCache(_playerStatistics.Uid);
-
-        var dpsPoints = GetDisplaySeriesPoints(_playerStatistics.GetDeltaDpsSamples(), frozenCache.DpsPoints);
-        var hpsPoints = GetDisplaySeriesPoints(_playerStatistics.GetDeltaHpsSamples(), frozenCache.HpsPoints);
-        var dtpsPoints = GetDisplaySeriesPoints(_playerStatistics.GetDeltaDtpsSamples(), frozenCache.DtpsPoints);
-
-        // Update damage statistics
         UpdateStatisticSet(
             DpsTabViewModel,
             _playerStatistics.AttackDamage,
             skillLists.Damage,
             duration,
-            dpsPoints);
+            _playerStatistics.GetDeltaDpsSamples());
 
-        // Update healing statistics
         UpdateStatisticSet(
             HealingTabViewModel,
             _playerStatistics.Healing,
             skillLists.Healing,
             duration,
-            hpsPoints);
+            _playerStatistics.GetDeltaHpsSamples());
 
-        // Update taken damage statistics
         UpdateStatisticSet(
             TankingTabViewModel,
             _playerStatistics.TakenDamage,
             skillLists.Taken,
             duration,
-            dtpsPoints);
+            _playerStatistics.GetDeltaDtpsSamples());
     }
 
-    /// <summary>
-    /// Update a single statistic set with all its associated data
-    /// </summary>
     private void UpdateStatisticSet(
         TabContentViewModel tabViewModel,
         StatisticValues statisticValues,
         List<SkillItemViewModel> skills,
         TimeSpan duration,
-        IReadOnlyList<DataPoint> timeSeries)
+        IReadOnlyList<DpsDataPoint> timeSeries)
     {
-        // Convert and set statistics
         var stats = statisticValues.ToDataStatistics(duration);
         tabViewModel.Stats = stats;
 
         PopulateSkills(tabViewModel.SkillList.SkillItems, skills);
 
-        // Update charts
         UpdateChartsForStatistic(skills, timeSeries, stats, tabViewModel.Plot);
     }
 
-    /// <summary>
-    /// Populate skills collection efficiently
-    /// </summary>
     private void PopulateSkills(ObservableCollection<SkillItemViewModel> target, List<SkillItemViewModel> source)
     {
         target.Clear();
@@ -373,51 +250,68 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         }
     }
 
-    /// <summary>
-    /// Update all charts for a single statistic type
-    /// </summary>
     private static void UpdateChartsForStatistic(
         List<SkillItemViewModel> skills,
-        IReadOnlyList<DataPoint> timeSeries,
+        IReadOnlyList<DpsDataPoint> timeSeries,
         DataStatisticsViewModel stats,
         PlotViewModel plot)
     {
-        // Time series
         UpdateTimeSeriesChart(timeSeries, plot);
 
-        // Pie chart
         plot.SetPieSeriesData(skills);
 
-        // Hit type distribution
         UpdateHitTypeDistribution(stats, plot);
     }
 
-    /// <summary>
-    /// Update time series chart from display points
-    /// </summary>
-    private static void UpdateTimeSeriesChart(IReadOnlyList<DataPoint> samples, PlotViewModel target)
+    private static void UpdateTimeSeriesChart(IReadOnlyList<DpsDataPoint> samples, PlotViewModel target)
     {
-        // 空なら既存のグラフを保持
-        if (samples == null || samples.Count == 0)
+        target.LineSeriesData.Points.Clear();
+
+        if (samples != null)
+        {
+            foreach (var sample in samples)
+            {
+                target.LineSeriesData.Points.Add(new DataPoint(sample.Time.TotalSeconds, sample.Value));
+            }
+        }
+
+        AdjustTimeAxisWindow(target.LineSeriesData.Points, target);
+        target.RefreshSeries();
+    }
+
+    private static void AdjustTimeAxisWindow(IReadOnlyList<DataPoint> samples, PlotViewModel target)
+    {
+        var xAxis = target.SeriesPlotModel.Axes.FirstOrDefault(a => a.Position == AxisPosition.Bottom);
+        if (xAxis == null)
         {
             return;
         }
 
-        target.LineSeriesData.Points.Clear();
-        foreach (var sample in samples)
+        if (samples == null || samples.Count == 0)
         {
-            target.LineSeriesData.Points.Add(sample);
+            xAxis.Minimum = 0;
+            return;
         }
 
-        target.RefreshSeries();
+        if (samples.Count >= TimeSeriesPointCapacity)
+        {
+            var oldestX = samples[0].X;
+            var newMin = Math.Max(0, oldestX - 1.0);
+            xAxis.Minimum = newMin;
+        }
+        else
+        {
+            xAxis.Minimum = 0;
+        }
     }
 
-    /// <summary>
-    /// Update hit type distribution for a statistic
-    /// </summary>
     private static void UpdateHitTypeDistribution(DataStatisticsViewModel stat, PlotViewModel target)
     {
-        if (stat.Hits <= 0) return;
+        if (stat.Hits <= 0)
+        {
+            target.SetHitTypeDistribution(0, 0, 0);
+            return;
+        }
 
         var crit = (double)stat.CritCount / stat.Hits * 100;
         var lucky = (double)stat.LuckyCount / stat.Hits * 100;
@@ -426,9 +320,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         target.SetHitTypeDistribution(normal, crit, lucky);
     }
 
-    /// <summary>
-    /// Update plot options with current localization
-    /// </summary>
     private void UpdatePlotOption()
     {
         var xAxis = GetXAxisName();
@@ -446,29 +337,13 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
             ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
     }
 
-    /// <summary>
-    /// Clear all statistics currently shown in the view.
-    /// This clears stats, skill lists, time-series chart, pie chart, hit-type distribution,
-    /// and also clears frozen line caches for the current player.
-    /// </summary>
     private void ClearAllStatistics()
     {
-        if (_playerStatistics != null)
-        {
-            s_frozenSeriesByUid.Remove(_playerStatistics.Uid);
-        }
-
-        _hasSeenAnyTimeSeriesData = false;
-        _hasLoggedSeriesBecameEmpty = false;
-
         ClearSingleStatisticSet(DpsTabViewModel);
         ClearSingleStatisticSet(HealingTabViewModel);
         ClearSingleStatisticSet(TankingTabViewModel);
     }
 
-    /// <summary>
-    /// Clear one tab's displayed stats and charts.
-    /// </summary>
     private static void ClearSingleStatisticSet(TabContentViewModel tabViewModel)
     {
         tabViewModel.Stats = new StatisticValues().ToDataStatistics(TimeSpan.Zero);
@@ -481,18 +356,19 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         tabViewModel.Plot.SetHitTypeDistribution(0, 0, 0);
     }
 
-    /// <summary>
-    /// Clear time-series line chart immediately.
-    /// </summary>
     private static void ClearTimeSeriesChart(PlotViewModel target)
     {
         target.LineSeriesData.Points.Clear();
+
+        var xAxis = target.SeriesPlotModel.Axes.FirstOrDefault(a => a.Position == AxisPosition.Bottom);
+        if (xAxis != null)
+        {
+            xAxis.Minimum = 0;
+        }
+
         target.RefreshSeries();
     }
 
-    /// <summary>
-    /// Update options for a single plot
-    /// </summary>
     private void UpdateSinglePlotOption(
         PlotViewModel plot,
         string xAxisTitle,
@@ -580,27 +456,34 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private void Refresh()
     {
-        ClearAllStatistics();
+        if (_playerStatistics == null)
+        {
+            ClearAllStatistics();
+            _logger.LogDebug("Manual refresh completed (no player statistics)");
+            return;
+        }
+
+        if (_isLiveSource)
+        {
+            RefreshCurrentPlayerFromStorage();
+        }
+        else
+        {
+            RefreshAllStatistics();
+        }
+
         _logger.LogDebug("Manual refresh completed");
     }
 
-    /// <summary>
-    /// 实现 IDisposable 接口以释放定时器资源
-    /// </summary>
     public void Dispose()
     {
-        if (_updateTimer != null)
-        {
-            _updateTimer.Stop();
-            _updateTimer.Tick -= UpdateTimer_Tick;
-            _updateTimer = null;
-        }
+        _storage.DpsDataUpdated -= OnStorageDpsDataUpdated;
     }
 
     [RelayCommand]
     private void Unloaded()
     {
-        StopRealTimeUpdate();
+        // No background cache service anymore.
     }
 
     #endregion

@@ -76,10 +76,10 @@ public sealed class StatisticsAdapter
             playerStats.ClearSamples();
             playerStats.ResumeDeltaTracking(); // Resume tracking for new section
         }
-        
+
         _engine.ResetSection();
     }
-    
+
     /// <summary>
     /// Stop delta tracking for all players (called when section ends)
     /// Preserves current delta values but stops calculating new ones
@@ -91,7 +91,7 @@ public sealed class StatisticsAdapter
         {
             playerStats.StopDeltaTracking();
         }
-        
+
         _logger?.LogDebug("Delta tracking stopped for section statistics");
     }
 
@@ -107,13 +107,13 @@ public sealed class StatisticsAdapter
         {
             playerStats.ClearSamples();
         }
-        
+
         var sectionStats = _engine.GetSectionStatistics();
         foreach (var playerStats in sectionStats.Values)
         {
             playerStats.ClearSamples();
         }
-        
+
         _engine.ClearAll();
     }
 

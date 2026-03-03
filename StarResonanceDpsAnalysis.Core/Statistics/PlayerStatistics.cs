@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace StarResonanceDpsAnalysis.Core.Statistics;
 
@@ -16,10 +20,30 @@ public sealed class PlayerStatistics
     public StatisticValues TakenDamage { get; set; } = new();
     public StatisticValues Healing { get; set; } = new();
 
-    // Delta time series data managers for incremental values (ONLY delta tracking)
+    // ===== ORIGINAL INTERNAL SAMPLE MANAGERS (KEEP) =====
     private readonly ITimeSeriesSampleManager _deltaDpsSamples;
     private readonly ITimeSeriesSampleManager _deltaHpsSamples;
     private readonly ITimeSeriesSampleManager _deltaDtpsSamples;
+
+    /// <summary>
+    /// Serializable snapshot mirror of DPS samples.
+    /// Used for history persistence / detached snapshot display.
+    /// Does NOT replace the original runtime calculation source.
+    /// </summary>
+    [JsonProperty]
+    public List<DpsDataPoint> DeltaDpsSamples { get; private set; } = new();
+
+    /// <summary>
+    /// Serializable snapshot mirror of HPS samples.
+    /// </summary>
+    [JsonProperty]
+    public List<DpsDataPoint> DeltaHpsSamples { get; private set; } = new();
+
+    /// <summary>
+    /// Serializable snapshot mirror of DTPS samples.
+    /// </summary>
+    [JsonProperty]
+    public List<DpsDataPoint> DeltaDtpsSamples { get; private set; } = new();
 
     // Timing info
     public long? StartTick { get; set; }
@@ -42,7 +66,7 @@ public sealed class PlayerStatistics
     /// </summary>
     /// <param name="uid">Player unique identifier</param>
     /// <param name="timeSeriesCapacity">Maximum samples to store. Set to null for unlimited storage.</param>
-    [Newtonsoft.Json.JsonConstructor]
+    [JsonConstructor]
     public PlayerStatistics(long uid, int? timeSeriesCapacity = 300)
     {
         Uid = uid;
@@ -64,14 +88,6 @@ public sealed class PlayerStatistics
         _deltaHpsSamples = sampleManagerFactory();
         _deltaDtpsSamples = sampleManagerFactory();
     }
-
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //[Obsolete("Do not use this ctor directly, it is just for json deserialization")]
-    //public PlayerStatistics() : this(0)
-    //{
-    //}
 
     /// <summary>
     /// Get or create skill statistics (for damage skills)
@@ -99,12 +115,15 @@ public sealed class PlayerStatistics
 
     public long ElapsedTicks()
     {
-        return LastTick - StartTick ?? 0;
+        return LastTick - (StartTick ?? 0);
     }
 
     /// <summary>
     /// Calculate delta values per second since last update
     /// Should be called periodically (e.g., every second) to update delta metrics
+    ///
+    /// IMPORTANT:
+    /// This logic is intentionally kept EXACTLY aligned with the user's original implementation.
     /// </summary>
     public void UpdateDeltaValues()
     {
@@ -153,36 +172,60 @@ public sealed class PlayerStatistics
     /// <summary>
     /// Reset delta tracking (useful when clearing or resetting statistics)
     /// Also re-enables tracking if it was stopped
+    ///
+    /// IMPORTANT:
+    /// Kept aligned with the original implementation:
+    /// _lastRecordedTick is NOT reset here.
     /// </summary>
     public void ResetDeltaTracking()
     {
         _previousHistory = default;
         ClearDeltaValues();
-        _isDeltaTrackingEnabled = true; // Re-enable tracking on reset
+        _isDeltaTrackingEnabled = true;
     }
 
     /// <summary>
-    /// Get delta DPS samples as a read-only list (incremental DPS between measurements)
+    /// Get delta DPS samples as a read-only list.
+    /// Prefer runtime internal manager when it has data (live mode, original source).
+    /// Otherwise fall back to the serialized mirror (history / detached snapshot).
     /// </summary>
     public IReadOnlyList<DpsDataPoint> GetDeltaDpsSamples()
     {
-        return _deltaDpsSamples.GetSamples();
+        var runtime = _deltaDpsSamples.GetSamples();
+        if (runtime.Count > 0)
+        {
+            return runtime;
+        }
+
+        return DeltaDpsSamples;
     }
 
     /// <summary>
-    /// Get delta HPS samples as a read-only list (incremental HPS between measurements)
+    /// Get delta HPS samples as a read-only list.
     /// </summary>
     public IReadOnlyList<DpsDataPoint> GetDeltaHpsSamples()
     {
-        return _deltaHpsSamples.GetSamples();
+        var runtime = _deltaHpsSamples.GetSamples();
+        if (runtime.Count > 0)
+        {
+            return runtime;
+        }
+
+        return DeltaHpsSamples;
     }
 
     /// <summary>
-    /// Get delta DTPS samples as a read-only list (incremental DTPS between measurements)
+    /// Get delta DTPS samples as a read-only list.
     /// </summary>
     public IReadOnlyList<DpsDataPoint> GetDeltaDtpsSamples()
     {
-        return _deltaDtpsSamples.GetSamples();
+        var runtime = _deltaDtpsSamples.GetSamples();
+        if (runtime.Count > 0)
+        {
+            return runtime;
+        }
+
+        return DeltaDtpsSamples;
     }
 
     /// <summary>
@@ -193,6 +236,11 @@ public sealed class PlayerStatistics
         _deltaDpsSamples.Clear();
         _deltaHpsSamples.Clear();
         _deltaDtpsSamples.Clear();
+
+        DeltaDpsSamples.Clear();
+        DeltaHpsSamples.Clear();
+        DeltaDtpsSamples.Clear();
+
         ResetDeltaTracking();
     }
 
@@ -223,12 +271,8 @@ public sealed class PlayerStatistics
 
         if (elapsedSeconds > 0)
         {
-            // Record initial values as first delta samples
-            _deltaDpsSamples.AddSample(currentTime, AttackDamage.Total / elapsedSeconds);
-            _deltaHpsSamples.AddSample(currentTime, Healing.Total / elapsedSeconds);
-            _deltaDtpsSamples.AddSample(currentTime, TakenDamage.Total / elapsedSeconds);
-
-            // Update last recorded tick to prevent duplicates
+            // ORIGINAL BEHAVIOR:
+            // no initial point is added here, only initialize duplicate guard
             _lastRecordedTick = LastTick;
         }
     }
@@ -240,6 +284,7 @@ public sealed class PlayerStatistics
         {
             return null; // No time elapsed
         }
+
         return tickDelta / (double)TimeSpan.TicksPerSecond;
     }
 
@@ -262,12 +307,11 @@ public sealed class PlayerStatistics
 
     private void RecordDeltaSamples(DeltaValues deltas, double seconds)
     {
-        // Skip if we've already recorded samples at this tick
-        // This prevents duplicate recordings when UpdateDeltaValues() is called
-        // multiple times before LastTick is updated by new battle logs
+        // ORIGINAL BEHAVIOR:
+        // avoid duplicate recording at the same LastTick
         if (LastTick == _lastRecordedTick)
         {
-            return; // Already recorded samples at this tick
+            return;
         }
 
         // Calculate time from start (assuming LastTick represents current time)
@@ -275,13 +319,27 @@ public sealed class PlayerStatistics
             ? TimeSpan.FromTicks(LastTick - StartTick.Value)
             : TimeSpan.Zero;
 
-        // Record delta values per second to time series
+        // ORIGINAL RUNTIME SAMPLE CALCULATION
         _deltaDpsSamples.AddSample(currentTime, deltas.Damage / seconds);
         _deltaHpsSamples.AddSample(currentTime, deltas.Healing / seconds);
         _deltaDtpsSamples.AddSample(currentTime, deltas.TakenDamage / seconds);
 
+        // Mirror runtime samples into serializable lists for history/snapshot persistence
+        SyncSerializableMirrorsFromRuntime();
+
         // Update last recorded tick to prevent duplicates
         _lastRecordedTick = LastTick;
+
+        // IMPORTANT:
+        // DO NOT move _previousHistory forward here.
+        // This is intentionally kept identical to the original implementation.
+    }
+
+    private void SyncSerializableMirrorsFromRuntime()
+    {
+        DeltaDpsSamples = _deltaDpsSamples.GetSamples().ToList();
+        DeltaHpsSamples = _deltaHpsSamples.GetSamples().ToList();
+        DeltaDtpsSamples = _deltaDtpsSamples.GetSamples().ToList();
     }
 
     private void ClearDeltaValues()
@@ -303,7 +361,7 @@ public sealed class PlayerStatistics
     }
 
     /// <summary>
-    /// Delta values between two Historys
+    /// Delta values between two histories
     /// </summary>
     private struct DeltaValues
     {

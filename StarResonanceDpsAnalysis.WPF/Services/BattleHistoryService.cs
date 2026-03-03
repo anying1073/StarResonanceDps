@@ -232,7 +232,6 @@ public partial class BattleHistoryService
 
         foreach (var dpsData in dpsList.Values)
         {
-
             var damage = (ulong)Math.Max(0, dpsData.AttackDamage.Total);
             var healing = (ulong)Math.Max(0, dpsData.Healing.Total);
             var taken = (ulong)Math.Max(0, dpsData.TakenDamage.Total);
@@ -242,8 +241,10 @@ public partial class BattleHistoryService
             teamTotalTaken += taken;
 
             var foundPlayerInfo = storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.Uid, out var playerInfo);
-            players[dpsData.Uid] = foundPlayerInfo ? playerInfo! : new PlayerInfo() { UID = dpsData.Uid };
-            statistics[dpsData.Uid] = dpsData;
+            players[dpsData.Uid] = foundPlayerInfo ? playerInfo! : new PlayerInfo { UID = dpsData.Uid };
+
+            // Save a detached snapshot, not the live storage instance
+            statistics[dpsData.Uid] = PlayerStatisticsSnapshotCloner.Clone(dpsData);
         }
 
         return new BattleHistoryData

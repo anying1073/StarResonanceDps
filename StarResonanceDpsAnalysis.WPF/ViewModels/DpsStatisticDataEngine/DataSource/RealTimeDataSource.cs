@@ -119,6 +119,7 @@ public abstract class RealTimeDataSource : IDpsDataSource, IDisposable
     {
         var scope = Scope;
         var includeNpc = DataSourceEngine.IncludeNpcData;
+
         lock (SyncRoot)
         {
             Updating = true;
@@ -127,8 +128,17 @@ public abstract class RealTimeDataSource : IDpsDataSource, IDisposable
         try
         {
             var stat = DataStorage.GetStatistics(scope == ScopeTime.Total);
+
+            // Processed data can still use the live source
             var processed = _processor.PreProcessData(stat, includeNpc);
-            return (processed, stat);
+
+            // Raw data used by SkillBreakdown must be a detached snapshot,
+            // otherwise section reset/clear will mutate the same instance and wipe graph points.
+            var rawSnapshot = stat.ToDictionary(
+                kvp => kvp.Key,
+                kvp => PlayerStatisticsSnapshotCloner.Clone(kvp.Value));
+
+            return (processed, rawSnapshot);
         }
         finally
         {

@@ -1,12 +1,14 @@
-using System.Diagnostics;
-using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Models;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Extensions;
 using StarResonanceDpsAnalysis.WPF.Logging;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.Properties;
+using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
+using System.Diagnostics;
+using System.Windows;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -231,9 +233,35 @@ public partial class DpsStatisticsViewModel
         var vm = _windowManagement.SkillBreakdownView.DataContext as SkillBreakdownViewModel;
         Debug.Assert(vm != null, "vm!=null");
 
-        var playerStats = _dataSourceEngine.CurrentSource.GetRawData();
-        if (!playerStats.TryGetValue(target.Player.Uid, out var stats)) return;
-        _logger.LogInformation("Using PlayerStatistics for SkillBreakdown (accurate data)");
+        PlayerStatistics? stats = null;
+
+        // History mode: always use the current source snapshot
+        if (_dataSourceEngine.CurrentSource.Mode == DataSourceMode.History)
+        {
+            var historyRaw = _dataSourceEngine.CurrentSource.GetRawData();
+            historyRaw.TryGetValue(target.Player.Uid, out stats);
+        }
+        else
+        {
+            // Live mode:
+            // 1) First try the real live storage object so the graph can keep updating in real time.
+            var liveStats = _storage.GetStatistics(_dataSourceEngine.CurrentSource.Scope == ScopeTime.Total);
+            if (!liveStats.TryGetValue(target.Player.Uid, out stats))
+            {
+                // 2) If the player is no longer in the current live scope (e.g. after save / section clear),
+                //    fall back to the detached raw snapshot retained by the data source.
+                var rawSnapshot = _dataSourceEngine.CurrentSource.GetRawData();
+                rawSnapshot.TryGetValue(target.Player.Uid, out stats);
+            }
+        }
+
+        if (stats == null)
+        {
+            _logger.LogWarning("PlayerStatistics not found for UID {Uid} when opening SkillBreakdown", target.Player.Uid);
+            return;
+        }
+
+        _logger.LogInformation("Using PlayerStatistics for SkillBreakdown");
 
         var playerInfo = _dataSourceEngine.GetPlayerInfoDictionary().TryGetValue(target.Player.Uid, out var info)
             ? info
