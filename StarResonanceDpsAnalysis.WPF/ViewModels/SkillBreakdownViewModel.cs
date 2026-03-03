@@ -33,7 +33,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 
     [ObservableProperty] private Config.AppConfig _appConfig;
 
-    private const int TimeSeriesPointCapacity = 300;
+    private int TimeSeriesPointCapacity => Math.Clamp(AppConfig.TimeSeriesSampleCapacity, 50, 1000);
 
     [ObservableProperty] private TabContentViewModel _dpsTabViewModel;
     [ObservableProperty] private TabContentViewModel _healingTabViewModel;
@@ -250,7 +250,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         }
     }
 
-    private static void UpdateChartsForStatistic(
+    private void UpdateChartsForStatistic(
         List<SkillItemViewModel> skills,
         IReadOnlyList<DpsDataPoint> timeSeries,
         DataStatisticsViewModel stats,
@@ -263,7 +263,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         UpdateHitTypeDistribution(stats, plot);
     }
 
-    private static void UpdateTimeSeriesChart(IReadOnlyList<DpsDataPoint> samples, PlotViewModel target)
+    private void UpdateTimeSeriesChart(IReadOnlyList<DpsDataPoint> samples, PlotViewModel target)
     {
         target.LineSeriesData.Points.Clear();
 
@@ -279,7 +279,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         target.RefreshSeries();
     }
 
-    private static void AdjustTimeAxisWindow(IReadOnlyList<DataPoint> samples, PlotViewModel target)
+    private void AdjustTimeAxisWindow(IReadOnlyList<DataPoint> samples, PlotViewModel target)
     {
         var xAxis = target.SeriesPlotModel.Axes.FirstOrDefault(a => a.Position == AxisPosition.Bottom);
         if (xAxis == null)
@@ -296,7 +296,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         if (samples.Count >= TimeSeriesPointCapacity)
         {
             var oldestX = samples[0].X;
-            var newMin = Math.Max(0, oldestX - 1.0);
+            var newMin = Math.Max(0, oldestX);
             xAxis.Minimum = newMin;
         }
         else
@@ -456,6 +456,9 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private void Refresh()
     {
+        ClearAllStatistics();
+
+        /*
         if (_playerStatistics == null)
         {
             ClearAllStatistics();
@@ -471,6 +474,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         {
             RefreshAllStatistics();
         }
+        */
 
         _logger.LogDebug("Manual refresh completed");
     }

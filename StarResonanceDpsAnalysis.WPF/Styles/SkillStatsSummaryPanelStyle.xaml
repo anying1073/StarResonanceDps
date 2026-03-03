@@ -53,13 +53,13 @@
                                     <Run>
                                         <Run.Text>
                                             <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
-                                                <Binding Path="LuckyDamage" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                <Binding Path="CritDamage" RelativeSource="{RelativeSource TemplatedParent}" />
                                                 <Binding Path="DataContext.AppConfig.DamageDisplayType" RelativeSource="{RelativeSource AncestorType=Window}" />
                                             </MultiBinding>
                                         </Run.Text>
                                     </Run>
                                     <Run Text=" " />
-                                    <Run Text="{lex:Loc {Binding LuckyHitTypeLabelKey, RelativeSource={RelativeSource TemplatedParent}}}" />
+                                    <Run Text="{lex:Loc {Binding CriticalHitTypeLabelKey, RelativeSource={RelativeSource TemplatedParent}}}" />
                                 </TextBlock>
                             </StackPanel>
                         </Border>
@@ -73,13 +73,13 @@
                                     <Run>
                                         <Run.Text>
                                             <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
-                                                <Binding Path="CritDamage" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                <Binding Path="LuckyDamage" RelativeSource="{RelativeSource TemplatedParent}" />
                                                 <Binding Path="DataContext.AppConfig.DamageDisplayType" RelativeSource="{RelativeSource AncestorType=Window}" />
                                             </MultiBinding>
                                         </Run.Text>
                                     </Run>
                                     <Run Text=" " />
-                                    <Run Text="{lex:Loc {Binding CriticalHitTypeLabelKey, RelativeSource={RelativeSource TemplatedParent}}}" />
+                                    <Run Text="{lex:Loc {Binding LuckyHitTypeLabelKey, RelativeSource={RelativeSource TemplatedParent}}}" />
                                 </TextBlock>
                             </StackPanel>
                         </Border>

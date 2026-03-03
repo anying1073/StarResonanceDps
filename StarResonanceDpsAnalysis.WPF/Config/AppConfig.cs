@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using StarResonanceDpsAnalysis.Core.Models;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Models;
 using KeyBinding = StarResonanceDpsAnalysis.WPF.Models.KeyBinding;
 
@@ -309,6 +310,11 @@ public partial class AppConfig : ObservableObject
         {
             _backgroundImagePath = null;
         }
+    }
+
+    partial void OnTimeSeriesSampleCapacityChanged(int value)
+    {
+        StatisticsConfiguration.TimeSeriesSampleCapacity = value;
     }
 
     public AppConfig Clone()
