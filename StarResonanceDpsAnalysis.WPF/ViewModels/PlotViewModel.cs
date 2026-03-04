@@ -112,7 +112,7 @@ public partial class PlotViewModel : BaseViewModel
         {
             // Title = options?.PiePlotTitle, // Use XAML title instead
             Background = OxyColors.Transparent,
-            Padding = new OxyThickness(0, 4, 0, 20),
+            Padding = new OxyThickness(0, 16, 0, 16),
             Series = { PieSeriesData }
         };
         
@@ -375,6 +375,25 @@ public partial class PlotViewModel : BaseViewModel
 
     private static OxyColor GetPaletteColor(int index)
     {
+        var palette = new[]
+        {
+            OxyColor.Parse("#F44336"), // 1 赤
+            OxyColor.Parse("#F0622D"), // 2 赤橙
+            OxyColor.Parse("#FB8C00"), // 3 橙
+            OxyColor.Parse("#F9A825"), // 4 黄橙
+            OxyColor.Parse("#FDD835"), // 5 黄
+            OxyColor.Parse("#C0CA33"), // 6 黄緑
+            OxyColor.Parse("#7CB342"), // 7 緑
+            OxyColor.Parse("#26A69A"), // 8 青緑
+            OxyColor.Parse("#26C6DA"), // 9 水
+            OxyColor.Parse("#29B6F6"), // 10 空
+            OxyColor.Parse("#1E88E5"), // 11 青
+            OxyColor.Parse("#3949AB"), // 12 藍
+            OxyColor.Parse("#5E35B1"), // 13 青紫
+            OxyColor.Parse("#9C27B0")  // 14 紫
+        };
+
+        /*
         // Google Material Design Colors (approx)
         var palette = new[]
         {
@@ -393,6 +412,8 @@ public partial class PlotViewModel : BaseViewModel
             OxyColor.Parse("#795548"), // Brown
             OxyColor.Parse("#607D8B")  // Blue Grey
         };
+        */
+
         return palette[index % palette.Length];
     }
 
