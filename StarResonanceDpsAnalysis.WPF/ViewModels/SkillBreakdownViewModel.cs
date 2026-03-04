@@ -315,6 +315,31 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         PowerLevel = playerInfo?.CombatPower ?? 0;
     }
 
+    private void ClearAllStatistics()
+    {
+        ClearSingleStatisticSet(DpsTabViewModel);
+        ClearSingleStatisticSet(HealingTabViewModel);
+        ClearSingleStatisticSet(TankingTabViewModel);
+    }
+
+    private static void ClearSingleStatisticSet(TabContentViewModel tabViewModel)
+    {
+        tabViewModel.Stats = new StatisticValues().ToDataStatistics(TimeSpan.Zero);
+
+        tabViewModel.SkillList.SkillItems.Clear();
+
+        ClearTimeSeriesChart(tabViewModel.Plot);
+
+        tabViewModel.Plot.SetPieSeriesData(Array.Empty<SkillItemViewModel>());
+        tabViewModel.Plot.SetHitTypeDistribution(0, 0, 0);
+    }
+
+    private static void ClearTimeSeriesChart(PlotViewModel target)
+    {
+        target.LineSeriesData.Points.Clear();
+        target.RefreshSeries();
+    }
+
     private void RefreshAllStatistics()
     {
         if (_playerStatistics == null)
@@ -482,6 +507,10 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private void Refresh()
     {
+        _pendingLiveRefresh = false;
+        ClearAllStatistics();
+
+        /*
         if (_playerStatistics == null)
         {
             return;
@@ -499,6 +528,9 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         {
             RefreshAllStatistics();
         }
+        */
+
+        _logger.LogDebug("Manual refresh completed");
     }
 
     public void Dispose()
