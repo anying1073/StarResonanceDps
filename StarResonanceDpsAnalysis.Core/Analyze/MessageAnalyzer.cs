@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
-
 using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Microsoft.Extensions.Logging;
@@ -50,25 +48,22 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             {
                 // 包头长度检查
                 if (!packetsReader.TryPeekUInt32BE(out uint packetSize)) break;
-                if (packetSize < 6) break;                           // 小于最小长度，不合法
-                if (packetSize > packetsReader.Remaining) break;     // 不完整，等待下个包
+                if (packetSize < 6) break;
+                if (packetSize > packetsReader.Remaining) break;
 
                 // 按长度截取出一个完整包
                 var packetReader = new ByteReader(packetsReader.ReadBytes((int)packetSize));
                 uint sizeAgain = packetReader.ReadUInt32BE();
-                if (sizeAgain != packetSize) continue; // 长度不一致，丢弃
+                if (sizeAgain != packetSize) continue;
 
                 // 读取消息类型
                 var packetType = packetReader.ReadUInt16BE();
-                var isZstdCompressed = (packetType & 0x8000) != 0; // 高位bit15表示是否压缩
-                var msgTypeId = packetType & 0x7FFF;                // 低15位是真实类型
+                var isZstdCompressed = (packetType & 0x8000) != 0;
+                var msgTypeId = packetType & 0x7FFF;
 
-                // 分发到对应处理方法
-                // logger?.LogTrace("MessageTypeId:{id}", msgTypeId);
                 if (!MessageHandlerMap.TryGetValue((MessageType)msgTypeId, out var handler)) continue;
                 handler?.Invoke(packetReader, isZstdCompressed, logger);
             }
-
         }
 
         /// <summary>
@@ -90,17 +85,15 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// </summary>
         public static void ProcessNotifyMsg(ByteReader packet, bool isZstdCompressed, ILogger? logger = null)
         {
-            var serviceUuid = packet.ReadUInt64BE(); // 服务UUID
-            _ = packet.ReadUInt32BE(); // stubId (暂时不用)
-            var methodId = packet.ReadUInt32BE(); // 方法ID
+            var serviceUuid = packet.ReadUInt64BE();
+            _ = packet.ReadUInt32BE();
+            var methodId = packet.ReadUInt32BE();
 
-            if (serviceUuid != 0x0000000063335342UL) return; // 非战斗相关，忽略
+            if (serviceUuid != 0x0000000063335342UL) return;
 
             byte[] msgPayload = packet.ReadRemaining();
-            byte[] origPayload = msgPayload;
             if (isZstdCompressed) msgPayload = DecompressZstdIfNeeded(msgPayload);
 
-            // logger?.LogTrace("MethodId: {methodId}", methodId);
             if (!ProcessMethods.TryGetValue(methodId, out var processMethod)) return;
             processMethod(msgPayload, isZstdCompressed);
         }
@@ -130,7 +123,6 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                     if (off + 8 + size > buffer.Length) throw new InvalidDataException("不完整的skippable帧数据");
 
                     off += 8 + (int)size;
-
                     continue;
                 }
 
@@ -142,7 +134,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             using var decoder = new DecompressionStream(input);
             using var output = new MemoryStream();
 
-            const long MAX_OUT = 32L * 1024 * 1024; // 最大解压32MB
+            const long MAX_OUT = 32L * 1024 * 1024;
             var temp = new byte[8192];
             long total = 0;
             int read;
@@ -177,32 +169,35 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
 
             foreach (var entity in syncNearEntities.Appear)
             {
-                if (entity.EntType != EEntityType.EntChar) continue;
+                // プレイヤーもモンスターも、対応ハンドラがあるなら処理する
+                var entTypeIndex = (int)entity.EntType;
+                if (entTypeIndex < 0 || entTypeIndex >= ProcessSyncNearEntitiesMethods.Count)
+                    continue;
+
+                var processMethod = ProcessSyncNearEntitiesMethods[entTypeIndex];
+                if (processMethod == null)
+                    continue;
 
                 // 提取UID
-                var playerUid = entity.Uuid.ShiftRight16();
-                if (playerUid == 0) continue;
+                var entityUid = entity.Uuid.ShiftRight16();
+                if (entityUid == 0) continue;
 
                 var attrCollection = entity.Attrs;
                 if (attrCollection?.Attrs == null) continue;
 
-                if ((int)entity.EntType < 0 || (int)entity.EntType >= ProcessSyncNearEntitiesMethods.Count) continue;
-                var processSyncNearEntitiesMethod = ProcessSyncNearEntitiesMethods[(int)entity.EntType];
-                processSyncNearEntitiesMethod?.Invoke(playerUid, attrCollection.Attrs, payloadBuffer);
+                processMethod.Invoke(entityUid, attrCollection.Attrs, payloadBuffer);
             }
         }
 
-
         public static byte[] ModulePayloadBuffer { get; set; } = [];
+
         /// <summary>
         /// 同步自身完整容器数据（基础属性、昵称、职业、战力）
         /// </summary>
         public static void ProcessSyncContainerData(byte[] payloadBuffer, bool b)
         {
-            // TODO: 模组分析模块待分离
             ModulePayloadBuffer = payloadBuffer;
 
-            //Console.WriteLine("Head (前64字节): " + ToHex(payloadBuffer));
             var syncContainerData = Zproto.WorldNtf.Types.SyncContainerData.Parser.ParseFrom(payloadBuffer);
             if (syncContainerData?.VData == null) return;
             var vData = syncContainerData.VData;
@@ -256,7 +251,6 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             }
         }
 
-
         /// <summary>
         /// 同步自身部分更新（脏数据） //增量更新，有数据就更新
         /// </summary>
@@ -268,7 +262,6 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 if (playerUid == 0) return;
                 DataStorage.TestCreatePlayerInfoByUID(playerUid);
 
-                //var dirty = Zproto.WorldNtf.Types.SyncContainerDirtyData.Parser.ParseFrom(payloadBuffer);
                 var dirty = Zproto.WorldNtf.Types.SyncContainerDirtyData.Parser.ParseFrom(payloadBuffer);
                 if (dirty?.VData?.Buffer == null || dirty.VData.Buffer.Length == 0) return;
 
@@ -281,17 +274,14 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 var fieldIndex = br.ReadUInt32();
                 _ = br.ReadInt32();
 
-
                 switch (fieldIndex)
                 {
-                    // 名字和战力
                     case 2:
                         if (!DoesStreamHaveIdentifier(br)) break;
                         fieldIndex = br.ReadUInt32();
                         _ = br.ReadInt32();
                         switch (fieldIndex)
                         {
-                            // 名字
                             case 5:
                                 var playerName = StreamReadString(br);
                                 if (!string.IsNullOrEmpty(playerName))
@@ -299,10 +289,8 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                                     DataStorage.CurrentPlayerInfo.Name = playerName;
                                     DataStorage.SetPlayerName(playerUid, playerName);
                                 }
-
                                 break;
 
-                            // 战力
                             case 35:
                                 var fightPoint = (int)br.ReadUInt32();
                                 _ = br.ReadInt32();
@@ -311,39 +299,30 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                                     DataStorage.CurrentPlayerInfo.CombatPower = fightPoint;
                                     DataStorage.SetPlayerCombatPower(playerUid, fightPoint);
                                 }
-
                                 break;
-
                         }
-
                         break;
 
-                    // HP
                     case 16:
                         if (!DoesStreamHaveIdentifier(br)) break;
                         fieldIndex = br.ReadUInt32();
                         _ = br.ReadInt32();
                         switch (fieldIndex)
                         {
-                            // 当前血量
                             case 1:
                                 var curHp = (int)br.ReadUInt32();
                                 DataStorage.CurrentPlayerInfo.HP = curHp;
                                 DataStorage.SetPlayerHP(playerUid, curHp);
                                 break;
 
-                            // 最大血量
                             case 2:
                                 var maxHp = (int)br.ReadUInt32();
                                 DataStorage.CurrentPlayerInfo.MaxHP = maxHp;
                                 DataStorage.SetPlayerMaxHP(playerUid, maxHp);
                                 break;
-
                         }
-
                         break;
 
-                    // 职业
                     case 61:
                         if (!DoesStreamHaveIdentifier(br)) break;
                         fieldIndex = br.ReadUInt32();
@@ -358,19 +337,14 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                                 DataStorage.SetPlayerProfessionID(playerUid, curProfessionId);
                             }
                         }
-
                         break;
-
                 }
-
-
             }
             catch
             {
                 // ignore
             }
         }
-
 
         /// <summary>
         /// 判断数据流是否还有标识符
@@ -379,25 +353,21 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         {
             var s = br.BaseStream;
 
-            // 先保证至少能读前 8 字节（uint32 + int32）
             if (s.Position + 8 > s.Length) return false;
 
-            uint id1 = br.ReadUInt32();  // 期望 0xFFFFFFFE
-            _ = br.ReadInt32(); // 跟随占位/长度（无论如何都消耗）
+            uint id1 = br.ReadUInt32();
+            _ = br.ReadInt32();
 
             if (id1 != 0xFFFFFFFE)
             {
-                // 与 JS 一样：首段不对就返回 false（此时已前进 8 字节）
                 return false;
             }
 
-            // 通过第一段校验后，再读后续 8 字节
             if (s.Position + 8 > s.Length) return false;
 
-            _ = br.ReadInt32();    // 理想情况下是 0xFFFFFFFD（即 -3）
-            _ = br.ReadInt32(); // 占位/保留
+            _ = br.ReadInt32();
+            _ = br.ReadInt32();
 
-            // JS 代码并未强制校验 id2，所以这里直接返回 true
             return true;
         }
 
@@ -420,7 +390,6 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             ProcessAoiSyncDelta(aoiSyncDelta);
         }
 
-
         /// <summary>
         /// 同步周边增量伤害（范围内其他角色的技能/伤害）
         /// </summary>
@@ -436,10 +405,8 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             catch (InvalidProtocolBufferException)
             {
                 // Ignore temporarily
-                // TODO: Add logger
             }
         }
-
 
         /// <summary>
         /// 处理一条技能伤害/治疗记录
@@ -458,17 +425,14 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             {
                 if (isTargetPlayer)
                 {
-                    //玩家
                     ProcessPlayerAttrs(targetUuid, attrCollection.Attrs, []);
                 }
                 else
                 {
-                    //怪物
                     ProcessEnemyAttrs(targetUuid, attrCollection.Attrs, []);
                 }
             }
 
-            // SkillEffects：本次增量包含的技能相关效果（伤害/治疗等）
             var skillEffect = delta.SkillEffects;
             if (skillEffect?.Damages == null || skillEffect.Damages.Count == 0) return;
 
@@ -482,40 +446,18 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 var isAttackerPlayer = attackerRaw.IsUuidPlayerRaw();
                 var attackerUuid = attackerRaw.ShiftRight16();
 
-                //// 这个判断里的 info 也没用到啊?
-                //// 检查是否缺少基本信息，如果缺少则尝试补充
-                //if (isAttackerPlayer && attackerUuid != 0)
-                //{
-                //    var info = StatisticData._manager.GetPlayerBasicInfo(attackerUuid);
-                //}
-
-                // 伤害数值
                 var damageSigned = d.HasValue ? d.Value : (d.HasLuckyValue ? d.LuckyValue : 0L);
                 if (damageSigned == 0) continue;
 
-                var damage = Math.Abs(damageSigned);
-
-                // 标志位
                 var isCrit = d.TypeFlag != null && ((d.TypeFlag & 1) == 1);
                 var isHeal = d.Type == EDamageType.Heal;
                 var luckyValue = d.LuckyValue;
                 var isLucky = luckyValue != null && luckyValue != 0;
-                var hpLessen = d.HasHpLessenValue ? d.HpLessenValue : 0L;
 
-                // 1) 是否“造成”幸运（CauseLucky）：TypeFlag 的 bit2
-                var isCauseLucky = d.TypeFlag != null && ((d.TypeFlag & 0b100) == 0b100);
-
-                // 2) 是否 Miss
                 var isMiss = d.HasIsMiss && d.IsMiss;
-
-                // 3) 是否打死/目标死亡
                 var isDead = d.HasIsDead && d.IsDead;
 
-                // 4) 元素标签（把 d.Property 转你现有的标签字符串）
                 var damageEleType = (int)d.Property;
-                var damageElementStr = EDamagePropertyExtends.GetDamageElement((int)d.Property);
-
-                // 5) 伤害来源（EDamageSource）
                 int damageSource = (int)(d.HasDamageSource ? d.DamageSource : 0);
 
                 (var id, var ticks) = IDGenerator.Next();
@@ -537,7 +479,6 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                     IsMiss = isMiss,
                     IsDead = isDead,
                 });
-
             }
         }
 
@@ -546,12 +487,12 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// </summary>
         public static void ProcessFrameDown(ByteReader reader, bool isZstdCompressed, ILogger? logger = null)
         {
-            _ = reader.ReadUInt32BE(); // serverSequenceId
+            _ = reader.ReadUInt32BE();
             if (reader.Remaining == 0) return;
 
             var nestedPacket = reader.ReadRemaining();
             if (isZstdCompressed) nestedPacket = DecompressZstdIfNeeded(nestedPacket);
-            Process(nestedPacket, logger); // 递归解析内部消息
+            Process(nestedPacket, logger);
         }
 
         public static ILogger Logger { get; set; } = NullLogger.Instance;
@@ -559,8 +500,6 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 同步周边实体，玩家数据
         /// </summary>
-        /// <param name="playerUid"></param>
-        /// <param name="attrs"></param>
         public static void ProcessPlayerAttrs(long playerUid, RepeatedField<Attr> attrs, byte[] payload)
         {
             DataStorage.TestCreatePlayerInfoByUID(playerUid);
@@ -599,7 +538,6 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                     case EAttrType.AttrHp:
                         DataStorage.SetPlayerHP(playerUid, reader.ReadInt32());
                         break;
-
                     case EAttrType.AttrMaxHp:
                         _ = reader.ReadInt32();
                         break;
@@ -609,11 +547,9 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                     case EAttrType.AttrSeasonStrengthExAdd:
                     case EAttrType.AttrSeasonStrengthPer:
                     case EAttrType.AttrSeasonStrengthExPer:
-                        //_logger?.LogWarning("[BaseDeltaInfoProcessor] Test for get AttrDreamIntensity: targetUuid[{targetUuid}], intensity[{value}]", targetUuid, reader.ReadInt32());
                         var strength = reader.ReadInt32();
                         DataStorage.SetPlayerSeasonStrength(playerUid, strength);
                         break;
-
                     case EAttrType.AttrSeasonLevel:
                         var level = reader.ReadInt32();
                         DataStorage.SetPlayerSeasonLevel(playerUid, level);
@@ -621,15 +557,12 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                     case EAttrType.AttrCombatState:
                         var state = reader.ReadBool();
                         Debug.WriteLine($"CombatState:[{BitConverter.ToString(data)}]");
-                        //Logger.LogDebug("CombatState:[{uid}@{data}]", playerUid, BitConverter.ToString(data));
                         DataStorage.SetPlayerCombatState(playerUid, state);
                         DataStorage.SetPlayerCombatStateTime(playerUid, DateTime.UtcNow.Ticks);
-
                         break;
                     case EAttrType.AttrCombatStateTime:
                         var time = reader.ReadInt64();
                         Debug.WriteLine($"CombatStateTime:[{BitConverter.ToString(data)}].[{time}].[{TimeSpan.FromTicks(time):c}");
-                        //Logger.LogDebug("CombatStateTime:[{uid}@{data}.{Time}.{FromTicks:c}]", playerUid, BitConverter.ToString(data), time, TimeSpan.FromTicks(time));
                         if (DataStorage.ReadOnlyPlayerInfoDatas.TryGetValue(playerUid, out var info))
                         {
                             var tick = info.CombatStateTime;
@@ -653,8 +586,6 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                         break;
                 }
             }
-
-
         }
 
         public static void ProcessEnemyAttrs(long enemyUid, RepeatedField<Attr> attrs, byte[] arg3)
@@ -668,24 +599,27 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 if (attr.Id == 0 || attr.RawData == null || attr.RawData.Length == 0) continue;
 
                 var rawBytes = attr.RawData.ToByteArray();
-
                 var reader = new CodedInputStream(rawBytes);
                 try
                 {
                     switch ((EAttrType)attr.Id)
                     {
                         case EAttrType.AttrName:
-                            var enemyName = reader.ReadString();
-                            DataStorage.SetPlayerName(enemyUid, enemyName);
+                            // 受信された怪物名は採用しない。
+                            // 表示名は WPF 側で JsonLocalizationProvider + NpcTemplateId により補正する。
+                            // _ = reader.ReadString();
                             break;
+
                         case EAttrType.AttrId:
                             var templateId = reader.ReadInt32();
                             DataStorage.SetNpcTemplateId(enemyUid, templateId);
                             break;
+
                         case EAttrType.AttrHp:
                             var enemyHp = reader.ReadInt32();
                             DataStorage.SetPlayerHP(enemyUid, enemyHp);
                             break;
+
                         case EAttrType.AttrMaxHp:
                             var enemyMaxHp = reader.ReadInt32();
                             DataStorage.SetPlayerMaxHP(enemyUid, enemyMaxHp);
@@ -697,9 +631,9 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                             break;
                     }
                 }
-                catch (InvalidProtocolBufferException ex)
+                catch (InvalidProtocolBufferException)
                 {
-                    //_logger?.LogWarning(ex, "Failed to decode attr {AttrId} for enemy {EnemyUid}", attr.Id, enemyUid);
+                    // ignore
                 }
             }
         }
@@ -709,16 +643,14 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// </summary>
         private static string StreamReadString(BinaryReader br)
         {
-            uint length = br.ReadUInt32();  // uint32LE
-            _ = br.ReadInt32();             // guard（占位/长度，无论如何都消耗）
+            uint length = br.ReadUInt32();
+            _ = br.ReadInt32();
 
-            // 即使 length 为 0，也要读后置 guard，和 JS 行为保持一致
             byte[] bytes = length > 0 ? br.ReadBytes((int)length) : Array.Empty<byte>();
 
-            _ = br.ReadInt32();             // guard（占位/保留）
+            _ = br.ReadInt32();
 
             return bytes.Length == 0 ? string.Empty : Encoding.UTF8.GetString(bytes);
         }
-
     }
 }

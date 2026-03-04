@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Data;
+using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
@@ -9,6 +10,7 @@ using StarResonanceDpsAnalysis.WPF.Properties;
 using StarResonanceDpsAnalysis.WPF.Services;
 using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
 using System.Globalization;
+using System.IO;
 using System.Windows.Threading;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -39,6 +41,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     private readonly ITeamStatsUIManager _teamStatsManager;
     private readonly IDpsTimerService _timerService;
     private readonly IWindowManagementService _windowManagement;
+    private readonly JsonLocalizationProvider _jsonLocalizationProvider;
 
     // ===== Observable Properties =====
     [ObservableProperty] private AppConfig _appConfig = new();
@@ -104,6 +107,10 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         _dataProcessor = dataProcessor;
         _teamStatsManager = teamStatsManager;
         _resetCoordinator = resetCoordinator;
+
+        _jsonLocalizationProvider = new JsonLocalizationProvider(
+            Path.Combine(AppContext.BaseDirectory, "Localization"));
+
         _battleDurationUpdateTimer = new DispatcherTimer
         {
             Interval = TimeSpan.FromMilliseconds(500)
@@ -126,12 +133,11 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         // Configure engine mode according to config
         _dataSourceEngine.ChangeMode(_configManager.CurrentConfig.DpsUpdateMode.ToDataSourceMode());
 
-
         _configManager.ConfigurationUpdated += ConfigManagerOnConfigurationUpdated;
 
         _storage.BeforeSectionCleared += StorageOnBeforeSectionCleared;
         _storage.ServerConnectionStateChanged += StorageOnServerConnectionStateChanged;
-        _storage.PlayerInfoUpdated += StorageOnPlayerInfoUpdated;
+        _storage.PlayerInfoUpdated += StorageOnPlayerInfoUpdatedWithNpcLocalization;
         _storage.ServerChanged += StorageOnServerChanged;
         _storage.SectionEnded += SectionEnded;
         _storage.NewSectionCreated += StorageOnNewSectionCreated;
@@ -158,7 +164,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         _timerService.Stop();
 
         _storage.ServerConnectionStateChanged -= StorageOnServerConnectionStateChanged;
-        _storage.PlayerInfoUpdated -= StorageOnPlayerInfoUpdated;
+        _storage.PlayerInfoUpdated -= StorageOnPlayerInfoUpdatedWithNpcLocalization;
         _storage.BeforeSectionCleared -= StorageOnBeforeSectionCleared;
 
         _localizationManager.CultureChanged -= OnLocalizationCultureChanged;
@@ -306,6 +312,11 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     {
         InvokeOnDispatcher(() =>
         {
+            foreach (var info in _storage.ReadOnlyPlayerInfoDatas.Values)
+            {
+                ApplyNpcLocalizedName(info, culture);
+            }
+
             TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
         });
     }
@@ -344,5 +355,39 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     private void StopBattleDurationUpdate()
     {
         _battleDurationUpdateTimer.Stop();
+    }
+
+    /// <summary>
+    /// Wrap the original PlayerInfoUpdated handler so NPC names are corrected
+    /// from JSON before the existing UI update logic runs.
+    /// </summary>
+    private void StorageOnPlayerInfoUpdatedWithNpcLocalization(PlayerInfo info)
+    {
+        ApplyNpcLocalizedName(info);
+        StorageOnPlayerInfoUpdated(info);
+    }
+
+    /// <summary>
+    /// For NPC entries, replace packet-provided name with localized Monster JSON name.
+    /// Uses key format: "Monster:{templateId}".
+    /// </summary>
+    private void ApplyNpcLocalizedName(PlayerInfo info, CultureInfo? culture = null)
+    {
+        var templateId = info.NpcTemplateId;
+        if (templateId == 0)
+            return;
+
+        var resolved = _jsonLocalizationProvider.GetLocalizedObject(
+            $"Monster:{templateId}",
+            target: null,
+            culture: culture ?? CultureInfo.CurrentUICulture) as string;
+
+        if (string.IsNullOrWhiteSpace(resolved))
+            return;
+
+        if (!string.Equals(info.Name, resolved, StringComparison.Ordinal))
+        {
+            info.Name = resolved;
+        }
     }
 }
