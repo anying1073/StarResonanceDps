@@ -660,7 +660,21 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
             _isSectionTimedOut = false;
         }
 
-        // ✅ 完全使用 StatisticsAdapter
+        // Preserve current section logs before full clear as well.
+        var sectionStats = _statisticsAdapter.GetStatistics(fullSession: false);
+        if (sectionStats.Count > 0)
+        {
+            try
+            {
+                BeforeSectionCleared?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred during BeforeSectionCleared event in ClearAllDpsData");
+                ExceptionHelper.ThrowIfDebug(ex);
+            }
+        }
+
         _statisticsAdapter.ClearAll();
         RaiseDpsDataUpdated();
         RaiseDataUpdated();
@@ -677,7 +691,21 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
             _isSectionTimedOut = false;
         }
 
-        // ✅ 完全使用 StatisticsAdapter
+        // Preserve current section logs for lightweight replay before manual clear.
+        var sectionStats = _statisticsAdapter.GetStatistics(fullSession: false);
+        if (sectionStats.Count > 0)
+        {
+            try
+            {
+                BeforeSectionCleared?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred during BeforeSectionCleared event in ClearDpsData");
+                ExceptionHelper.ThrowIfDebug(ex);
+            }
+        }
+
         _statisticsAdapter.ResetSection();
 
         RaiseDpsDataUpdated();

@@ -20,12 +20,9 @@ public record HistoryInfo(string Title, string FilePath)
     }
 }
 
-/// <summary>
-/// 战斗历史服务 - 负责保存和加载战斗历史
-/// </summary>
 public partial class BattleHistoryService
 {
-    private const int AbsoluteMinDurationSeconds = 10; // 绝对最小战斗时长(秒),低于此值的战斗永远不保存
+    private const int AbsoluteMinDurationSeconds = 10;
     private readonly IConfigManager _configManager;
     private readonly IDataStorage _storage;
     private readonly ILogger<BattleHistoryService> _logger;
@@ -44,47 +41,27 @@ public partial class BattleHistoryService
             ContractResolver = new PrivateSetterContractResolver()
         };
 
-        // 确保目录存在
         if (!Directory.Exists(_historyDirectory))
         {
             Directory.CreateDirectory(_historyDirectory);
         }
 
-        // 启动时加载现有历史
         LoadHistory();
     }
 
     private int MaxHistory => _configManager.CurrentConfig.MaxHistoryCount;
 
-    /// <summary>
-    /// 当前战斗历史列表(最新的N条，N由配置决定)
-    /// </summary>
-#pragma warning disable IDE0028
     public ObservableCollection<HistoryInfo> ScopeCurrentHistory { get; } = new();
-
-    /// <summary>
-    /// 全程战斗历史列表(最新的N条，N由配置决定)
-    /// </summary>
     public ObservableCollection<HistoryInfo> ScopeTotalHistory { get; } = new();
-#pragma warning restore IDE0028
 
-    /// <summary>
-    /// 保存当前战斗历史
-    /// </summary>
-    /// <param name="duration">战斗时长</param>
-    /// <param name="minDurationSeconds">用户设置的最小时长(秒),0表示记录所有(默认记录所有)</param>
-    /// <param name="forceUseFullData">强制使用FullDpsData(用于脱战时sectioned数据已被清空的情况)</param>
-    public void SaveScopeCurrentHistory(TimeSpan duration, int minDurationSeconds = 0,
-        bool forceUseFullData = false)
+    public void SaveScopeCurrentHistory(TimeSpan duration, int minDurationSeconds = 0, bool forceUseFullData = false)
     {
-        // ⭐ 硬性限制: 低于10秒的战斗永远不保存
         if (duration.TotalSeconds < AbsoluteMinDurationSeconds)
         {
             LogSkipHistoryHardLimit(AbsoluteMinDurationSeconds, duration.TotalSeconds, "当前");
             return;
         }
 
-        // ⭐ 用户设置的过滤条件(可选)
         if (minDurationSeconds > 0 && duration.TotalSeconds < minDurationSeconds)
         {
             LogSkipHistoryUserLimit(minDurationSeconds, duration.TotalSeconds, "当前");
@@ -96,26 +73,20 @@ public partial class BattleHistoryService
             var scope = forceUseFullData ? ScopeTime.Total : ScopeTime.Current;
             var history = CreateHistory(_storage, duration, scope);
 
-            // 保存到磁盘
             SaveHistoryToDisk(history);
 
-            // 添加到内存列表(插入到开头)
             ScopeCurrentHistory.Insert(0, HistoryInfo.FromHistory(history));
 
-            // ⭐ 只保留最新的8条,超出的释放内存并删除磁盘文件
             while (ScopeCurrentHistory.Count > MaxHistory)
             {
                 var oldest = ScopeCurrentHistory[^1];
                 ScopeCurrentHistory.RemoveAt(ScopeCurrentHistory.Count - 1);
-
-                // 删除对应的磁盘文件
                 TryDeleteHistoryFile(oldest.FilePath);
-
                 LogRemoveOldHistory(oldest.FilePath);
             }
 
-            LogSaveCurrentHistorySuccess(history.StartedAt, duration.TotalSeconds, forceUseFullData ? "FullData" : "SectionedData",
-                ScopeCurrentHistory.Count, MaxHistory);
+            LogSaveCurrentHistorySuccess(history.StartedAt, duration.TotalSeconds,
+                forceUseFullData ? "FullData" : "SectionedData", ScopeCurrentHistory.Count, MaxHistory);
         }
         catch (Exception ex)
         {
@@ -123,21 +94,14 @@ public partial class BattleHistoryService
         }
     }
 
-    /// <summary>
-    /// 保存全程历史
-    /// </summary>
-    /// <param name="duration">战斗时长</param>
-    /// <param name="minDurationSeconds">用户设置的最小时长(秒),0表示记录所有(默认记录所有)</param>
     public void SaveScopeTotalHistory(TimeSpan duration, int minDurationSeconds = 0)
     {
-        // ? 硬性限制: 低于10秒的战斗永远不保存
         if (duration.TotalSeconds < AbsoluteMinDurationSeconds)
         {
             LogSkipHistoryHardLimit(AbsoluteMinDurationSeconds, duration.TotalSeconds, "全程");
             return;
         }
 
-        // ? 用户设置的过滤条件(可选)
         if (minDurationSeconds > 0 && duration.TotalSeconds < minDurationSeconds)
         {
             LogSkipHistoryUserLimit(minDurationSeconds, duration.TotalSeconds, "全程");
@@ -148,21 +112,15 @@ public partial class BattleHistoryService
         {
             var history = CreateHistory(_storage, duration, ScopeTime.Total);
 
-            // 保存到磁盘
             SaveHistoryToDisk(history);
 
-            // 添加到内存列表(插入到开头)
             ScopeTotalHistory.Insert(0, HistoryInfo.FromHistory(history));
 
-            // 超出的释放内存并删除磁盘文件
             while (ScopeTotalHistory.Count > MaxHistory)
             {
                 var oldest = ScopeTotalHistory[^1];
                 ScopeTotalHistory.RemoveAt(ScopeTotalHistory.Count - 1);
-
-                // 删除对应的磁盘文件
                 TryDeleteHistoryFile(oldest.FilePath);
-
                 LogRemoveOldHistory(oldest.FilePath);
             }
 
@@ -195,7 +153,6 @@ public partial class BattleHistoryService
             if (history != null)
             {
                 history.FilePath = filePath;
-
                 LogHistoryLoadedSuccess(filePath, history.Duration);
             }
             else
@@ -212,17 +169,14 @@ public partial class BattleHistoryService
         }
     }
 
-    /// <summary>
-    /// 创建历史
-    /// </summary>
     private static BattleHistoryData CreateHistory(IDataStorage storage, TimeSpan duration, ScopeTime scopeType)
     {
         var now = DateTime.Now;
-        
-        // 根据类型选择数据源
-        var dpsList = storage.GetStatistics(scopeType == ScopeTime.Total);
-        var capacity = dpsList.Count;
 
+        var statisticsSource = storage.GetStatistics(scopeType == ScopeTime.Total);
+        var battleLogs = storage.GetBattleLogs(scopeType == ScopeTime.Total).ToList();
+
+        var capacity = statisticsSource.Count;
         var players = new Dictionary<long, PlayerInfo>(capacity);
         var statistics = new Dictionary<long, PlayerStatistics>(capacity);
 
@@ -230,7 +184,7 @@ public partial class BattleHistoryService
         ulong teamTotalHealing = 0;
         ulong teamTotalTaken = 0;
 
-        foreach (var dpsData in dpsList.Values)
+        foreach (var dpsData in statisticsSource.Values)
         {
             var damage = (ulong)Math.Max(0, dpsData.AttackDamage.Total);
             var healing = (ulong)Math.Max(0, dpsData.Healing.Total);
@@ -243,8 +197,8 @@ public partial class BattleHistoryService
             var foundPlayerInfo = storage.ReadOnlyPlayerInfoDatas.TryGetValue(dpsData.Uid, out var playerInfo);
             players[dpsData.Uid] = foundPlayerInfo ? playerInfo! : new PlayerInfo { UID = dpsData.Uid };
 
-            // Save a detached snapshot, not the live storage instance
-            statistics[dpsData.Uid] = PlayerStatisticsSnapshotCloner.Clone(dpsData);
+            // Keep stats snapshot light: no deep all-player chart cloning here.
+            statistics[dpsData.Uid] = dpsData;
         }
 
         return new BattleHistoryData
@@ -257,13 +211,11 @@ public partial class BattleHistoryService
             TeamTotalHealing = teamTotalHealing,
             TeamTotalTakenDamage = teamTotalTaken,
             Players = players,
-            Statistics = statistics
+            Statistics = statistics,
+            BattleLogs = battleLogs
         };
     }
 
-    /// <summary>
-    /// 保存历史到磁盘
-    /// </summary>
     private void SaveHistoryToDisk(BattleHistoryData history)
     {
         var fileName = $"{history.ScopeType}_{history.StartedAt:yyyy-MM-dd_HH-mm-ss}.json";
@@ -275,13 +227,10 @@ public partial class BattleHistoryService
             var serializer = JsonSerializer.Create(_jsonSettings);
             serializer.Serialize(writer, history);
         }
-        
+
         history.FilePath = filePath;
     }
 
-    /// <summary>
-    /// 从磁盘加载历史
-    /// </summary>
     private void LoadHistory()
     {
         try
@@ -300,11 +249,10 @@ public partial class BattleHistoryService
             {
                 try
                 {
-                    // Optimization: Check filename to skip deserializing if we already reached limit for that scope
                     var fileName = Path.GetFileNameWithoutExtension(file.Name);
                     var parts = fileName.Split('_');
                     bool skipLoad = false;
-                    
+
                     if (parts.Length > 0 && Enum.TryParse<ScopeTime>(parts[0], out var scopeHint))
                     {
                         if (scopeHint == ScopeTime.Current && ScopeCurrentHistory.Count >= MaxHistory) skipLoad = true;
@@ -318,7 +266,7 @@ public partial class BattleHistoryService
                             file.Delete();
                             LogDeleteOldHistoryStartup(file.FullName);
                         }
-                        catch { /* ignore */ }
+                        catch { }
                         continue;
                     }
 
@@ -342,27 +290,18 @@ public partial class BattleHistoryService
                     }
                     else
                     {
-                        // ? 超出限制,删除文件并释放内存
                         try
                         {
                             file.Delete();
                             LogDeleteOldHistoryStartup(file.FullName);
                         }
-                        catch { /* ignore */ }
+                        catch { }
                     }
                 }
                 catch (Exception ex)
                 {
                     LogLoadHistoryFileException(ex, file.FullName);
-                    // 损坏的文件直接删除
-                    try
-                    {
-                        file.Delete();
-                    }
-                    catch
-                    {
-                        // ignore
-                    }
+                    try { file.Delete(); } catch { }
                 }
             }
 
@@ -374,9 +313,6 @@ public partial class BattleHistoryService
         }
     }
 
-    /// <summary>
-    /// 尝试删除历史文件
-    /// </summary>
     private void TryDeleteHistoryFile(string filePath)
     {
         try
@@ -392,8 +328,6 @@ public partial class BattleHistoryService
             LogDeleteHistoryError(ex, filePath);
         }
     }
-
-    #region Logging
 
     [LoggerMessage(Level = LogLevel.Information, Message = "战斗时长不足{Min}秒({Actual:F1}秒),跳过保存{Scope}历史(硬性限制)")]
     private partial void LogSkipHistoryHardLimit(int min, double actual, string scope);
@@ -445,13 +379,8 @@ public partial class BattleHistoryService
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "删除历史文件失败: {FilePath}")]
     private partial void LogDeleteHistoryError(Exception ex, string filePath);
-
-    #endregion
 }
 
-/// <summary>
-/// 历史数据模型
-/// </summary>
 public class BattleHistoryData
 {
     public ScopeTime ScopeType { get; set; }
@@ -461,25 +390,22 @@ public class BattleHistoryData
     public ulong TeamTotalDamage { get; set; }
     public ulong TeamTotalHealing { get; set; }
     public ulong TeamTotalTakenDamage { get; set; }
-    public required Dictionary<long, PlayerInfo> Players { get; set; } 
-    public required Dictionary<long, PlayerStatistics> Statistics { get; set; } 
+    public required Dictionary<long, PlayerInfo> Players { get; set; }
+    public required Dictionary<long, PlayerStatistics> Statistics { get; set; }
 
-    /// <summary>
-    /// 文件路径(不序列化)
-    /// </summary>
+    // NEW: keep raw logs so SkillBreakdown can rebuild ONE player's graph on demand
+    public List<BattleLog> BattleLogs { get; set; } = new();
+
     [System.Text.Json.Serialization.JsonIgnore]
     [JsonIgnore]
     public string FilePath { get; set; } = "";
 
-    /// <summary>
-    /// 显示标签
-    /// </summary>
     [System.Text.Json.Serialization.JsonIgnore]
     [JsonIgnore]
     public string DisplayLabel =>
         $"{(ScopeType == ScopeTime.Current ? "当前" : "全程")} {StartedAt:HH:mm:ss} ({Duration:mm\\:ss})";
 
-     public static explicit operator HistoryInfo(BattleHistoryData d) => HistoryInfo.FromHistory(d);
+    public static explicit operator HistoryInfo(BattleHistoryData d) => HistoryInfo.FromHistory(d);
 }
 
 public class PrivateSetterContractResolver : DefaultContractResolver
@@ -487,7 +413,7 @@ public class PrivateSetterContractResolver : DefaultContractResolver
     protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
     {
         var property = base.CreateProperty(member, memberSerialization);
-        
+
         if (!property.Writable)
         {
             var propertyInfo = member as PropertyInfo;
@@ -496,7 +422,7 @@ public class PrivateSetterContractResolver : DefaultContractResolver
                 property.Writable = true;
             }
         }
-        
+
         return property;
     }
 }

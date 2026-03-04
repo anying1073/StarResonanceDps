@@ -13,6 +13,9 @@ public interface IDpsDataSource
     IReadOnlyDictionary<long, PlayerInfo> GetPlayerInfoDictionary();
 
     IReadOnlyDictionary<long, PlayerStatistics> GetRawData();
+
+    IReadOnlyList<BattleLog> GetBattleLogsForPlayer(long uid);
+
     TimeSpan BattleDuration { get; }
 
     void Refresh();

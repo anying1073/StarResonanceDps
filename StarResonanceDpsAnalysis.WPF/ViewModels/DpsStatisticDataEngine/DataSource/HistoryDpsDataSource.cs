@@ -16,7 +16,6 @@ public sealed class HistoryDpsDataSource(
     private StatisticDictionary _cache = new();
 
     private bool _enable;
-
     private string _filePath = string.Empty;
     private RawDict _rawDict = new Dictionary<long, PlayerStatistics>();
     private BattleHistoryData? _historyData;
@@ -68,6 +67,7 @@ public sealed class HistoryDpsDataSource(
         lock (_syncRoot)
         {
             if (!_enable) return;
+
             var (processed, raw) = FetchData();
             _cache = processed;
             _rawDict = raw;
@@ -79,6 +79,18 @@ public sealed class HistoryDpsDataSource(
     public IReadOnlyDictionary<long, PlayerInfo> GetPlayerInfoDictionary()
     {
         return _historyData?.Players ?? new Dictionary<long, PlayerInfo>();
+    }
+
+    public IReadOnlyList<BattleLog> GetBattleLogsForPlayer(long uid)
+    {
+        if (uid == 0 || _historyData == null || _historyData.BattleLogs.Count == 0)
+        {
+            return Array.Empty<BattleLog>();
+        }
+
+        return _historyData.BattleLogs
+            .Where(log => log.AttackerUuid == uid || log.TargetUuid == uid)
+            .ToList();
     }
 
     public void SetHistoryFilePath(string filePath)
@@ -93,7 +105,9 @@ public sealed class HistoryDpsDataSource(
     {
         var includeNpc = engine.IncludeNpcData;
         var history = service.LoadHistory(_filePath);
+
         logger.LogInformation("Load history: {filePath}", _filePath);
+
         if (history == null)
         {
             logger.LogWarning("History file not found");
@@ -101,6 +115,7 @@ public sealed class HistoryDpsDataSource(
         }
 
         _historyData = history;
+
         var processed = processor.PreProcessData(history.Statistics, includeNpc);
         return (processed, history.Statistics);
     }

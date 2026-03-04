@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -18,32 +19,48 @@ using StarResonanceDpsAnalysis.WPF.Properties;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
-/// <summary>
-/// ViewModel for the skill breakdown view, showing detailed statistics for a player.
-/// Graph points are read directly from PlayerStatistics.
-/// </summary>
 public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 {
     private readonly ILogger<SkillBreakdownViewModel> _logger;
     private readonly LocalizationManager _localizationManager;
     private readonly IDataStorage _storage;
+    private readonly Config.IConfigManager _configManager;
+
+    // Small UI-side throttle layer (like old cache-service idea, but only for the opened player)
+    private readonly DispatcherTimer _liveRefreshTimer;
+    private bool _pendingLiveRefresh;
+
+    private const int LiveUiRefreshIntervalMs = 1000;
 
     [ObservableProperty] private StatisticType _statisticIndex;
-    private PlayerStatistics? _playerStatistics;
-
     [ObservableProperty] private Config.AppConfig _appConfig;
-
-    private int TimeSeriesPointCapacity => Math.Clamp(AppConfig.TimeSeriesSampleCapacity, 50, 1000);
 
     [ObservableProperty] private TabContentViewModel _dpsTabViewModel;
     [ObservableProperty] private TabContentViewModel _healingTabViewModel;
     [ObservableProperty] private TabContentViewModel _tankingTabViewModel;
 
-    /// <summary>
-    /// True when the current source is the live storage object.
-    /// False when the current source is a history snapshot loaded from JSON.
-    /// </summary>
+    [ObservableProperty] private string _playerName = string.Empty;
+    [ObservableProperty] private long _uid;
+    [ObservableProperty] private long _powerLevel;
+
+    [ObservableProperty] private double _zoomLevel = 1.0;
+
+    private const double MinZoom = 0.5;
+    private const double MaxZoom = 5.0;
+    private const double ZoomStep = 0.2;
+
+    private PlayerStatistics? _playerStatistics;
+
+    // true: current live storage instance, should keep updating
+    // false: detached replay/history snapshot, should stay frozen
     private bool _isLiveSource;
+
+    private ScopeTime _scopeTime = ScopeTime.Current;
+
+    // Stored only for frozen/history rebuild
+    private List<BattleLog> _fixedReplayLogs = new();
+
+    private int TimeSeriesPointCapacity => Math.Clamp(AppConfig.TimeSeriesSampleCapacity, 50, 1000);
 
     public SkillBreakdownViewModel(
         ILogger<SkillBreakdownViewModel> logger,
@@ -54,6 +71,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         _logger = logger;
         _localizationManager = localizationManager;
         _storage = storage;
+        _configManager = configManager;
         _appConfig = configManager.CurrentConfig;
 
         var xAxis = GetXAxisName();
@@ -65,9 +83,73 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         _healingTabViewModel.Plot.DamageDisplayMode = _appConfig.DamageDisplayType;
         _tankingTabViewModel.Plot.DamageDisplayMode = _appConfig.DamageDisplayType;
 
+        _liveRefreshTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(LiveUiRefreshIntervalMs)
+        };
+        _liveRefreshTimer.Tick += OnLiveRefreshTimerTick;
+        _liveRefreshTimer.Start();
+
+        // Live updates: no DataStorage re-read on every event
         _storage.DpsDataUpdated += OnStorageDpsDataUpdated;
+
+        // Freeze current live display right before section/manual clear
+        _storage.BeforeSectionCleared += OnBeforeSectionCleared;
+
+        _configManager.ConfigurationUpdated += OnConfigurationUpdated;
     }
 
+    public void InitializeFrom(
+        PlayerStatistics playerStats,
+        PlayerInfo? playerInfo,
+        StatisticType statisticType,
+        IReadOnlyList<BattleLog>? battleLogs = null,
+        ScopeTime scopeTime = ScopeTime.Current)
+    {
+        _scopeTime = scopeTime;
+        _playerStatistics = playerStats;
+        _isLiveSource = IsCurrentStorageInstance(playerStats, scopeTime);
+
+        _fixedReplayLogs = battleLogs?.ToList() ?? new List<BattleLog>();
+        _pendingLiveRefresh = false;
+
+        UpdatePlayerInfo(playerStats, playerInfo);
+        StatisticIndex = statisticType;
+
+        if (_isLiveSource)
+        {
+            // Live: use direct reference, redraw immediately once.
+            RefreshAllStatistics();
+        }
+        else
+        {
+            // Frozen/history path: rebuild exactly once from logs if available.
+            if (!TryRefreshFromReplayLogs(_fixedReplayLogs))
+            {
+                RefreshAllStatistics();
+            }
+        }
+
+        _logger.LogDebug(
+            "SkillBreakdown initialized: UID={Uid}, Live={Live}, Scope={Scope}, ReplayLogs={Count}",
+            playerStats.Uid,
+            _isLiveSource,
+            _scopeTime,
+            _fixedReplayLogs.Count);
+    }
+
+    private bool IsCurrentStorageInstance(PlayerStatistics playerStats, ScopeTime scopeTime)
+    {
+        // This is only called on window-open, so the one-time DataStorage access here is fine.
+        var liveStats = _storage.GetStatistics(fullSession: scopeTime == ScopeTime.Total);
+        return liveStats.TryGetValue(playerStats.Uid, out var currentLiveRef)
+               && ReferenceEquals(currentLiveRef, playerStats);
+    }
+
+    /// <summary>
+    /// High-frequency event path:
+    /// just mark dirty. Actual redraw is throttled by _liveRefreshTimer.
+    /// </summary>
     private void OnStorageDpsDataUpdated()
     {
         if (!_isLiveSource || _playerStatistics == null)
@@ -82,93 +164,135 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
             return;
         }
 
+        _pendingLiveRefresh = true;
+    }
+
+    /// <summary>
+    /// Low-frequency coalesced redraw.
+    /// This is the small "cache layer" that restores old behavior style.
+    /// </summary>
+    private void OnLiveRefreshTimerTick(object? sender, EventArgs e)
+    {
+        if (!_pendingLiveRefresh || !_isLiveSource || _playerStatistics == null)
+        {
+            return;
+        }
+
+        _pendingLiveRefresh = false;
+
         try
         {
-            RefreshCurrentPlayerFromStorage();
+            // Important:
+            // _playerStatistics is the live storage instance itself.
+            // Its values are updated in place by the engine.
+            // So redraw only; do NOT re-read DataStorage here.
+            RefreshAllStatistics();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error refreshing SkillBreakdownViewModel from live storage");
+            _logger.LogError(ex, "Error applying throttled live refresh in SkillBreakdown");
         }
     }
 
     /// <summary>
-    /// Initialize from PlayerStatistics directly.
+    /// Freeze current live view right before section/manual clear.
+    /// This preserves the last visible state after save/clear.
     /// </summary>
-    public void InitializeFrom(
-        PlayerStatistics playerStats,
-        PlayerInfo? playerInfo,
-        StatisticType statisticType)
+    private void OnBeforeSectionCleared()
     {
-        _logger.LogDebug(
-            "Initializing SkillBreakdownViewModel from PlayerStatistics for UID {Uid}",
-            playerStats.Uid);
+        if (!_isLiveSource || _playerStatistics == null)
+        {
+            return;
+        }
 
-        _playerStatistics = playerStats;
-        _isLiveSource = IsCurrentStorageInstance(playerStats);
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher != null && !dispatcher.CheckAccess())
+        {
+            dispatcher.BeginInvoke(new Action(OnBeforeSectionCleared));
+            return;
+        }
 
-        UpdatePlayerInfo(playerStats, playerInfo);
-        StatisticIndex = statisticType;
+        try
+        {
+            // We are about to become frozen, so cancel any delayed live redraw.
+            _pendingLiveRefresh = false;
 
-        // Always render immediately from the passed-in object first.
-        // This is important for both history snapshots and freshly opened live view.
-        RefreshAllStatistics();
+            // Rare path only: one DataStorage read at clear time.
+            var logs = _storage.GetBattleLogsForPlayer(_playerStatistics.Uid, _scopeTime == ScopeTime.Total);
+            if (logs.Count == 0)
+            {
+                return;
+            }
 
-        _logger.LogDebug(
-            "SkillBreakdownViewModel initialized from PlayerStatistics: {Name}, LiveSource={IsLiveSource}",
-            PlayerName,
-            _isLiveSource);
+            var frozen = SkillBreakdownReplayBuilder.BuildForPlayer(
+                _playerStatistics.Uid,
+                logs,
+                Math.Max(1, _storage.SampleRecordingInterval),
+                TimeSeriesPointCapacity);
+
+            if (frozen == null)
+            {
+                return;
+            }
+
+            _fixedReplayLogs = logs.ToList();
+            _playerStatistics = frozen;
+            _isLiveSource = false;
+
+            RefreshAllStatistics();
+
+            _logger.LogDebug("SkillBreakdown frozen before clear for UID {Uid}", _playerStatistics.Uid);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error freezing SkillBreakdown before clear");
+        }
     }
 
-    private bool IsCurrentStorageInstance(PlayerStatistics playerStats)
+    private void OnConfigurationUpdated(object? sender, Config.AppConfig newConfig)
     {
-        var liveStats = _storage.GetStatistics(fullSession: false);
-        return liveStats.TryGetValue(playerStats.Uid, out var currentLiveRef)
-               && ReferenceEquals(currentLiveRef, playerStats);
-    }
+        AppConfig = newConfig;
 
-    #region Player Info Properties
-
-    [ObservableProperty] private string _playerName = string.Empty;
-    [ObservableProperty] private long _uid;
-    [ObservableProperty] private long _powerLevel;
-
-    #endregion
-
-    #region Zoom State
-
-    [ObservableProperty] private double _zoomLevel = 1.0;
-    private const double MinZoom = 0.5;
-    private const double MaxZoom = 5.0;
-    private const double ZoomStep = 0.2;
-
-    #endregion
-
-    #region Private Helper Methods
-
-    private void RefreshCurrentPlayerFromStorage()
-    {
         if (_playerStatistics == null)
         {
             return;
         }
 
-        var playerUid = _playerStatistics.Uid;
-        if (playerUid == 0)
+        if (_isLiveSource)
         {
-            return;
-        }
-
-        var latestStats = _storage.GetStatistics(fullSession: false);
-        if (latestStats.TryGetValue(playerUid, out var updated))
-        {
-            _playerStatistics = updated;
+            // Live: redraw from current live ref only.
             RefreshAllStatistics();
             return;
         }
 
-        // Current section was cleared or the player disappeared.
-        ClearAllStatistics();
+        // Frozen/history: rebuild from stored logs to respect new point capacity, etc.
+        if (!TryRefreshFromReplayLogs(_fixedReplayLogs))
+        {
+            RefreshAllStatistics();
+        }
+    }
+
+    private bool TryRefreshFromReplayLogs(IReadOnlyList<BattleLog>? logs)
+    {
+        if (_playerStatistics == null || logs == null || logs.Count == 0)
+        {
+            return false;
+        }
+
+        var rebuilt = SkillBreakdownReplayBuilder.BuildForPlayer(
+            _playerStatistics.Uid,
+            logs,
+            Math.Max(1, _storage.SampleRecordingInterval),
+            TimeSeriesPointCapacity);
+
+        if (rebuilt == null)
+        {
+            return false;
+        }
+
+        _playerStatistics = rebuilt;
+        RefreshAllStatistics();
+        return true;
     }
 
     private PlotViewModel CreatePlotViewModel(string xAxisTitle, StatisticType statisticType)
@@ -195,13 +319,10 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     {
         if (_playerStatistics == null)
         {
-            _logger.LogWarning("Cannot refresh statistics: PlayerStatistics is null");
             return;
         }
 
-        var duration = TimeSpan.FromTicks(
-            Math.Max(0, _playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0)));
-
+        var duration = TimeSpan.FromTicks(Math.Max(0, _playerStatistics.LastTick - (_playerStatistics.StartTick ?? 0)));
         var skillLists = _playerStatistics.ToSkillItemVmList(_localizationManager);
 
         UpdateStatisticSet(
@@ -237,7 +358,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         tabViewModel.Stats = stats;
 
         PopulateSkills(tabViewModel.SkillList.SkillItems, skills);
-
         UpdateChartsForStatistic(skills, timeSeries, stats, tabViewModel.Plot);
     }
 
@@ -257,9 +377,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         PlotViewModel plot)
     {
         UpdateTimeSeriesChart(timeSeries, plot);
-
         plot.SetPieSeriesData(skills);
-
         UpdateHitTypeDistribution(stats, plot);
     }
 
@@ -296,8 +414,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         if (samples.Count >= TimeSeriesPointCapacity)
         {
             var oldestX = samples[0].X;
-            var newMin = Math.Max(0, oldestX);
-            xAxis.Minimum = newMin;
+            xAxis.Minimum = Math.Max(0, oldestX - 1.0);
         }
         else
         {
@@ -320,82 +437,10 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         target.SetHitTypeDistribution(normal, crit, lucky);
     }
 
-    private void UpdatePlotOption()
-    {
-        var xAxis = GetXAxisName();
-
-        UpdateSinglePlotOption(DpsTabViewModel.Plot, xAxis, StatisticType.Damage,
-            ResourcesKeys.SkillBreakdown_Chart_RealTimeDps,
-            ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
-
-        UpdateSinglePlotOption(HealingTabViewModel.Plot, xAxis, StatisticType.Healing,
-            ResourcesKeys.SkillBreakdown_Chart_RealTimeHps,
-            ResourcesKeys.SkillBreakdown_Chart_HealTypeDistribution);
-
-        UpdateSinglePlotOption(TankingTabViewModel.Plot, xAxis, StatisticType.TakenDamage,
-            ResourcesKeys.SkillBreakdown_Chart_RealTimeDtps,
-            ResourcesKeys.SkillBreakdown_Chart_HitTypeDistribution);
-    }
-
-    private void ClearAllStatistics()
-    {
-        ClearSingleStatisticSet(DpsTabViewModel);
-        ClearSingleStatisticSet(HealingTabViewModel);
-        ClearSingleStatisticSet(TankingTabViewModel);
-    }
-
-    private static void ClearSingleStatisticSet(TabContentViewModel tabViewModel)
-    {
-        tabViewModel.Stats = new StatisticValues().ToDataStatistics(TimeSpan.Zero);
-
-        tabViewModel.SkillList.SkillItems.Clear();
-
-        ClearTimeSeriesChart(tabViewModel.Plot);
-
-        tabViewModel.Plot.SetPieSeriesData(Array.Empty<SkillItemViewModel>());
-        tabViewModel.Plot.SetHitTypeDistribution(0, 0, 0);
-    }
-
-    private static void ClearTimeSeriesChart(PlotViewModel target)
-    {
-        target.LineSeriesData.Points.Clear();
-
-        var xAxis = target.SeriesPlotModel.Axes.FirstOrDefault(a => a.Position == AxisPosition.Bottom);
-        if (xAxis != null)
-        {
-            xAxis.Minimum = 0;
-        }
-
-        target.RefreshSeries();
-    }
-
-    private void UpdateSinglePlotOption(
-        PlotViewModel plot,
-        string xAxisTitle,
-        StatisticType statisticType,
-        string seriesTitleKey,
-        string distributionTitleKey)
-    {
-        plot.UpdateOption(new PlotOptions
-        {
-            SeriesPlotTitle = _localizationManager.GetString(seriesTitleKey),
-            XAxisTitle = xAxisTitle,
-            DistributionPlotTitle = _localizationManager.GetString(distributionTitleKey),
-            HitTypeCritical = _localizationManager.GetString(ResourcesKeys.Common_HitType_Critical),
-            HitTypeNormal = _localizationManager.GetString(ResourcesKeys.Common_HitType_Normal),
-            HitTypeLucky = _localizationManager.GetString(ResourcesKeys.Common_HitType_Lucky),
-            StatisticType = statisticType
-        });
-    }
-
     private string GetXAxisName()
     {
         return _localizationManager.GetString(ResourcesKeys.SkillBreakdown_Chart_DpsSeriesXAxis);
     }
-
-    #endregion
-
-    #region Zoom Commands
 
     [RelayCommand]
     private void ZoomIn()
@@ -403,7 +448,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         if (ZoomLevel >= MaxZoom) return;
         ZoomLevel += ZoomStep;
         ApplyZoomToAllCharts();
-        _logger.LogDebug("Zoomed in to {ZoomLevel}", ZoomLevel);
     }
 
     [RelayCommand]
@@ -412,7 +456,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         if (ZoomLevel <= MinZoom) return;
         ZoomLevel -= ZoomStep;
         ApplyZoomToAllCharts();
-        _logger.LogDebug("Zoomed out to {ZoomLevel}", ZoomLevel);
     }
 
     [RelayCommand]
@@ -420,7 +463,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     {
         ZoomLevel = 1.0;
         ResetAllChartZooms();
-        _logger.LogDebug("Zoom reset to default");
     }
 
     private void ApplyZoomToAllCharts()
@@ -437,58 +479,35 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         TankingTabViewModel.Plot.ResetModelZoom();
     }
 
-    #endregion
-
-    #region Command Handlers
-
-    [RelayCommand]
-    private void Confirm()
-    {
-        _logger.LogDebug("Confirm SkillBreakDown");
-    }
-
-    [RelayCommand]
-    private void Cancel()
-    {
-        _logger.LogDebug("Cancel SkillBreakDown");
-    }
-
     [RelayCommand]
     private void Refresh()
     {
-        ClearAllStatistics();
-
-        /*
         if (_playerStatistics == null)
         {
-            ClearAllStatistics();
-            _logger.LogDebug("Manual refresh completed (no player statistics)");
             return;
         }
 
         if (_isLiveSource)
         {
-            RefreshCurrentPlayerFromStorage();
+            // Manual refresh in live mode: redraw now
+            _pendingLiveRefresh = false;
+            RefreshAllStatistics();
+            return;
         }
-        else
+
+        if (!TryRefreshFromReplayLogs(_fixedReplayLogs))
         {
             RefreshAllStatistics();
         }
-        */
-
-        _logger.LogDebug("Manual refresh completed");
     }
 
     public void Dispose()
     {
+        _liveRefreshTimer.Stop();
+        _liveRefreshTimer.Tick -= OnLiveRefreshTimerTick;
+
         _storage.DpsDataUpdated -= OnStorageDpsDataUpdated;
+        _storage.BeforeSectionCleared -= OnBeforeSectionCleared;
+        _configManager.ConfigurationUpdated -= OnConfigurationUpdated;
     }
-
-    [RelayCommand]
-    private void Unloaded()
-    {
-        // No background cache service anymore.
-    }
-
-    #endregion
 }

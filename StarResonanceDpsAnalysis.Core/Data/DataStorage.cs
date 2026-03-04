@@ -579,6 +579,13 @@ public static partial class DataStorage
     public static void ClearAllDpsData()
     {
         ForceNewBattleSection = true;
+
+        // Preserve current section logs before full clear.
+        if (Adapter.GetStatisticsCount(false) > 0)
+        {
+            RaiseBeforeSectionCleared();
+        }
+
         SectionedDpsDatas.Clear();
         FullDpsDatas.Clear();
         Adapter.ClearAll();
@@ -598,6 +605,12 @@ public static partial class DataStorage
     public static void ClearSectionDpsData()
     {
         ForceNewBattleSection = true;
+
+        // Preserve current section logs before manual clear.
+        if (Adapter.GetStatisticsCount(false) > 0)
+        {
+            RaiseBeforeSectionCleared();
+        }
 
         PrivateClearSectionDpsData();
 
