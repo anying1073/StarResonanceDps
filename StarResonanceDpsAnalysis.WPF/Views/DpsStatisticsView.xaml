@@ -548,11 +548,6 @@
                                         Style="{StaticResource CheckableMenuItem}" />
 
                                     <MenuItem
-                                        Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_StatisticBoss}}"
-                                        IsChecked="{Binding IsIncludeNpcData}"
-                                        Style="{StaticResource CheckableMenuItem}" />
-
-                                    <MenuItem
                                         Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_ShowTotal}}"
                                         IsChecked="{Binding ShowTeamTotalDamage}"
                                         Style="{StaticResource CheckableMenuItem}" />

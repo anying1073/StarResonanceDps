@@ -68,9 +68,6 @@ public partial class DpsStatisticsViewModel
             _logger.LogInformation("从配置加载技能显示数量: {Limit}", savedSkillLimit);
         }
 
-        IsIncludeNpcData = _configManager.CurrentConfig.IsIncludeNpcData;
-        _logger.LogInformation("从配置加载统计NPC设置: {Value}", IsIncludeNpcData);
-
         ShowTeamTotalDamage = _configManager.CurrentConfig.ShowTeamTotalDamage;
         _logger.LogInformation("从配置加载显示团队总伤设置: {Value}", ShowTeamTotalDamage);
 
@@ -149,41 +146,6 @@ public partial class DpsStatisticsViewModel
                 vm.SetPlayerInfoFormat(formatString);
             }
         });
-    }
-
-    partial void OnIsIncludeNpcDataChanged(bool value)
-    {
-        _logger.LogDebug($"IsIncludeNpcData changed to: {value}");
-
-        _configManager.CurrentConfig.IsIncludeNpcData = value;
-        _ = _configManager.SaveAsync();
-        _logger.LogInformation("统计NPC设置已保存到配置: {Value}", value);
-
-        if (!value)
-        {
-            _logger.LogInformation("Removing NPC data from UI (IsIncludeNpcData=false)");
-
-            foreach (var subViewModel in StatisticData.Values)
-            {
-                var npcSlots = subViewModel.Data
-                    .Where(slot => slot.Player.IsNpc)
-                    .ToList();
-
-                foreach (var npcSlot in npcSlots)
-                {
-                    _dispatcher.Invoke(() =>
-                    {
-                        subViewModel.Data.Remove(npcSlot);
-                        _logger.LogDebug("Removed NPC slot: UID={PlayerUid}, Name={PlayerName}", 
-                            npcSlot.Player.Uid, npcSlot.Player.Name);
-                    });
-                }
-
-                _logger.LogInformation($"Removed {npcSlots.Count} NPC slots from {subViewModel.GetType().Name}");
-            }
-        }
-
-        UpdateData();
     }
 
     partial void OnScopeTimeChanged(ScopeTime oldValue, ScopeTime newValue)
