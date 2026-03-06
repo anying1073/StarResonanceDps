@@ -68,6 +68,9 @@ public partial class DpsStatisticsViewModel
             _logger.LogInformation("从配置加载技能显示数量: {Limit}", savedSkillLimit);
         }
 
+        IsIncludeNpcData = _configManager.CurrentConfig.IsIncludeNpcData;
+        _logger.LogInformation("从配置加载统计NPC设置: {Value}", IsIncludeNpcData);
+
         ShowTeamTotalDamage = _configManager.CurrentConfig.ShowTeamTotalDamage;
         _logger.LogInformation("从配置加载显示团队总伤设置: {Value}", ShowTeamTotalDamage);
 
@@ -146,6 +149,17 @@ public partial class DpsStatisticsViewModel
                 vm.SetPlayerInfoFormat(formatString);
             }
         });
+    }
+
+    partial void OnIsIncludeNpcDataChanged(bool value)
+    {
+        _logger.LogDebug("IsIncludeNpcData changed to: {Value}", value);
+
+        _configManager.CurrentConfig.IsIncludeNpcData = value;
+        _ = _configManager.SaveAsync();
+        _logger.LogInformation("统计NPC设置已保存到配置: {Value}", value);
+
+        UpdateData();
     }
 
     partial void OnScopeTimeChanged(ScopeTime oldValue, ScopeTime newValue)

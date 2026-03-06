@@ -196,13 +196,13 @@
     <value>パーティDPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_Healing" xml:space="preserve">
-    <value>パーティ回復量</value>
+    <value>パーティHPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_TakenDamage" xml:space="preserve">
-    <value>パーティ被ダメージ</value>
+    <value>パーティDTPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_NpcTakenDamage" xml:space="preserve">
-    <value>NPC被ダメージ</value>
+    <value>NPC DTPS</value>
   </data>
   <data name="PlayerInfo_Guild_Unknown" xml:space="preserve">
     <value>不明</value>
@@ -672,7 +672,7 @@
     <value>NPC被ダメージ</value>
   </data>
   <data name="DpsStatistics_TeamTotal_Damage" xml:space="preserve">
-    <value>パーティDPS</value>
+    <value>パーティダメージ</value>
   </data>
   <data name="DpsStatistics_TeamTotal_Healing" xml:space="preserve">
     <value>パーティ回復量</value>

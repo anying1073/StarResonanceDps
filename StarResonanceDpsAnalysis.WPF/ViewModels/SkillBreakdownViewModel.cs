@@ -507,10 +507,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private void Refresh()
     {
-        _pendingLiveRefresh = false;
-        ClearAllStatistics();
-
-        /*
         if (_playerStatistics == null)
         {
             return;
@@ -528,7 +524,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         {
             RefreshAllStatistics();
         }
-        */
 
         _logger.LogDebug("Manual refresh completed");
     }

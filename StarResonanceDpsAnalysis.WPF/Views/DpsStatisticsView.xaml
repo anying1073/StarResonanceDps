@@ -548,6 +548,11 @@
                                         Style="{StaticResource CheckableMenuItem}" />
 
                                     <MenuItem
+                                        Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_StatisticBoss}}"
+                                        IsChecked="{Binding IsIncludeNpcData}"
+                                        Style="{StaticResource CheckableMenuItem}" />
+
+                                    <MenuItem
                                         Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_ShowTotal}}"
                                         IsChecked="{Binding ShowTeamTotalDamage}"
                                         Style="{StaticResource CheckableMenuItem}" />
@@ -939,16 +944,35 @@
                             <!-- 个人伤害 (当ShowTeamTotalDamage=false时显示) -->
                             <TextBlock
                             Margin="0,0,4,0"
-                            Style="{StaticResource FooterTextContent}"
-                            TextAlignment="Right"
-                            Visibility="{Binding ShowTeamTotalDamage, Converter={StaticResource BoolToInvertedVisibilityConverter}}">
-                                <TextBlock.Text>
-                                    <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
-                                        <Binding Path="CurrentStatisticData.CurrentPlayerSlot.Value" />
-                                        <Binding Path="DataContext.AppConfig.DamageDisplayType"
-                                             RelativeSource="{RelativeSource AncestorType=Window, Mode=FindAncestor}" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
+                            TextAlignment="Right">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource FooterTextContent}">
+                                        <!-- デフォルトは非表示 -->
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+
+                                        <Style.Triggers>
+                                            <!-- ShowTeamTotalDamage=false の時は表示 -->
+                                            <DataTrigger Binding="{Binding ShowTeamTotalDamage}" Value="False">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+
+                                            <!-- ただし NpcTakenDamage の時は強制で非表示 -->
+                                            <DataTrigger Binding="{Binding StatisticIndex}" Value="NpcTakenDamage">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                
+                                <Run Text="{Binding CurrentPlayerLabel, StringFormat={}{0}:, Mode=OneWay}" />
+                                <Run>
+                                    <Run.Text>
+                                        <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
+                                            <Binding Path="CurrentStatisticData.CurrentPlayerSlot.Value" />
+                                            <Binding Path="AppConfig.DamageDisplayType" />
+                                        </MultiBinding>
+                                    </Run.Text>
+                                </Run>
                             </TextBlock>
 
                             <!-- 团队秒伤 (当ShowTeamTotalDamage=true时显示) -->

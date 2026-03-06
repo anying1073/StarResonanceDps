@@ -190,6 +190,13 @@ public partial class AppConfig : ObservableObject
     private int _skillDisplayLimit = 8;
 
     /// <summary>
+    /// DPS统计页面 - 是否统计NPC数据
+    /// 默认值：false (不统计NPC)
+    /// </summary>
+    [ObservableProperty]
+    private bool _isIncludeNpcData = false;
+
+    /// <summary>
     /// DPS统计页面 - 是否显示团队总伤
     /// 默认值：true (显示)
     /// </summary>

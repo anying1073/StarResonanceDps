@@ -47,6 +47,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     [ObservableProperty] private AppConfig _appConfig = new();
     [ObservableProperty] private TimeSpan _battleDuration;
     [ObservableProperty] private int _debugUpdateCount;
+    [ObservableProperty] private bool _isIncludeNpcData;
     [ObservableProperty] private bool _isServerConnected;
     [ObservableProperty] private bool _isViewingHistory;
     [ObservableProperty] private ScopeTime _scopeTime = ScopeTime.Current;
@@ -57,6 +58,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     [ObservableProperty] private StatisticType _statisticIndex;
     [ObservableProperty] private ulong _teamTotalDamage;
     [ObservableProperty] private double _teamTotalDps;
+    [ObservableProperty] private string _currentPlayerLabel = string.Empty;
     [ObservableProperty] private string _teamTotalLabel = string.Empty;
 
     // ===== Private State Fields =====
@@ -148,9 +150,11 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         // Bind team stats manager to show team total setting
         _teamStatsManager.ShowTeamTotal = ShowTeamTotalDamage;
         _teamStatsManager.TeamStatsUpdated += OnTeamStatsUpdated;
-        TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
 
         _localizationManager.CultureChanged += OnLocalizationCultureChanged;
+
+        CurrentPlayerLabel = GetCurrentPlayerLabel(StatisticIndex);
+        TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
 
         _logger.LogDebug("DpsStatisticsViewModel constructor completed");
     }
@@ -281,8 +285,20 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         {
             TeamTotalDamage = e.TotalDamage;
             TeamTotalDps = e.TotalDps;
+            CurrentPlayerLabel = GetCurrentPlayerLabel(StatisticIndex);
             TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
         });
+    }
+
+    private string GetCurrentPlayerLabel(StatisticType statisticType)
+    {
+        return statisticType switch
+        {
+            StatisticType.Damage => "DPS",
+            StatisticType.Healing => "HPS",
+            StatisticType.TakenDamage => "DTPS",
+            _ => "DPS"
+        };
     }
 
     private string GetTeamTotalLabel(StatisticType statisticType)
@@ -290,19 +306,19 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         return statisticType switch
         {
             StatisticType.Damage => _localizationManager.GetString(
-                ResourcesKeys.DpsStatistics_TeamTotal_Damage,
+                ResourcesKeys.DpsStatistics_TeamLabel_Damage,
                 defaultValue: "Team DPS"),
             StatisticType.Healing => _localizationManager.GetString(
-                ResourcesKeys.DpsStatistics_TeamTotal_Healing,
-                defaultValue: "Team Healing"),
+                ResourcesKeys.DpsStatistics_TeamLabel_Healing,
+                defaultValue: "Team HPS"),
             StatisticType.TakenDamage => _localizationManager.GetString(
-                ResourcesKeys.DpsStatistics_TeamTotal_TakenDamage,
-                defaultValue: "Team Damage Taken"),
+                ResourcesKeys.DpsStatistics_TeamLabel_TakenDamage,
+                defaultValue: "Team DTPS"),
             StatisticType.NpcTakenDamage => _localizationManager.GetString(
-                ResourcesKeys.DpsStatistics_TeamTotal_NpcTakenDamage,
-                defaultValue: "NPC Damage Taken"),
+                ResourcesKeys.DpsStatistics_TeamLabel_NpcTakenDamage,
+                defaultValue: "NPC DTPS"),
             _ => _localizationManager.GetString(
-                ResourcesKeys.DpsStatistics_TeamTotal_Damage,
+                ResourcesKeys.DpsStatistics_TeamLabel_Damage,
                 defaultValue: "Team DPS")
         };
     }
@@ -316,6 +332,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
                 ApplyNpcLocalizedName(info, culture);
             }
 
+            CurrentPlayerLabel = GetCurrentPlayerLabel(StatisticIndex);
             TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
         });
     }

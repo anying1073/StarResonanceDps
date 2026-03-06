@@ -135,6 +135,8 @@ public partial class DpsStatisticsViewModel
 
         _logger.LogDebug(WpfLogEvents.VmLoaded, "DpsStatisticsViewModel loaded");
 
+        TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
+
         StartBattleDurationUpdate();
 
         // Configure update mode based on settings

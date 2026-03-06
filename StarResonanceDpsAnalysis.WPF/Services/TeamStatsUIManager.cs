@@ -79,11 +79,11 @@ public class TeamStatsUIManager : ITeamStatsUIManager
         return statisticType switch
         {
             StatisticType.Damage => GetLocalizedString(ResourcesKeys.DpsStatistics_TeamLabel_Damage, "Team DPS"),
-            StatisticType.Healing => GetLocalizedString(ResourcesKeys.DpsStatistics_TeamLabel_Healing, "Team Healing"),
+            StatisticType.Healing => GetLocalizedString(ResourcesKeys.DpsStatistics_TeamLabel_Healing, "Team HPS"),
             StatisticType.TakenDamage =>
-                GetLocalizedString(ResourcesKeys.DpsStatistics_TeamLabel_TakenDamage, "Team Damage Taken"),
+                GetLocalizedString(ResourcesKeys.DpsStatistics_TeamLabel_TakenDamage, "Team DTPS"),
             StatisticType.NpcTakenDamage =>
-                GetLocalizedString(ResourcesKeys.DpsStatistics_TeamLabel_NpcTakenDamage, "NPC Damage Taken"),
+                GetLocalizedString(ResourcesKeys.DpsStatistics_TeamLabel_NpcTakenDamage, "NPC DTPS"),
             _ => GetLocalizedString(ResourcesKeys.DpsStatistics_TeamLabel_Damage, "Team DPS")
         };
     }

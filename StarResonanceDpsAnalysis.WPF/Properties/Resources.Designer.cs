@@ -1147,7 +1147,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Team Healing に類似しているローカライズされた文字列を検索します。
+        ///   Team HPS に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsStatistics_TeamLabel_Healing {
             get {
@@ -1156,7 +1156,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   NPC Damage Taken に類似しているローカライズされた文字列を検索します。
+        ///   NPC DTPS に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsStatistics_TeamLabel_NpcTakenDamage {
             get {
@@ -1165,7 +1165,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Team Damage Taken に類似しているローカライズされた文字列を検索します。
+        ///   Team DTPS に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsStatistics_TeamLabel_TakenDamage {
             get {
@@ -1174,7 +1174,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Team DPS に類似しているローカライズされた文字列を検索します。
+        ///   Team Damage に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsStatistics_TeamTotal_Damage {
             get {

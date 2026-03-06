@@ -1,16 +1,18 @@
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using StarResonanceDpsAnalysis.Core.Models;
 using StarResonanceDpsAnalysis.WPF.Helpers;
 using StarResonanceDpsAnalysis.WPF.Localization;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Windows.Threading;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
 public partial class PlayerInfoViewModel : BaseViewModel
 {
+
     private readonly LocalizationManager _localizationManager;
 
     // NPC名（中国語）→ Classes_xxx の対応表（同じインデックスで対応）
@@ -37,6 +39,14 @@ public partial class PlayerInfoViewModel : BaseViewModel
         "Classes_VerdantOracle",
         "Classes_WindKnight"
     ];
+
+    private static readonly HashSet<string> SpecialNpcChineseNameSet =
+    new(SpecialNpcChineseNames, StringComparer.Ordinal);
+
+    internal static bool IsSpecialNpcChineseName(string? name)
+    {
+        return !string.IsNullOrWhiteSpace(name) && SpecialNpcChineseNameSet.Contains(name);
+    }
 
     [ObservableProperty] private Classes _class = Classes.Unknown;
 
@@ -72,6 +82,8 @@ public partial class PlayerInfoViewModel : BaseViewModel
     /// </summary>
     [ObservableProperty] private bool _useCustomFormat;
 
+    [ObservableProperty] private bool _forceNpcTakenDisplay;
+
     public PlayerInfoViewModel(LocalizationManager localizationManager)
     {
         _localizationManager = localizationManager;
@@ -94,10 +106,11 @@ public partial class PlayerInfoViewModel : BaseViewModel
 
     private void UpdatePlayerInfo()
     {
-        if (IsNpc)
+        if (ForceNpcTakenDisplay || IsNpc)
         {
+            var unknownNpcPrefix = _localizationManager.GetString("JsonDictionary:Monster:0", null, "UnknownMonster");
             PlayerInfo =
-                _localizationManager.GetString($"JsonDictionary:Monster:{NpcTemplateId}", null, "UnknownMonster");
+                _localizationManager.GetString($"JsonDictionary:Monster:{NpcTemplateId}", null, $"{unknownNpcPrefix}:{NpcTemplateId}");
             return;
         }
 
@@ -153,7 +166,7 @@ public partial class PlayerInfoViewModel : BaseViewModel
         var result = format;
 
         // 替换占位符
-        result = GetNameRegex().Replace(result, GetName());
+        result = GetNameRegex().Replace(result, GetFinalName());
         result = GetSpecRegex().Replace(result, GetSpec());
         result = GetPowerLevelRegex().Replace(result, PowerLevel.ToString());
         result = GetSeasonStrengthRegex().Replace(result, SeasonStrength.ToString());

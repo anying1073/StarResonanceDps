@@ -196,13 +196,13 @@
     <value>파티 DPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_Healing" xml:space="preserve">
-    <value>파티 치유량</value>
+    <value>파티 HPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_TakenDamage" xml:space="preserve">
-    <value>파티 받은 대미지</value>
+    <value>파티 DTPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_NpcTakenDamage" xml:space="preserve">
-    <value>NPC 받은 대미지</value>
+    <value>NPC DTPS</value>
   </data>
   <data name="PlayerInfo_Guild_Unknown" xml:space="preserve">
     <value>알 수 없음</value>
@@ -670,7 +670,7 @@
     <value>NPC 받은 대미지</value>
   </data>
   <data name="DpsStatistics_TeamTotal_Damage" xml:space="preserve">
-    <value>파티 DPS</value>
+    <value>파티 대미지</value>
   </data>
   <data name="DpsStatistics_TeamTotal_Healing" xml:space="preserve">
     <value>파티 치유량</value>

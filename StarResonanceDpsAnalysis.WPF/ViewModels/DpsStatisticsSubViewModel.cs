@@ -207,6 +207,14 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
         return slot;
     }
 
+    private void UpdatePlayerInfoWithContext(StatisticDataViewModel slot, PlayerInfo? playerInfo)
+    {
+        if (playerInfo == null) return;
+
+        slot.Player.ForceNpcTakenDisplay = _type == StatisticType.NpcTakenDamage;
+        UpdatePlayerInfo(slot, playerInfo);
+    }
+
     private static void UpdatePlayerInfo(StatisticDataViewModel slot, PlayerInfo? playerInfo)
     {
         if (playerInfo == null) return;
@@ -254,32 +262,52 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
     {
         var hasCurrentPlayer = currentPlayerUid != 0;
 
-        // Update all slots with pre-processed data
+        // 先に一回だけ取得（ループ内で毎回取らない）
+        var playerInfoDict = _dataSourceEngine.GetPlayerInfoDictionary();
+
         foreach (var (uid, processed) in processedData)
         {
-            // Skip if this statistic type has no value
             if (processed.Value == 0)
+                continue;
+
+            // ★先にPlayerInfoを取る（取れないならスロットを作らない）
+            if (!playerInfoDict.TryGetValue(uid, out var playerInfo) || playerInfo == null)
+                continue;
+
+            // ★計測から除外：IsIncludeNpcData=false のとき、SpecialNpcChineseNames一致なら対象外
+            // （あなたの前提：IsNpc=false / NpcTemplateId=0 / Nameが中国語名のどれか）
+            if (!_parent.IsIncludeNpcData && PlayerInfoViewModel.IsSpecialNpcChineseName(playerInfo.Name))
                 continue;
 
             var slot = GetOrAddStatisticDataViewModel(processed.OriginalData);
 
             // Update player info
-            var playerInfoDict = _dataSourceEngine.GetPlayerInfoDictionary();
-            var ret = playerInfoDict.TryGetValue(processed.Uid, out var playerInfo);
-            if (!ret) continue;
-            UpdatePlayerInfo(slot, playerInfo);
+            UpdatePlayerInfoWithContext(slot, playerInfo);
 
-            // Update slot values with pre-computed data
+            // Update slot values
             slot.Value = processed.Value;
             slot.DurationTicks = processed.DurationTicks;
             slot.ValuePerSecond = processed.ValuePerSecond;
             slot.OriginalData = processed.OriginalData;
 
-            // Set current player slot if this is the current player
             if (hasCurrentPlayer && uid == currentPlayerUid)
             {
                 SelectedSlot = slot;
                 CurrentPlayerSlot = slot;
+            }
+        }
+
+        // ★OFF時は残骸掃除（以前ONで生成済みだった分を確実に消す）
+        if (!_parent.IsIncludeNpcData && Data.Count > 0)
+        {
+            // UIスレッド保証（UpdateDataOptimizedはUIスレッドで呼ばれてる想定だが安全に）
+            if (!_dispatcher.CheckAccess())
+            {
+                _dispatcher.Invoke(() => RemoveSpecialNpcSlotsInPlace());
+            }
+            else
+            {
+                RemoveSpecialNpcSlotsInPlace();
             }
         }
 
@@ -296,9 +324,22 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             }
         }
 
-        // Sort data in place 
         SortSlotsInPlace();
         UpdateCurrentPlayerRank(currentPlayerUid);
+
+        return;
+
+        void RemoveSpecialNpcSlotsInPlace()
+        {
+            for (var i = Data.Count - 1; i >= 0; i--)
+            {
+                var slot = Data[i];
+                if (PlayerInfoViewModel.IsSpecialNpcChineseName(slot.Player.Name))
+                {
+                    Data.RemoveAt(i); // CollectionChanged が DataDictionary も追従
+                }
+            }
+        }
     }
 
     private ulong GetValueForType(DpsData dpsData)

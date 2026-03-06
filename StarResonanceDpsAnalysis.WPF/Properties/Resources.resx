@@ -196,13 +196,13 @@
     <value>Team DPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_Healing" xml:space="preserve">
-    <value>Team Healing</value>
+    <value>Team HPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_TakenDamage" xml:space="preserve">
-    <value>Team Damage Taken</value>
+    <value>Team DTPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_NpcTakenDamage" xml:space="preserve">
-    <value>NPC Damage Taken</value>
+    <value>NPC DTPS</value>
   </data>
   <data name="PlayerInfo_Guild_Unknown" xml:space="preserve">
     <value>Unknown</value>
@@ -670,7 +670,7 @@
     <value>NPC Dmg In</value>
   </data>
   <data name="DpsStatistics_TeamTotal_Damage" xml:space="preserve">
-    <value>Team DPS</value>
+    <value>Team Damage</value>
   </data>
   <data name="DpsStatistics_TeamTotal_Healing" xml:space="preserve">
     <value>Team Healing</value>
