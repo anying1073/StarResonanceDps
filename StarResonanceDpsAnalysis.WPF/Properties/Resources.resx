@@ -577,7 +577,7 @@
     <value>Damage info</value>
   </data>
   <data name="SkillBreakdown_Label_TotalDamage" xml:space="preserve">
-    <value>Total damage</value>
+    <value>Total Damage</value>
   </data>
   <data name="SkillBreakdown_Label_Dps" xml:space="preserve">
     <value>DPS</value>

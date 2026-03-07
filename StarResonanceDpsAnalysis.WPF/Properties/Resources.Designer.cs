@@ -3303,7 +3303,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Total damage に類似しているローカライズされた文字列を検索します。
+        ///   Total Damage に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SkillBreakdown_Label_TotalDamage {
             get {

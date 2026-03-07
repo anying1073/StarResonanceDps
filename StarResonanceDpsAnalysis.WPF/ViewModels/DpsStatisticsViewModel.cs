@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
@@ -77,7 +78,6 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     private readonly DataSourceEngine _dataSourceEngine;
 
     // ===== Constructor =====
-
     public DpsStatisticsViewModel(ILogger<DpsStatisticsViewModel> logger,
         IDataStorage storage,
         IConfigManager configManager,
@@ -128,7 +128,6 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
 
         // Subscribe to engine processed data ready event
         _dataSourceEngine = dataSourceEngine;
-
         _dataSourceEngine.ProcessedDataReady += ApplyProcessedData;
 
         // Configure engine mode according to config
@@ -192,14 +191,12 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
             _timerService.Stop();
         }
 
-        // Use ResetCoordinator to handle History save + reset
         _resetCoordinator.ResetWithHistory(
             ScopeTime,
             saveHistory: true,
             BattleDuration,
             Options.MinimalDurationInSeconds);
 
-        // Clear UI data
         ResetSubViewModelsIfInCurrentScope();
 
         TeamTotalDamage = 0;
@@ -240,7 +237,6 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     {
         _logger.LogInformation("ResetSection START");
 
-        // Delegate to ResetCoordinator
         _resetCoordinator.ResetCurrentSection();
         if (IsViewingHistory)
         {
@@ -272,7 +268,6 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     }
 
     // ===== Private Helper Methods =====
-
     private void OnSampleDataRequested(object? sender, EventArgs e)
     {
         AddRandomData();
@@ -280,7 +275,6 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
 
     private void OnTeamStatsUpdated(object? sender, TeamStatsUpdatedEventArgs e)
     {
-        // Update observable properties when team stats change
         InvokeOnDispatcher(() =>
         {
             TeamTotalDamage = e.TotalDamage;
@@ -294,10 +288,18 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     {
         return statisticType switch
         {
-            StatisticType.Damage => "DPS",
-            StatisticType.Healing => "HPS",
-            StatisticType.TakenDamage => "DTPS",
-            _ => "DPS"
+            StatisticType.Damage => _localizationManager.GetString(
+                ResourcesKeys.SkillBreakdown_Label_TotalDamage,
+                defaultValue: "Total Damage"),
+            StatisticType.Healing => _localizationManager.GetString(
+                ResourcesKeys.SkillBreakdown_Label_TotalHealing,
+                defaultValue: "Total Healing"),
+            StatisticType.TakenDamage => _localizationManager.GetString(
+                ResourcesKeys.SkillBreakdown_Label_TotalDamageTaken,
+                defaultValue: "Total Damage Taken"),
+            _ => _localizationManager.GetString(
+                ResourcesKeys.SkillBreakdown_Label_TotalDamage,
+                defaultValue: "Total Damage")
         };
     }
 
@@ -373,20 +375,12 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         _battleDurationUpdateTimer.Stop();
     }
 
-    /// <summary>
-    /// Wrap the original PlayerInfoUpdated handler so NPC names are corrected
-    /// from JSON before the existing UI update logic runs.
-    /// </summary>
     private void StorageOnPlayerInfoUpdatedWithNpcLocalization(PlayerInfo info)
     {
         ApplyNpcLocalizedName(info);
         StorageOnPlayerInfoUpdated(info);
     }
 
-    /// <summary>
-    /// For NPC entries, replace packet-provided name with localized Monster JSON name.
-    /// Uses key format: "Monster:{templateId}".
-    /// </summary>
     private void ApplyNpcLocalizedName(PlayerInfo info, CultureInfo? culture = null)
     {
         var templateId = info.NpcTemplateId;

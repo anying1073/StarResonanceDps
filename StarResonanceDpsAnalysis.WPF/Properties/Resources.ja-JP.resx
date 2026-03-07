@@ -124,7 +124,7 @@
     <value>NPCを記録</value>
   </data>
   <data name="Menu_ShowTotal" xml:space="preserve">
-    <value>総ダメージを表示</value>
+    <value>パーティ情報を表示</value>
   </data>
   <data name="Menu_Personal_Training_Mode" xml:space="preserve">
     <value>個人トレーニングモード</value>
@@ -328,7 +328,7 @@
     <value>スペース</value>
   </data>
   <data name="Settings_Display_ShowDamage" xml:space="preserve">
-    <value>総ダメージを表示</value>
+    <value>パーティ情報を表示</value>
   </data>
   <data name="Settings_Display_ShowDps" xml:space="preserve">
     <value>DPSを表示</value>

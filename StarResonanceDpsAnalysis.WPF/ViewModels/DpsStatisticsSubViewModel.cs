@@ -275,7 +275,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
                 continue;
 
             // ★計測から除外：IsIncludeNpcData=false のとき、SpecialNpcChineseNames一致なら対象外
-            // （あなたの前提：IsNpc=false / NpcTemplateId=0 / Nameが中国語名のどれか）
+            // （前提：IsNpc=false / NpcTemplateId=0 / Nameが中国語名のどれか）
             if (!_parent.IsIncludeNpcData && PlayerInfoViewModel.IsSpecialNpcChineseName(playerInfo.Name))
                 continue;
 

@@ -1,4 +1,6 @@
 using Microsoft.Extensions.Logging;
+using StarResonanceDpsAnalysis.Core.Data.Models;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Models;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
@@ -10,22 +12,121 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 /// </summary>
 public partial class DpsStatisticsViewModel
 {
+    // ★ここに1箇所だけ：最新 processed をタブ切替でも使えるようにキャッシュ
+    private readonly Dictionary<StatisticType, IReadOnlyDictionary<long, DpsDataProcessed>> _latestProcessedByType = new();
+    private static readonly IReadOnlyDictionary<long, DpsDataProcessed> EmptyProcessed = new Dictionary<long, DpsDataProcessed>();
+
+    // Configuration.cs から呼べるように（partial 同一クラス内なので private でOK）
+    private void ClearProcessedCache() => _latestProcessedByType.Clear();
+
     protected void UpdateData()
     {
         _logger.LogTrace("Update data");
         _dataSourceEngine.CurrentSource.Refresh();
     }
 
+    // 互換用（もし他で呼んでたら壊さない）
     private void UpdateTeamTotalStats(IReadOnlyDictionary<long, DpsDataProcessed> data)
     {
-        // Delegate to TeamStatsUIManager following Single Responsibility Principle
-        var teamStats = _dataProcessor.CalculateTeamTotal(data);
-        _teamStatsManager.UpdateTeamStats(teamStats, StatisticIndex, data.Count > 0);
+        var playerInfoDict = _dataSourceEngine.GetPlayerInfoDictionary();
+        UpdateTeamTotalStats(StatisticIndex, data, playerInfoDict);
+    }
+
+    private void PublishEmptyTeamTotal(StatisticType type)
+    {
+        var emptyStats = _dataProcessor.CalculateTeamTotal(EmptyProcessed);
+        _teamStatsManager.UpdateTeamStats(emptyStats, type, false);
+
+        TeamTotalDamage = 0;
+        TeamTotalDps = 0;
+    }
+
+    private IReadOnlyDictionary<long, DpsDataProcessed>? GetCurrentTypeProcessedDict(StatisticType type)
+    {
+        return _latestProcessedByType.TryGetValue(type, out var dict) ? dict : null;
+    }
+
+    private void UpdateTeamTotalStats(
+        StatisticType type,
+        IReadOnlyDictionary<long, DpsDataProcessed> data,
+        IReadOnlyDictionary<long, PlayerInfo> playerInfoDict)
+    {
+        // “計測から除外” を反映（元コードの挙動を維持）
+        var excludeSpecial = !IsIncludeNpcData;
+
+        IReadOnlyDictionary<long, DpsDataProcessed> totalDict = data;
+
+        if (excludeSpecial && data.Count > 0)
+        {
+            // 除外対象が存在するか確認 → ある時だけ新Dictionaryを作る（普段は割当ゼロ）
+            var anyExcluded = false;
+            foreach (var uid in data.Keys)
+            {
+                if (playerInfoDict.TryGetValue(uid, out var info) &&
+                    PlayerInfoViewModel.IsSpecialNpcChineseName(info?.Name))
+                {
+                    anyExcluded = true;
+                    break;
+                }
+            }
+
+            if (anyExcluded)
+            {
+                var filtered = new Dictionary<long, DpsDataProcessed>(data.Count);
+                foreach (var kv in data)
+                {
+                    if (playerInfoDict.TryGetValue(kv.Key, out var info) &&
+                        PlayerInfoViewModel.IsSpecialNpcChineseName(info?.Name))
+                        continue;
+
+                    filtered[kv.Key] = kv.Value;
+                }
+
+                totalDict = filtered;
+            }
+        }
+
+        var teamStats = _dataProcessor.CalculateTeamTotal(totalDict);
+        _teamStatsManager.UpdateTeamStats(teamStats, type, totalDict.Count > 0);
+
+        // 念のため同期（TeamStatsUpdatedイベントでも更新されるが、即反映もできる）
+        TeamTotalDamage = teamStats.TotalValue;
+        TeamTotalDps = teamStats.TotalDps;
+    }
+
+    // ★タブ切替で呼ぶ：キャッシュから再計算してTeamTotalを切り替える
+    private void RecalculateAndPublishTeamTotalFor(StatisticType type)
+    {
+        if (!ShowTeamTotalDamage)
+        {
+            _teamStatsManager.ResetTeamStats();
+            TeamTotalDamage = 0;
+            TeamTotalDps = 0;
+            return;
+        }
+
+        var playerInfoDict = _dataSourceEngine.GetPlayerInfoDictionary();
+        var dict = GetCurrentTypeProcessedDict(type);
+
+        if (dict is null)
+        {
+            PublishEmptyTeamTotal(type);
+            return;
+        }
+
+        UpdateTeamTotalStats(type, dict, playerInfoDict);
     }
 
     private void UpdateBattleDuration()
     {
-        InvokeOnDispatcher(() => BattleDuration = _dataSourceEngine.CurrentSource.BattleDuration);
+        InvokeOnDispatcher(Do);
+        return;
+
+        void Do()
+        {
+            BattleDuration = _dataSourceEngine.CurrentSource.BattleDuration;
+            _logger.LogTrace("Update battle duration: {duration}", BattleDuration);
+        }
     }
 
     private void ResetBattleDurationIfInCurrentScope()
@@ -51,60 +152,23 @@ public partial class DpsStatisticsViewModel
 
             // 先に一回だけ取得
             var playerInfoDict = _dataSourceEngine.GetPlayerInfoDictionary();
-            var excludeSpecial = !IsIncludeNpcData;
 
+            // SubViewModel 更新
             foreach (var (statisticType, processed) in processedByType)
             {
                 if (!StatisticData.TryGetValue(statisticType, out var subViewModel)) continue;
                 subViewModel.ScopeTime = ScopeTime;
 
-                // SubViewModel 側で除外される（UpdateDataOptimized内）
                 subViewModel.UpdateDataOptimized(processed, currentPlayerUid);
             }
 
-            // TeamTotal も “計測から除外” を反映
-            if (!processedByType.TryGetValue(StatisticIndex, out var currentTypeProcessed))
-            {
-                var emptyStats = _dataProcessor.CalculateTeamTotal(new Dictionary<long, DpsDataProcessed>());
-                _teamStatsManager.UpdateTeamStats(emptyStats, StatisticIndex, false);
-                return;
-            }
+            // ★重要：最新 processed をキャッシュ（タブ切替でも使う）
+            _latestProcessedByType.Clear();
+            foreach (var (type, dict) in processedByType)
+                _latestProcessedByType[type] = dict;
 
-            Dictionary<long, DpsDataProcessed> totalDict = currentTypeProcessed;
-
-            if (excludeSpecial && currentTypeProcessed.Count > 0)
-            {
-                // 除外対象が存在するか確認 → ある時だけ新Dictionaryを作る（普段は割当ゼロ）
-                var anyExcluded = false;
-                foreach (var uid in currentTypeProcessed.Keys)
-                {
-                    if (playerInfoDict.TryGetValue(uid, out var info) &&
-                        PlayerInfoViewModel.IsSpecialNpcChineseName(info?.Name))
-                    {
-                        anyExcluded = true;
-                        break;
-                    }
-                }
-
-                if (anyExcluded)
-                {
-                    var filtered = new Dictionary<long, DpsDataProcessed>(currentTypeProcessed.Count);
-                    foreach (var kv in currentTypeProcessed)
-                    {
-                        if (playerInfoDict.TryGetValue(kv.Key, out var info) &&
-                            PlayerInfoViewModel.IsSpecialNpcChineseName(info?.Name))
-                            continue;
-
-                        filtered[kv.Key] = kv.Value;
-                    }
-
-                    totalDict = filtered;
-                }
-            }
-
-            var teamStats = _dataProcessor.CalculateTeamTotal(totalDict);
-            _teamStatsManager.UpdateTeamStats(teamStats, StatisticIndex, totalDict.Count > 0);
+            // ★現在タブの TeamTotal を更新（Damage固定をやめる）
+            RecalculateAndPublishTeamTotalFor(StatisticIndex);
         }
     }
 }
-

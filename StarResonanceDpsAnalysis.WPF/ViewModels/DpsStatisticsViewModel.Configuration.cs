@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
+using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
@@ -159,18 +160,29 @@ public partial class DpsStatisticsViewModel
         _ = _configManager.SaveAsync();
         _logger.LogInformation("统计NPC设置已保存到配置: {Value}", value);
 
+        // ★重要：processed は includeNpcData により中身が変わるので古いキャッシュを無効化
+        ClearProcessedCache();
+        PublishEmptyTeamTotal(StatisticIndex);
+
+        // 新しい設定で再生成させる
         UpdateData();
     }
 
     partial void OnScopeTimeChanged(ScopeTime oldValue, ScopeTime newValue)
     {
         _logger.LogInformation("ScopeTime changed: {OldValue} -> {NewValue}", oldValue, newValue);
+
         foreach (var subViewModel in StatisticData.Values)
         {
-            subViewModel.ScopeTime = oldValue;
+            // ★修正：oldValue ではなく newValue
+            subViewModel.ScopeTime = newValue;
             subViewModel.Data.Clear();
             subViewModel.DataDictionary.Clear();
         }
+
+        // scope が変わる＝データも総入れ替えなのでキャッシュ無効化
+        ClearProcessedCache();
+        PublishEmptyTeamTotal(StatisticIndex);
 
         UpdateBattleDuration();
         _dataSourceEngine.Scope = newValue;
@@ -182,23 +194,44 @@ public partial class DpsStatisticsViewModel
     {
         _logger.LogDebug("ShowTeamTotalDamage changed to: {Value}", value);
 
-        // Update team stats manager
         _teamStatsManager.ShowTeamTotal = value;
 
-        // Save to config
         _configManager.CurrentConfig.ShowTeamTotalDamage = value;
         _ = _configManager.SaveAsync();
         _logger.LogInformation("显示团队总伤设置已保存到配置: {Value}", value);
+
+        // ★ON/OFF 即時反映（残り値防止）
+        if (!value)
+        {
+            _teamStatsManager.ResetTeamStats();
+            TeamTotalDamage = 0;
+            TeamTotalDps = 0;
+            return;
+        }
+
+        // ON に戻したら、最新キャッシュから即再計算（データ到着待ちしない）
+        RecalculateAndPublishTeamTotalFor(StatisticIndex);
     }
 
     partial void OnStatisticIndexChanged(StatisticType value)
     {
+        CurrentPlayerLabel = GetCurrentPlayerLabel(value);
         TeamTotalLabel = GetTeamTotalLabel(value);
 
         _logger.LogDebug("OnStatisticIndexChanged: Changed to {Type}", value);
 
         OnPropertyChanged(nameof(CurrentStatisticData));
 
-        _logger.LogDebug("OnStatisticIndexChanged: Statistic type changed, force refresh");
+        // ★タブ切替で即再計算（キャッシュから）
+        if (ShowTeamTotalDamage)
+        {
+            RecalculateAndPublishTeamTotalFor(value);
+        }
+        else
+        {
+            // 非表示中なら表示値も落としておく（残り値防止）
+            TeamTotalDamage = 0;
+            TeamTotalDps = 0;
+        }
     }
 }
