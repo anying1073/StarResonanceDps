@@ -190,7 +190,7 @@
     <value>历史</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">
-    <value>队伍:</value>
+    <value>队伍</value>
   </data>
   <data name="DpsStatistics_TeamLabel_Damage" xml:space="preserve">
     <value>团队DPS</value>
@@ -202,7 +202,7 @@
     <value>团队DTPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_NpcTakenDamage" xml:space="preserve">
-    <value>NPC DTPS</value>
+    <value>所有NPC DTPS</value>
   </data>
   <data name="PlayerInfo_Guild_Unknown" xml:space="preserve">
     <value>未知</value>
@@ -313,13 +313,13 @@
     <value>当玩家名字过长超出显示区域时，启用自动滚动效果</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Default_Tooltip" xml:space="preserve">
-    <value>玩家名 - 冰霜法师 (25000-8)</value>
+    <value>玩家名 - 冰矛 (25000-8)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Simple_Tooltip" xml:space="preserve">
     <value>玩家名 (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Detailed_Tooltip" xml:space="preserve">
-    <value>玩家名 - 冰霜法师 [S8 Lv50] (25000)</value>
+    <value>玩家名 - 冰矛 [S8 Lv50] (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_NameOnly_Tooltip" xml:space="preserve">
     <value>玩家名</value>
@@ -1396,5 +1396,8 @@
   </data>
   <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
     <value>幸运治疗</value>
+  </data>
+  <data name="DpsStatistics_NPC_Label" xml:space="preserve">
+    <value>所有NPC</value>
   </data>
 </root>

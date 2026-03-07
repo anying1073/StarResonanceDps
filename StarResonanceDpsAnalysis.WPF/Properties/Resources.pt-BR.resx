@@ -190,7 +190,7 @@
     <value>Instantâneo</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">
-    <value>Equipe:</value>
+    <value>Equipe</value>
   </data>
   <data name="DpsStatistics_TeamLabel_Damage" xml:space="preserve">
     <value>DPS da Equipe</value>
@@ -201,8 +201,9 @@
   <data name="DpsStatistics_TeamLabel_TakenDamage" xml:space="preserve">
     <value>Dano Sofrido da Equipe</value>
   </data>
-  <data name="DpsStatistics_TeamLabel_NpcTakenDamage" xml:space="preserve">
-    <value>NPC DTPS</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DpsStatistics_TeamLabel_NpcTakenDamage" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="PlayerInfo_Guild_Unknown" xml:space="preserve">
     <value>Desconhecido</value>
@@ -313,13 +314,13 @@
     <value>Ative a rolagem automática quando o nome do jogador exceder o espaço disponível.</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Default_Tooltip" xml:space="preserve">
-    <value>NomeDoJogador - Mago de Gelo (25000-8)</value>
+    <value>NomeDoJogador - Icicle (25000-8)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Simple_Tooltip" xml:space="preserve">
     <value>NomeDoJogador (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Detailed_Tooltip" xml:space="preserve">
-    <value>NomeDoJogador - Mago de Gelo [S8 Nv50] (25000)</value>
+    <value>NomeDoJogador - Icicle [S8 Nv50] (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_NameOnly_Tooltip" xml:space="preserve">
     <value>NomeDoJogador</value>
@@ -878,7 +879,6 @@ Como obter: Após uma luta, seu personagem aparecerá automaticamente na janela 
   <data name="SkillBreakdown_Chart_DamageSourcesDistribution" xml:space="preserve">
     <value>Distribuição de fontes de dano</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="SkillBreakdown_Chart_DpsSeriesXAxis" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>

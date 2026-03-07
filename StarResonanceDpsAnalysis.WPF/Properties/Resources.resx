@@ -190,7 +190,7 @@
     <value>History</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">
-    <value>Team:</value>
+    <value>Team</value>
   </data>
   <data name="DpsStatistics_TeamLabel_Damage" xml:space="preserve">
     <value>Team DPS</value>
@@ -202,7 +202,7 @@
     <value>Team DTPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_NpcTakenDamage" xml:space="preserve">
-    <value>NPC DTPS</value>
+    <value>All NPC DTPS</value>
   </data>
   <data name="PlayerInfo_Guild_Unknown" xml:space="preserve">
     <value>Unknown</value>
@@ -1421,5 +1421,8 @@ How to get UID: in game, the bottom-left player number is your UID.</value>
   </data>
   <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
     <value>Lucky heal</value>
+  </data>
+  <data name="DpsStatistics_NPC_Label" xml:space="preserve">
+    <value>All NPC</value>
   </data>
 </root>

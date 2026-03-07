@@ -920,14 +920,17 @@
                             <!-- 战斗时长 -->
                             <TextBlock
                                 Style="{StaticResource FooterTextContent}"
-                                Text="{Binding Path=BattleDuration, StringFormat={}{0:mm\\:ss}}" />
+                                    Text="{Binding BattleDuration,
+                                        StringFormat={}{0:mm\\:ss},
+                                        TargetNullValue=00:00,
+                                        FallbackValue=00:00}" />
 
                             <!-- 团队总伤 (当ShowTeamTotalDamage=true时显示) -->
                             <TextBlock
                                 Style="{StaticResource FooterTextContent}"
                                 Margin="8,0,0,0"
                                 Visibility="{Binding ShowTeamTotalDamage, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <Run Text="{lex:Loc Key={x:Static loc:ResourcesKeys.DpsStatistics_Team_Label}}" />
+                            <Run Text="{Binding TeamLabel, StringFormat={}{0}:, Mode=OneWay}" />
                             <Run>
                                 <Run.Text>
                                     <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
@@ -968,7 +971,9 @@
                                 <Run>
                                     <Run.Text>
                                         <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
-                                            <Binding Path="CurrentStatisticData.CurrentPlayerSlot.Value" />
+                                            <Binding Path="CurrentStatisticData.CurrentPlayerSlot.ValuePerSecond"          
+                                                FallbackValue="0"
+                                                TargetNullValue="0" />
                                             <Binding Path="AppConfig.DamageDisplayType" />
                                         </MultiBinding>
                                     </Run.Text>

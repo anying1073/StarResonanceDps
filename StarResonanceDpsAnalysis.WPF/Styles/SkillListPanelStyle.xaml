@@ -278,13 +278,13 @@
                                     </DataGridTemplateColumn>
 
                                     <!-- Total Column -->
-                                    <DataGridTemplateColumn Width="120">
+                                    <DataGridTemplateColumn Width="100">
                                         <DataGridTemplateColumn.Header>
                                             <TextBlock Text="{lex:Loc Key=SkillBreakdown_Label_Total}" />
                                         </DataGridTemplateColumn.Header>
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
-                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                                             </Style>
                                         </DataGridTemplateColumn.HeaderStyle>
                                         <DataGridTemplateColumn.CellTemplate>
@@ -292,7 +292,9 @@
                                                 <Border Padding="16,8">
                                                     <TextBlock Style="{StaticResource StatColumnText}" 
                                                                FontSize="14"
-                                                               FontWeight="Bold">
+                                                               FontWeight="Bold"
+                                                               HorizontalAlignment="Center"
+                                                               TextAlignment="Center">
                                                         <TextBlock.Text>
                                                             <MultiBinding Converter="{StaticResource HumanReadableNumberConverter}">
                                                                 <Binding Path="TotalValue" />
@@ -312,34 +314,44 @@
                                         </DataGridTemplateColumn.Header>
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
-                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                                             </Style>
                                         </DataGridTemplateColumn.HeaderStyle>
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
                                                 <Border Padding="16,8">
-                                                    <TextBlock
-                                                        Style="{StaticResource StatColumnText}"
-                                                        Text="{Binding HitCount, StringFormat={}{0:N0}}" />
+                                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                        <TextBlock
+                                                            Style="{StaticResource StatColumnText}"
+                                                            Text="{Binding HitCount, StringFormat={}{0:N0}}" />
+                                                        <TextBlock
+                                                            Style="{StaticResource StatColumnLightText}"
+                                                            Text="{lex:Loc Key=SkillBreakdown_Unit_Hits}" />
+                                                    </StackPanel>
                                                 </Border>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
                                     <!-- Crit Rate Column -->
-                                    <DataGridTemplateColumn Width="120">
+                                    <DataGridTemplateColumn Width="140">
                                         <DataGridTemplateColumn.Header>
-                                            <TextBlock Text="{lex:Loc Key=SkillBreakdown_Label_CritRate}" />
+                                            <TextBlock>
+                                                <Run Text="{lex:Loc Key=SkillBreakdown_Label_CritRate}" />
+                                                <Run Text="(" />
+                                                <Run Text="{lex:Loc Key=SkillBreakdown_Label_CritCount}" />
+                                                <Run Text=")" />
+                                            </TextBlock>
                                         </DataGridTemplateColumn.Header>
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
-                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                                             </Style>
                                         </DataGridTemplateColumn.HeaderStyle>
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
                                                 <Border Padding="16,8">
-                                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                                         <TextBlock
                                                             Style="{StaticResource StatColumnText}"
                                                             Text="{Binding CritRate, StringFormat={}{0:P1}}" />
@@ -353,43 +365,47 @@
                                     </DataGridTemplateColumn>
 
                                     <!-- Average Column -->
-                                    <DataGridTemplateColumn Width="120">
+                                    <DataGridTemplateColumn Width="100">
                                         <DataGridTemplateColumn.Header>
                                             <TextBlock Text="{lex:Loc {Binding Tag, RelativeSource={RelativeSource AncestorType=DataGrid}}}" />
                                         </DataGridTemplateColumn.Header>
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
-                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                                             </Style>
                                         </DataGridTemplateColumn.HeaderStyle>
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
                                                 <Border Padding="16,8">
-                                                    <TextBlock
-                                                        x:Name="AverageText"
-                                                        Style="{StaticResource StatColumnText}"
-                                                        Text="{Binding Average, StringFormat={}{0:N0}}" />
+                                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                        <TextBlock
+                                                            x:Name="AverageText"
+                                                            Style="{StaticResource StatColumnText}"
+                                                            Text="{Binding Average, StringFormat={}{0:N0}}" />
+                                                    </StackPanel>
                                                 </Border>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <!--Percent To Max Column-->
-                                    <DataGridTemplateColumn Width="80">
+                                    <DataGridTemplateColumn Width="100">
                                         <DataGridTemplateColumn.Header>
                                             <TextBlock Text="{lex:Loc Key={x:Static properties:ResourcesKeys.SkillBreakdown_Label_ValuePercentToTotal}}" />
                                         </DataGridTemplateColumn.Header>
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource SkillListColumnHeaderStyle}">
-                                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                                             </Style>
                                         </DataGridTemplateColumn.HeaderStyle>
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate DataType="{x:Type viewModels:SkillItemViewModel}">
                                                 <Border Padding="16,8">
-                                                    <TextBlock
-                                                        x:Name="PercentToTotalText"
-                                                        Style="{StaticResource StatColumnText}"
-                                                        Text="{Binding RateToTotal, StringFormat={}{0:P1}}" />
+                                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                        <TextBlock
+                                                            x:Name="PercentToTotalText"
+                                                            Style="{StaticResource StatColumnText}"
+                                                            Text="{Binding RateToTotal, StringFormat={}{0:P1}}" />
+                                                    </StackPanel>
                                                 </Border>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>

@@ -215,6 +215,7 @@ public partial class DpsStatisticsViewModel
 
     partial void OnStatisticIndexChanged(StatisticType value)
     {
+        TeamLabel = GetTeamLabel(value);
         CurrentPlayerLabel = GetCurrentPlayerLabel(value);
         TeamTotalLabel = GetTeamTotalLabel(value);
 

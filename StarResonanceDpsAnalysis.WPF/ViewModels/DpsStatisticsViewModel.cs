@@ -59,6 +59,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     [ObservableProperty] private StatisticType _statisticIndex;
     [ObservableProperty] private ulong _teamTotalDamage;
     [ObservableProperty] private double _teamTotalDps;
+    [ObservableProperty] private string _teamLabel = string.Empty;
     [ObservableProperty] private string _currentPlayerLabel = string.Empty;
     [ObservableProperty] private string _teamTotalLabel = string.Empty;
 
@@ -66,6 +67,8 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     private int _indicatorHoverCount;
     private bool _isInitialized;
     private readonly DispatcherTimer _battleDurationUpdateTimer;
+
+    private long _lastAutoSavedUid;
 
     // ===== Public Properties =====
     public DpsStatisticsSubViewModel CurrentStatisticData => StatisticData[StatisticIndex];
@@ -152,6 +155,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
 
         _localizationManager.CultureChanged += OnLocalizationCultureChanged;
 
+        TeamLabel = GetTeamLabel(StatisticIndex);
         CurrentPlayerLabel = GetCurrentPlayerLabel(StatisticIndex);
         TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
 
@@ -284,22 +288,36 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         });
     }
 
-    private string GetCurrentPlayerLabel(StatisticType statisticType)
+    private string GetTeamLabel(StatisticType statisticType)
     {
         return statisticType switch
         {
             StatisticType.Damage => _localizationManager.GetString(
-                ResourcesKeys.SkillBreakdown_Label_TotalDamage,
-                defaultValue: "Total Damage"),
+                ResourcesKeys.DpsStatistics_Team_Label,
+                defaultValue: "Team"),
             StatisticType.Healing => _localizationManager.GetString(
-                ResourcesKeys.SkillBreakdown_Label_TotalHealing,
-                defaultValue: "Total Healing"),
+                ResourcesKeys.DpsStatistics_Team_Label,
+                defaultValue: "Team"),
             StatisticType.TakenDamage => _localizationManager.GetString(
-                ResourcesKeys.SkillBreakdown_Label_TotalDamageTaken,
-                defaultValue: "Total Damage Taken"),
+                ResourcesKeys.DpsStatistics_Team_Label,
+                defaultValue: "Team"),
+            StatisticType.NpcTakenDamage => _localizationManager.GetString(
+                ResourcesKeys.DpsStatistics_NPC_Label,
+                defaultValue: "All NPC"),
             _ => _localizationManager.GetString(
                 ResourcesKeys.SkillBreakdown_Label_TotalDamage,
-                defaultValue: "Total Damage")
+                defaultValue: "Team")
+        };
+    }
+
+    private string GetCurrentPlayerLabel(StatisticType statisticType)
+    {
+        return statisticType switch
+        {
+            StatisticType.Damage => "DPS",
+            StatisticType.Healing => "HPS",
+            StatisticType.TakenDamage =>"DTPS",
+            _ => "DPS"
         };
     }
 
@@ -334,6 +352,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
                 ApplyNpcLocalizedName(info, culture);
             }
 
+            TeamLabel = GetTeamLabel(StatisticIndex);
             CurrentPlayerLabel = GetCurrentPlayerLabel(StatisticIndex);
             TeamTotalLabel = GetTeamTotalLabel(StatisticIndex);
         });
@@ -378,6 +397,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     private void StorageOnPlayerInfoUpdatedWithNpcLocalization(PlayerInfo info)
     {
         ApplyNpcLocalizedName(info);
+        TryAssignUidFromStorage();
         StorageOnPlayerInfoUpdated(info);
     }
 
@@ -398,6 +418,37 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         if (!string.Equals(info.Name, resolved, StringComparison.Ordinal))
         {
             info.Name = resolved;
+        }
+    }
+
+    private void TryAssignUidFromStorage()
+    {
+        if (IsViewingHistory) return; // 履歴表示中は触らない
+        var uid = _storage.CurrentPlayerInfo.UID;
+        if (uid <= 0) return;
+
+        // 既に設定済みなら上書きしない（必要なら下の別案へ）
+        if (_configManager.CurrentConfig.Uid > 0) return;
+
+        // 連打防止
+        if (_lastAutoSavedUid == uid) return;
+
+        _lastAutoSavedUid = uid;
+        _configManager.CurrentConfig.Uid = uid;
+
+        _ = SaveUidAsync(uid);
+    }
+
+    private async Task SaveUidAsync(long uid)
+    {
+        try
+        {
+            await _configManager.SaveAsync();
+            _logger.LogInformation("Auto assigned UID from storage: {Uid}", uid);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to auto assign UID from storage");
         }
     }
 }

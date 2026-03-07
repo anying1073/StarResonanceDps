@@ -1129,7 +1129,16 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Team: に類似しているローカライズされた文字列を検索します。
+        ///   All NPC に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string DpsStatistics_NPC_Label {
+            get {
+                return ResourceManager.GetString("DpsStatistics_NPC_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Team に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsStatistics_Team_Label {
             get {
@@ -1156,7 +1165,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   NPC DTPS に類似しているローカライズされた文字列を検索します。
+        ///   All NPC DTPS に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string DpsStatistics_TeamLabel_NpcTakenDamage {
             get {

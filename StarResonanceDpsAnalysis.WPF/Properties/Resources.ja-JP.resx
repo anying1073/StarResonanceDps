@@ -190,7 +190,7 @@
     <value>履歴</value>
   </data>
   <data name="DpsStatistics_Team_Label" xml:space="preserve">
-    <value>パーティ:</value>
+    <value>パーティ</value>
   </data>
   <data name="DpsStatistics_TeamLabel_Damage" xml:space="preserve">
     <value>パーティDPS</value>
@@ -202,7 +202,7 @@
     <value>パーティDTPS</value>
   </data>
   <data name="DpsStatistics_TeamLabel_NpcTakenDamage" xml:space="preserve">
-    <value>NPC DTPS</value>
+    <value>全NPC DTPS</value>
   </data>
   <data name="PlayerInfo_Guild_Unknown" xml:space="preserve">
     <value>不明</value>
@@ -313,13 +313,13 @@
     <value>プレイヤー名が表示領域を超えた場合に自動でスクロールします。</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Default_Tooltip" xml:space="preserve">
-    <value>プレイヤー名 - フロストメイジ (25000-8)</value>
+    <value>プレイヤー名 - 氷牙型 (25000-8)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Simple_Tooltip" xml:space="preserve">
     <value>プレイヤー名 (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Detailed_Tooltip" xml:space="preserve">
-    <value>プレイヤー名 - フロストメイジ [S8 Lv50] (25000)</value>
+    <value>プレイヤー名 - 氷牙型 [S8 Lv50] (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_NameOnly_Tooltip" xml:space="preserve">
     <value>プレイヤー名</value>
@@ -1377,6 +1377,9 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
 
 UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤー番号がUIDです。</value>
   </data>
+  <data name="Settings_PlayerUid_Get" xml:space="preserve">
+    <value>取得</value>
+  </data>
   <data name="SkillBreakdown_Label_AverageHealing" xml:space="preserve">
     <value>平均回復量</value>
   </data>
@@ -1421,5 +1424,8 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
     <value>幸運回復</value>
+  </data>
+  <data name="DpsStatistics_NPC_Label" xml:space="preserve">
+    <value>全NPC</value>
   </data>
 </root>
