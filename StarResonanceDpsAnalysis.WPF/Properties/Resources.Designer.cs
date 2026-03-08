@@ -2493,6 +2493,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Set Network Adapter に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_NetworkAdapterAutoSelect_Title {
+            get {
+                return ResourceManager.GetString("Settings_NetworkAdapterAutoSelect_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Add Information Fields に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_PlayerInfo_AddFields {
@@ -2507,6 +2516,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string Settings_PlayerInfo_AddSeparators {
             get {
                 return ResourceManager.GetString("Settings_PlayerInfo_AddSeparators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Class Spec に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_PlayerInfo_ClassSpec {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_ClassSpec", resourceCulture);
             }
         }
         
@@ -2543,6 +2561,42 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string Settings_PlayerInfo_FormatString_Tooltip {
             get {
                 return ResourceManager.GetString("Settings_PlayerInfo_FormatString_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Guild Name に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_PlayerInfo_GuildName {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_GuildName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   MyGuild に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_PlayerInfo_MyGuild {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_MyGuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PlayerName に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_PlayerInfo_Name {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Player UID に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_PlayerInfo_PlayerUID {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_PlayerUID", resourceCulture);
             }
         }
         
@@ -2592,15 +2646,6 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   PlayerName に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Settings_PlayerInfo_Preset_NameOnly_Tooltip {
-            get {
-                return ResourceManager.GetString("Settings_PlayerInfo_Preset_NameOnly_Tooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Simple に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_PlayerInfo_Preset_Simple {
@@ -2637,11 +2682,38 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Season Level に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_PlayerInfo_SeasonLevel {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_SeasonLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Season Strength に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_PlayerInfo_SeasonStrength {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_SeasonStrength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Space に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_PlayerInfo_Separator_Space {
             get {
                 return ResourceManager.GetString("Settings_PlayerInfo_Separator_Space", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   e.g.,  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_PlayerInfo_Tip {
+            get {
+                return ResourceManager.GetString("Settings_PlayerInfo_Tip", resourceCulture);
             }
         }
         
@@ -2934,6 +3006,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   PNG Image (*.png)|*.png に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Theme_BackgroundImage_Filter {
+            get {
+                return ResourceManager.GetString("Settings_Theme_BackgroundImage_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Clear に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Theme_ClearImage {
@@ -2966,6 +3047,33 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string Settings_Theme_WindowColor {
             get {
                 return ResourceManager.GetString("Settings_Theme_WindowColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   No current player UID captured. Please change map and try again. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_UID_Setting_Message1 {
+            get {
+                return ResourceManager.GetString("Settings_UID_Setting_Message1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You are trying to set UID for current player. This data may not be accurate, please verify on your own. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_UID_Setting_Message2 {
+            get {
+                return ResourceManager.GetString("Settings_UID_Setting_Message2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Set Player UID に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_UID_Setting_Title {
+            get {
+                return ResourceManager.GetString("Settings_UID_Setting_Title", resourceCulture);
             }
         }
         

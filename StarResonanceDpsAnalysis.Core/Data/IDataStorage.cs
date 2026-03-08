@@ -46,6 +46,7 @@ public interface IDataStorage : IDisposable
     void SetPlayerName(long playerUid, string playerName);
     void SetPlayerCombatPower(long playerUid, int combatPower);
     void SetPlayerProfessionID(long playerUid, int professionId);
+    void SetPlayerGuild(long playerUid, string guild);
 
     /// <summary>
     /// 添加战斗日志 (会自动创建日志分段)

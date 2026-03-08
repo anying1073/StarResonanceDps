@@ -321,8 +321,14 @@
   <data name="Settings_PlayerInfo_Preset_Detailed_Tooltip" xml:space="preserve">
     <value>プレイヤー名 - 氷牙型 [S8 Lv50] (25000)</value>
   </data>
-  <data name="Settings_PlayerInfo_Preset_NameOnly_Tooltip" xml:space="preserve">
+  <data name="Settings_PlayerInfo_Name" xml:space="preserve">
     <value>プレイヤー名</value>
+  </data>
+  <data name="Settings_PlayerInfo_Tip" xml:space="preserve">
+    <value>例：</value>
+  </data>
+  <data name="Settings_PlayerInfo_ClassSpec" xml:space="preserve">
+    <value>クラス</value>
   </data>
   <data name="Settings_PlayerInfo_Separator_Space" xml:space="preserve">
     <value>スペース</value>
@@ -1427,5 +1433,35 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="DpsStatistics_NPC_Label" xml:space="preserve">
     <value>全NPC</value>
+  </data>
+  <data name="Settings_UID_Setting_Title" xml:space="preserve">
+    <value>プレイヤーUIDを設定</value>
+  </data>
+  <data name="Settings_UID_Setting_Message1" xml:space="preserve">
+    <value>現在のプレイヤーUIDを取得できませんでした。マップを切り替えて、もう一度試してください。</value>
+  </data>
+  <data name="Settings_UID_Setting_Message2" xml:space="preserve">
+    <value>現在のプレイヤーのUIDを設定しようとしています。この情報は正確でない可能性があります。必ずご自身で確認してください。</value>
+  </data>
+  <data name="Settings_NetworkAdapterAutoSelect_Title" xml:space="preserve">
+    <value>ネットワークアダプターを設定</value>
+  </data>
+  <data name="Settings_Theme_BackgroundImage_Filter" xml:space="preserve">
+    <value>PNG画像 (*.png)|*.png</value>
+  </data>
+  <data name="Settings_PlayerInfo_PlayerUID" xml:space="preserve">
+    <value>プレイヤーUID</value>
+  </data>
+  <data name="Settings_PlayerInfo_SeasonStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Settings_PlayerInfo_SeasonLevel" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Settings_PlayerInfo_GuildName" xml:space="preserve">
+    <value>ギルド名</value>
+  </data>
+  <data name="Settings_PlayerInfo_MyGuild" xml:space="preserve">
+    <value>マイギルド</value>
   </data>
 </root>

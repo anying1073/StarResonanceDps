@@ -53,6 +53,9 @@ public partial class SettingsViewModel : BaseViewModel
         new(NumberDisplayMode.KMB, NumberDisplayMode.KMB.GetLocalizedDescription())
     ];
 
+    [ObservableProperty]
+    private List<FormatFieldOption> _availableFormatFields = new();
+
     private bool _cultureHandlerSubscribed;
     private bool _networkHandlerSubscribed;
     private bool _isLoaded; // becomes true after LoadedAsync completes
@@ -71,6 +74,63 @@ public partial class SettingsViewModel : BaseViewModel
     private readonly IClassColorService _classColorService;
     private readonly IAutoUpdateService _autoUpdateService;
     private readonly ILogger<SettingsViewModel> _logger;
+
+    private static readonly (string Key,
+        string LabelResourceKey,
+        string Placeholder,
+        string? ExampleValueResourceKey,
+        string? ExampleValueLiteral)[] FormatFieldDefinitions =
+    [
+        (
+            "Name",
+            ResourcesKeys.Settings_PlayerInfo_Name,
+            "{Name}",
+            ResourcesKeys.Settings_PlayerInfo_Name,
+            null
+        ),
+        (
+            "Spec",
+            ResourcesKeys.Settings_PlayerInfo_ClassSpec,
+            "{Spec}",
+            ResourcesKeys.ClassSpec_FrostMageIcicle,
+            null
+        ),
+        (
+            "PowerLevel",
+            ResourcesKeys.SkillBreakdown_Label_Power,
+            "{PowerLevel}",
+            null,
+            "25000"
+        ),
+        (
+            "SeasonStrength",
+            ResourcesKeys.Settings_PlayerInfo_SeasonStrength,
+            "{SeasonStrength}",
+            null,
+            "8"
+        ),
+        (
+            "SeasonLevel",
+            ResourcesKeys.Settings_PlayerInfo_SeasonLevel,
+            "{SeasonLevel}",
+            null,
+            "50"
+        ),
+        (
+            "Guild",
+            ResourcesKeys.Settings_PlayerInfo_GuildName,
+            "{Guild}",
+            ResourcesKeys.Settings_PlayerInfo_MyGuild,
+            null
+        ),
+        (
+            "Uid",
+            ResourcesKeys.Settings_PlayerInfo_PlayerUID,
+            "{Uid}",
+            null,
+            "123456789"
+        ),
+    ];
 
     /// <inheritdoc/>
     public SettingsViewModel(IConfigManager configManager,
@@ -109,7 +169,7 @@ public partial class SettingsViewModel : BaseViewModel
             // 创建一个示例 PlayerInfoViewModel 来生成预览
             var previewVm = new PlayerInfoViewModel(_localization)
             {
-                Name = "PlayerName",
+                Name = _localization.GetString(ResourcesKeys.Settings_PlayerInfo_Name),
                 Spec = ClassSpec.FrostMageIcicle,
                 PowerLevel = 25000,
                 SeasonStrength = 8,
@@ -126,19 +186,27 @@ public partial class SettingsViewModel : BaseViewModel
         }
     }
 
-    /// <summary>
-    /// 可用的格式化字段列表
-    /// </summary>
-    public List<FormatFieldOption> AvailableFormatFields { get; } = new()
+    private string BuildExampleText(string? resourceKey, string? literal)
     {
-        new FormatFieldOption("Name", "Player Name", "{Name}", "e.g., PlayerName"),
-        new FormatFieldOption("Spec", "Class Spec", "{Spec}", "e.g., FrostMage"),
-        new FormatFieldOption("PowerLevel", "Power Level", "{PowerLevel}", "e.g., 25000"),
-        new FormatFieldOption("SeasonStrength", "Season Strength", "{SeasonStrength}", "e.g., 8"),
-        new FormatFieldOption("SeasonLevel", "Season Level", "{SeasonLevel}", "e.g., 50"),
-        new FormatFieldOption("Guild", "Guild Name", "{Guild}", "e.g., MyGuild"),
-        new FormatFieldOption("Uid", "Player UID", "{Uid}", "e.g., 123456789"),
-    };
+        var examplePrefix = _localization.GetString(ResourcesKeys.Settings_PlayerInfo_Tip);
+        string? exampleValue;
+        if (!string.IsNullOrWhiteSpace(resourceKey))
+            exampleValue = _localization.GetString(resourceKey);
+        else
+            exampleValue = literal;
+        return $"{examplePrefix}{exampleValue}";
+    }
+
+    private void RebuildAvailableFormatFields()
+    {
+        AvailableFormatFields = FormatFieldDefinitions
+            .Select(x => new FormatFieldOption(
+                x.Key,
+                _localization.GetString(x.LabelResourceKey),
+                x.Placeholder,
+                BuildExampleText(x.ExampleValueResourceKey, x.ExampleValueLiteral)))
+            .ToList();
+    }
 
     /// <summary>
     /// 常用分隔符列表
@@ -248,6 +316,8 @@ public partial class SettingsViewModel : BaseViewModel
         _localization.ApplyLanguage(AppConfig.Language);
         await LoadNetworkAdaptersAsync();
 
+        RebuildAvailableFormatFields();
+
         _hasUnsavedChanges = false;
         _isLoaded = true;
         _logger.LogDebug("SettingsViewModel Loaded");
@@ -289,7 +359,7 @@ public partial class SettingsViewModel : BaseViewModel
             return;
         }
         _logger.LogWarning("Auto-selection of network adapter failed.");
-        MessageBox.Show(_localization.GetString(ResourcesKeys.Settings_NetworkAdapterAutoSelect_Failed)); // Temporary message dialog
+        _messageDialogService.Show(_localization.GetString(ResourcesKeys.Settings_NetworkAdapterAutoSelect_Title), _localization.GetString(ResourcesKeys.Settings_NetworkAdapterAutoSelect_Failed)); // Temporary message dialog
     }
 
     private async Task LoadNetworkAdaptersAsync()
@@ -373,16 +443,6 @@ public partial class SettingsViewModel : BaseViewModel
         {
             _localization.ApplyLanguage(config.Language);
             UpdateLanguageDependentCollections();
-        }
-        else if (e.PropertyName == nameof(AppConfig.MaskPlayerName) && _isLoaded && !config.MaskPlayerName)
-        {
-            var title = _localization.GetString(ResourcesKeys.Settings_PlayerNameMask_Warning_Title);
-            var message = _localization.GetString(ResourcesKeys.Settings_PlayerNameMask_Warning_Message);
-            var result = _messageDialogService.Show(title, message);
-            if (result != true)
-            {
-                config.MaskPlayerName = true;
-            }
         }
         else if (e.PropertyName == nameof(AppConfig.PreferredNetworkAdapter))
         {
@@ -556,8 +616,8 @@ public partial class SettingsViewModel : BaseViewModel
     {
         var dialog = new Microsoft.Win32.OpenFileDialog
         {
-            Title = "选择背景图片",
-            Filter = "PNG图片 (*.png)|*.png",
+            Title = _localization.GetString(ResourcesKeys.Settings_Theme_SelectImage),
+            Filter = _localization.GetString(ResourcesKeys.Settings_Theme_BackgroundImage_Filter),
             CheckFileExists = true
         };
 
@@ -612,17 +672,13 @@ public partial class SettingsViewModel : BaseViewModel
     [RelayCommand]
     private void TryGetCurrentUid()
     {
+        var title = _localization.GetString(ResourcesKeys.Settings_UID_Setting_Title);
+        var message1 = _localization.GetString(ResourcesKeys.Settings_UID_Setting_Message1);
+        var message2 = _localization.GetString(ResourcesKeys.Settings_UID_Setting_Message2);
         if (_dataStorage.CurrentPlayerInfo.UID == 0)
-        {
-            _messageDialogService.Show("Set Player UID",
-                "No current player UID captured. Please change map and try again.");
-        }
+            _messageDialogService.Show(title, message1);
         else
-        {
-            _messageDialogService.Show("Set Player UID",
-                "You are trying to set UID for current player. This data may not be accurate, please verify on your own.");
-            AppConfig.Uid = _dataStorage.CurrentPlayerInfo.UID;
-        }
+            _messageDialogService.Show(title, message2);
     }
 
     /// <summary>
@@ -668,6 +724,8 @@ public partial class SettingsViewModel : BaseViewModel
     private void OnCultureChanged(object? sender, CultureInfo culture)
     {
         UpdateLanguageDependentCollections();
+        RebuildAvailableFormatFields();
+        OnPropertyChanged(nameof(FormatPreview));
     }
 
     private void UnsubscribeHandlers()
@@ -866,6 +924,7 @@ internal sealed class DesignDataStorage : IDataStorage
     public void SetPlayerName(long playerUid, string playerName) { }
     public void SetPlayerCombatPower(long playerUid, int combatPower) { }
     public void SetPlayerProfessionID(long playerUid, int professionId) { }
+    public void SetPlayerGuild(long playerUid, string guild) { }
     public void AddBattleLog(BattleLog log) { }
     public void SetPlayerRankLevel(long playerUid, int readInt32) { }
     public void SetPlayerCritical(long playerUid, int readInt32) { }

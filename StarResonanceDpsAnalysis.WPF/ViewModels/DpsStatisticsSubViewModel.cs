@@ -188,7 +188,7 @@ public partial class DpsStatisticsSubViewModel : BaseViewModel
             Player = new PlayerInfoViewModel(_localizationManager)
             {
                 Uid = playerStats.Uid,
-                Guild = GetLocalizedString(ResourcesKeys.PlayerInfo_Guild_Unknown, "Unknown"),
+                Guild = playerInfo?.Guild ?? GetLocalizedString(ResourcesKeys.PlayerInfo_Guild_Unknown, "Unknown"),
                 Name = playerInfo?.Name,
                 Spec = playerInfo?.Spec ?? ClassSpec.Unknown,
                 IsNpc = playerStats.IsNpc,

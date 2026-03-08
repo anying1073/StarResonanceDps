@@ -1,9 +1,10 @@
-using System.ComponentModel;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
 using StarResonanceDpsAnalysis.WPF.Models;
+using StarResonanceDpsAnalysis.WPF.Properties;
 using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
+using System.ComponentModel;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -116,6 +117,33 @@ public partial class DpsStatisticsViewModel
         if (e.PropertyName == nameof(AppConfig.UseCustomFormat))
         {
             ApplyPlayerInfoFormatSwitchToPlayers(AppConfig.UseCustomFormat);
+        }
+        if (e.PropertyName == nameof(AppConfig.MaskPlayerName))
+        {
+            // まずUI反映（既存処理があるならそれを残す）
+            ApplyMaskToPlayers(AppConfig.MaskPlayerName);
+
+            // “外した時”だけ毎回警告
+            if (!_maskWarningReentry && _isInitialized && !AppConfig.MaskPlayerName)
+            {
+                _maskWarningReentry = true;
+                try
+                {
+                    var title = _localizationManager.GetString(ResourcesKeys.Settings_PlayerNameMask_Warning_Title);
+                    var message = _localizationManager.GetString(ResourcesKeys.Settings_PlayerNameMask_Warning_Message);
+                    var result = _messageDialogService.Show(title, message, _windowManagement.DpsStatisticsView);
+                    if (result != true)
+                    {
+                        AppConfig.MaskPlayerName = true; // キャンセルなら戻す
+                    }
+                }
+                finally
+                {
+                    _maskWarningReentry = false;
+                }
+            }
+
+            return;
         }
     }
 

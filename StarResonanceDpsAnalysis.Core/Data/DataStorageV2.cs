@@ -585,6 +585,13 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         TriggerPlayerInfoUpdatedImmediate(uid);
     }
 
+    public void SetPlayerGuild(long playerUid, string guild)
+    {
+        EnsurePlayer(playerUid);
+        PlayerInfoData[playerUid].Guild = guild;
+        TriggerPlayerInfoUpdatedImmediate(playerUid);
+    }
+
     public void SetPlayerCritical(long uid, int critical)
     {
         PlayerInfoData[uid].Critical = critical;

@@ -583,7 +583,7 @@
                                                         Content="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_PlayerInfo_Preset_NameOnly}}"
                                                         Padding="10,4"
                                                         Style="{StaticResource AntButtonStyle}"
-                                                        ToolTip="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_PlayerInfo_Preset_NameOnly_Tooltip}}" />
+                                                        ToolTip="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_PlayerInfo_Name}}" />
                                                 </WrapPanel>
                                             </Border>
                                         </Grid>

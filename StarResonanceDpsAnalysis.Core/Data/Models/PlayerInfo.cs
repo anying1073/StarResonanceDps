@@ -10,6 +10,7 @@ public class PlayerInfo
     public string? Name { get; set; }
     public int? ProfessionID { get; set; }
     public string? SubProfessionName { get; set; }
+    public string? Guild { get; set; }
 
     /// <summary>
     /// 职业流派

@@ -321,8 +321,14 @@
   <data name="Settings_PlayerInfo_Preset_Detailed_Tooltip" xml:space="preserve">
     <value>PlayerName - FrostMage [S8 Lv50] (25000)</value>
   </data>
-  <data name="Settings_PlayerInfo_Preset_NameOnly_Tooltip" xml:space="preserve">
+  <data name="Settings_PlayerInfo_Name" xml:space="preserve">
     <value>PlayerName</value>
+  </data>
+  <data name="Settings_PlayerInfo_Tip" xml:space="preserve">
+    <value>e.g., </value>
+  </data>
+  <data name="Settings_PlayerInfo_ClassSpec" xml:space="preserve">
+    <value>Class Spec</value>
   </data>
   <data name="Settings_PlayerInfo_Separator_Space" xml:space="preserve">
     <value>Space</value>
@@ -1454,5 +1460,35 @@ Open download page now?</value>
   </data>
   <data name="DpsStatistics_NPC_Label" xml:space="preserve">
     <value>All NPC</value>
+  </data>
+  <data name="Settings_UID_Setting_Title" xml:space="preserve">
+    <value>Set Player UID</value>
+  </data>
+  <data name="Settings_UID_Setting_Message1" xml:space="preserve">
+    <value>No current player UID captured. Please change map and try again.</value>
+  </data>
+  <data name="Settings_UID_Setting_Message2" xml:space="preserve">
+    <value>You are trying to set UID for current player. This data may not be accurate, please verify on your own.</value>
+  </data>
+  <data name="Settings_NetworkAdapterAutoSelect_Title" xml:space="preserve">
+    <value>Set Network Adapter</value>
+  </data>
+  <data name="Settings_Theme_BackgroundImage_Filter" xml:space="preserve">
+    <value>PNG Image (*.png)|*.png</value>
+  </data>
+  <data name="Settings_PlayerInfo_PlayerUID" xml:space="preserve">
+    <value>Player UID</value>
+  </data>
+  <data name="Settings_PlayerInfo_SeasonStrength" xml:space="preserve">
+    <value>Season Strength</value>
+  </data>
+  <data name="Settings_PlayerInfo_SeasonLevel" xml:space="preserve">
+    <value>Season Level</value>
+  </data>
+  <data name="Settings_PlayerInfo_GuildName" xml:space="preserve">
+    <value>Guild Name</value>
+  </data>
+  <data name="Settings_PlayerInfo_MyGuild" xml:space="preserve">
+    <value>MyGuild</value>
   </data>
 </root>

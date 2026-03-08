@@ -322,8 +322,14 @@
   <data name="Settings_PlayerInfo_Preset_Detailed_Tooltip" xml:space="preserve">
     <value>NomeDoJogador - Icicle [S8 Nv50] (25000)</value>
   </data>
-  <data name="Settings_PlayerInfo_Preset_NameOnly_Tooltip" xml:space="preserve">
+  <data name="Settings_PlayerInfo_Name" xml:space="preserve">
     <value>NomeDoJogador</value>
+  </data>
+  <data name="Settings_PlayerInfo_Tip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Settings_PlayerInfo_ClassSpec" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="Settings_PlayerInfo_Separator_Space" xml:space="preserve">
     <value>Espaço</value>
@@ -1335,5 +1341,14 @@ Como obter o UID: no jogo, o número do jogador no canto inferior esquerdo é o 
   </data>
   <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
     <value>Sorte</value>
+  </data>
+  <data name="Settings_PlayerInfo_PlayerUID" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Settings_PlayerInfo_SeasonStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Settings_PlayerInfo_SeasonLevel" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

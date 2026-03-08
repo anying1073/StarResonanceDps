@@ -286,6 +286,10 @@ public sealed class DpsStatisticsDesignTimeViewModel : DpsStatisticsViewModel
         {
         }
 
+        public void SetPlayerGuild(long playerUid, string guild) 
+        {
+        }
+
         public void AddBattleLog(BattleLog log)
         {
         }

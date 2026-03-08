@@ -106,6 +106,7 @@ public partial class DpsStatisticsViewModel
                 slot.Player.Class = info.ProfessionID.GetClassNameById();
                 slot.Player.Spec = info.Spec;
                 slot.Player.Uid = info.UID;
+                slot.Player.Guild = info.Guild ?? slot.Player.Guild;
 
                 if (_storage.CurrentPlayerInfo.UID == info.UID)
                 {

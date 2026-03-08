@@ -69,6 +69,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     private readonly DispatcherTimer _battleDurationUpdateTimer;
 
     private long _lastAutoSavedUid;
+    private bool _maskWarningReentry;
 
     // ===== Public Properties =====
     public DpsStatisticsSubViewModel CurrentStatisticData => StatisticData[StatisticIndex];

@@ -762,6 +762,13 @@ public static partial class DataStorage
         TriggerPlayerInfoUpdated(uid);
     }
 
+    internal static void SetPlayerGuild(long uid, string guild)
+    {
+        TestCreatePlayerInfoByUID(uid);
+        PlayerInfoDatas[uid].Guild = guild;
+        TriggerPlayerInfoUpdated(uid);
+    }
+
     /// <summary>
     /// 设置玩家暴击
     /// </summary>
