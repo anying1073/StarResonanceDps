@@ -262,10 +262,12 @@
     <value>画面をクリア</value>
   </data>
   <data name="Settings_Shortcut_MouseThrough_Tooltip" xml:space="preserve">
-    <value>この欄を選択してショートカット（例：Ctrl+F6）を押してください。解除するにはDeleteを押します。</value>
+    <value>この欄を選択してショートカット（例：F6）を押してください。
+削除するには Delete キーを押してください。</value>
   </data>
   <data name="Settings_Shortcut_ClearData_Tooltip" xml:space="preserve">
-    <value>この欄を選択してショートカット（例：F9）を押してください。解除するにはDeleteを押します。</value>
+    <value>この欄を選択してショートカット（例：F9）を押してください。
+削除するには Delete キーを押してください。</value>
   </data>
   <data name="Settings_Section_Display_Title" xml:space="preserve">
     <value>表示設定</value>
@@ -707,7 +709,8 @@
     <comment>切换置顶</comment>
   </data>
   <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
-    <value>この欄を選択してショートカット（例：Ctrl+F9）を押してください。解除するにはDeleteを押します。</value>
+    <value>この欄を選択してショートカット（例：F7）を押してください。
+削除するには Delete キーを押してください。</value>
   </data>
   <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
     <value>ネットワークアダプターの自動選択に失敗しました。ネットワーク接続を確認してください。</value>
@@ -798,7 +801,8 @@
     <value>DPSウィンドウを切り替え</value>
   </data>
   <data name="Settings_Shortcut_ToggleDps_Tooltip" xml:space="preserve">
-    <value>この欄を選択してショートカット（例：F10）を押してください。解除するにはDeleteを押します。</value>
+    <value>この欄を選択してショートカット（例：F10）を押してください。
+削除するには Delete キーを押してください。</value>
   </data>
   <data name="Settings_Section_Character_Title" xml:space="preserve">
     <value>キャラクター設定</value>
@@ -810,8 +814,8 @@
     <value>キャラクターUID</value>
   </data>
   <data name="Settings_Character_Uid_Tooltip" xml:space="preserve">
-    <value>キャラクターUID（数値）を入力してください
-確認方法：戦闘後、統計ウィンドウに現在のキャラクターが自動表示されます</value>
+    <value>キャラクターUID（数値）を入力してください。
+確認方法：ゲーム内の画面左下に表示されるプレイヤー番号がUIDです。</value>
   </data>
   <data name="Settings_Combat_MaxHistoryCount" xml:space="preserve">
     <value>履歴の保存上限</value>
@@ -931,7 +935,7 @@
     <value>クリア</value>
   </data>
   <data name="Settings_PlayerInfo_Clear_Tooltip" xml:space="preserve">
-    <value>形式文字列を消去して最初からやり直します</value>
+    <value>形式文字列を消去して再設定</value>
   </data>
   <data name="Settings_PlayerInfo_Preview" xml:space="preserve">
     <value>ライブプレビュー</value>
@@ -1431,6 +1435,39 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
     <value>幸運回復</value>
   </data>
+  <data name="Update_Available_Title" xml:space="preserve">
+    <value>アップデートを確認</value>
+  </data>
+  <data name="Update_Available_Message" xml:space="preserve">
+    <value>現在のバージョン：{0}
+最新バージョン：{1}
+
+今すぐダウンロードページを開きますか？</value>
+  </data>
+  <data name="Update_Available_Notes" xml:space="preserve">
+    <value>更新内容</value>
+  </data>
+  <data name="Update_NoUpdate_Title" xml:space="preserve">
+    <value>アップデートを確認</value>
+  </data>
+  <data name="Update_NoUpdate_Message" xml:space="preserve">
+    <value>現在のバージョンは最新です。</value>
+  </data>
+  <data name="Settings_Section_Update_Title" xml:space="preserve">
+    <value>アップデート</value>
+  </data>
+  <data name="Settings_Section_Update_Sub" xml:space="preserve">
+    <value>新しいバージョンがあるか手動で確認します</value>
+  </data>
+  <data name="Settings_Update_Check_Button" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="Settings_Update_Check_Message" xml:space="preserve">
+    <value>アップデートを確認</value>
+  </data>
+  <data name="Settings_Update_Check_Tooltip" xml:space="preserve">
+    <value>GitHubまたは独自の更新元から、最新バージョンを確認</value>
+  </data>
   <data name="DpsStatistics_NPC_Label" xml:space="preserve">
     <value>全NPC</value>
   </data>
@@ -1463,5 +1500,18 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="Settings_PlayerInfo_MyGuild" xml:space="preserve">
     <value>マイギルド</value>
+  </data>
+  <data name="Settings_CustomFormat_Message" xml:space="preserve">
+    <value>カスタム形式は無効になっています。
+デフォルト表示設定が使用されます。</value>
+  </data>
+  <data name="Settings_Theme_BackgroundColor" xml:space="preserve">
+    <value>背景の色</value>
+  </data>
+  <data name="Settings_Background_Opacity" xml:space="preserve">
+    <value>背景の不透明度</value>
+  </data>
+  <data name="Settings_BackgroundImage_Opacity" xml:space="preserve">
+    <value>背景画像の不透明度</value>
   </data>
 </root>

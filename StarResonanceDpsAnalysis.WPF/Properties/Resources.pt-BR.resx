@@ -263,7 +263,7 @@
     <value>Limpar Dados</value>
   </data>
   <data name="Settings_Shortcut_MouseThrough_Tooltip" xml:space="preserve">
-    <value>Foque nesta caixa e pressione um atalho (ex: Ctrl+F6). Pressione Delete para limpar.</value>
+    <value>Foque nesta caixa e pressione um atalho (ex: F6). Pressione Delete para limpar.</value>
   </data>
   <data name="Settings_Shortcut_ClearData_Tooltip" xml:space="preserve">
     <value>Foque nesta caixa e pressione um atalho (ex: F9). Pressione Delete para limpar.</value>
@@ -704,7 +704,7 @@
     <value>Alternar sempre no topo</value>
   </data>
   <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
-    <value>Foque nesta caixa e pressione um atalho (ex: Ctrl+F9). Pressione Delete para limpar.</value>
+    <value>Foque nesta caixa e pressione um atalho (ex: F9). Pressione Delete para limpar.</value>
   </data>
   <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
     <value>Falha na seleção automática do adaptador de rede, verifique se você tem conexões de rede adequadas</value>

@@ -168,7 +168,7 @@
             x:Key="AutoSelectButton"
             BasedOn="{StaticResource AntPrimaryButtonStyle}"
             TargetType="Button">
-            <Setter Property="Padding" Value="15,0,15,0" />
+            <Setter Property="Padding" Value="15,4,15,4" />
         </Style>
 
         <Style
@@ -759,6 +759,7 @@
                                                     VerticalContentAlignment="Center" />
                                                 <Button
                                                     Grid.Column="2"
+                                                    IsEnabled="{Binding AppConfig.UseCustomFormat}"
                                                     Command="{Binding ClearFormatCommand}"
                                                     Content="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_PlayerInfo_Clear}}"
                                                     Padding="12,4"
@@ -1228,41 +1229,6 @@
                                             <TextBlock
                                                 Grid.Column="0"
                                                 Style="{StaticResource FieldName}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Display_Opacity}}" />
-                                            <Grid Grid.Column="2">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition Width="10" />
-                                                    <ColumnDefinition Width="35" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <Slider
-                                                    Grid.Column="0"
-                                                    IsSnapToTickEnabled="True"
-                                                    Maximum="95"
-                                                    Minimum="5"
-                                                    Style="{StaticResource AntSliderStyle}"
-                                                    TickFrequency="1"
-                                                    Value="{Binding AppConfig.Opacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                <TextBlock
-                                                    Grid.Column="2"
-                                                    Style="{StaticResource SuffixText}"
-                                                    Text="{Binding AppConfig.Opacity, Mode=OneWay}" />
-                                            </Grid>
-                                        </Grid>
-                                    </Border>
-
-                                    <Border Style="{StaticResource SectionFieldBorder}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="39*" />
-                                                <ColumnDefinition Width="*" MinWidth="10" />
-                                                <ColumnDefinition Width="60*" />
-                                            </Grid.ColumnDefinitions>
-
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                Style="{StaticResource FieldName}"
                                                 Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Combat_MaxHistoryCount}}"
                                                 ToolTip="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Combat_MaxHistoryCount_Tooltip}}" />
                                             <Grid Grid.Column="2">
@@ -1497,10 +1463,7 @@
                                                            Placement="Bottom"
                                                            StaysOpen="False"
                                                            AllowsTransparency="True">
-                                                        <Border Background="White" 
-                                                                BorderBrush="#999" 
-                                                                BorderThickness="1"
-                                                                CornerRadius="8">
+                                                        <Border Background="Transparent" BorderThickness="0">
                                                             <Border.Effect>
                                                                 <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3" Color="Black"/>
                                                             </Border.Effect>
@@ -1514,7 +1477,176 @@
                                         </Grid>
                                     </Border>
 
-                                    <Border Style="{StaticResource SectionFieldBorderBase}">
+                                    <Border Style="{StaticResource SectionFieldBorder}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="39*" />
+                                                <ColumnDefinition Width="*" MinWidth="10" />
+                                                <ColumnDefinition Width="60*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Style="{StaticResource FieldName}"
+                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Theme_BackgroundColor}}" />
+
+                                            <Border Grid.Column="2" HorizontalAlignment="Right">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <WrapPanel>
+                                                        <Button Background="#1690F8"
+                                                            Command="{Binding SetBackColorCommand}"
+                                                            CommandParameter="#1690F8"
+                                                            Style="{StaticResource ThemeButton}">
+                                                            <Button.Template>
+                                                                <ControlTemplate>
+                                                                    <Border Background="{TemplateBinding Background}"
+                                                                        Style="{StaticResource ThemeButtonBorder}">
+                                                                        <TextBlock
+                                                                            Style="{StaticResource SelectedIconfont}"
+                                                                            Text="&#xe64d;"
+                                                                            Visibility="{Binding AppConfig.CenterBackgroundColor, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter=#1690F8}" />
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                        </Button>
+
+                                                        <Button Background="#FFA9A8"
+                                                            Command="{Binding SetBackColorCommand}"
+                                                            CommandParameter="#FFA9A8"
+                                                            Style="{StaticResource ThemeButton}">
+                                                            <Button.Template>
+                                                                <ControlTemplate>
+                                                                    <Border Background="{TemplateBinding Background}"
+                                                                        Style="{StaticResource ThemeButtonBorder}">
+                                                                        <TextBlock
+                                                                            Style="{StaticResource SelectedIconfont}"
+                                                                            Text="&#xe64d;"
+                                                                            Visibility="{Binding AppConfig.CenterBackgroundColor, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter=#FFA9A8}" />
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                        </Button>
+
+                                                        <Button Background="#F7A0DD"
+                                                            Command="{Binding SetBackColorCommand}"
+                                                            CommandParameter="#F7A0DD"
+                                                            Style="{StaticResource ThemeButton}">
+                                                            <Button.Template>
+                                                                <ControlTemplate>
+                                                                    <Border Background="{TemplateBinding Background}"
+                                                                        Style="{StaticResource ThemeButtonBorder}">
+                                                                        <TextBlock
+                                                                            Style="{StaticResource SelectedIconfont}"
+                                                                            Text="&#xe64d;"
+                                                                            Visibility="{Binding AppConfig.CenterBackgroundColor, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter=#F7A0DD}" />
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                        </Button>
+
+                                                        <Button Background="#2F2F2F"
+                                                            Command="{Binding SetBackColorCommand}"
+                                                            CommandParameter="#2F2F2F"
+                                                            Style="{StaticResource ThemeButton}">
+                                                            <Button.Template>
+                                                                <ControlTemplate>
+                                                                    <Border Background="{TemplateBinding Background}"
+                                                                        Style="{StaticResource ThemeButtonBorder}">
+                                                                        <TextBlock
+                                                                            Style="{StaticResource SelectedIconfont}"
+                                                                            Text="&#xe64d;"
+                                                                            Visibility="{Binding AppConfig.CenterBackgroundColor, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter=#2F2F2F}" />
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                        </Button>
+
+                                                        <Button Background="#D0D0D0"
+                                                            Command="{Binding SetBackColorCommand}"
+                                                            CommandParameter="#D0D0D0"
+                                                            Style="{StaticResource ThemeButton}">
+                                                            <Button.Template>
+                                                                <ControlTemplate>
+                                                                    <Border Background="{TemplateBinding Background}"
+                                                                        Style="{StaticResource ThemeButtonBorder}">
+                                                                        <TextBlock
+                                                                            Style="{StaticResource SelectedIconfont}"
+                                                                            Text="&#xe64d;"
+                                                                            Visibility="{Binding AppConfig.CenterBackgroundColor, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter=#D0D0D0}" />
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Button.Template>
+                                                        </Button>
+                                                    </WrapPanel>
+
+                                                    <Button x:Name="CustomBackColorButton"
+                                                        Width="30"
+                                                        Height="30"
+                                                        Margin="5,0,0,0"
+                                                        BorderBrush="#EEE"
+                                                        BorderThickness="1"
+                                                        ToolTip="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Theme_CustomColor_Tooltip}}">
+                                                        <Button.Background>
+                                                            <LinearGradientBrush StartPoint="0,0.25" EndPoint="1,0.75">
+                                                                <GradientStop Color="#F00" Offset="0.0"/>
+                                                                <GradientStop Color="#F80" Offset="0.1"/>
+                                                                <GradientStop Color="#FF0" Offset="0.25"/>
+                                                                <GradientStop Color="#8F0" Offset="0.42"/>
+                                                                <GradientStop Color="#0F0" Offset="0.44"/>
+                                                                <GradientStop Color="#0F8" Offset="0.48"/>
+                                                                <GradientStop Color="#0FF" Offset="0.58"/>
+                                                                <GradientStop Color="#08F" Offset="0.68"/>
+                                                                <GradientStop Color="#00F" Offset="0.78"/>
+                                                                <GradientStop Color="#80F" Offset="0.85"/>
+                                                                <GradientStop Color="#F0F" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Button.Background>
+                                                        <Button.Template>
+                                                            <ControlTemplate>
+                                                                <Border Background="{TemplateBinding Background}"
+                                                                    Style="{StaticResource ThemeButtonBorder}">
+                                                                    <TextBlock Style="{StaticResource SelectedIconfont}"
+                                                                       Text="&#xe6ad;"
+                                                                       Foreground="White"
+                                                                       FontSize="16"/>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Button.Template>
+                                                        <Button.Triggers>
+                                                            <EventTrigger RoutedEvent="Button.Click">
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <BooleanAnimationUsingKeyFrames
+                                                                            Storyboard.TargetName="BackColorPickerPopup"
+                                                                            Storyboard.TargetProperty="IsOpen">
+                                                                            <DiscreteBooleanKeyFrame KeyTime="0" Value="True"/>
+                                                                        </BooleanAnimationUsingKeyFrames>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </EventTrigger>
+                                                        </Button.Triggers>
+                                                    </Button>
+
+                                                    <Popup x:Name="BackColorPickerPopup"
+                                                        PlacementTarget="{Binding ElementName=CustomBackColorButton}"
+                                                        Placement="Bottom"
+                                                        StaysOpen="False"
+                                                        AllowsTransparency="True">
+                                                        <Border Background="Transparent" BorderThickness="0">
+                                                            <Border.Effect>
+                                                                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3" Color="Black"/>
+                                                            </Border.Effect>
+                                                            <ctrl:SimpleColorPicker
+                                                                SelectedColor="{Binding CurrentBackColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                Margin="5"/>
+                                                        </Border>
+                                                    </Popup>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource SectionFieldBorder}">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="39*" />
@@ -1553,6 +1685,115 @@
                                                     Content="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Theme_ClearImage}}"
                                                     Padding="12,4"
                                                     Style="{StaticResource AntButtonStyle}" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource SectionFieldBorder}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="39*" />
+                                                <ColumnDefinition Width="*" MinWidth="10" />
+                                                <ColumnDefinition Width="60*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Style="{StaticResource FieldName}"
+                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Display_Opacity}}" />
+                                            <Grid Grid.Column="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="35" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Slider
+                                                    Grid.Column="0"
+                                                    IsSnapToTickEnabled="True"
+                                                    Maximum="100"
+                                                    Minimum="0"
+                                                    Style="{StaticResource AntSliderStyle}"
+                                                    TickFrequency="1"
+                                                    Value="{Binding AppConfig.Opacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock
+                                                    Grid.Column="2"
+                                                    Style="{StaticResource SuffixText}"
+                                                    Text="{Binding AppConfig.Opacity, Mode=OneWay}" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource SectionFieldBorder}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="39*" />
+                                                <ColumnDefinition Width="*" MinWidth="10" />
+                                                <ColumnDefinition Width="60*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Style="{StaticResource FieldName}"
+                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Background_Opacity}}" />
+
+                                            <Grid Grid.Column="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="35" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Slider
+                                                    Grid.Column="0"
+                                                    IsSnapToTickEnabled="True"
+                                                    Maximum="100"
+                                                    Minimum="0"
+                                                    Style="{StaticResource AntSliderStyle}"
+                                                    TickFrequency="1"
+                                                    Value="{Binding AppConfig.CenterBackgroundOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                <TextBlock
+                                                    Grid.Column="2"
+                                                    Style="{StaticResource SuffixText}"
+                                                    Text="{Binding AppConfig.CenterBackgroundOpacity, Mode=OneWay}" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource SectionFieldBorderBase}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="39*" />
+                                                <ColumnDefinition Width="*" MinWidth="10" />
+                                                <ColumnDefinition Width="60*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Style="{StaticResource FieldName}"
+                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_BackgroundImage_Opacity}}" />
+
+                                            <Grid Grid.Column="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="35" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Slider
+                                                    Grid.Column="0"
+                                                    IsSnapToTickEnabled="True"
+                                                    Maximum="100"
+                                                    Minimum="0"
+                                                    Style="{StaticResource AntSliderStyle}"
+                                                    TickFrequency="1"
+                                                    Value="{Binding AppConfig.BackgroundImageOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                <TextBlock
+                                                    Grid.Column="2"
+                                                    Style="{StaticResource SuffixText}"
+                                                    Text="{Binding AppConfig.BackgroundImageOpacity, Mode=OneWay}" />
                                             </Grid>
                                         </Grid>
                                     </Border>
@@ -1611,7 +1852,7 @@
                                                                    Placement="Bottom" 
                                                                    StaysOpen="False" 
                                                                    AllowsTransparency="True">
-                                                                <Border Background="White" BorderBrush="#DDD" BorderThickness="1" CornerRadius="8" Margin="5">
+                                                                <Border Background="Transparent" BorderThickness="0">
                                                                     <Border.Effect>
                                                                         <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3" Color="Black"/>
                                                                     </Border.Effect>
@@ -1653,15 +1894,21 @@
                                             <TextBlock
                                                 Grid.Column="0"
                                                 Style="{StaticResource FieldName}"
-                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Update_Check_Button}}" />
+                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Update_Check_Message}}" />
+                                            <Grid Grid.Column="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
 
-                                            <Button
-                                                Grid.Column="2"
-                                                HorizontalAlignment="Right"
-                                                Command="{Binding CheckForUpdatesManualCommand}"
-                                                Content="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Update_Check_Button}}"
-                                                ToolTip="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Update_Check_Tooltip}}"
-                                                Style="{StaticResource AutoSelectButton}" />
+                                                <Button
+                                                    Grid.Column="2"
+                                                    Command="{Binding CheckForUpdatesManualCommand}"
+                                                    Content="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Update_Check_Button}}"
+                                                    ToolTip="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Update_Check_Tooltip}}"
+                                                    Style="{StaticResource AutoSelectButton}" />
+                                            </Grid>
                                         </Grid>
                                     </Border>
 

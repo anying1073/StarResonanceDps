@@ -26,7 +26,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
 
     // ===== Statistics Engine =====
     private readonly StatisticsAdapter _statisticsAdapter = new(logger);
-    
+
     private bool _disposed;
     private bool _hasPendingBattleLogEvents;
     private bool _hasPendingDataEvents;
@@ -40,7 +40,7 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     // ===== Section timeout state =====
     private Timer? _sectionTimeoutTimer;
     private bool _isSectionTimedOut;
-    
+
     /// <summary>
     /// 玩家信息字典 (Key: UID)
     /// </summary>
@@ -105,7 +105,6 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
             RaiseServerConnectionStateChanged(value);
         }
     }
-
 
     /// <summary>
     /// 从文件加载缓存玩家信息
@@ -210,6 +209,26 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
     }
 
     /// <summary>
+    /// 设置当前玩家 UID，并同步到 CurrentPlayerInfo
+    /// </summary>
+    /// <param name="uid">当前玩家UID</param>
+    public void SetCurrentPlayerUid(long uid)
+    {
+        if (uid == 0) return;
+
+        var changed = CurrentPlayerInfo.UID != uid;
+        var existed = EnsurePlayer(uid);
+
+        CurrentPlayerInfo.UID = uid;
+
+        if (changed && existed && PlayerInfoData.TryGetValue(uid, out var info))
+        {
+            RaisePlayerInfoUpdated(info);
+            RaiseDataUpdated();
+        }
+    }
+
+    /// <summary>
     /// 添加战斗日志 - fires events immediately
     /// </summary>
     public void AddBattleLog(BattleLog log)
@@ -297,10 +316,10 @@ public sealed partial class DataStorageV2(ILogger<DataStorageV2> logger) : IData
         }
 
         logger.LogDebug("Section timed out at {Time}, stopping delta tracking", now);
-        
+
         // ⭐ Stop delta tracking when section times out
         _statisticsAdapter.StopDeltaTracking();
-        
+
         // ⭐ Raise SectionEnded event to notify UI
         RaiseSectionEnded();
     }
@@ -918,28 +937,28 @@ public partial class DataStorageV2
     {
         if (LastBattleLog == null)
             return TimeSpan.Zero;
-            
+
         // Get the most recent tick from section statistics
         var sectionStats = _statisticsAdapter.GetStatistics(fullSession: false);
         if (sectionStats.Count == 0)
             return TimeSpan.Zero;
-            
+
         // Find the maximum LastTick across all players to get current battle time
         long maxLastTick = 0;
         long minStartTick = long.MaxValue;
-        
+
         foreach (var playerStats in sectionStats.Values)
         {
             if (playerStats.LastTick > maxLastTick)
                 maxLastTick = playerStats.LastTick;
-                
+
             if (playerStats.StartTick.HasValue && playerStats.StartTick.Value < minStartTick)
                 minStartTick = playerStats.StartTick.Value;
         }
-        
+
         if (minStartTick == long.MaxValue || maxLastTick == 0)
             return TimeSpan.Zero;
-            
+
         var durationTicks = maxLastTick - minStartTick;
         return TimeSpan.FromTicks(Math.Max(0, durationTicks));
     }

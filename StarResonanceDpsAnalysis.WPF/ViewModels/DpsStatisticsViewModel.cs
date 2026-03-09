@@ -68,7 +68,6 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     private bool _isInitialized;
     private readonly DispatcherTimer _battleDurationUpdateTimer;
 
-    private long _lastAutoSavedUid;
     private bool _maskWarningReentry;
 
     // ===== Public Properties =====
@@ -398,7 +397,6 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     private void StorageOnPlayerInfoUpdatedWithNpcLocalization(PlayerInfo info)
     {
         ApplyNpcLocalizedName(info);
-        TryAssignUidFromStorage();
         StorageOnPlayerInfoUpdated(info);
     }
 
@@ -419,37 +417,6 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         if (!string.Equals(info.Name, resolved, StringComparison.Ordinal))
         {
             info.Name = resolved;
-        }
-    }
-
-    private void TryAssignUidFromStorage()
-    {
-        if (IsViewingHistory) return; // 履歴表示中は触らない
-        var uid = _storage.CurrentPlayerInfo.UID;
-        if (uid <= 0) return;
-
-        // 既に設定済みなら上書きしない（必要なら下の別案へ）
-        if (_configManager.CurrentConfig.Uid > 0) return;
-
-        // 連打防止
-        if (_lastAutoSavedUid == uid) return;
-
-        _lastAutoSavedUid = uid;
-        _configManager.CurrentConfig.Uid = uid;
-
-        _ = SaveUidAsync(uid);
-    }
-
-    private async Task SaveUidAsync(long uid)
-    {
-        try
-        {
-            await _configManager.SaveAsync();
-            _logger.LogInformation("Auto assigned UID from storage: {Uid}", uid);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to auto assign UID from storage");
         }
     }
 }

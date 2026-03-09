@@ -542,6 +542,12 @@ public class InstantizedDataStorage : IDataStorage, IDisposable
         DataStorage.SetPlayerGuild(playerUid, guild);
     }
 
+    public void SetCurrentPlayerUid(long playerUid)
+    {
+        EnsurePlayer(playerUid);
+        DataStorage.SetCurrentPlayerUid(playerUid);
+    }
+
     public IReadOnlyList<BattleLog> GetBattleLogsForPlayer(long uid, bool fullSession)
     {
         return DataStorage.GetBattleLogsForPlayer(uid, fullSession);

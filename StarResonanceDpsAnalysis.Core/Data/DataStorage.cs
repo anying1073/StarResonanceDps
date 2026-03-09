@@ -277,6 +277,26 @@ public static partial class DataStorage
     }
 
     /// <summary>
+    /// 设置当前玩家 UID，并同步到 CurrentPlayerInfo
+    /// </summary>
+    /// <param name="uid">当前玩家UID</param>
+    internal static void SetCurrentPlayerUid(long uid)
+    {
+        if (uid == 0) return;
+
+        var changed = CurrentPlayerInfo.UID != uid;
+        CurrentPlayerInfo.UID = uid;
+
+        var existed = TestCreatePlayerInfoByUID(uid);
+
+        if (changed && existed)
+        {
+            RaisePlayerInfoUpdated(uid);
+            RaiseDataUpdated();
+        }
+    }
+
+    /// <summary>
     /// 触发玩家信息更新事件
     /// </summary>
     /// <param name="uid">UID</param>
@@ -525,7 +545,6 @@ public static partial class DataStorage
             skillData.LuckyTimes += log.IsLucky ? 1 : 0;
         });
 
-
         return (fullData, sectionedData);
     }
 
@@ -572,7 +591,6 @@ public static partial class DataStorage
         return playerDic;
     }
 
-
     /// <summary>
     /// 清除所有DPS数据 (包括全程和阶段性)
     /// </summary>
@@ -593,6 +611,7 @@ public static partial class DataStorage
         RaiseDpsDataUpdated();
         RaiseDataUpdated();
     }
+
     private static void PrivateClearSectionDpsData()
     {
         SectionedDpsDatas.Clear();
@@ -681,6 +700,7 @@ public static partial class DataStorage
                 $"An error occurred during trigger event(DataUpdated) => {ex.Message}\r\n{ex.StackTrace}");
         }
     }
+
     #region SetPlayerProperties
 
     /// <summary>
@@ -872,7 +892,6 @@ public static partial class DataStorage
             Console.WriteLine(
                 $"An error occurred during trigger event(NewSectionStarted) => {ex.Message}\r\n{ex.StackTrace}");
         }
-
     }
 
     private static void RaiseBeforeSectionCleared()
@@ -892,6 +911,7 @@ public static partial class DataStorage
                 $"An error occurred during trigger event(DpsDataUpdated) => {ex.Message}\r\n{ex.StackTrace}");
         }
     }
+
     private static void RaiseDataUpdated()
     {
         try

@@ -262,7 +262,7 @@
     <value>清空数据</value>
   </data>
   <data name="Settings_Shortcut_MouseThrough_Tooltip" xml:space="preserve">
-    <value>在此聚焦并按下组合键（例如 Ctrl+F6）。按 Delete 清除。</value>
+    <value>在此聚焦并按下快捷键（例如 F6）。按 Delete 清除。</value>
   </data>
   <data name="Settings_Shortcut_ClearData_Tooltip" xml:space="preserve">
     <value>在此聚焦并按下快捷键（例如 F9）。按 Delete 清除。</value>
@@ -703,7 +703,7 @@
     <value>切换置顶</value>
   </data>
   <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
-    <value>在此聚焦并按下组合键（例如 Ctrl+F9）。按 Delete 清除。</value>
+    <value>在此聚焦并按下快捷键（例如 F9）。按 Delete 清除。</value>
   </data>
   <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
     <value>网卡自动选择失败，请检查您的网络连接是否正常</value>
@@ -1425,13 +1425,16 @@
     <value>更新</value>
   </data>
   <data name="Settings_Section_Update_Sub" xml:space="preserve">
-    <value>手动检查是否有新版本。</value>
+    <value>手动检查是否有新版本</value>
   </data>
   <data name="Settings_Update_Check_Button" xml:space="preserve">
     <value>检查更新</value>
   </data>
+  <data name="Settings_Update_Check_Message" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
   <data name="Settings_Update_Check_Tooltip" xml:space="preserve">
-    <value>立即从 GitHub 或自建更新源检查版本。</value>
+    <value>立即从 GitHub 或自建更新源检查版本</value>
   </data>
   <data name="DpsStatistics_NPC_Label" xml:space="preserve">
     <value>所有NPC</value>
@@ -1466,5 +1469,17 @@
   </data>
   <data name="Settings_PlayerInfo_MyGuild" xml:space="preserve">
     <value>我的公会</value>
+  </data>
+  <data name="Settings_CustomFormat_Message" xml:space="preserve">
+    <value>自定义格式已被禁用，将使用默认显示设置。</value>
+  </data>
+  <data name="Settings_Theme_BackgroundColor" xml:space="preserve">
+    <value>背景颜色</value>
+  </data>
+  <data name="Settings_Background_Opacity" xml:space="preserve">
+    <value>背景透明度</value>
+  </data>
+  <data name="Settings_BackgroundImage_Opacity" xml:space="preserve">
+    <value>背景图片透明度</value>
   </data>
 </root>

@@ -262,7 +262,7 @@
     <value>Clear Data</value>
   </data>
   <data name="Settings_Shortcut_MouseThrough_Tooltip" xml:space="preserve">
-    <value>Focus this box and press a shortcut (e.g. Ctrl+F6). Press Delete to clear.</value>
+    <value>Focus this box and press a shortcut (e.g. F6). Press Delete to clear.</value>
   </data>
   <data name="Settings_Shortcut_ClearData_Tooltip" xml:space="preserve">
     <value>Focus this box and press a shortcut (e.g. F9). Press Delete to clear.</value>
@@ -301,7 +301,7 @@
     <value>Number display mode</value>
   </data>
   <data name="Settings_Display_Opacity" xml:space="preserve">
-    <value>Overlay opacity</value>
+    <value>Overlay Opacity</value>
   </data>
   <data name="Settings_Display_PlayerNameMask" xml:space="preserve">
     <value>Mask player names</value>
@@ -705,7 +705,7 @@
     <comment>切换置顶</comment>
   </data>
   <data name="Settings_Shortcut_TopMost_Tooltip" xml:space="preserve">
-    <value>Focus this box and press a shortcut (e.g. Ctrl+F9). Press Delete to clear.</value>
+    <value>Focus this box and press a shortcut (e.g. F9). Press Delete to clear.</value>
   </data>
   <data name="Settings_NetworkAdapterAutoSelect_Failed" xml:space="preserve">
     <value>Network adapter auto select failed, please check you have proper network connections</value>
@@ -1455,6 +1455,9 @@ Open download page now?</value>
   <data name="Settings_Update_Check_Button" xml:space="preserve">
     <value>Check for updates</value>
   </data>
+  <data name="Settings_Update_Check_Message" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
   <data name="Settings_Update_Check_Tooltip" xml:space="preserve">
     <value>Check GitHub or self-host update source now.</value>
   </data>
@@ -1490,5 +1493,17 @@ Open download page now?</value>
   </data>
   <data name="Settings_PlayerInfo_MyGuild" xml:space="preserve">
     <value>MyGuild</value>
+  </data>
+  <data name="Settings_CustomFormat_Message" xml:space="preserve">
+    <value>Custom format is disabled. Using default visibility settings.</value>
+  </data>
+  <data name="Settings_Theme_BackgroundColor" xml:space="preserve">
+    <value>Background Color</value>
+  </data>
+  <data name="Settings_Background_Opacity" xml:space="preserve">
+    <value>Background Opacity</value>
+  </data>
+  <data name="Settings_BackgroundImage_Opacity" xml:space="preserve">
+    <value>Background Image Opacity</value>
   </data>
 </root>

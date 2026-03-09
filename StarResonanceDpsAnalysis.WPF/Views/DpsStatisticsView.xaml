@@ -57,6 +57,7 @@
     <Window.Resources>
         <converters:DoubleNegateConverter x:Key="DoubleNegateConverter" />
         <converters:DoubleSumConverter x:Key="DoubleSumConverter" />
+        <converters:OutsideImageAreaClipConverter x:Key="OutsideImageAreaClipConverter" />
 
         <Style
             x:Key="PlayerInfoTextStyle"
@@ -378,13 +379,6 @@
     <!--  半透明/圆角交给内部 Border  -->
     <Border Style="{StaticResource ShadowWindowBorder}">
         <Grid CacheMode="BitmapCache">
-            <!-- ⭐ 新增：背景图片 -->
-            <Grid.Background>
-                <ImageBrush
-                    ImageSource="{Binding AppConfig.BackgroundImagePath, Converter={StaticResource EmptyStringToNullConverter}}"
-                    Stretch="Uniform"
-                    Opacity="{Binding AppConfig.Opacity, Converter={StaticResource PercentToOpacityConverter}}" />
-            </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="25" />
                 <RowDefinition Height="*" />
@@ -771,19 +765,38 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="1">
-                <!-- ⭐ 修复1: 移除背景色，让壁纸可以透过来 -->
-                <!-- 如果需要半透明背景，可以使用较低的透明度 -->
-                <Border.Background>
-                    <SolidColorBrush Color="#191919" Opacity="0.3" />
-                </Border.Background>
+            <Grid Grid.Row="1" x:Name="MainContentArea">
+                <!-- 背景画像 -->
+                <Image
+                    Source="{Binding AppConfig.BackgroundImagePath, Converter={StaticResource EmptyStringToNullConverter}}"
+                    Stretch="Uniform"
+                    Opacity="{Binding AppConfig.BackgroundImageOpacity, Converter={StaticResource PercentToOpacityConverter}}"
+                    IsHitTestVisible="False" />
+
+                <!-- 画像の外側だけ描くテーマ色半透明背景 -->
+                <Rectangle IsHitTestVisible="False">
+                    <Rectangle.Fill>
+                        <SolidColorBrush
+                            Color="{Binding AppConfig.CenterBackgroundColor}"
+                            Opacity="{Binding AppConfig.CenterBackgroundOpacity, Converter={StaticResource PercentToOpacityConverter}}" />
+                    </Rectangle.Fill>
+                    <Rectangle.Clip>
+                        <MultiBinding Converter="{StaticResource OutsideImageAreaClipConverter}">
+                            <Binding ElementName="MainContentArea" Path="ActualWidth" />
+                            <Binding ElementName="MainContentArea" Path="ActualHeight" />
+                            <Binding Path="AppConfig.BackgroundImagePath" />
+                        </MultiBinding>
+                    </Rectangle.Clip>
+                </Rectangle>
+
+                <!-- 元のコンテンツ -->
                 <ctrl:SortedDpsControl
                     Padding="0,5,0,5"
                     ItemClickCommand="{Binding OpenSkillBreakdownCommand}"
                     ItemTemplate="{StaticResource ProgressBarDataTemplate}"
                     ItemsSource="{Binding CurrentStatisticData.Data}"
                     SelectedItem="{Binding CurrentStatisticData.SelectedSlot}" />
-            </Border>
+            </Grid>
 
             <Border
                 x:Name="LoadingGridHost"

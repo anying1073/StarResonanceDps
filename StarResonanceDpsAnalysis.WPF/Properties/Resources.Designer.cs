@@ -2074,6 +2074,24 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Background Opacity に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Background_Opacity {
+            get {
+                return ResourceManager.GetString("Settings_Background_Opacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Background Image Opacity に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_BackgroundImage_Opacity {
+            get {
+                return ResourceManager.GetString("Settings_BackgroundImage_Opacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Discard all changes? Unsaved changes will be lost. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_CancelConfirm_Message {
@@ -2259,6 +2277,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Custom format is disabled. Using default visibility settings. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_CustomFormat_Message {
+            get {
+                return ResourceManager.GetString("Settings_CustomFormat_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   DPS display mode に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Display_DpsMode {
@@ -2331,7 +2358,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Overlay opacity に類似しているローカライズされた文字列を検索します。
+        ///   Overlay Opacity に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Display_Opacity {
             get {
@@ -2907,6 +2934,24 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Manually check for a newer version. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Section_Update_Sub {
+            get {
+                return ResourceManager.GetString("Settings_Section_Update_Sub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Section_Update_Title {
+            get {
+                return ResourceManager.GetString("Settings_Section_Update_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Clear Data に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Shortcut_ClearData {
@@ -2934,7 +2979,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Focus this box and press a shortcut (e.g. Ctrl+F6). Press Delete to clear. に類似しているローカライズされた文字列を検索します。
+        ///   Focus this box and press a shortcut (e.g. F6). Press Delete to clear. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Shortcut_MouseThrough_Tooltip {
             get {
@@ -2970,7 +3015,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Focus this box and press a shortcut (e.g. Ctrl+F9). Press Delete to clear. に類似しているローカライズされた文字列を検索します。
+        ///   Focus this box and press a shortcut (e.g. F9). Press Delete to clear. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Shortcut_TopMost_Tooltip {
             get {
@@ -2993,6 +3038,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string Settings_Switch_On {
             get {
                 return ResourceManager.GetString("Settings_Switch_On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Background Color に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Theme_BackgroundColor {
+            get {
+                return ResourceManager.GetString("Settings_Theme_BackgroundColor", resourceCulture);
             }
         }
         
@@ -3074,6 +3128,33 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string Settings_UID_Setting_Title {
             get {
                 return ResourceManager.GetString("Settings_UID_Setting_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check for updates に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Update_Check_Button {
+            get {
+                return ResourceManager.GetString("Settings_Update_Check_Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check for updates に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Update_Check_Message {
+            get {
+                return ResourceManager.GetString("Settings_Update_Check_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check GitHub or self-host update source now. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Update_Check_Tooltip {
+            get {
+                return ResourceManager.GetString("Settings_Update_Check_Tooltip", resourceCulture);
             }
         }
         
@@ -3911,6 +3992,54 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string Tooltip_ToggleScope {
             get {
                 return ResourceManager.GetString("Tooltip_ToggleScope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Current version: {0}
+        ///Latest version: {1}
+        ///
+        ///Open download page now? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Update_Available_Message {
+            get {
+                return ResourceManager.GetString("Update_Available_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Release notes に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Update_Available_Notes {
+            get {
+                return ResourceManager.GetString("Update_Available_Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Update Available に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Update_Available_Title {
+            get {
+                return ResourceManager.GetString("Update_Available_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You are already using the latest version. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Update_NoUpdate_Message {
+            get {
+                return ResourceManager.GetString("Update_NoUpdate_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   No Update に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Update_NoUpdate_Title {
+            get {
+                return ResourceManager.GetString("Update_NoUpdate_Title", resourceCulture);
             }
         }
         

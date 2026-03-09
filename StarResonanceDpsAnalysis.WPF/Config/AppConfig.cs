@@ -84,10 +84,24 @@ public partial class AppConfig : ObservableObject
     private bool _clearLogAfterTeleport;
 
     /// <summary>
-    /// 不透明度 (0-100) (有效范围: 5-95), 默认95, 0为全透明(会影响鼠标交互)
+    /// 不透明度 (0-100) 
     /// </summary>
     [ObservableProperty]
     private double _opacity = 100;
+
+    /// <summary>
+    /// 中央背景颜色透明度 (0-100)
+    /// 默认值：30
+    /// </summary>
+    [ObservableProperty]
+    private double _centerBackgroundOpacity = 30;
+
+    /// <summary>
+    /// 背景图片透明度 (0-100)
+    /// 默认值：50
+    /// </summary>
+    [ObservableProperty]
+    private double _backgroundImageOpacity = 50;
 
     /// <summary>
     /// 玩家名脱敏
@@ -281,15 +295,21 @@ public partial class AppConfig : ObservableObject
     private int _timeSeriesSampleCapacity = 300;
 
     /// <summary>
-    /// ⭐ 新增: 窗口主题颜色（顶部栏和底部栏）
-    /// 默认值：#1690F8 (蓝色)
+    /// 顶部栏和底部栏主题颜色
+    /// 默认值：#1690F8
     /// </summary>
     [ObservableProperty]
     private string _themeColor = "#1690F8";
 
     /// <summary>
-    /// ⭐ 新增: 背景图片路径
-    /// 只支持PNG格式
+    /// 中央背景颜色
+    /// 默认值：#2F2F2F
+    /// </summary>
+    [ObservableProperty]
+    private string _centerBackgroundColor = "#2F2F2F";
+
+    /// <summary>
+    /// 背景图片路径
     /// </summary>
     [ObservableProperty]
     [property: Newtonsoft.Json.JsonConverter(typeof(Converters.JsonEmptyStringToNullConverter))]
@@ -333,13 +353,8 @@ public partial class AppConfig : ObservableObject
 
     public bool UseProcessPortsFilter { get; set; }
 
-    /// <summary>
-    /// Partial method called after BackgroundImagePath has changed.
-    /// Ensures empty strings are converted to null.
-    /// </summary>
     partial void OnBackgroundImagePathChanged(string? value)
     {
-        // If somehow an empty string got through, convert it to null
         if (string.IsNullOrWhiteSpace(value))
         {
             _backgroundImagePath = null;
@@ -353,7 +368,6 @@ public partial class AppConfig : ObservableObject
 
     public AppConfig Clone()
     {
-        // TODO: Add unittest
         var json = JsonConvert.SerializeObject(this);
         return JsonConvert.DeserializeObject<AppConfig>(json)!;
     }

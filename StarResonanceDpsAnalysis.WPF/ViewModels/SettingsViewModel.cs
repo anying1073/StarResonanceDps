@@ -58,8 +58,10 @@ public partial class SettingsViewModel : BaseViewModel
 
     private bool _cultureHandlerSubscribed;
     private bool _networkHandlerSubscribed;
+    private bool _dataStorageHandlerSubscribed;
     private bool _isLoaded; // becomes true after LoadedAsync completes
     private bool _hasUnsavedChanges; // tracks whether any property changed after load
+    private bool _suppressUnsavedChangeTracking;
 
     // Store original values for cancel/restore
     private AppConfig _originalConfig = null!;
@@ -116,6 +118,7 @@ public partial class SettingsViewModel : BaseViewModel
             null,
             "50"
         ),
+        /*
         (
             "Guild",
             ResourcesKeys.Settings_PlayerInfo_GuildName,
@@ -123,6 +126,7 @@ public partial class SettingsViewModel : BaseViewModel
             ResourcesKeys.Settings_PlayerInfo_MyGuild,
             null
         ),
+        */
         (
             "Uid",
             ResourcesKeys.Settings_PlayerInfo_PlayerUID,
@@ -156,7 +160,6 @@ public partial class SettingsViewModel : BaseViewModel
         _logger.LogDebug("SettingsViewModel created");
     }
 
-
     /// <summary>
     /// 格式字符串预览
     /// </summary>
@@ -164,8 +167,7 @@ public partial class SettingsViewModel : BaseViewModel
     {
         get
         {
-            if (!AppConfig.UseCustomFormat) return "Custom format is disabled. Using field visibility settings.";
-
+            if (!AppConfig.UseCustomFormat) return _localization.GetString(ResourcesKeys.Settings_CustomFormat_Message);
             // 创建一个示例 PlayerInfoViewModel 来生成预览
             var previewVm = new PlayerInfoViewModel(_localization)
             {
@@ -174,7 +176,7 @@ public partial class SettingsViewModel : BaseViewModel
                 PowerLevel = 25000,
                 SeasonStrength = 8,
                 SeasonLevel = 50,
-                Guild = "MyGuild",
+                //Guild = "MyGuild",
                 Uid = 123456789,
                 Mask = false,
                 UseCustomFormat = true,
@@ -318,6 +320,9 @@ public partial class SettingsViewModel : BaseViewModel
 
         RebuildAvailableFormatFields();
 
+        // ✅ 初次载入时同步一次当前UID到设置页显示
+        SyncUidFromDataStorage(saveToConfig: false);
+
         _hasUnsavedChanges = false;
         _isLoaded = true;
         _logger.LogDebug("SettingsViewModel Loaded");
@@ -384,6 +389,12 @@ public partial class SettingsViewModel : BaseViewModel
             NetworkChange.NetworkAddressChanged += OnSystemNetworkChanged;
             _networkHandlerSubscribed = true;
         }
+
+        if (!_dataStorageHandlerSubscribed)
+        {
+            _dataStorage.DataUpdated += OnDataStorageDataUpdated;
+            _dataStorageHandlerSubscribed = true;
+        }
     }
 
     private async void OnSystemNetworkChanged(object? sender, EventArgs e)
@@ -395,6 +406,61 @@ public partial class SettingsViewModel : BaseViewModel
         catch
         {
             // ignore
+        }
+    }
+
+    private void OnDataStorageDataUpdated()
+    {
+        if (Application.Current?.Dispatcher is { } dispatcher && !dispatcher.CheckAccess())
+        {
+            _ = dispatcher.BeginInvoke(new Action(() => SyncUidFromDataStorage(saveToConfig: true)));
+            return;
+        }
+
+        SyncUidFromDataStorage(saveToConfig: true);
+    }
+
+    private void SyncUidFromDataStorage(bool saveToConfig)
+    {
+        var currentUid = _dataStorage.CurrentPlayerInfo.UID;
+        if (currentUid == 0) return;
+
+        var runtimeConfigChanged = _configManager.CurrentConfig.Uid != currentUid;
+        var viewConfigChanged = AppConfig.Uid != currentUid;
+
+        if (viewConfigChanged)
+        {
+            _suppressUnsavedChangeTracking = true;
+            try
+            {
+                AppConfig.Uid = currentUid;
+            }
+            finally
+            {
+                _suppressUnsavedChangeTracking = false;
+            }
+        }
+
+        if (runtimeConfigChanged)
+        {
+            _configManager.CurrentConfig.Uid = currentUid;
+        }
+
+        if (saveToConfig && runtimeConfigChanged)
+        {
+            _ = PersistAutoDetectedUidAsync();
+        }
+    }
+
+    private async Task PersistAutoDetectedUidAsync()
+    {
+        try
+        {
+            await _configManager.SaveAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to persist auto-detected UID");
         }
     }
 
@@ -460,6 +526,46 @@ public partial class SettingsViewModel : BaseViewModel
                 ApplyOpacityImmediately(config.Opacity);
             }
         }
+        else if (e.PropertyName == nameof(AppConfig.CenterBackgroundOpacity))
+        {
+            if (_isLoaded)
+            {
+                ApplyCenterBackgroundOpacityImmediately(config.CenterBackgroundOpacity);
+            }
+        }
+        else if (e.PropertyName == nameof(AppConfig.BackgroundImageOpacity))
+        {
+            if (_isLoaded)
+            {
+                ApplyBackgroundImageOpacityImmediately(config.BackgroundImageOpacity);
+            }
+        }
+        else if (e.PropertyName == nameof(AppConfig.ThemeColor))
+        {
+            // ✅ Real-time preview for preset theme color buttons as well
+            if (_isLoaded)
+            {
+                ApplyThemeColorImmediately(config.ThemeColor);
+            }
+
+            OnPropertyChanged(nameof(CurrentThemeColor));
+        }
+        else if (e.PropertyName == nameof(AppConfig.CenterBackgroundColor))
+        {
+            if (_isLoaded)
+            {
+                ApplyCenterBackgroundColorImmediately(config.CenterBackgroundColor);
+            }
+
+            OnPropertyChanged(nameof(CurrentBackColor));
+        }
+        else if (e.PropertyName == nameof(AppConfig.BackgroundImagePath))
+        {
+            if (_isLoaded)
+            {
+                ApplyBackgroundImageImmediately(config.BackgroundImagePath);
+            }
+        }
         else if (e.PropertyName is nameof(AppConfig.PlayerInfoFormatString) or nameof(AppConfig.UseCustomFormat))
         {
             // Update format string preview only (no real-time application to actual config)
@@ -482,7 +588,7 @@ public partial class SettingsViewModel : BaseViewModel
             }
         }
 
-        if (_isLoaded)
+        if (_isLoaded && !_suppressUnsavedChangeTracking)
         {
             _hasUnsavedChanges = true;
         }
@@ -498,6 +604,39 @@ public partial class SettingsViewModel : BaseViewModel
         _configManager.CurrentConfig.Opacity = opacity;
     }
 
+    private void ApplyCenterBackgroundOpacityImmediately(double opacity)
+    {
+        _configManager.CurrentConfig.CenterBackgroundOpacity = opacity;
+    }
+
+    private void ApplyBackgroundImageOpacityImmediately(double opacity)
+    {
+        _configManager.CurrentConfig.BackgroundImageOpacity = opacity;
+    }
+    /// <summary>
+    /// ✅ Immediately apply theme color change to the running application config for real-time preview
+    /// </summary>
+    private void ApplyThemeColorImmediately(string? themeColor)
+    {
+        if (string.IsNullOrWhiteSpace(themeColor))
+            return;
+
+        _configManager.CurrentConfig.ThemeColor = themeColor;
+    }
+
+    private void ApplyCenterBackgroundColorImmediately(string? color)
+    {
+        if (string.IsNullOrWhiteSpace(color))
+            return;
+
+        _configManager.CurrentConfig.CenterBackgroundColor = color;
+    }
+
+    private void ApplyBackgroundImageImmediately(string? backgroundImagePath)
+    {
+        _configManager.CurrentConfig.BackgroundImagePath =
+            string.IsNullOrWhiteSpace(backgroundImagePath) ? null : backgroundImagePath;
+    }
     /// <summary>
     /// Generic shortcut input handler
     /// </summary>
@@ -639,28 +778,44 @@ public partial class SettingsViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// ⭐ 新增: 设置主题颜色（实时预览）
+    /// ⭐ 设置主题颜色（现在也会实时预览）
     /// </summary>
     [RelayCommand]
     private void SetThemeColor(string color)
     {
+        if (string.IsNullOrWhiteSpace(color))
+            return;
+
         _logger.LogInformation("Theme color set to: {Color}", color);
         AppConfig.ThemeColor = color;
-        OnPropertyChanged(nameof(CurrentThemeColor));
+        // 即时预览已在 OnAppConfigPropertyChanged(nameof(AppConfig.ThemeColor)) 里统一处理
+    }
+
+    [RelayCommand]
+    private void SetBackColor(string color)
+    {
+        if (string.IsNullOrWhiteSpace(color))
+            return;
+
+        _logger.LogInformation("Center background color set to: {Color}", color);
+        AppConfig.CenterBackgroundColor = color;
     }
 
     /// <summary>
-    /// ⭐ 新增: 从颜色选择器更新主题颜色（用于Color对象）
+    /// ⭐ 从颜色选择器更新主题颜色（用于Color对象）
     /// </summary>
     [RelayCommand]
     private void UpdateThemeColorFromPicker(Color color)
     {
-        var hexColor = $"#{color.R:X2}{color.G:X2}{color.B:X2}";
-        _logger.LogDebug("Theme color picked: {Color}", hexColor);
-        AppConfig.ThemeColor = hexColor;
+        _logger.LogDebug("Theme color picked: #{R:X2}{G:X2}{B:X2}", color.R, color.G, color.B);
+        CurrentThemeColor = color;
+    }
 
-        // ⭐ 实时应用到当前运行的配置（预览效果）
-        _configManager.CurrentConfig.ThemeColor = hexColor;
+    [RelayCommand]
+    private void UpdateBackColorFromPicker(Color color)
+    {
+        _logger.LogDebug("Center background color picked: #{R:X2}{G:X2}{B:X2}", color.R, color.G, color.B);
+        CurrentBackColor = color;
     }
 
     [RelayCommand]
@@ -672,10 +827,13 @@ public partial class SettingsViewModel : BaseViewModel
     [RelayCommand]
     private void TryGetCurrentUid()
     {
+        SyncUidFromDataStorage(saveToConfig: true);
+
         var title = _localization.GetString(ResourcesKeys.Settings_UID_Setting_Title);
         var message1 = _localization.GetString(ResourcesKeys.Settings_UID_Setting_Message1);
         var message2 = _localization.GetString(ResourcesKeys.Settings_UID_Setting_Message2);
-        if (_dataStorage.CurrentPlayerInfo.UID == 0)
+
+        if (AppConfig.Uid == 0)
             _messageDialogService.Show(title, message1);
         else
             _messageDialogService.Show(title, message2);
@@ -700,9 +858,34 @@ public partial class SettingsViewModel : BaseViewModel
         set
         {
             var hexColor = $"#{value.R:X2}{value.G:X2}{value.B:X2}";
+            if (AppConfig.ThemeColor == hexColor)
+                return;
+
             AppConfig.ThemeColor = hexColor;
-            _configManager.CurrentConfig.ThemeColor = hexColor;
-            OnPropertyChanged();
+            // 即时预览已在 OnAppConfigPropertyChanged(nameof(AppConfig.ThemeColor)) 里统一处理
+        }
+    }
+
+    public Color CurrentBackColor
+    {
+        get
+        {
+            try
+            {
+                return (Color)ColorConverter.ConvertFromString(AppConfig.CenterBackgroundColor);
+            }
+            catch
+            {
+                return (Color)ColorConverter.ConvertFromString("#191919");
+            }
+        }
+        set
+        {
+            var hexColor = $"#{value.R:X2}{value.G:X2}{value.B:X2}";
+            if (AppConfig.CenterBackgroundColor == hexColor)
+                return;
+
+            AppConfig.CenterBackgroundColor = hexColor;
         }
     }
 
@@ -713,8 +896,13 @@ public partial class SettingsViewModel : BaseViewModel
     {
         if (_originalConfig == null) return;
 
-        // Restore opacity to original value
+        // Restore real-time preview values
         _configManager.CurrentConfig.Opacity = _originalConfig.Opacity;
+        _configManager.CurrentConfig.CenterBackgroundOpacity = _originalConfig.CenterBackgroundOpacity;
+        _configManager.CurrentConfig.BackgroundImageOpacity = _originalConfig.BackgroundImageOpacity;
+        _configManager.CurrentConfig.ThemeColor = _originalConfig.ThemeColor;
+        _configManager.CurrentConfig.CenterBackgroundColor = _originalConfig.CenterBackgroundColor;
+        _configManager.CurrentConfig.BackgroundImagePath = _originalConfig.BackgroundImagePath;
 
         // Restore player info format settings
         _configManager.CurrentConfig.UseCustomFormat = _originalConfig.UseCustomFormat;
@@ -741,6 +929,12 @@ public partial class SettingsViewModel : BaseViewModel
             NetworkChange.NetworkAvailabilityChanged -= OnSystemNetworkChanged;
             NetworkChange.NetworkAddressChanged -= OnSystemNetworkChanged;
             _networkHandlerSubscribed = false;
+        }
+
+        if (_dataStorageHandlerSubscribed)
+        {
+            _dataStorage.DataUpdated -= OnDataStorageDataUpdated;
+            _dataStorageHandlerSubscribed = false;
         }
     }
 }
@@ -833,7 +1027,9 @@ public sealed class SettingsDesignTimeViewModel : SettingsViewModel
         AppConfig = new AppConfig
         {
             // set friendly defaults shown in designer
-            Opacity = 85,
+            Opacity = 100,
+            CenterBackgroundOpacity = 30,
+            BackgroundImageOpacity = 50,
             CombatTimeClearDelay = 5,
             ClearLogAfterTeleport = false,
             Language = Language.Auto
@@ -901,10 +1097,11 @@ internal sealed class DesignDataStorage : IDataStorage
     public event DataUpdatedEventHandler? DataUpdated;
     public event ServerChangedEventHandler? ServerChanged;
     public event Action? BeforeSectionCleared;
-
     public event SectionEndedEventHandler? SectionEnded;
 #pragma warning restore
+
     public void SetPlayerCombatStateTime(long uid, long time) { }
+    public void SetCurrentPlayerUid(long uid) { }
 
     public void LoadPlayerInfoFromFile() { }
     public void SavePlayerInfoToFile() { }
@@ -920,7 +1117,6 @@ internal sealed class DesignDataStorage : IDataStorage
     public void SetPlayerHP(long playerUid, long hp) { }
     public void SetPlayerMaxHP(long playerUid, long maxHp) { }
     public void SetPlayerCombatState(long uid, bool combatState) { }
-
     public void SetPlayerName(long playerUid, string playerName) { }
     public void SetPlayerCombatPower(long playerUid, int combatPower) { }
     public void SetPlayerProfessionID(long playerUid, int professionId) { }

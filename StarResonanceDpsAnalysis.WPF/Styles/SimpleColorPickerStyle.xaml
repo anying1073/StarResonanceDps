@@ -3,35 +3,33 @@
                     xmlns:ctrl="clr-namespace:StarResonanceDpsAnalysis.WPF.Controls">
 
     <Style TargetType="{x:Type ctrl:SimpleColorPicker}">
-        <Setter Property="Width" Value="280" />
+        <Setter Property="Width" Value="Auto" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:SimpleColorPicker}">
-                    <Border Background="White" BorderBrush="#DDD" BorderThickness="1" 
+                    <Border Background="White" BorderBrush="#DDD" BorderThickness="1"
                             CornerRadius="8" Padding="15">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="200"/>
-                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="12"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            
+
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="12"/>
                                 <ColumnDefinition Width="25"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- SV Canvas (Fixed gradient direction) -->
-                            <Border Grid.Row="0" Grid.Column="0" 
-                                    BorderBrush="#999" BorderThickness="1" CornerRadius="4"
+                            <!-- SV Canvas -->
+                            <Border Grid.Row="0" Grid.Column="0"
+                                    BorderBrush="#999" BorderThickness="1" CornerRadius="0"
                                     ClipToBounds="True">
                                 <Grid>
-                                    <!-- Base color background -->
                                     <Rectangle x:Name="PART_SV_Canvas" Fill="Red"/>
-                                    
-                                    <!-- Saturation gradient (white to transparent, left to right) -->
+
                                     <Rectangle>
                                         <Rectangle.Fill>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -40,8 +38,7 @@
                                             </LinearGradientBrush>
                                         </Rectangle.Fill>
                                     </Rectangle>
-                                    
-                                    <!-- Value gradient (transparent to black, top to bottom) -->
+
                                     <Rectangle>
                                         <Rectangle.Fill>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -51,9 +48,8 @@
                                         </Rectangle.Fill>
                                     </Rectangle>
 
-                                    <!-- Selection indicator -->
                                     <Canvas>
-                                        <Ellipse x:Name="PART_SV_Thumb" 
+                                        <Ellipse x:Name="PART_SV_Thumb"
                                                  Width="14" Height="14"
                                                  Stroke="White" StrokeThickness="2"
                                                  Fill="Transparent"
@@ -67,20 +63,21 @@
                             </Border>
 
                             <!-- Hue Bar -->
-                            <Border Grid.Row="0" Grid.Column="2" 
-                                    BorderBrush="#999" BorderThickness="1" CornerRadius="4"
+                            <Border Grid.Row="0" Grid.Column="2"
+                                    Grid.RowSpan="3"
+                                    BorderBrush="#999" BorderThickness="1" CornerRadius="0"
                                     ClipToBounds="True">
                                 <Canvas>
-                                    <Rectangle x:Name="PART_Hue_Bar" 
-                                               Width="25" Height="200">
+                                    <Rectangle x:Name="PART_Hue_Bar"
+                                               Width="25" Height="240">
                                         <Rectangle.Fill>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                                 <GradientStop Color="#FF0000" Offset="0.0"/>
-                                                <GradientStop Color="#FFFF00" Offset="0.17"/>
-                                                <GradientStop Color="#00FF00" Offset="0.33"/>
+                                                <GradientStop Color="#FF00FF" Offset="0.17"/>
+                                                <GradientStop Color="#0000FF" Offset="0.33"/>
                                                 <GradientStop Color="#00FFFF" Offset="0.5"/>
-                                                <GradientStop Color="#0000FF" Offset="0.67"/>
-                                                <GradientStop Color="#FF00FF" Offset="0.83"/>
+                                                <GradientStop Color="#00FF00" Offset="0.67"/>
+                                                <GradientStop Color="#FFFF00" Offset="0.83"/>
                                                 <GradientStop Color="#FF0000" Offset="1.0"/>
                                             </LinearGradientBrush>
                                         </Rectangle.Fill>
@@ -100,32 +97,32 @@
                                 </Canvas>
                             </Border>
 
-                            <!-- Color Preview -->
+                            <!-- Color Preview + Hex Input -->
                             <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="29"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="155"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Border Grid.Column="0" Height="40" 
-                                        BorderBrush="#999" BorderThickness="1" CornerRadius="4"
+                                <Border Grid.Column="0"
+                                        Height="29"
+                                        BorderBrush="#999"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
                                         Background="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorToBrushConverter}}"/>
-
-                                <Border Grid.Column="2" Height="40"
-                                        BorderBrush="#DDD" BorderThickness="1" CornerRadius="4"
-                                        Background="#F5F5F5">
-                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                                               FontWeight="Bold" FontSize="14" Foreground="#333">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}#{0:X2}{1:X2}{2:X2}">
-                                                <Binding Path="SelectedColor.R" RelativeSource="{RelativeSource TemplatedParent}"/>
-                                                <Binding Path="SelectedColor.G" RelativeSource="{RelativeSource TemplatedParent}"/>
-                                                <Binding Path="SelectedColor.B" RelativeSource="{RelativeSource TemplatedParent}"/>
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </Border>
+                                <TextBox x:Name="PART_HexTextBox"
+                                        Grid.Column="2"
+                                        Height="29"
+                                        MaxLength="64"
+                                        Padding="10,0"
+                                        VerticalContentAlignment="Center"
+                                        TextAlignment="Center"
+                                        FontFamily="Consolas"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        CharacterCasing="Upper"
+                                        Style="{DynamicResource AntTextBoxStyle}"/>
                             </Grid>
                         </Grid>
                     </Border>

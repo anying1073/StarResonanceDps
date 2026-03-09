@@ -40,6 +40,13 @@ public interface IDataStorage : IDisposable
     void ServerChange(string currentServerStr, string prevServer);
     void SetPlayerLevel(long playerUid, int tmpLevel);
     bool EnsurePlayer(long playerUid);
+
+    /// <summary>
+    /// 设置当前玩家 UID，并同步到 CurrentPlayerInfo
+    /// </summary>
+    /// <param name="uid">当前玩家UID</param>
+    void SetCurrentPlayerUid(long uid);
+
     void SetPlayerHP(long playerUid, long hp);
     void SetPlayerMaxHP(long playerUid, long maxHp);
     void SetPlayerCombatState(long uid, bool combatState);
@@ -123,5 +130,4 @@ public static class DataStorageHelper
 
         return storage.GetStatisticsCount((bool)full) > 0;
     }
-
 }

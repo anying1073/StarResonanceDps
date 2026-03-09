@@ -62,7 +62,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 var msgTypeId = packetType & 0x7FFF;
 
                 if (!MessageHandlerMap.TryGetValue((MessageType)msgTypeId, out var handler)) continue;
-                    handler?.Invoke(packetReader, isZstdCompressed, logger);
+                handler?.Invoke(packetReader, isZstdCompressed, logger);
             }
         }
 
@@ -204,7 +204,9 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             if (vData.CharId == null || vData.CharId == 0) return;
 
             var playerUid = vData.CharId;
-            DataStorage.CurrentPlayerInfo.UID = playerUid;
+
+            // ✅ 统一通过 setter 设置当前玩家UID，而不是直接赋值
+            DataStorage.SetCurrentPlayerUid(playerUid);
             DataStorage.TestCreatePlayerInfoByUID(playerUid);
 
             var tmpLevel = vData.RoleLevel?.Level ?? 0;
@@ -379,9 +381,10 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             var syncToMeDeltaInfo = WorldNtf.Types.SyncToMeDeltaInfo.Parser.ParseFrom(payloadBuffer);
             var aoiSyncToMeDelta = syncToMeDeltaInfo.DeltaInfo;
             var uuid = aoiSyncToMeDelta.Uuid.ShiftRight16();
-            if (uuid != 0 && DataStorage.CurrentPlayerInfo.UID != uuid)
+            if (uuid != 0)
             {
-                DataStorage.CurrentPlayerInfo.UID = uuid;
+                // ✅ 统一通过 setter 设置当前玩家UID，而不是直接赋值
+                DataStorage.SetCurrentPlayerUid(uuid);
             }
 
             var aoiSyncDelta = aoiSyncToMeDelta.BaseDelta;

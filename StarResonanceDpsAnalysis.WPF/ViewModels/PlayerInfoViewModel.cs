@@ -171,7 +171,7 @@ public partial class PlayerInfoViewModel : BaseViewModel
         result = GetPowerLevelRegex().Replace(result, PowerLevel.ToString());
         result = GetSeasonStrengthRegex().Replace(result, SeasonStrength.ToString());
         result = GetSeasonLevelRegex().Replace(result, SeasonLevel.ToString());
-        result = GetGuildRegex().Replace(result, Guild);
+        //result = GetGuildRegex().Replace(result, Guild);
         result = GetUidRegex().Replace(result, Uid.ToString());
 
         // 清理多余的空格、括号等
