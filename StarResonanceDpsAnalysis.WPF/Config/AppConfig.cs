@@ -32,6 +32,12 @@ public enum UpdateSourceType
     SelfHosted = 1,
 }
 
+public enum BackgroundImageFitMode
+{
+    FitWidth = 0,     // 幅に合わせる
+    FitToWindow = 1 // 画面のサイズに合わせる
+}
+
 /// <summary>
 /// 应用配置类
 /// 集成了配置管理器功能，支持INI文件持久化和属性变更通知
@@ -314,6 +320,9 @@ public partial class AppConfig : ObservableObject
     [ObservableProperty]
     [property: Newtonsoft.Json.JsonConverter(typeof(Converters.JsonEmptyStringToNullConverter))]
     private string? _backgroundImagePath;
+
+    [ObservableProperty]
+    private BackgroundImageFitMode _backgroundImageFitMode = BackgroundImageFitMode.FitWidth;
 
     /// <summary>
     /// DPS显示计算模式

@@ -205,16 +205,17 @@ public sealed partial class GlobalHotkeyService(
     {
         try
         {
-            var dpsWindow = windowManager.DpsStatisticsView;
-            var personalWindow = windowManager.PersonalDpsView;
+            var newState = !_config.TopmostEnabled;
+            _config.TopmostEnabled = newState;
 
-            topmostService.ToggleTopmost(dpsWindow);
-            topmostService.ToggleTopmost(personalWindow);
+            topmostService.SetTopmost(windowManager.DpsStatisticsView, newState);
+            topmostService.SetTopmost(windowManager.PersonalDpsView, newState);
 
-            _config.TopmostEnabled = dpsWindow.Topmost;
             _ = configManager.SaveAsync(_config);
 
-            logger.LogInformation("TopMostService: Top most state changed to {State}", _config.TopmostEnabled ? "Enabled" : "Disabled");
+            logger.LogInformation(
+                "TopMostService: Top most state changed to {State}",
+                newState ? "Enabled" : "Disabled");
         }
         catch (Exception ex)
         {

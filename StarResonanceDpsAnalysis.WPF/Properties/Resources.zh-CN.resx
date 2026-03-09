@@ -1485,4 +1485,13 @@
   <data name="Settings_BackgroundImage_Opacity" xml:space="preserve">
     <value>背景图片透明度</value>
   </data>
+  <data name="Settings_BackgroundImageFitMode_FitWidth" xml:space="preserve">
+    <value>填充窗口</value>
+  </data>
+  <data name="Settings_BackgroundImageFit" xml:space="preserve">
+    <value>背景图片适配方式</value>
+  </data>
+  <data name="Settings_BackgroundImageFitMode_FitToWindow" xml:space="preserve">
+    <value>适应窗口</value>
+  </data>
 </root>

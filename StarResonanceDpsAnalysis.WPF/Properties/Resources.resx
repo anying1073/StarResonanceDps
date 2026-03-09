@@ -1509,4 +1509,13 @@ Open download page now?</value>
   <data name="Settings_BackgroundImage_Opacity" xml:space="preserve">
     <value>Background Image Opacity</value>
   </data>
+  <data name="Settings_BackgroundImageFitMode_FitWidth" xml:space="preserve">
+    <value>Fill window</value>
+  </data>
+  <data name="Settings_BackgroundImageFit" xml:space="preserve">
+    <value>Background Image Fit</value>
+  </data>
+  <data name="Settings_BackgroundImageFitMode_FitToWindow" xml:space="preserve">
+    <value>Fit to window</value>
+  </data>
 </root>

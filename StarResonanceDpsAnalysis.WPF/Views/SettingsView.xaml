@@ -1480,6 +1480,28 @@
                                             <TextBlock
                                                 Grid.Column="0"
                                                 Style="{StaticResource FieldName}"
+                                                Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_BackgroundImageFit}}" />
+
+                                            <ComboBox
+                                                Grid.Column="2"
+                                                ItemTemplate="{StaticResource LocalizedEnumTextBlockDataTemplate}"
+                                                ItemsSource="{Binding AvailableBackgroundImageFitModes}"
+                                                SelectedItem="{Binding SelectedBackgroundImageFitMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource FieldComboBox}" />
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Style="{StaticResource SectionFieldBorder}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="39*" />
+                                                <ColumnDefinition Width="*" MinWidth="10" />
+                                                <ColumnDefinition Width="60*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Style="{StaticResource FieldName}"
                                                 Text="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_Display_Opacity}}" />
                                             <Grid Grid.Column="2">
                                                 <Grid.ColumnDefinitions>

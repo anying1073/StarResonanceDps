@@ -2092,6 +2092,33 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Background Image Fit に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_BackgroundImageFit {
+            get {
+                return ResourceManager.GetString("Settings_BackgroundImageFit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Fit to window に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_BackgroundImageFitMode_FitToWindow {
+            get {
+                return ResourceManager.GetString("Settings_BackgroundImageFitMode_FitToWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Fill window に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_BackgroundImageFitMode_FitWidth {
+            get {
+                return ResourceManager.GetString("Settings_BackgroundImageFitMode_FitWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Discard all changes? Unsaved changes will be lost. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_CancelConfirm_Message {

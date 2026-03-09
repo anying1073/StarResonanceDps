@@ -56,6 +56,12 @@ public partial class SettingsViewModel : BaseViewModel
     [ObservableProperty]
     private List<FormatFieldOption> _availableFormatFields = new();
 
+    [ObservableProperty]
+    private List<Option<BackgroundImageFitMode>> _availableBackgroundImageFitModes = [];
+
+    [ObservableProperty]
+    private Option<BackgroundImageFitMode>? _selectedBackgroundImageFitMode;
+
     private bool _cultureHandlerSubscribed;
     private bool _networkHandlerSubscribed;
     private bool _dataStorageHandlerSubscribed;
@@ -210,6 +216,21 @@ public partial class SettingsViewModel : BaseViewModel
             .ToList();
     }
 
+    private void RebuildBackgroundImageFitModes()
+    {
+        AvailableBackgroundImageFitModes =
+        [
+            new(
+            BackgroundImageFitMode.FitWidth,
+            _localization.GetString(ResourcesKeys.Settings_BackgroundImageFitMode_FitWidth)
+        ),
+        new(
+            BackgroundImageFitMode.FitToWindow,
+            _localization.GetString(ResourcesKeys.Settings_BackgroundImageFitMode_FitToWindow)
+        )
+        ];
+    }
+
     /// <summary>
     /// 常用分隔符列表
     /// </summary>
@@ -282,6 +303,7 @@ public partial class SettingsViewModel : BaseViewModel
 
         _localization.ApplyLanguage(newValue.Language);
         UpdateLanguageDependentCollections();
+        RebuildBackgroundImageFitModes();
         SyncOptions();
     }
 
@@ -303,6 +325,12 @@ public partial class SettingsViewModel : BaseViewModel
         AppConfig.PreferredNetworkAdapter ??= value.FirstOrDefault();
     }
 
+    partial void OnSelectedBackgroundImageFitModeChanged(Option<BackgroundImageFitMode>? value)
+    {
+        if (value == null) return;
+        AppConfig.BackgroundImageFitMode = value.Value;
+    }
+
     [RelayCommand(AllowConcurrentExecutions = false)]
     private async Task LoadedAsync()
     {
@@ -319,6 +347,9 @@ public partial class SettingsViewModel : BaseViewModel
         await LoadNetworkAdaptersAsync();
 
         RebuildAvailableFormatFields();
+        RebuildBackgroundImageFitModes();
+        SyncBackgroundImageFitModeOption();
+        SyncOptions();
 
         // ✅ 初次载入时同步一次当前UID到设置页显示
         SyncUidFromDataStorage(saveToConfig: false);
@@ -564,6 +595,13 @@ public partial class SettingsViewModel : BaseViewModel
                 ApplyBackgroundImageImmediately(config.BackgroundImagePath);
             }
         }
+        else if (e.PropertyName == nameof(AppConfig.BackgroundImageFitMode))
+        {
+            if (_isLoaded)
+            {
+                ApplyBackgroundImageFitModeImmediately(config.BackgroundImageFitMode);
+            }
+        }
         else if (e.PropertyName is nameof(AppConfig.PlayerInfoFormatString) or nameof(AppConfig.UseCustomFormat))
         {
             // Update format string preview only (no real-time application to actual config)
@@ -635,6 +673,12 @@ public partial class SettingsViewModel : BaseViewModel
         _configManager.CurrentConfig.BackgroundImagePath =
             string.IsNullOrWhiteSpace(backgroundImagePath) ? null : backgroundImagePath;
     }
+
+    private void ApplyBackgroundImageFitModeImmediately(BackgroundImageFitMode mode)
+    {
+        _configManager.CurrentConfig.BackgroundImageFitMode = mode;
+    }
+
     /// <summary>
     /// Generic shortcut input handler
     /// </summary>
@@ -901,6 +945,7 @@ public partial class SettingsViewModel : BaseViewModel
         _configManager.CurrentConfig.ThemeColor = _originalConfig.ThemeColor;
         _configManager.CurrentConfig.CenterBackgroundColor = _originalConfig.CenterBackgroundColor;
         _configManager.CurrentConfig.BackgroundImagePath = _originalConfig.BackgroundImagePath;
+        _configManager.CurrentConfig.BackgroundImageFitMode = _originalConfig.BackgroundImageFitMode;
 
         // Restore player info format settings
         _configManager.CurrentConfig.UseCustomFormat = _originalConfig.UseCustomFormat;
@@ -911,6 +956,8 @@ public partial class SettingsViewModel : BaseViewModel
     {
         UpdateLanguageDependentCollections();
         RebuildAvailableFormatFields();
+        RebuildBackgroundImageFitModes();
+        SyncBackgroundImageFitModeOption();
         OnPropertyChanged(nameof(FormatPreview));
     }
 
@@ -966,10 +1013,21 @@ public partial class SettingsViewModel
         if (ret) SelectedNumberDisplayMode = opt!;
     }
 
+    private void SyncBackgroundImageFitModeOption()
+    {
+        var (ret, opt) = SyncOption(
+            SelectedBackgroundImageFitMode,
+            AvailableBackgroundImageFitModes,
+            AppConfig.BackgroundImageFitMode);
+
+        if (ret) SelectedBackgroundImageFitMode = opt!;
+    }
+
     private void SyncOptions()
     {
         SyncLanguageOption();
         SyncNumberDisplayModeOption();
+        SyncBackgroundImageFitModeOption();
     }
 
     private static (bool result, Option<T>? opt) SyncOption<T>(Option<T>? option, List<Option<T>> availableList,
@@ -1028,6 +1086,7 @@ public sealed class SettingsDesignTimeViewModel : SettingsViewModel
             Opacity = 100,
             CenterBackgroundOpacity = 30,
             BackgroundImageOpacity = 50,
+            BackgroundImageFitMode = BackgroundImageFitMode.FitToWindow,
             CombatTimeClearDelay = 5,
             ClearLogAfterTeleport = false,
             Language = Language.Auto

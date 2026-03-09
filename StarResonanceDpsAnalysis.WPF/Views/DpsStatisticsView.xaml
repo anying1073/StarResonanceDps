@@ -13,6 +13,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
+    xmlns:cfg="clr-namespace:StarResonanceDpsAnalysis.WPF.Config"
     Title="{lex:Loc Key={x:Static loc:ResourcesKeys.Window_DpsStatistics_Title}}"
     Width="380"
     Height="360"
@@ -765,21 +766,77 @@
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="1" x:Name="MainContentArea">
+            <Grid Grid.Row="1" x:Name="MainContentArea" ClipToBounds="True">
                 <!-- 背景画像 -->
+                <!-- 幅に合わせる -->
+                <Image
+                    Source="{Binding AppConfig.BackgroundImagePath, Converter={StaticResource EmptyStringToNullConverter}}"
+                    Stretch="UniformToFill"
+                    Opacity="{Binding AppConfig.BackgroundImageOpacity, Converter={StaticResource PercentToOpacityConverter}}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    IsHitTestVisible="False">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AppConfig.BackgroundImageFitMode}"
+                                    Value="{x:Static cfg:BackgroundImageFitMode.FitWidth}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+
+                <!-- 画面のサイズに合わせる -->
                 <Image
                     Source="{Binding AppConfig.BackgroundImagePath, Converter={StaticResource EmptyStringToNullConverter}}"
                     Stretch="Uniform"
                     Opacity="{Binding AppConfig.BackgroundImageOpacity, Converter={StaticResource PercentToOpacityConverter}}"
-                    IsHitTestVisible="False" />
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    IsHitTestVisible="False">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AppConfig.BackgroundImageFitMode}"
+                                    Value="{x:Static cfg:BackgroundImageFitMode.FitToWindow}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
 
                 <!-- 画像の外側だけ描くテーマ色半透明背景 -->
                 <Rectangle IsHitTestVisible="False">
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <!-- FitToWindow のときは表示 -->
+                                <DataTrigger Binding="{Binding AppConfig.BackgroundImageFitMode}"
+                                    Value="{x:Static cfg:BackgroundImageFitMode.FitToWindow}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+
+                                <!-- 背景画像が未設定なら表示 -->
+                                <DataTrigger Binding="{Binding AppConfig.BackgroundImagePath}"
+                                    Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+
                     <Rectangle.Fill>
                         <SolidColorBrush
                             Color="{Binding AppConfig.CenterBackgroundColor}"
                             Opacity="{Binding AppConfig.CenterBackgroundOpacity, Converter={StaticResource PercentToOpacityConverter}}" />
                     </Rectangle.Fill>
+
                     <Rectangle.Clip>
                         <MultiBinding Converter="{StaticResource OutsideImageAreaClipConverter}">
                             <Binding ElementName="MainContentArea" Path="ActualWidth" />

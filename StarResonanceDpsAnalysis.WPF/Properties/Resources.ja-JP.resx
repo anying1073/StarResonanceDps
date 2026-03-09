@@ -357,7 +357,7 @@
     <value>総ダメージ/時間</value>
   </data>
   <data name="Settings_Display_DpsMode_Switch_Tooltip" xml:space="preserve">
-    <value>オン＝総ダメージ÷時間、オフ＝全体平均DPS（ValuePerSecond）</value>
+    <value>オン＝総ダメージ÷時間、オフ＝累積平均DPS（ValuePerSecond）</value>
   </data>
   <data name="Settings_Display_TimeSeriesCapacity" xml:space="preserve">
     <value>時系列データのサンプル数</value>
@@ -1516,5 +1516,14 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="Settings_BackgroundImage_Opacity" xml:space="preserve">
     <value>背景画像の不透明度</value>
+  </data>
+  <data name="Settings_BackgroundImageFitMode_FitWidth" xml:space="preserve">
+    <value>ページ幅に合わせる</value>
+  </data>
+  <data name="Settings_BackgroundImageFit" xml:space="preserve">
+    <value>背景画像の合わせ方</value>
+  </data>
+  <data name="Settings_BackgroundImageFitMode_FitToWindow" xml:space="preserve">
+    <value>画面のサイズに合わせる</value>
   </data>
 </root>

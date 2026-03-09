@@ -32,6 +32,8 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 
     private const int LiveUiRefreshIntervalMs = 1000;
 
+    private bool _suppressFreezeOnSelfClear;
+
     [ObservableProperty] private StatisticType _statisticIndex;
     [ObservableProperty] private Config.AppConfig _appConfig;
 
@@ -152,7 +154,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     /// </summary>
     private void OnStorageDpsDataUpdated()
     {
-        if (!_isLiveSource || _playerStatistics == null)
+        if (!_isLiveSource)
         {
             return;
         }
@@ -173,7 +175,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     /// </summary>
     private void OnLiveRefreshTimerTick(object? sender, EventArgs e)
     {
-        if (!_pendingLiveRefresh || !_isLiveSource || _playerStatistics == null)
+        if (!_pendingLiveRefresh || !_isLiveSource)
         {
             return;
         }
@@ -182,10 +184,12 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 
         try
         {
-            // Important:
-            // _playerStatistics is the live storage instance itself.
-            // Its values are updated in place by the engine.
-            // So redraw only; do NOT re-read DataStorage here.
+            if (!TryRebindLivePlayerStatistics())
+            {
+                ClearAllStatistics();
+                return;
+            }
+
             RefreshAllStatistics();
         }
         catch (Exception ex)
@@ -200,6 +204,11 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     /// </summary>
     private void OnBeforeSectionCleared()
     {
+        if (_suppressFreezeOnSelfClear)
+        {
+            return;
+        }
+
         if (!_isLiveSource || _playerStatistics == null)
         {
             return;
@@ -214,10 +223,8 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 
         try
         {
-            // We are about to become frozen, so cancel any delayed live redraw.
             _pendingLiveRefresh = false;
 
-            // Rare path only: one DataStorage read at clear time.
             var logs = _storage.GetBattleLogsForPlayer(_playerStatistics.Uid, _scopeTime == ScopeTime.Total);
             if (logs.Count == 0)
             {
@@ -270,6 +277,20 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         {
             RefreshAllStatistics();
         }
+    }
+
+    private bool TryRebindLivePlayerStatistics()
+    {
+        var liveStats = _storage.GetStatistics(fullSession: _scopeTime == ScopeTime.Total);
+
+        if (liveStats.TryGetValue(Uid, out var currentLiveRef))
+        {
+            _playerStatistics = currentLiveRef;
+            return true;
+        }
+
+        _playerStatistics = null;
+        return false;
     }
 
     private bool TryRefreshFromReplayLogs(IReadOnlyList<BattleLog>? logs)
@@ -507,25 +528,36 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     [RelayCommand]
     private void Refresh()
     {
-        if (_playerStatistics == null)
+        _pendingLiveRefresh = false;
+
+        // history / frozen 表示ならローカル表示だけ消す
+        if (!_isLiveSource)
         {
+            ClearAllStatistics();
             return;
         }
 
-        if (_isLiveSource)
+        _suppressFreezeOnSelfClear = true;
+        try
         {
-            // Manual refresh in live mode: redraw now
-            _pendingLiveRefresh = false;
-            RefreshAllStatistics();
-            return;
+            if (_scopeTime == ScopeTime.Total)
+            {
+                _storage.ClearAllDpsData();
+            }
+            else
+            {
+                _storage.ClearDpsData();
+            }
+        }
+        finally
+        {
+            _suppressFreezeOnSelfClear = false;
         }
 
-        if (!TryRefreshFromReplayLogs(_fixedReplayLogs))
-        {
-            RefreshAllStatistics();
-        }
-
-        _logger.LogDebug("Manual refresh completed");
+        // 旧参照を捨てる。次の live 更新で storage から再bind する
+        _playerStatistics = null;
+        _fixedReplayLogs.Clear();
+        ClearAllStatistics();
     }
 
     public void Dispose()

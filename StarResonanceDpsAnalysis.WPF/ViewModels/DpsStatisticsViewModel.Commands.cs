@@ -32,6 +32,7 @@ public partial class DpsStatisticsViewModel
     private void OpenSettings()
     {
         _windowManagement.SettingsView.Show();
+        _windowManagement.SettingsView.Activate();
     }
 
     [RelayCommand]
