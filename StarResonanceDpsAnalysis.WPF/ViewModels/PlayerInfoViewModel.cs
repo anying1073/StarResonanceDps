@@ -188,13 +188,19 @@ public partial class PlayerInfoViewModel : BaseViewModel
     private string GetName()
     {
         var hasName = !string.IsNullOrWhiteSpace(Name);
-        var name = hasName switch
+
+        if (hasName)
         {
-            true => Mask ? NameMasker.Mask(Name!) : Name!,
-            false => $"UID:{(Mask ? NameMasker.Mask(Uid.ToString()) : Uid.ToString())}"
-        };
-        Debug.Assert(name != null);
-        return name;
+            // 特殊NPC中国語名はマスク対象外
+            if (IsSpecialNpcChineseName(Name))
+            {
+                return Name!;
+            }
+
+            return Mask ? NameMasker.Mask(Name!) : Name!;
+        }
+
+        return $"UID:{(Mask ? NameMasker.Mask(Uid.ToString()) : Uid.ToString())}";
     }
 
     private string GetSpec()

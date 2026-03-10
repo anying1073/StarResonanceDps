@@ -351,6 +351,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Unknown に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Classes_Unknown {
+            get {
+                return ResourceManager.GetString("Classes_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Verdant Oracle に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Classes_VerdantOracle {
@@ -2101,7 +2110,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Fit to window に類似しているローカライズされた文字列を検索します。
+        ///   Fit to Window に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_BackgroundImageFitMode_FitToWindow {
             get {
@@ -2110,7 +2119,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Fill window に類似しているローカライズされた文字列を検索します。
+        ///   Fill Window に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_BackgroundImageFitMode_FitWidth {
             get {
@@ -3110,6 +3119,24 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string Settings_Theme_CustomColor_Tooltip {
             get {
                 return ResourceManager.GetString("Settings_Theme_CustomColor_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Dark に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Theme_Dark {
+            get {
+                return ResourceManager.GetString("Settings_Theme_Dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Light に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Theme_Light {
+            get {
+                return ResourceManager.GetString("Settings_Theme_Light", resourceCulture);
             }
         }
         

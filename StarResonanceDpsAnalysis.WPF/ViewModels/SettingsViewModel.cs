@@ -21,6 +21,7 @@ using StarResonanceDpsAnalysis.WPF.Localization;
 using StarResonanceDpsAnalysis.WPF.Models;
 using StarResonanceDpsAnalysis.WPF.Properties;
 using StarResonanceDpsAnalysis.WPF.Services;
+using StarResonanceDpsAnalysis.WPF.Themes;
 using AppConfig = StarResonanceDpsAnalysis.WPF.Config.AppConfig;
 using KeyBinding = StarResonanceDpsAnalysis.WPF.Models.KeyBinding;
 
@@ -62,6 +63,12 @@ public partial class SettingsViewModel : BaseViewModel
     [ObservableProperty]
     private Option<BackgroundImageFitMode>? _selectedBackgroundImageFitMode;
 
+    [ObservableProperty]
+    private List<Option<string>> _availableThemes = [];
+
+    [ObservableProperty]
+    private Option<string>? _selectedTheme;
+
     private bool _cultureHandlerSubscribed;
     private bool _networkHandlerSubscribed;
     private bool _dataStorageHandlerSubscribed;
@@ -88,59 +95,59 @@ public partial class SettingsViewModel : BaseViewModel
         string Placeholder,
         string? ExampleValueResourceKey,
         string? ExampleValueLiteral)[] FormatFieldDefinitions =
-    [
-        (
-            "Name",
-            ResourcesKeys.Settings_PlayerInfo_Name,
-            "{Name}",
-            ResourcesKeys.Settings_PlayerInfo_Name,
-            null
-        ),
-        (
-            "Spec",
-            ResourcesKeys.Settings_PlayerInfo_ClassSpec,
-            "{Spec}",
-            ResourcesKeys.ClassSpec_FrostMageIcicle,
-            null
-        ),
-        (
-            "PowerLevel",
-            ResourcesKeys.SkillBreakdown_Label_Power,
-            "{PowerLevel}",
-            null,
-            "25000"
-        ),
-        (
-            "SeasonStrength",
-            ResourcesKeys.Settings_PlayerInfo_SeasonStrength,
-            "{SeasonStrength}",
-            null,
-            "8"
-        ),
-        (
-            "SeasonLevel",
-            ResourcesKeys.Settings_PlayerInfo_SeasonLevel,
-            "{SeasonLevel}",
-            null,
-            "50"
-        ),
-        /*
-        (
-            "Guild",
-            ResourcesKeys.Settings_PlayerInfo_GuildName,
-            "{Guild}",
-            ResourcesKeys.Settings_PlayerInfo_MyGuild,
-            null
-        ),
-        */
-        (
-            "Uid",
-            ResourcesKeys.Settings_PlayerInfo_PlayerUID,
-            "{Uid}",
-            null,
-            "123456789"
-        ),
-    ];
+        [
+            (
+                "Name",
+                ResourcesKeys.Settings_PlayerInfo_Name,
+                "{Name}",
+                ResourcesKeys.Settings_PlayerInfo_Name,
+                null
+            ),
+            (
+                "Spec",
+                ResourcesKeys.Settings_PlayerInfo_ClassSpec,
+                "{Spec}",
+                ResourcesKeys.ClassSpec_FrostMageIcicle,
+                null
+            ),
+            (
+                "PowerLevel",
+                ResourcesKeys.SkillBreakdown_Label_Power,
+                "{PowerLevel}",
+                null,
+                "25000"
+            ),
+            (
+                "SeasonStrength",
+                ResourcesKeys.Settings_PlayerInfo_SeasonStrength,
+                "{SeasonStrength}",
+                null,
+                "8"
+            ),
+            (
+                "SeasonLevel",
+                ResourcesKeys.Settings_PlayerInfo_SeasonLevel,
+                "{SeasonLevel}",
+                null,
+                "50"
+            ),
+            /*
+            (
+                "Guild",
+                ResourcesKeys.Settings_PlayerInfo_GuildName,
+                "{Guild}",
+                ResourcesKeys.Settings_PlayerInfo_MyGuild,
+                null
+            ),
+            */
+            (
+                "Uid",
+                ResourcesKeys.Settings_PlayerInfo_PlayerUID,
+                "{Uid}",
+                null,
+                "123456789"
+            ),
+        ];
 
     /// <inheritdoc/>
     public SettingsViewModel(IConfigManager configManager,
@@ -231,6 +238,25 @@ public partial class SettingsViewModel : BaseViewModel
         ];
     }
 
+    private void RebuildAvailableThemes()
+    {
+        AvailableThemes =
+        [
+            new("Light", _localization.GetString(ResourcesKeys.Settings_Theme_Light)),
+            new("Dark", _localization.GetString(ResourcesKeys.Settings_Theme_Dark))
+        ];
+    }
+
+    private string GetCurrentAppliedThemeName()
+    {
+        var theme = _configManager.CurrentConfig.Theme;
+
+        if (string.Equals(theme, "Dark", StringComparison.OrdinalIgnoreCase))
+            return "Dark";
+
+        return "Light";
+    }
+
     /// <summary>
     /// 常用分隔符列表
     /// </summary>
@@ -304,6 +330,7 @@ public partial class SettingsViewModel : BaseViewModel
         _localization.ApplyLanguage(newValue.Language);
         UpdateLanguageDependentCollections();
         RebuildBackgroundImageFitModes();
+        RebuildAvailableThemes();
         SyncOptions();
     }
 
@@ -331,6 +358,12 @@ public partial class SettingsViewModel : BaseViewModel
         AppConfig.BackgroundImageFitMode = value.Value;
     }
 
+    partial void OnSelectedThemeChanged(Option<string>? value)
+    {
+        if (value == null) return;
+        AppConfig.Theme = value.Value;
+    }
+
     [RelayCommand(AllowConcurrentExecutions = false)]
     private async Task LoadedAsync()
     {
@@ -340,6 +373,20 @@ public partial class SettingsViewModel : BaseViewModel
         // Store original config for cancel/restore (deep clone)
         _originalConfig = _configManager.CurrentConfig.Clone();
 
+        var appliedTheme = GetCurrentAppliedThemeName();
+
+        _suppressUnsavedChangeTracking = true;
+        try
+        {
+            AppConfig.Theme = appliedTheme;
+            _originalConfig.Theme = appliedTheme;
+            _configManager.CurrentConfig.Theme = appliedTheme;
+        }
+        finally
+        {
+            _suppressUnsavedChangeTracking = false;
+        }
+
         SubscribeHandlers();
 
         UpdateLanguageDependentCollections();
@@ -348,6 +395,7 @@ public partial class SettingsViewModel : BaseViewModel
 
         RebuildAvailableFormatFields();
         RebuildBackgroundImageFitModes();
+        RebuildAvailableThemes();
         SyncBackgroundImageFitModeOption();
         SyncOptions();
 
@@ -362,14 +410,38 @@ public partial class SettingsViewModel : BaseViewModel
     private void InitializeClassColors()
     {
         ClassColorSettings.Clear();
-        var classes = Enum.GetValues<Classes>();
 
-        foreach (var cls in classes)
+        var classes = new List<Classes>
+    {
+        Classes.ShieldKnight,
+        Classes.HeavyGuardian,
+        Classes.Stormblade,
+        Classes.WindKnight,
+        Classes.FrostMage,
+        Classes.Marksman,
+        Classes.VerdantOracle,
+        Classes.SoulMusician,
+        Classes.Unknown
+    };
+
+        for (int i = 0; i < classes.Count; i++)
         {
+            var cls = classes[i];
             var color = _classColorService.GetColor(cls);
             var defaultColor = _classColorService.GetDefaultColor(cls);
             var name = cls.GetLocalizedDescription();
-            ClassColorSettings.Add(new ClassColorSettingViewModel(cls, name, color, defaultColor, AppConfig, ApplyColorChange));
+
+            var vm = new ClassColorSettingViewModel(
+                cls,
+                name,
+                color,
+                defaultColor,
+                AppConfig,
+                ApplyColorChange);
+
+            vm.IsLast = i == classes.Count - 1;
+
+            ClassColorSettings.Add(vm);
         }
     }
 
@@ -602,6 +674,13 @@ public partial class SettingsViewModel : BaseViewModel
                 ApplyBackgroundImageFitModeImmediately(config.BackgroundImageFitMode);
             }
         }
+        else if (e.PropertyName == nameof(AppConfig.Theme))
+        {
+            if (_isLoaded)
+            {
+                ApplyThemeImmediately(config.Theme);
+            }
+        }
         else if (e.PropertyName is nameof(AppConfig.PlayerInfoFormatString) or nameof(AppConfig.UseCustomFormat))
         {
             // Update format string preview only (no real-time application to actual config)
@@ -628,6 +707,64 @@ public partial class SettingsViewModel : BaseViewModel
         {
             _hasUnsavedChanges = true;
         }
+    }
+
+    private void ApplyThemeImmediately(
+        string? theme,
+        bool overwriteManualClassColors = true,
+        IDictionary<Classes, string>? restoreCustomColors = null)
+    {
+        if (Application.Current == null)
+            return;
+
+        var themeName = string.IsNullOrWhiteSpace(theme) ? "Light" : theme;
+
+        if (!Enum.TryParse<ApplicationTheme>(themeName, true, out var parsedTheme))
+        {
+            parsedTheme = ApplicationTheme.Light;
+        }
+
+        _configManager.CurrentConfig.Theme = parsedTheme.ToString();
+
+        var mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+
+        for (var i = mergedDictionaries.Count - 1; i >= 0; i--)
+        {
+            if (mergedDictionaries[i] is ThemesDictionary)
+            {
+                mergedDictionaries.RemoveAt(i);
+                break;
+            }
+        }
+
+        mergedDictionaries.Insert(0, new ThemesDictionary
+        {
+            Theme = parsedTheme
+        });
+
+        ClassColorCache.InitDefaultColors();
+        ClassColorCache.ResetAllCache();
+
+        if (overwriteManualClassColors)
+        {
+            AppConfig.CustomClassColors.Clear();
+            _configManager.CurrentConfig.CustomClassColors.Clear();
+        }
+        else if (restoreCustomColors != null)
+        {
+            AppConfig.CustomClassColors.Clear();
+            _configManager.CurrentConfig.CustomClassColors.Clear();
+
+            foreach (var kv in restoreCustomColors)
+            {
+                AppConfig.CustomClassColors[kv.Key] = kv.Value;
+                _configManager.CurrentConfig.CustomClassColors[kv.Key] = kv.Value;
+            }
+
+            ClassColorCache.UpdateColors(restoreCustomColors);
+        }
+
+        InitializeClassColors();
     }
 
     /// <summary>
@@ -947,6 +1084,8 @@ public partial class SettingsViewModel : BaseViewModel
         _configManager.CurrentConfig.BackgroundImagePath = _originalConfig.BackgroundImagePath;
         _configManager.CurrentConfig.BackgroundImageFitMode = _originalConfig.BackgroundImageFitMode;
 
+        ApplyThemeImmediately(_originalConfig.Theme, false, _originalConfig.CustomClassColors);
+
         // Restore player info format settings
         _configManager.CurrentConfig.UseCustomFormat = _originalConfig.UseCustomFormat;
         _configManager.CurrentConfig.PlayerInfoFormatString = _originalConfig.PlayerInfoFormatString;
@@ -957,7 +1096,9 @@ public partial class SettingsViewModel : BaseViewModel
         UpdateLanguageDependentCollections();
         RebuildAvailableFormatFields();
         RebuildBackgroundImageFitModes();
+        RebuildAvailableThemes();
         SyncBackgroundImageFitModeOption();
+        SyncThemeOption();
         OnPropertyChanged(nameof(FormatPreview));
     }
 
@@ -1023,11 +1164,22 @@ public partial class SettingsViewModel
         if (ret) SelectedBackgroundImageFitMode = opt!;
     }
 
+    private void SyncThemeOption()
+    {
+        var (ret, opt) = SyncOption(
+            SelectedTheme,
+            AvailableThemes,
+            AppConfig.Theme);
+
+        if (ret) SelectedTheme = opt!;
+    }
+
     private void SyncOptions()
     {
         SyncLanguageOption();
         SyncNumberDisplayModeOption();
         SyncBackgroundImageFitModeOption();
+        SyncThemeOption();
     }
 
     private static (bool result, Option<T>? opt) SyncOption<T>(Option<T>? option, List<Option<T>> availableList,
@@ -1114,8 +1266,15 @@ public sealed class SettingsDesignTimeViewModel : SettingsViewModel
             new Option<NumberDisplayMode>(NumberDisplayMode.KMB, "三位计数法 (KMB)")
         };
 
+        AvailableThemes = new List<Option<string>>
+        {
+            new Option<string>("Light", "Light"),
+            new Option<string>("Dark", "Dark")
+        };
+
         SelectedLanguage = AvailableLanguages[0];
         SelectedNumberDisplayMode = AvailableNumberDisplayModes[0];
+        SelectedTheme = AvailableThemes[0];
     }
 }
 

@@ -1342,16 +1342,10 @@ Como obter o UID: no jogo, o número do jogador no canto inferior esquerdo é o 
   <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
     <value>Sorte</value>
   </data>
-  <data name="Classes_Unknown" xml:space="preserve">
-    <value>Unknown</value>
-  </data>
   <data name="Settings_PlayerInfo_PlayerUID" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="Settings_PlayerInfo_SeasonStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Settings_PlayerInfo_SeasonLevel" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Classes_Unknown" xml:space="preserve">
+    <value>Unknown</value>
   </data>
 </root>

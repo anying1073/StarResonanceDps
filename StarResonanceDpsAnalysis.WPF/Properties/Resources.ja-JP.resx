@@ -905,7 +905,7 @@
     <value>カスタム形式を有効にする</value>
   </data>
   <data name="Settings_PlayerInfo_QuickPresets" xml:space="preserve">
-    <value>クイックプリセット</value>
+    <value>プリセット</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Default" xml:space="preserve">
     <value>既定</value>
@@ -1471,9 +1471,6 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   <data name="DpsStatistics_NPC_Label" xml:space="preserve">
     <value>全NPC</value>
   </data>
-  <data name="Classes_Unknown" xml:space="preserve">
-    <value>不明</value>
-  </data>
   <data name="Settings_UID_Setting_Title" xml:space="preserve">
     <value>プレイヤーUIDを設定</value>
   </data>
@@ -1491,12 +1488,6 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="Settings_PlayerInfo_PlayerUID" xml:space="preserve">
     <value>プレイヤーUID</value>
-  </data>
-  <data name="Settings_PlayerInfo_SeasonStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Settings_PlayerInfo_SeasonLevel" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
   </data>
   <data name="Settings_PlayerInfo_GuildName" xml:space="preserve">
     <value>ギルド名</value>
@@ -1525,5 +1516,14 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="Settings_BackgroundImageFitMode_FitToWindow" xml:space="preserve">
     <value>画面のサイズに合わせる</value>
+  </data>
+  <data name="Classes_Unknown" xml:space="preserve">
+    <value>不明</value>
+  </data>
+  <data name="Settings_Theme_Light" xml:space="preserve">
+    <value>ライト</value>
+  </data>
+  <data name="Settings_Theme_Dark" xml:space="preserve">
+    <value>ダーク</value>
   </data>
 </root>

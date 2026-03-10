@@ -20,6 +20,9 @@ public partial class ClassColorSettingViewModel : ObservableObject
     [ObservableProperty]
     private Color _color;
 
+    [ObservableProperty]
+    private bool _isLast;
+
     public ClassColorSettingViewModel(Classes cls, string name, Color color, Color defaultColor, AppConfig config, Action<Classes, Color> onChanged)
     {
         Class = cls;
@@ -36,7 +39,7 @@ public partial class ClassColorSettingViewModel : ObservableObject
         _config.CustomClassColors[Class] = value.ToString();
         _onChanged(Class, value);
     }
-    
+
     [RelayCommand]
     private void Reset()
     {

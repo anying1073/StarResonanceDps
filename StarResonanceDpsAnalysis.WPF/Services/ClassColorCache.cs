@@ -35,7 +35,24 @@ public static class ClassColorCache
 
     public static void ResetCache(Classes cls)
     {
-        BrushCache[cls] = DefaultBrushCache[cls].Clone();
+        if (!DefaultBrushCache.TryGetValue(cls, out var defaultBrush))
+            return;
+
+        if (defaultBrush is SolidColorBrush defaultSolid)
+        {
+            if (BrushCache.TryGetValue(cls, out var existingBrush) &&
+                existingBrush is SolidColorBrush existingSolid &&
+                !existingSolid.IsFrozen)
+            {
+                existingSolid.Color = defaultSolid.Color;
+                return;
+            }
+
+            BrushCache[cls] = new SolidColorBrush(defaultSolid.Color);
+            return;
+        }
+
+        BrushCache[cls] = defaultBrush.Clone();
     }
 
     public static void ResetAllCache()

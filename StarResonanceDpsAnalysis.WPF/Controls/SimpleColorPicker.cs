@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace StarResonanceDpsAnalysis.WPF.Controls;
 
@@ -51,6 +52,11 @@ public class SimpleColorPicker : Control
             new FrameworkPropertyMetadata(typeof(SimpleColorPicker)));
     }
 
+    public SimpleColorPicker()
+    {
+        Loaded += SimpleColorPicker_Loaded;
+    }
+
     public static readonly DependencyProperty SelectedColorProperty =
         DependencyProperty.Register(
             nameof(SelectedColor),
@@ -86,6 +92,14 @@ public class SimpleColorPicker : Control
 
         UpdateHsvFromColor(SelectedColor);
         UpdateAllVisuals();
+
+        // Popup 初回表示時は Template 適用直後だと ActualWidth / ActualHeight がまだ 0 のことがある。
+        // 1フレーム遅らせて再同期すると、Hex 値に対して Thumb が正しい位置へ行く。
+        Dispatcher.BeginInvoke(new Action(() =>
+        {
+            UpdateHsvFromColor(SelectedColor);
+            UpdateAllVisuals();
+        }), DispatcherPriority.Loaded);
     }
 
     private static void OnSelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -101,6 +115,17 @@ public class SimpleColorPicker : Control
         }
 
         picker.UpdateAllVisuals();
+
+        // Popup 初回表示や遅延レイアウト完了後にも、見た目のカーソル位置を再同期する
+        picker.Dispatcher.BeginInvoke(new Action(() =>
+        {
+            if (!picker._isInternalHsvUpdate)
+            {
+                picker.UpdateHsvFromColor(color);
+            }
+
+            picker.UpdateAllVisuals();
+        }), DispatcherPriority.Loaded);
     }
 
     private void HookTemplatePartEvents()
@@ -171,6 +196,17 @@ public class SimpleColorPicker : Control
             _hexTextBox.PreviewKeyDown -= HexTextBox_PreviewKeyDown;
             _hexTextBox.LostFocus -= HexTextBox_LostFocus;
         }
+    }
+
+    private void SimpleColorPicker_Loaded(object sender, RoutedEventArgs e)
+    {
+        // 初回 Loaded でもう一度 SelectedColor -> HSV -> Visual を同期する。
+        // Popup 内コントロールはこのタイミングでようやくサイズ確定している場合がある。
+        Dispatcher.BeginInvoke(new Action(() =>
+        {
+            UpdateHsvFromColor(SelectedColor);
+            UpdateAllVisuals();
+        }), DispatcherPriority.Loaded);
     }
 
     private void Part_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -369,6 +405,10 @@ public class SimpleColorPicker : Control
     private void UpdateHsvFromColor(Color color)
     {
         RgbToHsv(color, _hue, out var hue, out var saturation, out var value);
+
+        _hue = hue;
+        _saturation = saturation;
+        _value = value;
     }
 
     private void UpdateHexTextFromSelectedColor()
@@ -585,8 +625,6 @@ public class SimpleColorPicker : Control
         var min = Math.Min(r, Math.Min(g, b));
         var delta = max - min;
 
-        hue = 0.0;
-
         if (delta > 0.00001)
         {
             if (Math.Abs(max - r) < 0.00001)
@@ -601,10 +639,16 @@ public class SimpleColorPicker : Control
             {
                 hue = 60.0 * (((r - g) / delta) + 4.0);
             }
-        }
 
-        if (hue < 0.0)
-            hue += 360.0;
+            if (hue < 0.0)
+                hue += 360.0;
+        }
+        else
+        {
+            // 灰色系では Hue が数学的に未定義になる。
+            // その場合は直前の Hue を維持して、Hue バーの位置が不自然に飛ばないようにする。
+            hue = preserveHueWhenUndefined;
+        }
 
         saturation = max <= 0.0 ? 0.0 : delta / max;
         value = max;

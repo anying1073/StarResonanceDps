@@ -21,7 +21,7 @@
 
     <!--  未知职业 (Unknown)  -->
     <!--  明度基础: A8 -->
-    <Color x:Key="ClassesUnknownColor">#A8A8A8</Color>
+    <Color x:Key="ClassesUnknownColor">#E1E1E1</Color>
     <SolidColorBrush x:Key="ClassesUnknownBrush" Color="{StaticResource ClassesUnknownColor}" />
 
     <!--  神盾骑士 (ShieldKnight)  -->

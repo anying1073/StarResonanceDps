@@ -18,7 +18,7 @@
     -->
 
     <!--  未知职业 (Unknown)  -->
-    <Color x:Key="ClassesUnknownColor">#ABABAB</Color>
+    <Color x:Key="ClassesUnknownColor">#CCCCCC</Color>
     <SolidColorBrush x:Key="ClassesUnknownBrush" Color="{StaticResource ClassesUnknownColor}" />
 
     <!--  神盾骑士 (ShieldKnight)  -->

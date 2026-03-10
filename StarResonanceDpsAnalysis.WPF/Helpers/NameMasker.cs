@@ -6,7 +6,8 @@ public static class NameMasker
     {
         if (name.Length <= 1) return "*";
         if (name.Length == 2) return $"{name[0]}*";
-        if (name.Length <= 5) return $"{name[0]}**{name[^1]}";
-        return $"{name[..2]}**{name[^2..]}";
+        //if (name.Length <= 5) return $"{name[0]}**{name[^1]}";
+        //return $"{name[..2]}**{name[^2..]}";
+        return $"{name[0]}**{name[^1]}";
     }
 }

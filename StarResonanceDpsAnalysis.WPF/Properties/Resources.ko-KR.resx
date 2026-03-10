@@ -1389,12 +1389,6 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   <data name="Settings_PlayerInfo_PlayerUID" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="Settings_PlayerInfo_SeasonStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="Settings_PlayerInfo_SeasonLevel" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="Classes_Unknown" xml:space="preserve">
     <value>알 수 없음</value>
   </data>
