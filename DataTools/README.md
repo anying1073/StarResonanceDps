@@ -45,8 +45,7 @@ This script creates a merged file with differences preserved in the following fo
 }
 ```
 
-4. Run del_merge_skill.py on the cleaned merge file.
-This script resolves the selected entries and generates the final merged JSON file.
+4. Run del_merge_skill.py on the manually cleaned merge file. The conflict-resolved file is used as the base, allowing you to process other language-specific merge files with differences in the same way and generate the final merged JSON files.
 
 
 ## Purpose
