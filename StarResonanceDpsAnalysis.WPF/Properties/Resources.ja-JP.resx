@@ -127,7 +127,7 @@
     <value>パーティ情報を表示</value>
   </data>
   <data name="Menu_Personal_Training_Mode" xml:space="preserve">
-    <value>個人トレーニングモード</value>
+    <value>トレーニングモード</value>
   </data>
   <data name="Menu_SkillDiary" xml:space="preserve">
     <value>スキルログ</value>
@@ -656,10 +656,10 @@
     <value>テスト項目を追加</value>
   </data>
   <data name="Warning_UidNotConfigured" xml:space="preserve">
-    <value>UID未設定のまま個人トレーニングモードを開こうとしました</value>
+    <value>UID未設定のままトレーニングモードを開こうとしました</value>
   </data>
   <data name="Info_OpeningPersonalDps" xml:space="preserve">
-    <value>個人トレーニングモードを開く</value>
+    <value>トレーニングモードを開く</value>
   </data>
   <data name="SkillBreakdown_Section_DamageDistribution" xml:space="preserve">
     <value>ダメージ内訳</value>
@@ -805,7 +805,7 @@
     <value>キャラクター設定</value>
   </data>
   <data name="Settings_Section_Character_Sub" xml:space="preserve">
-    <value>個人トレーニングモードで使用するキャラクターUIDの設定</value>
+    <value>トレーニングモードで使用するキャラクターUIDの設定</value>
   </data>
   <data name="Settings_Character_Uid" xml:space="preserve">
     <value>キャラクターUID</value>
@@ -1224,7 +1224,7 @@
     <value>キャラクターUIDの設定が必要です</value>
   </data>
   <data name="Dialog_UidRequired_Message" xml:space="preserve">
-    <value>個人トレーニングモードを使用するには、設定画面でキャラクターUIDを登録してください。
+    <value>トレーニングモードを使用するには、設定画面でキャラクターUIDを登録してください。
 
 UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤー番号がUIDです。</value>
   </data>
