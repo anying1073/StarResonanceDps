@@ -26,12 +26,12 @@ This script generates two intermediate JSON files.
 2. Use those two generated files as the input for merge_skill.py.
 This script creates a merged file with differences preserved in the following format:
 
-```json
+```
 {
   "key": [
     { "file1": "value1" },
     { "file2": "value2" }
-  ]
+  ],
   ...
 }
 ```
@@ -40,7 +40,7 @@ This script creates a merged file with differences preserved in the following fo
 
 ```
 {
-  "key": { "file1": "value1" }
+  "key": { "file1": "value1" },
   ...
 }
 ```
