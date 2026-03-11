@@ -207,6 +207,9 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
         TeamTotalDps = 0;
         BattleDuration = TimeSpan.Zero;
 
+        var skillBreakdownVm = _windowManagement.SkillBreakdownView.DataContext as SkillBreakdownViewModel;
+        skillBreakdownVm?.ClearFromMainRefresh();
+
         if (!_isInitialized)
         {
             _logger.LogWarning("ResetAll called but ViewModel not initialized!");

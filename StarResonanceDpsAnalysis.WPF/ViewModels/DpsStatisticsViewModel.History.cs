@@ -130,6 +130,9 @@ public partial class DpsStatisticsViewModel
             // Refresh real-time data
             UpdateBattleDuration();
 
+            var skillBreakdownVm = _windowManagement.SkillBreakdownView.DataContext as SkillBreakdownViewModel;
+            skillBreakdownVm?.OnHistoryModeExited();
+
             _logger.LogInformation("已恢复实时DPS统计模式");
         }
     }

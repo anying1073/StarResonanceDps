@@ -238,6 +238,9 @@ public partial class DpsStatisticsViewModel
         var vm = _windowManagement.SkillBreakdownView.DataContext as SkillBreakdownViewModel;
         Debug.Assert(vm != null, "vm!=null");
 
+        var allowAutoResumeToLive = !IsViewingHistory;
+        Action returnToLiveContext = ResetAll;
+
         var uid = target.Player.Uid;
         var scope = _dataSourceEngine.CurrentSource.Scope;
 
@@ -272,7 +275,7 @@ public partial class DpsStatisticsViewModel
             ? info
             : null;
 
-        vm.InitializeFrom(stats, playerInfo, StatisticIndex, logs, scope);
+        vm.InitializeFrom(stats, playerInfo, StatisticIndex, logs, scope, allowAutoResumeToLive, returnToLiveContext);
         _windowManagement.SkillBreakdownView.Show();
         _windowManagement.SkillBreakdownView.Activate();
     }
