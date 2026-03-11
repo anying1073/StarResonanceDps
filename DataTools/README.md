@@ -5,44 +5,48 @@ Data processing and management tools for StarResonance DPS analysis.
 ## Directory Structure
 
 ### Data/
-Contains JSON data files organized by category:
-
-#### monster/
-Monster and skill-related data files:
-- `skill_names.json` - Base skill names data downloaded from https://github.com/dmlgzs/StarResonanceDamageCounter/blob/master/tables/skill_names.json
-- `skill_names_new.json` - New skill names to be merged which is downloaded https://github.com/dmlgzs/StarResonanceDamageCounter/blob/master/tables/skill_names_new.json
-- `skill_names_merged.json` - Result of merging skill names
-- `skill_names_simplified.json` - Simplified version of skill_names.json
-- `skill_name_mapping.json` - Mapping table for skill names (Extracted from client but the mapping is not accurate)
-
-#### recount/
-Recount addon related data:
-- `recount_name_mapping.json` - Name mapping for Recount data
-
-#### skill/
-Skill-related mapping data:
-- `monster_name_mapping.json` - Mapping table for monster names
+Contains JSON data files (Extracted from client but the mapping is not accurate):
+- `BuffTable.json`
+- `DbmTable.json` 
+- `MonsterTable.json`
+- `RecountTable.json`
+- `SkillTable.json` 
 
 ### Script/
 Python scripts for data processing:
-- `merge_skills.py` - Utility script to merge two JSON files with configurable priority. Supports merging skill data from different sources and provides statistics on the merge operation.
+- `del_skill.py` Generates two intermediate files from the original data files.
+- `merge_skill.py` Merges the two intermediate files and keeps conflicts/differences for manual review. You should choose the correct value for each conflicted key.
+- `del_merge_skill.py` Converts the reviewed merge file into the final merged result.
 
 ## Usage
 
-### Merging JSON Files
+1. Run del_skill.py on the folder that contains the data files.
+This script generates two intermediate JSON files.
 
-Use the `merge_skills.py` script to combine JSON data files:
+2. Use those two generated files as the input for merge_skill.py.
+This script creates a merged file with differences preserved in the following format:
 
-```bash
-python Script/merge_skills.py <file1> <file2> <output_file> [--priority file1|file2]
-```
+  ```json
+{
+  "key": [
+    { "file1": "value1" },
+    { "file2": "value2" }
+  ]
+  ...
+}
 
-The script will:
-- Merge two JSON files based on priority (default: file2)
-- Sort entries by numeric keys
-- Display statistics (entry counts, overlapping keys)
-- Save the merged result to the specified output file
+3. Manually review the merged file and remove the unwanted differences so that each entry becomes a single selected result in the following format:
+
+  ```json
+{
+  "key": { "file1": "value1" }
+  ...
+}
+
+4. Run del_merge_skill.py on the cleaned merge file.
+This script resolves the selected entries and generates the final merged JSON file.
+
 
 ## Purpose
 
-This toolset facilitates the management and merging of game data for DPS (Damage Per Second) analysis in StarResonance, particularly handling skill names, monster names, and recount data mapping.
+This toolset facilitates the management and merging of game data for DPS (Damage Per Second) analysis in StarResonance, particularly handling skill names and monster names data mapping.

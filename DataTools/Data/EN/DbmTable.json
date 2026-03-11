@@ -1,0 +1,212 @@
+{
+  "30003101": {
+    "Id": 30003101,
+    "CountCDTime": 15,
+    "Content": "Void Sigil"
+  },
+  "30001101": {
+    "Id": 30001101,
+    "CountCDTime": 15,
+    "Content": "Void Purify"
+  },
+  "30006001": {
+    "Id": 30006001,
+    "CountCDTime": 15,
+    "Content": "Reverie Megamorph"
+  },
+  "14013601": {
+    "Id": 14013601,
+    "CountCDTime": 15,
+    "Content": "Wind Spirit Summon"
+  },
+  "14013701": {
+    "Id": 14013701,
+    "CountCDTime": 15,
+    "Content": "lightning storm"
+  },
+  "14014201": {
+    "Id": 14014201,
+    "CountCDTime": 15,
+    "Content": "lightning storm"
+  },
+  "14014401": {
+    "Id": 14014401,
+    "CountCDTime": 15,
+    "Content": "Thunder Split"
+  },
+  "11108701": {
+    "Id": 11108701,
+    "CountCDTime": 15,
+    "Content": "Dimensional Banishment"
+  },
+  "11106101": {
+    "Id": 11106101,
+    "CountCDTime": 15,
+    "Content": "Sky Shatter"
+  },
+  "400103201": {
+    "Id": 400103201,
+    "CountCDTime": 10,
+    "Content": "Shield Guard Charge"
+  },
+  "400100701": {
+    "Id": 400100701,
+    "CountCDTime": 10,
+    "Content": "Lightning Flash"
+  },
+  "404001601": {
+    "Id": 404001601,
+    "CountCDTime": 10,
+    "Content": "Mountain Shattering!"
+  },
+  "404000801": {
+    "Id": 404000801,
+    "CountCDTime": 10,
+    "Content": "Soul Split"
+  },
+  "404001001": {
+    "Id": 404001001,
+    "CountCDTime": 10,
+    "Content": "Soul Annihilation"
+  },
+  "404001401": {
+    "Id": 404001401,
+    "CountCDTime": 15,
+    "Content": "Soul Pool Prayer"
+  },
+  "10240132": {
+    "Id": 10240132,
+    "CountCDTime": 15,
+    "Content": "Unbound"
+  },
+  "1027011601": {
+    "Id": 1027011601,
+    "CountCDTime": 20,
+    "Content": "Spacetime Collapse"
+  },
+  "10240131": {
+    "Id": 10240131,
+    "CountCDTime": 15,
+    "Content": "Void Corruption Banishment"
+  },
+  "1027011701": {
+    "Id": 1027011701,
+    "CountCDTime": 20,
+    "Content": "Voidbound Pact"
+  },
+  "10240130": {
+    "Id": 10240130,
+    "CountCDTime": 10,
+    "Content": "Erosive Annihilation"
+  },
+  "1027011801": {
+    "Id": 1027011801,
+    "CountCDTime": 20,
+    "Content": "Purifying Light - Scatter"
+  },
+  "10240110": {
+    "Id": 10240110,
+    "CountCDTime": 10,
+    "Content": "Unleash Void Corruption Power"
+  },
+  "1027012301": {
+    "Id": 1027012301,
+    "CountCDTime": 20,
+    "Content": "Purifying Light - Focus"
+  },
+  "1027012401": {
+    "Id": 1027012401,
+    "CountCDTime": 20,
+    "Content": "Purifying Light - Scatter & Focus"
+  },
+  "1027012501": {
+    "Id": 1027012501,
+    "CountCDTime": 20,
+    "Content": "Purifying Light - Focus & Scatter"
+  },
+  "1027011901": {
+    "Id": 1027011901,
+    "CountCDTime": 20,
+    "Content": "Spacetime Blitz"
+  },
+  "1027012001": {
+    "Id": 1027012001,
+    "CountCDTime": 20,
+    "Content": "End of Spacetime"
+  },
+  "1027012201": {
+    "Id": 1027012201,
+    "CountCDTime": 20,
+    "Content": "Radiant Seed"
+  },
+  "17021101": {
+    "Id": 17021101,
+    "CountCDTime": 15,
+    "Content": "Void Corruption: Waltz!"
+  },
+  "17010801": {
+    "Id": 17010801,
+    "CountCDTime": 10,
+    "Content": "Void Corruption Mark"
+  },
+  "17021001": {
+    "Id": 17021001,
+    "CountCDTime": 15,
+    "Content": "Void Corruption: Decimation"
+  },
+  "17020901": {
+    "Id": 17020901,
+    "CountCDTime": 10,
+    "Content": "Void Corruption Mark"
+  },
+  "17020801": {
+    "Id": 17020801,
+    "CountCDTime": 20,
+    "Content": "Prelude to Oblivion"
+  },
+  "17020701": {
+    "Id": 17020701,
+    "CountCDTime": 10,
+    "Content": "Void Corruption: Fracture"
+  },
+  "17025601": {
+    "Id": 17025601,
+    "CountCDTime": 10,
+    "Content": "Void Corruption Thrust"
+  },
+  "10140301": {
+    "Id": 10140301,
+    "CountCDTime": 10,
+    "Content": "Frost Slam"
+  },
+  "10140701": {
+    "Id": 10140701,
+    "CountCDTime": 10,
+    "Content": "Weather Switch"
+  },
+  "10140801": {
+    "Id": 10140801,
+    "CountCDTime": 10,
+    "Content": "Glacier Spin"
+  },
+  "10140901": {
+    "Id": 10140901,
+    "CountCDTime": 10,
+    "Content": "Avalanche"
+  },
+  "10141001": {
+    "Id": 10141001,
+    "CountCDTime": 10,
+    "Content": "Zero-degree Snowfield"
+  },
+  "10141601": {
+    "Id": 10141601,
+    "CountCDTime": 10,
+    "Content": "Frozen Weapon"
+  },
+  "10141801": {
+    "Id": 10141801,
+    "CountCDTime": 10,
+    "Content": "Heart-piercing Spear"
+  }
+}
