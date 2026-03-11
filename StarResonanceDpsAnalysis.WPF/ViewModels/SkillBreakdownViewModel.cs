@@ -291,6 +291,13 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
 
     private void OnConfigurationUpdated(object? sender, Config.AppConfig newConfig)
     {
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher != null && !dispatcher.CheckAccess())
+        {
+            dispatcher.BeginInvoke(new Action(() => OnConfigurationUpdated(sender, newConfig)));
+            return;
+        }
+
         AppConfig = newConfig;
 
         if (_playerStatistics == null)
