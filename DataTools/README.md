@@ -26,7 +26,7 @@ This script generates two intermediate JSON files.
 2. Use those two generated files as the input for merge_skill.py.
 This script creates a merged file with differences preserved in the following format:
 
-  ```json
+```json
 {
   "key": [
     { "file1": "value1" },
@@ -34,14 +34,16 @@ This script creates a merged file with differences preserved in the following fo
   ]
   ...
 }
+```
 
 3. Manually review the merged file and remove the unwanted differences so that each entry becomes a single selected result in the following format:
 
-  ```json
+```
 {
   "key": { "file1": "value1" }
   ...
 }
+```
 
 4. Run del_merge_skill.py on the cleaned merge file.
 This script resolves the selected entries and generates the final merged JSON file.
