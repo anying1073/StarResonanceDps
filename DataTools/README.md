@@ -14,8 +14,8 @@ Contains JSON data files (Extracted from client but the mapping is not accurate)
 
 ### Script/
 Python scripts for data processing:
-- `del_skill.py` Generates two intermediate files from the original data files.
-- `merge_skill.py` Merges the two intermediate files and keeps conflicts/differences for manual review. You should choose the correct value for each conflicted key.
+- `del_skill.py` Generates intermediate files from the original data files.
+- `merge_skill.py` Merges the intermediate files and keeps conflicts/differences for manual review. You should choose the correct value for each conflicted key.
 - `del_merge_skill.py` Converts the reviewed merge file into the final merged result.
 
 ## Usage
