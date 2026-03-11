@@ -20,7 +20,7 @@ Python scripts for data processing:
 
 ## Usage
 
-1. `Run del_skill.py` on the folder that contains the data files.
+1. Run `del_skill.py` on the folder that contains the data files.
 This script generates intermediate JSON files.
 
 2. Use those generated files as the input for `merge_skill.py`.
