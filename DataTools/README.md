@@ -20,10 +20,10 @@ Python scripts for data processing:
 
 ## Usage
 
-1. Run del_skill.py on the folder that contains the data files.
+1. `Run del_skill.py` on the folder that contains the data files.
 This script generates intermediate JSON files.
 
-2. Use those generated files as the input for merge_skill.py.
+2. Use those generated files as the input for `merge_skill.py`.
 This script creates a merged file with differences preserved in the following format:
 
 ```
@@ -45,7 +45,7 @@ This script creates a merged file with differences preserved in the following fo
 }
 ```
 
-4. Run del_merge_skill.py on the manually cleaned merge file. The conflict-resolved file is used as the base, allowing you to process other language-specific merge files with differences in the same way and generate the final merged JSON files.
+4. Run `del_merge_skill.py` on the manually cleaned merge file. The conflict-resolved file is used as the base, allowing you to process other language-specific merge files with differences in the same way and generate the final merged JSON files.
 
 
 ## Purpose
