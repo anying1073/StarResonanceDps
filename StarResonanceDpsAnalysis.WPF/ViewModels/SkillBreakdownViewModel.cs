@@ -33,6 +33,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     private const int LiveUiRefreshIntervalMs = 1000;
 
     private bool _suppressFreezeOnSelfClear;
+    private bool _allowAutoResumeToLive;
 
     [ObservableProperty] private StatisticType _statisticIndex;
     [ObservableProperty] private Config.AppConfig _appConfig;
@@ -111,6 +112,7 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
         _scopeTime = scopeTime;
         _playerStatistics = playerStats;
         _isLiveSource = IsCurrentStorageInstance(playerStats, scopeTime);
+        _allowAutoResumeToLive = _isLiveSource;
 
         _fixedReplayLogs = battleLogs?.ToList() ?? new List<BattleLog>();
         _pendingLiveRefresh = false;
@@ -154,11 +156,6 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
     /// </summary>
     private void OnStorageDpsDataUpdated()
     {
-        if (!_isLiveSource)
-        {
-            return;
-        }
-
         var dispatcher = Application.Current?.Dispatcher;
         if (dispatcher != null && !dispatcher.CheckAccess())
         {
@@ -166,7 +163,42 @@ public partial class SkillBreakdownViewModel : BaseViewModel, IDisposable
             return;
         }
 
+        if (!_isLiveSource)
+        {
+            if (!TryResumeFrozenViewToLiveIfAvailable())
+            {
+                return;
+            }
+        }
+
         _pendingLiveRefresh = true;
+    }
+
+    private bool TryResumeFrozenViewToLiveIfAvailable()
+    {
+        if (_isLiveSource || !_allowAutoResumeToLive || Uid <= 0)
+        {
+            return false;
+        }
+
+        var liveStats = _storage.GetStatistics(fullSession: _scopeTime == ScopeTime.Total);
+        if (!liveStats.TryGetValue(Uid, out var currentLiveRef))
+        {
+            return false;
+        }
+
+        _playerStatistics = currentLiveRef;
+        _isLiveSource = true;
+        _fixedReplayLogs.Clear();
+
+        var playerInfo = _storage.ReadOnlyPlayerInfoDatas.TryGetValue(Uid, out var info)
+            ? info
+            : null;
+
+        UpdatePlayerInfo(currentLiveRef, playerInfo);
+
+        _logger.LogDebug("SkillBreakdown resumed live source for UID {Uid}", Uid);
+        return true;
     }
 
     /// <summary>
