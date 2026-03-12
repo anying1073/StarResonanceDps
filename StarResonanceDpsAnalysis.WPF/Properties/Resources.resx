@@ -1521,4 +1521,7 @@ Open download page now?</value>
   <data name="Settings_PlayerInfo_SeasonStrength" xml:space="preserve">
     <value>Season Strength</value>
   </data>
+  <data name="Settings_HideTab" xml:space="preserve">
+    <value>Hide tabs</value>
+  </data>
 </root>

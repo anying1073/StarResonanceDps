@@ -38,6 +38,14 @@
     <None Remove="Assets\Fonts\HarmonyOS_Sans_SC_Black.ttf" />
     <None Remove="Assets\Images\flushed_hover.png" />
     <None Remove="Assets\Images\flushed_normal.png" />
+    <None Remove="Assets\Images\NpcWhite.png" />
+    <None Remove="Assets\Images\StatisticType_Damage.png" />
+    <None Remove="Assets\Images\StatisticType_Healing.png" />
+    <None Remove="Assets\Images\StatisticType_NpcTakenDamage.png" />
+    <None Remove="Assets\Images\StatisticType_TakenDamage.png" />
+    <None Remove="Assets\Images\伤害白色.png" />
+    <None Remove="Assets\Images\承伤白色.png" />
+    <None Remove="Assets\Images\治疗白色.png" />
     <Page Include="App.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -105,8 +113,13 @@
     <Resource Include="Assets\Images\Classes_ShieldKnight.png" />
     <Resource Include="Assets\Images\Classes_SoulMusician.png" />
     <Resource Include="Assets\Images\Classes_WIndKnight.png" />
+    <Resource Include="Assets\Images\Classes_Unknown.png" />
     <Resource Include="Assets\Images\ok_hover.png" />
     <Resource Include="Assets\Images\ok_normal.png" />
+    <Resource Include="Assets\Images\StatisticType_Damage.png" />
+    <Resource Include="Assets\Images\StatisticType_Healing.png" />
+    <Resource Include="Assets\Images\StatisticType_NpcTakenDamage.png" />
+    <Resource Include="Assets\Images\StatisticType_TakenDamage.png" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Data\DebugData\debugData.en-US.json">

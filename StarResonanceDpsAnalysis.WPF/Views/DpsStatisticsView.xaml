@@ -10,6 +10,7 @@
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:loc="clr-namespace:StarResonanceDpsAnalysis.WPF.Properties"
     xmlns:local="clr-namespace:StarResonanceDpsAnalysis.WPF.Views"
+    xmlns:models="clr-namespace:StarResonanceDpsAnalysis.WPF.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels="clr-namespace:StarResonanceDpsAnalysis.WPF.ViewModels"
@@ -59,6 +60,7 @@
         <converters:DoubleNegateConverter x:Key="DoubleNegateConverter" />
         <converters:DoubleSumConverter x:Key="DoubleSumConverter" />
         <converters:OutsideImageAreaClipConverter x:Key="OutsideImageAreaClipConverter" />
+        <converters:StatisticTypeToColoredIconConverter x:Key="StatisticTypeToColoredIconConverter" />
 
         <Style
             x:Key="PlayerInfoTextStyle"
@@ -143,19 +145,48 @@
         </Style>
 
         <DataTemplate x:Key="CenterToolbarButtonContentTemplate">
-            <TextBlock
-                Style="{StaticResource PlayerInfoTextStyle}"
+            <StackPanel
+                Orientation="Horizontal"
                 HorizontalAlignment="Center"
-                TextAlignment="Center"
-                Text="{Binding}">
-                <TextBlock.Effect>
-                    <DropShadowEffect
-                        Color="#000"
-                        Opacity="0.5"
-                        ShadowDepth="0"
-                        BlurRadius="5" />
-                </TextBlock.Effect>
-            </TextBlock>
+                VerticalAlignment="Center">
+                <Image
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    SnapsToDevicePixels="True"
+                    Source="{Binding Tag,
+                    RelativeSource={RelativeSource AncestorType=ctrl:CenterToolbarButton},
+                    Converter={StaticResource StatisticTypeToColoredIconConverter}}">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Width" Value="14" />
+                            <Setter Property="Height" Value="14" />
+                            <Setter Property="Margin" Value="0,0,4,0" />
+
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=ctrl:CenterToolbarButton}}"
+                                    Value="{x:Static models:StatisticType.NpcTakenDamage}">
+                                    <Setter Property="Width" Value="18" />
+                                    <Setter Property="Height" Value="18" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+
+                <TextBlock
+                    Style="{StaticResource PlayerInfoTextStyle}"
+                    HorizontalAlignment="Center"
+                    TextAlignment="Center"
+                    Text="{Binding}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect
+                            Color="#000"
+                            Opacity="0.5"
+                            ShadowDepth="0"
+                            BlurRadius="5" />
+                    </TextBlock.Effect>
+                </TextBlock>
+            </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="StatisticDetailDataTemplate" DataType="{x:Type viewModels:StatisticDataViewModel}">
@@ -186,8 +217,8 @@
                     </Style>
 
                     <Style x:Key="ProfessionImage" TargetType="Image">
-                        <Setter Property="Width" Value="26" />
-                        <Setter Property="Height" Value="26" />
+                        <Setter Property="Width" Value="25" />
+                        <Setter Property="Height" Value="25" />
                         <Setter Property="Margin" Value="5,0,0,0" />
                         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
                         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -452,10 +483,6 @@
                         Style="{StaticResource StatisticTypeText}">
 
                         <Run Text="{lex:Loc {Binding StatisticIndex, StringFormat=StatisticType_{0}}}" />
-                        <Run Text="(" />
-                        <Run Text="{lex:Loc {Binding ScopeTime, StringFormat=ScopeTime_{0}}}" />
-                        <Run Text=")" />
-
                     </TextBlock>
                     <!--  右侧按钮  -->
                     <Button
@@ -465,10 +492,21 @@
                         Command="{Binding NextMetricTypeCommand}"
                         Content="&#xe688;"
                         FontSize="15" />
+
+                    <!--  切换计状态文字  -->
+                    <TextBlock
+                        Grid.Column="3"
+                        Margin="0,0,0,3"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource StatisticTypeText}">
+
+                        <Run Text="{lex:Loc {Binding ScopeTime, StringFormat=ScopeTime_{0}}}" />
+                    </TextBlock>
+                        
                     <!--  切换按钮  -->
                     <Button
                         x:Name="SwitchButton"
-                        Grid.Column="3"
+                        Grid.Column="4"
                         Command="{Binding ToggleScopeTimeCommand}"
                         Content=""
                         FontSize="12"
@@ -479,7 +517,7 @@
 
                     <!--  刷新按钮  -->
                     <StackPanel
-                        Grid.Column="4"
+                        Grid.Column="5"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
 
@@ -566,6 +604,11 @@
                                     <MenuItem
                                         Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_ShowTotal}}"
                                         IsChecked="{Binding ShowTeamTotalDamage}"
+                                        Style="{StaticResource CheckableMenuItem}" />
+
+                                    <MenuItem
+                                        Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_HideTab}}"
+                                        IsChecked="{Binding HideCenterToolbarButtons, Mode=TwoWay}"
                                         Style="{StaticResource CheckableMenuItem}" />
 
                                     <MenuItem
@@ -870,52 +913,116 @@
                 </Rectangle>
 
                 <!-- 上部4ボタン -->
+                <!-- 上部4ボタン -->
                 <UniformGrid
                     Grid.Row="0"
                     Columns="4"
-                    Margin="8,6,8,4">
-                    <ctrl:CenterToolbarButton
-                        GroupName="CenterToolbarTabs"
-                        IsChecked="True"
-                        Height="25"
-                        Margin="4"
-                        Padding="0"
-                        Content="Button 1"
-                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}" />
+                    Margin="8,5,8,0">
+                    <UniformGrid.Style>
+                        <Style TargetType="UniformGrid">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HideCenterToolbarButtons}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </UniformGrid.Style>
 
                     <ctrl:CenterToolbarButton
-                        GroupName="CenterToolbarTabs"
-                        Height="25"
+                        GroupName="StatisticTabs"
+                        Height="22"
                         Margin="4"
                         Padding="0"
-                        Content="Button 2"
-                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}" />
+                        Content="{lex:Loc Key={x:Static loc:ResourcesKeys.StatisticType_Damage}}"
+                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}"
+                        Command="{Binding SetMetricTypeCommand}"
+                        CommandParameter="{x:Static models:StatisticType.Damage}"
+                        Tag="{x:Static models:StatisticType.Damage}">
+                        <ctrl:CenterToolbarButton.IsChecked>
+                            <MultiBinding Converter="{StaticResource EqualsConverter}" Mode="OneWay">
+                                <Binding Path="StatisticIndex" />
+                                <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </ctrl:CenterToolbarButton.IsChecked>
+                    </ctrl:CenterToolbarButton>
 
                     <ctrl:CenterToolbarButton
-                        GroupName="CenterToolbarTabs"
-                        Height="25"
+                        GroupName="StatisticTabs"
+                        Height="22"
                         Margin="4"
                         Padding="0"
-                        Content="Button 3"
-                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}" />
+                        Content="{lex:Loc Key={x:Static loc:ResourcesKeys.StatisticType_Healing}}"
+                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}"
+                        Command="{Binding SetMetricTypeCommand}"
+                        CommandParameter="{x:Static models:StatisticType.Healing}"
+                        Tag="{x:Static models:StatisticType.Healing}">
+                        <ctrl:CenterToolbarButton.IsChecked>
+                            <MultiBinding Converter="{StaticResource EqualsConverter}" Mode="OneWay">
+                                <Binding Path="StatisticIndex" />
+                                <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </ctrl:CenterToolbarButton.IsChecked>
+                    </ctrl:CenterToolbarButton>
 
                     <ctrl:CenterToolbarButton
-                        GroupName="CenterToolbarTabs"
-                        Height="25"
+                        GroupName="StatisticTabs"
+                        Height="22"
                         Margin="4"
                         Padding="0"
-                        Content="Button 4"
-                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}" />
+                        Content="{lex:Loc Key={x:Static loc:ResourcesKeys.StatisticType_TakenDamage}}"
+                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}"
+                        Command="{Binding SetMetricTypeCommand}"
+                        CommandParameter="{x:Static models:StatisticType.TakenDamage}"
+                        Tag="{x:Static models:StatisticType.TakenDamage}">
+                        <ctrl:CenterToolbarButton.IsChecked>
+                            <MultiBinding Converter="{StaticResource EqualsConverter}" Mode="OneWay">
+                                <Binding Path="StatisticIndex" />
+                                <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </ctrl:CenterToolbarButton.IsChecked>
+                    </ctrl:CenterToolbarButton>
+
+                    <ctrl:CenterToolbarButton
+                        GroupName="StatisticTabs"
+                        Height="22"
+                        Margin="4"
+                        Padding="0"
+                        Content="{lex:Loc Key={x:Static loc:ResourcesKeys.StatisticType_TakenDamage}}"
+                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}"
+                        Command="{Binding SetMetricTypeCommand}"
+                        CommandParameter="{x:Static models:StatisticType.NpcTakenDamage}"
+                        Tag="{x:Static models:StatisticType.NpcTakenDamage}">
+                        <ctrl:CenterToolbarButton.IsChecked>
+                            <MultiBinding Converter="{StaticResource EqualsConverter}" Mode="OneWay">
+                                <Binding Path="StatisticIndex" />
+                                <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </ctrl:CenterToolbarButton.IsChecked>
+                    </ctrl:CenterToolbarButton>
                 </UniformGrid>
 
                 <!-- 元のコンテンツ -->
-                <ctrl:SortedDpsControl
-                    Grid.Row="1"
-                    Padding="0,3,0,5"
-                    ItemClickCommand="{Binding OpenSkillBreakdownCommand}"
-                    ItemTemplate="{StaticResource ProgressBarDataTemplate}"
-                    ItemsSource="{Binding CurrentStatisticData.Data}"
-                    SelectedItem="{Binding CurrentStatisticData.SelectedSlot}" />
+                <Border Grid.Row="1">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Padding" Value="0,3,0,5" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HideCenterToolbarButtons}" Value="False">
+                                    <Setter Property="Padding" Value="0,0,0,5" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <ctrl:SortedDpsControl
+                        Padding="0"
+                        ItemClickCommand="{Binding OpenSkillBreakdownCommand}"
+                        ItemTemplate="{StaticResource ProgressBarDataTemplate}"
+                        ItemsSource="{Binding CurrentStatisticData.Data}"
+                        SelectedItem="{Binding CurrentStatisticData.SelectedSlot}" />
+                </Border>
+
             </Grid>
 
             <Border

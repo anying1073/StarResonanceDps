@@ -89,7 +89,7 @@ public partial class DpsStatisticsViewModel
     private void SetSkillDisplayLimit(int limit)
     {
         var clampedLimit = Math.Max(0, limit);
-        _logger.LogDebug("SetSkillDisplayLimit: {Message} {Limit}", 
+        _logger.LogDebug("SetSkillDisplayLimit: {Message} {Limit}",
             _localizationManager.GetString(ResourcesKeys.Common_SkillDisplayLimitChanged, defaultValue: "Skill display limit set to"),
             clampedLimit);
 
@@ -101,14 +101,14 @@ public partial class DpsStatisticsViewModel
 
         _configManager.CurrentConfig.SkillDisplayLimit = clampedLimit;
         _ = _configManager.SaveAsync();
-        _logger.LogDebug("{Message} {Limit}", 
+        _logger.LogDebug("{Message} {Limit}",
             _localizationManager.GetString(ResourcesKeys.Common_SkillDisplayLimitSaved, defaultValue: "Skill display limit saved to config:"),
             clampedLimit);
 
         // Notify that current data's SkillDisplayLimit changed
         OnPropertyChanged(nameof(CurrentStatisticData));
 
-        _logger.LogDebug("SetSkillDisplayLimit: {Message}", 
+        _logger.LogDebug("SetSkillDisplayLimit: {Message}",
             _localizationManager.GetString(ResourcesKeys.Common_SkillListRefreshed, defaultValue: "Skill list refreshed for all slots"));
     }
 
@@ -203,7 +203,7 @@ public partial class DpsStatisticsViewModel
         }
 
         // UID is configured, open personal DPS window normally
-        _logger.LogInformation("{Message}, UID={Uid}", 
+        _logger.LogInformation("{Message}, UID={Uid}",
             _localizationManager.GetString(ResourcesKeys.Info_OpeningPersonalDps, defaultValue: "Opening personal training mode"),
             userUid);
         _windowManagement.PersonalDpsView.Show();
@@ -278,5 +278,11 @@ public partial class DpsStatisticsViewModel
         vm.InitializeFrom(stats, playerInfo, StatisticIndex, logs, scope, allowAutoResumeToLive, returnToLiveContext);
         _windowManagement.SkillBreakdownView.Show();
         _windowManagement.SkillBreakdownView.Activate();
+    }
+
+    [RelayCommand]
+    private void SetMetricType(StatisticType statisticType)
+    {
+        StatisticIndex = statisticType;
     }
 }

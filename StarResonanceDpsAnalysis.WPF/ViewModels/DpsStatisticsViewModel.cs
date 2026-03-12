@@ -48,6 +48,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     [ObservableProperty] private AppConfig _appConfig = new();
     [ObservableProperty] private TimeSpan _battleDuration;
     [ObservableProperty] private int _debugUpdateCount;
+    [ObservableProperty] private bool _hideCenterToolbarButtons;
     [ObservableProperty] private bool _isIncludeNpcData;
     [ObservableProperty] private bool _isServerConnected;
     [ObservableProperty] private bool _isViewingHistory;
@@ -56,7 +57,7 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     [ObservableProperty] private bool _showTeamTotalDamage;
     [ObservableProperty] private SortDirectionEnum _sortDirection = SortDirectionEnum.Descending;
     [ObservableProperty] private string _sortMemberPath = "Value";
-    [ObservableProperty] private StatisticType _statisticIndex;
+    [ObservableProperty] private StatisticType _statisticIndex = StatisticType.Damage;
     [ObservableProperty] private ulong _teamTotalDamage;
     [ObservableProperty] private double _teamTotalDps;
     [ObservableProperty] private string _teamLabel = string.Empty;

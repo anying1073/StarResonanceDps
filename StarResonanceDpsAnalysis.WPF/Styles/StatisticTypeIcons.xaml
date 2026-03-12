@@ -1,0 +1,30 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        本资源字典定义统计类型对应的图标资源。
+        资源键命名规则与 StatisticTypeToColoredIconConverter 保持一致：
+        - Damage         -> StatisticTypeDamageIcon
+        - Healing        -> StatisticTypeHealingIcon
+        - TakenDamage    -> StatisticTypeTakenDamageIcon
+        - NpcTakenDamage -> StatisticTypeNpcTakenDamageIcon
+    -->
+
+    <BitmapImage
+        x:Key="StatisticTypeDamageIcon"
+        UriSource="pack://application:,,,/Assets/Images/StatisticType_Damage.png" />
+
+    <BitmapImage
+        x:Key="StatisticTypeHealingIcon"
+        UriSource="pack://application:,,,/Assets/Images/StatisticType_Healing.png" />
+
+    <BitmapImage
+        x:Key="StatisticTypeTakenDamageIcon"
+        UriSource="pack://application:,,,/Assets/Images/StatisticType_TakenDamage.png" />
+
+    <BitmapImage
+        x:Key="StatisticTypeNpcTakenDamageIcon"
+        UriSource="pack://application:,,,/Assets/Images/StatisticType_NpcTakenDamage.png" />
+
+</ResourceDictionary>

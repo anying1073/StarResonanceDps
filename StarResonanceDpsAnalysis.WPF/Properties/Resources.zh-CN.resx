@@ -1496,4 +1496,7 @@
   <data name="Settings_PlayerInfo_SeasonStrength" xml:space="preserve">
     <value>赛季强度</value>
   </data>
+  <data name="Settings_HideTab" xml:space="preserve">
+    <value>隐藏标签页</value>
+  </data>
 </root>

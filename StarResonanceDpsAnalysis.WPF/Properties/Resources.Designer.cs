@@ -2457,6 +2457,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Hide tabs に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_HideTab {
+            get {
+                return ResourceManager.GetString("Settings_HideTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Follow system に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_Language_Auto {
