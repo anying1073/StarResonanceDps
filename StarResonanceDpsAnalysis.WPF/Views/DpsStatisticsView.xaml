@@ -142,13 +142,29 @@
             </Style.Triggers>
         </Style>
 
+        <DataTemplate x:Key="CenterToolbarButtonContentTemplate">
+            <TextBlock
+                Style="{StaticResource PlayerInfoTextStyle}"
+                HorizontalAlignment="Center"
+                TextAlignment="Center"
+                Text="{Binding}">
+                <TextBlock.Effect>
+                    <DropShadowEffect
+                        Color="#000"
+                        Opacity="0.5"
+                        ShadowDepth="0"
+                        BlurRadius="5" />
+                </TextBlock.Effect>
+            </TextBlock>
+        </DataTemplate>
+
         <DataTemplate x:Key="StatisticDetailDataTemplate" DataType="{x:Type viewModels:StatisticDataViewModel}">
             <Grid HorizontalAlignment="Stretch" ClipToBounds="True">
                 <Grid.Effect>
                     <DropShadowEffect
                         Color="#000"
                         Opacity="0.5"
-                        ShadowDepth="0"
+                        ShadowDepth="2"
                         BlurRadius="5" />
                 </Grid.Effect>
                 <Grid.ColumnDefinitions>
@@ -313,9 +329,9 @@
             </ctrl:DpsDetailPopup>
         </DataTemplate>
         <DataTemplate x:Key="ProgressBarDataTemplate" DataType="{x:Type viewModels:StatisticDataViewModel}">
-            <Grid Height="36" Margin="0">
+            <Grid Height="31" Margin="0">
                 <Button
-                    Margin="1"
+                    Margin="0"
                     Padding="0"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
@@ -767,9 +783,15 @@
             </Border>
 
             <Grid Grid.Row="1" x:Name="MainContentArea" ClipToBounds="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
                 <!-- 背景画像 -->
                 <!-- 幅に合わせる -->
                 <Image
+                    Grid.RowSpan="2"
                     Source="{Binding AppConfig.BackgroundImagePath, Converter={StaticResource EmptyStringToNullConverter}}"
                     Stretch="UniformToFill"
                     Opacity="{Binding AppConfig.BackgroundImageOpacity, Converter={StaticResource PercentToOpacityConverter}}"
@@ -781,7 +803,7 @@
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding AppConfig.BackgroundImageFitMode}"
-                                    Value="{x:Static cfg:BackgroundImageFitMode.FitWidth}">
+                        Value="{x:Static cfg:BackgroundImageFitMode.FitWidth}">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -791,6 +813,7 @@
 
                 <!-- 画面のサイズに合わせる -->
                 <Image
+                    Grid.RowSpan="2"
                     Source="{Binding AppConfig.BackgroundImagePath, Converter={StaticResource EmptyStringToNullConverter}}"
                     Stretch="Uniform"
                     Opacity="{Binding AppConfig.BackgroundImageOpacity, Converter={StaticResource PercentToOpacityConverter}}"
@@ -811,7 +834,7 @@
                 </Image>
 
                 <!-- 画像の外側だけ描くテーマ色半透明背景 -->
-                <Rectangle IsHitTestVisible="False">
+                <Rectangle Grid.RowSpan="2" IsHitTestVisible="False">
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="Visibility" Value="Collapsed" />
@@ -846,9 +869,49 @@
                     </Rectangle.Clip>
                 </Rectangle>
 
+                <!-- 上部4ボタン -->
+                <UniformGrid
+                    Grid.Row="0"
+                    Columns="4"
+                    Margin="8,6,8,4">
+                    <ctrl:CenterToolbarButton
+                        GroupName="CenterToolbarTabs"
+                        IsChecked="True"
+                        Height="25"
+                        Margin="4"
+                        Padding="0"
+                        Content="Button 1"
+                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}" />
+
+                    <ctrl:CenterToolbarButton
+                        GroupName="CenterToolbarTabs"
+                        Height="25"
+                        Margin="4"
+                        Padding="0"
+                        Content="Button 2"
+                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}" />
+
+                    <ctrl:CenterToolbarButton
+                        GroupName="CenterToolbarTabs"
+                        Height="25"
+                        Margin="4"
+                        Padding="0"
+                        Content="Button 3"
+                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}" />
+
+                    <ctrl:CenterToolbarButton
+                        GroupName="CenterToolbarTabs"
+                        Height="25"
+                        Margin="4"
+                        Padding="0"
+                        Content="Button 4"
+                        ContentTemplate="{StaticResource CenterToolbarButtonContentTemplate}" />
+                </UniformGrid>
+
                 <!-- 元のコンテンツ -->
                 <ctrl:SortedDpsControl
-                    Padding="0,5,0,5"
+                    Grid.Row="1"
+                    Padding="0,3,0,5"
                     ItemClickCommand="{Binding OpenSkillBreakdownCommand}"
                     ItemTemplate="{StaticResource ProgressBarDataTemplate}"
                     ItemsSource="{Binding CurrentStatisticData.Data}"

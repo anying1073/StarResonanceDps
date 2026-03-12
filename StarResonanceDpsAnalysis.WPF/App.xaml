@@ -23,6 +23,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/SwitchControl.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/CustomProgressBarStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/SummaryStatDisplayStyle.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/CenterToolbarButtonStyle.xaml" />
 
                 <!--  Load SortedDpsControl default style  -->
                 <ResourceDictionary Source="pack://application:,,,/Styles/SortedDpsControlStyle.xaml" />
@@ -35,6 +36,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Styles/ChartPanelStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/SkillListPanelStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/TabContentPanelStyle.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Styles/CenterToolbarButtonStyle.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
