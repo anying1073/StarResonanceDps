@@ -48,7 +48,6 @@ public partial class DpsStatisticsViewModel : BaseDispatcherSupportViewModel, ID
     [ObservableProperty] private AppConfig _appConfig = new();
     [ObservableProperty] private TimeSpan _battleDuration;
     [ObservableProperty] private int _debugUpdateCount;
-    [ObservableProperty] private bool _hideCenterToolbarButtons;
     [ObservableProperty] private bool _isIncludeNpcData;
     [ObservableProperty] private bool _isServerConnected;
     [ObservableProperty] private bool _isViewingHistory;

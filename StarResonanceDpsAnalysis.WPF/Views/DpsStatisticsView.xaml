@@ -461,7 +461,7 @@
                     <!--  统计类型标注  -->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="105" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -483,6 +483,10 @@
                         Style="{StaticResource StatisticTypeText}">
 
                         <Run Text="{lex:Loc {Binding StatisticIndex, StringFormat=StatisticType_{0}}}" />
+                        <Run Text="(" />
+                        <Run Text="{lex:Loc {Binding ScopeTime, StringFormat=ScopeTime_{0}}}" />
+                        <Run Text=")" />
+
                     </TextBlock>
                     <!--  右侧按钮  -->
                     <Button
@@ -492,21 +496,10 @@
                         Command="{Binding NextMetricTypeCommand}"
                         Content="&#xe688;"
                         FontSize="15" />
-
-                    <!--  切换计状态文字  -->
-                    <TextBlock
-                        Grid.Column="3"
-                        Margin="0,0,0,3"
-                        VerticalAlignment="Bottom"
-                        Style="{StaticResource StatisticTypeText}">
-
-                        <Run Text="{lex:Loc {Binding ScopeTime, StringFormat=ScopeTime_{0}}}" />
-                    </TextBlock>
-                        
                     <!--  切换按钮  -->
                     <Button
                         x:Name="SwitchButton"
-                        Grid.Column="4"
+                        Grid.Column="3"
                         Command="{Binding ToggleScopeTimeCommand}"
                         Content=""
                         FontSize="12"
@@ -517,7 +510,7 @@
 
                     <!--  刷新按钮  -->
                     <StackPanel
-                        Grid.Column="5"
+                        Grid.Column="4"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
 
@@ -608,7 +601,7 @@
 
                                     <MenuItem
                                         Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Settings_HideTab}}"
-                                        IsChecked="{Binding HideCenterToolbarButtons, Mode=TwoWay}"
+                                        IsChecked="{Binding AppConfig.HideStatisticTabs}"
                                         Style="{StaticResource CheckableMenuItem}" />
 
                                     <MenuItem
@@ -913,7 +906,6 @@
                 </Rectangle>
 
                 <!-- 上部4ボタン -->
-                <!-- 上部4ボタン -->
                 <UniformGrid
                     Grid.Row="0"
                     Columns="4"
@@ -922,7 +914,7 @@
                         <Style TargetType="UniformGrid">
                             <Setter Property="Visibility" Value="Visible" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding HideCenterToolbarButtons}" Value="True">
+                                <DataTrigger Binding="{Binding AppConfig.HideStatisticTabs}" Value="True">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -1008,7 +1000,7 @@
                         <Style TargetType="Border">
                             <Setter Property="Padding" Value="0,3,0,5" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding HideCenterToolbarButtons}" Value="False">
+                                <DataTrigger Binding="{Binding AppConfig.HideStatisticTabs}" Value="False">
                                     <Setter Property="Padding" Value="0,0,0,5" />
                                 </DataTrigger>
                             </Style.Triggers>

@@ -117,6 +117,13 @@ public partial class AppConfig : ObservableObject
     private bool _maskPlayerName = true;
 
     /// <summary>
+    /// DPS统计页面 - 是否隐藏顶部统计切换标签
+    /// 默认值：false (显示)
+    /// </summary>
+    [ObservableProperty]
+    private bool _hideStatisticTabs = false;
+
+    /// <summary>
     /// 鼠标穿透开关 (WPF)
     /// </summary>
     [ObservableProperty]
