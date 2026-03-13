@@ -334,13 +334,13 @@
     <value>空格</value>
   </data>
   <data name="Settings_Display_ShowDamage" xml:space="preserve">
-    <value>显示总伤害</value>
+    <value>显示总伤害/总治疗/总承伤</value>
   </data>
   <data name="Settings_Display_ShowDps" xml:space="preserve">
-    <value>显示秒伤 (DPS)</value>
+    <value>显示DPS/HPS/DTPS</value>
   </data>
   <data name="Settings_Display_ShowPercentage" xml:space="preserve">
-    <value>显示伤害占比</value>
+    <value>显示伤害/治疗/承伤占比</value>
   </data>
   <data name="Settings_Display_DpsMode" xml:space="preserve">
     <value>DPS显示模式</value>
@@ -1498,5 +1498,8 @@
   </data>
   <data name="Settings_HideTab" xml:space="preserve">
     <value>隐藏标签页</value>
+  </data>
+  <data name="Settings_ClassColors_Opacity" xml:space="preserve">
+    <value>职业颜色透明度</value>
   </data>
 </root>

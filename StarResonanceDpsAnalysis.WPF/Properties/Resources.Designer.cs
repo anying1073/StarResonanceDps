@@ -2156,6 +2156,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
+        ///   Class Colors Opacity に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_ClassColors_Opacity {
+            get {
+                return ResourceManager.GetString("Settings_ClassColors_Opacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Reset に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_ClassColors_Reset {
@@ -2457,7 +2466,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Hide tabs に類似しているローカライズされた文字列を検索します。
+        ///   Hide tab に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Settings_HideTab {
             get {

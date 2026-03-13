@@ -416,7 +416,7 @@
                             SkillDisplayLimit="{Binding DataContext.CurrentStatisticData.SkillDisplayLimit, RelativeSource={RelativeSource AncestorType=Window}}"
                             MouseEnterCommand="{Binding MouseEnterItemCommand}"
                             MouseLeaveCommand="{Binding MouseLeaveItemCommand}"
-                            TrackOpacity="{Binding DataContext.AppConfig.Opacity, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PercentToOpacityConverter}}">
+                            TrackOpacity="{Binding DataContext.AppConfig.ItemOpacity, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource PercentToOpacityConverter}}">
                         </ctrl:DpsIndicatorControl>
                     </Grid>
                 </Button>

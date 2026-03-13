@@ -338,7 +338,7 @@
     <value>총 대미지 표시</value>
   </data>
   <data name="Settings_Display_ShowDps" xml:space="preserve">
-    <value>DPS 표시</value>
+    <value>DPS/HPS/DTPS 표시</value>
   </data>
   <data name="Settings_Display_ShowPercentage" xml:space="preserve">
     <value>대미지 비율 표시</value>

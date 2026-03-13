@@ -87,13 +87,19 @@ public partial class AppConfig : ObservableObject
     /// 是否过图清空全程记录
     /// </summary>
     [ObservableProperty]
-    private bool _clearLogAfterTeleport;
+    private bool _clearLogAfterTeleport = true;
 
     /// <summary>
-    /// 不透明度 (0-100) 
+    /// 窗口不透明度 (0-100) 
     /// </summary>
     [ObservableProperty]
     private double _opacity = 100;
+
+    /// <summary>
+    /// items不透明度 (0-100) 
+    /// </summary>
+    [ObservableProperty]
+    private double _itemOpacity = 100;
 
     /// <summary>
     /// 中央背景颜色透明度 (0-100)

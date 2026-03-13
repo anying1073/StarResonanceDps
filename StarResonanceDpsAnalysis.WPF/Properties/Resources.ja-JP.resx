@@ -166,25 +166,25 @@
     <value>履歴</value>
   </data>
   <data name="Menu_History_Current" xml:space="preserve">
-    <value>現在の戦闘</value>
+    <value>戦闘別データ</value>
   </data>
   <data name="Menu_History_Total" xml:space="preserve">
-    <value>エリア累計戦闘</value>
+    <value>累計戦闘データ</value>
   </data>
   <data name="Menu_ExitHistoryMode" xml:space="preserve">
     <value>履歴表示モードを終了</value>
   </data>
   <data name="DpsStatistics_History_ViewFull_Title" xml:space="preserve">
-    <value>［エリア累計戦闘］履歴を表示</value>
+    <value>［累計戦闘データ］履歴を表示</value>
   </data>
   <data name="DpsStatistics_History_ViewFull_EmptyMessage" xml:space="preserve">
-    <value>［エリア累計戦闘］履歴がありません。</value>
+    <value>［累計戦闘データ］履歴がありません。</value>
   </data>
   <data name="DpsStatistics_History_ViewCurrent_Title" xml:space="preserve">
-    <value>［現在の戦闘］履歴を表示</value>
+    <value>［戦闘別データ］履歴を表示</value>
   </data>
   <data name="DpsStatistics_History_ViewCurrent_EmptyMessage" xml:space="preserve">
-    <value>［現在の戦闘］履歴がありません。</value>
+    <value>［戦闘別データ］履歴がありません。</value>
   </data>
   <data name="DpsStatistics_History_Label" xml:space="preserve">
     <value>履歴</value>
@@ -279,19 +279,19 @@
     <value>戦闘設定</value>
   </data>
   <data name="Settings_Section_Combat_Sub" xml:space="preserve">
-    <value>戦闘離脱後に再計測は現在の戦闘のみを対象とし、履歴は保持します</value>
+    <value>戦闘離脱しても累計戦闘データは保持されます</value>
   </data>
   <data name="Settings_NetworkAdapter_Label" xml:space="preserve">
     <value>ネットワークアダプター</value>
   </data>
   <data name="Settings_Combat_ClearAfterBattle" xml:space="preserve">
-    <value>戦闘離脱後に再計測</value>
+    <value>戦闘離脱後にリセット</value>
   </data>
   <data name="Settings_Common_Seconds" xml:space="preserve">
     <value>秒</value>
   </data>
   <data name="Settings_Combat_ClearAfterTeleport" xml:space="preserve">
-    <value>マップ移動時にエリア累計戦闘を再計測</value>
+    <value>マップ移動時に累計戦闘データをリセット</value>
   </data>
   <data name="Settings_Switch_On" xml:space="preserve">
     <value>オン</value>
@@ -336,13 +336,13 @@
     <value>スペース</value>
   </data>
   <data name="Settings_Display_ShowDamage" xml:space="preserve">
-    <value>パーティ情報を表示</value>
+    <value>与ダメ/回復/被ダメの合計を表示</value>
   </data>
   <data name="Settings_Display_ShowDps" xml:space="preserve">
-    <value>DPSを表示</value>
+    <value>DPS/HPS/DTPSを表示</value>
   </data>
   <data name="Settings_Display_ShowPercentage" xml:space="preserve">
-    <value>ダメージ割合を表示</value>
+    <value>与ダメ/回復/被ダメの割合を表示</value>
   </data>
   <data name="Settings_Display_DpsMode" xml:space="preserve">
     <value>DPS表示方式</value>
@@ -1525,5 +1525,8 @@ UIDの確認方法：ゲーム内の画面左下に表示されるプレイヤ�
   </data>
   <data name="Settings_HideTab" xml:space="preserve">
     <value>タブを非表示</value>
+  </data>
+  <data name="Settings_ClassColors_Opacity" xml:space="preserve">
+    <value>クラスカラーの不透明度</value>
   </data>
 </root>

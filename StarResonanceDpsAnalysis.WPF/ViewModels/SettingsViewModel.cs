@@ -611,6 +611,41 @@ public partial class SettingsViewModel : BaseViewModel
             _localization.ApplyLanguage(config.Language);
             UpdateLanguageDependentCollections();
         }
+        else if (e.PropertyName == nameof(AppConfig.EnableMarqueeText))
+        {
+            if (_isLoaded)
+            {
+                ApplyEnableMarqueeTextImmediately(config.EnableMarqueeText);
+            }
+        }
+        else if (e.PropertyName == nameof(AppConfig.DamageDisplayType))
+        {
+            if (_isLoaded)
+            {
+                ApplyDamageDisplayTypeImmediately(config.DamageDisplayType);
+            }
+        }
+        else if (e.PropertyName == nameof(AppConfig.ShowDamage))
+        {
+            if (_isLoaded)
+            {
+                ApplyShowDamageImmediately(config.ShowDamage);
+            }
+        }
+        else if (e.PropertyName == nameof(AppConfig.ShowDps))
+        {
+            if (_isLoaded)
+            {
+                ApplyShowDpsImmediately(config.ShowDps);
+            }
+        }
+        else if (e.PropertyName == nameof(AppConfig.ShowPercentage))
+        {
+            if (_isLoaded)
+            {
+                ApplyShowPercentageImmediately(config.ShowPercentage);
+            }
+        }
         else if (e.PropertyName == nameof(AppConfig.PreferredNetworkAdapter))
         {
             var adapter = AppConfig.PreferredNetworkAdapter;
@@ -625,6 +660,13 @@ public partial class SettingsViewModel : BaseViewModel
             if (_isLoaded)
             {
                 ApplyOpacityImmediately(config.Opacity);
+            }
+        }
+        else if (e.PropertyName == nameof(AppConfig.ItemOpacity))
+        {
+            if (_isLoaded)
+            {
+                ApplyItemOpacityImmediately(config.ItemOpacity);
             }
         }
         else if (e.PropertyName == nameof(AppConfig.CenterBackgroundOpacity))
@@ -767,6 +809,31 @@ public partial class SettingsViewModel : BaseViewModel
         InitializeClassColors();
     }
 
+    private void ApplyEnableMarqueeTextImmediately(bool value)
+    {
+        _configManager.CurrentConfig.EnableMarqueeText = value;
+    }
+
+    private void ApplyDamageDisplayTypeImmediately(NumberDisplayMode value)
+    {
+        _configManager.CurrentConfig.DamageDisplayType = value;
+    }
+
+    private void ApplyShowDamageImmediately(bool value)
+    {
+        _configManager.CurrentConfig.ShowDamage = value;
+    }
+
+    private void ApplyShowDpsImmediately(bool value)
+    {
+        _configManager.CurrentConfig.ShowDps = value;
+    }
+
+    private void ApplyShowPercentageImmediately(bool value)
+    {
+        _configManager.CurrentConfig.ShowPercentage = value;
+    }
+
     /// <summary>
     /// Immediately apply opacity change to the running application config for real-time preview
     /// </summary>
@@ -775,6 +842,11 @@ public partial class SettingsViewModel : BaseViewModel
         // Update the actual application config (not just the clone)
         // This allows real-time preview while still supporting cancel
         _configManager.CurrentConfig.Opacity = opacity;
+    }
+
+    private void ApplyItemOpacityImmediately(double opacity)
+    {
+        _configManager.CurrentConfig.ItemOpacity = opacity;
     }
 
     private void ApplyCenterBackgroundOpacityImmediately(double opacity)
@@ -1076,6 +1148,11 @@ public partial class SettingsViewModel : BaseViewModel
         if (_originalConfig == null) return;
 
         // Restore real-time preview values
+        _configManager.CurrentConfig.EnableMarqueeText = _originalConfig.EnableMarqueeText;
+        _configManager.CurrentConfig.DamageDisplayType = _originalConfig.DamageDisplayType;
+        _configManager.CurrentConfig.ShowDamage = _originalConfig.ShowDamage;
+        _configManager.CurrentConfig.ShowDps = _originalConfig.ShowDps;
+        _configManager.CurrentConfig.ShowPercentage = _originalConfig.ShowPercentage;
         _configManager.CurrentConfig.Opacity = _originalConfig.Opacity;
         _configManager.CurrentConfig.CenterBackgroundOpacity = _originalConfig.CenterBackgroundOpacity;
         _configManager.CurrentConfig.BackgroundImageOpacity = _originalConfig.BackgroundImageOpacity;

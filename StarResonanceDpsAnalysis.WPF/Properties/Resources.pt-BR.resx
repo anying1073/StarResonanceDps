@@ -338,7 +338,7 @@
     <value>Mostrar dano total</value>
   </data>
   <data name="Settings_Display_ShowDps" xml:space="preserve">
-    <value>Mostrar DPS</value>
+    <value>Mostrar DPS/HPS/DTPS</value>
   </data>
   <data name="Settings_Display_ShowPercentage" xml:space="preserve">
     <value>Mostrar porcentagem de dano</value>
