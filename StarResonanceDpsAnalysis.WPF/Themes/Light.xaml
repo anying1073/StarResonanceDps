@@ -4,7 +4,4 @@
     <Color x:Key="AccentColor">#2297F4</Color>
     <SolidColorBrush x:Key="AccentSolidBrush" Color="{StaticResource AccentColor}" />
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Styles/Classes/Classes.Colors.Light.xaml" />
-    </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

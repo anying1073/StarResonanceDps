@@ -121,7 +121,7 @@
     <value>設定</value>
   </data>
   <data name="Menu_StatisticBoss" xml:space="preserve">
-    <value>NPCを記録</value>
+    <value>味方NPCを記録</value>
   </data>
   <data name="Menu_ShowTotal" xml:space="preserve">
     <value>パーティ情報を表示</value>

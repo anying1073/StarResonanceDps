@@ -69,6 +69,12 @@ public partial class SettingsViewModel : BaseViewModel
     [ObservableProperty]
     private Option<string>? _selectedTheme;
 
+    [ObservableProperty]
+    private List<Option<ClassColorTemplate>> _availableClassColorTemplates = [];
+
+    [ObservableProperty]
+    private Option<ClassColorTemplate>? _selectedClassColorTemplate;
+
     private bool _cultureHandlerSubscribed;
     private bool _networkHandlerSubscribed;
     private bool _dataStorageHandlerSubscribed;
@@ -228,13 +234,13 @@ public partial class SettingsViewModel : BaseViewModel
         AvailableBackgroundImageFitModes =
         [
             new(
-            BackgroundImageFitMode.FitWidth,
-            _localization.GetString(ResourcesKeys.Settings_BackgroundImageFitMode_FitWidth)
-        ),
-        new(
-            BackgroundImageFitMode.FitToWindow,
-            _localization.GetString(ResourcesKeys.Settings_BackgroundImageFitMode_FitToWindow)
-        )
+                BackgroundImageFitMode.FitWidth,
+                _localization.GetString(ResourcesKeys.Settings_BackgroundImageFitMode_FitWidth)
+            ),
+            new(
+                BackgroundImageFitMode.FitToWindow,
+                _localization.GetString(ResourcesKeys.Settings_BackgroundImageFitMode_FitToWindow)
+            )
         ];
     }
 
@@ -244,6 +250,15 @@ public partial class SettingsViewModel : BaseViewModel
         [
             new("Light", _localization.GetString(ResourcesKeys.Settings_Theme_Light)),
             new("Dark", _localization.GetString(ResourcesKeys.Settings_Theme_Dark))
+        ];
+    }
+
+    private void RebuildAvailableClassColorTemplates()
+    {
+        AvailableClassColorTemplates =
+        [
+            new(ClassColorTemplate.Light, _localization.GetString(ResourcesKeys.Settings_Theme_Light)),
+            new(ClassColorTemplate.Dark, _localization.GetString(ResourcesKeys.Settings_Theme_Dark))
         ];
     }
 
@@ -331,6 +346,7 @@ public partial class SettingsViewModel : BaseViewModel
         UpdateLanguageDependentCollections();
         RebuildBackgroundImageFitModes();
         RebuildAvailableThemes();
+        RebuildAvailableClassColorTemplates();
         SyncOptions();
     }
 
@@ -364,6 +380,12 @@ public partial class SettingsViewModel : BaseViewModel
         AppConfig.Theme = value.Value;
     }
 
+    partial void OnSelectedClassColorTemplateChanged(Option<ClassColorTemplate>? value)
+    {
+        if (value == null) return;
+        AppConfig.ClassColorTemplate = value.Value;
+    }
+
     [RelayCommand(AllowConcurrentExecutions = false)]
     private async Task LoadedAsync()
     {
@@ -374,6 +396,7 @@ public partial class SettingsViewModel : BaseViewModel
         _originalConfig = _configManager.CurrentConfig.Clone();
 
         var appliedTheme = GetCurrentAppliedThemeName();
+        var appliedClassColorTemplate = _configManager.CurrentConfig.ClassColorTemplate;
 
         _suppressUnsavedChangeTracking = true;
         try
@@ -381,6 +404,10 @@ public partial class SettingsViewModel : BaseViewModel
             AppConfig.Theme = appliedTheme;
             _originalConfig.Theme = appliedTheme;
             _configManager.CurrentConfig.Theme = appliedTheme;
+
+            AppConfig.ClassColorTemplate = appliedClassColorTemplate;
+            _originalConfig.ClassColorTemplate = appliedClassColorTemplate;
+            _configManager.CurrentConfig.ClassColorTemplate = appliedClassColorTemplate;
         }
         finally
         {
@@ -396,7 +423,7 @@ public partial class SettingsViewModel : BaseViewModel
         RebuildAvailableFormatFields();
         RebuildBackgroundImageFitModes();
         RebuildAvailableThemes();
-        SyncBackgroundImageFitModeOption();
+        RebuildAvailableClassColorTemplates();
         SyncOptions();
 
         // ✅ 初次载入时同步一次当前UID到设置页显示
@@ -412,19 +439,19 @@ public partial class SettingsViewModel : BaseViewModel
         ClassColorSettings.Clear();
 
         var classes = new List<Classes>
-    {
-        Classes.ShieldKnight,
-        Classes.HeavyGuardian,
-        Classes.Stormblade,
-        Classes.WindKnight,
-        Classes.FrostMage,
-        Classes.Marksman,
-        Classes.VerdantOracle,
-        Classes.SoulMusician,
-        Classes.Unknown
-    };
+        {
+            Classes.ShieldKnight,
+            Classes.HeavyGuardian,
+            Classes.Stormblade,
+            Classes.WindKnight,
+            Classes.FrostMage,
+            Classes.Marksman,
+            Classes.VerdantOracle,
+            Classes.SoulMusician,
+            Classes.Unknown
+        };
 
-        for (int i = 0; i < classes.Count; i++)
+        for (var i = 0; i < classes.Count; i++)
         {
             var cls = classes[i];
             var color = _classColorService.GetColor(cls);
@@ -464,8 +491,11 @@ public partial class SettingsViewModel : BaseViewModel
             _deviceManagementService.SetActiveNetworkAdapter(ret);
             return;
         }
+
         _logger.LogWarning("Auto-selection of network adapter failed.");
-        _messageDialogService.Show(_localization.GetString(ResourcesKeys.Settings_NetworkAdapterAutoSelect_Title), _localization.GetString(ResourcesKeys.Settings_NetworkAdapterAutoSelect_Failed)); // Temporary message dialog
+        _messageDialogService.Show(
+            _localization.GetString(ResourcesKeys.Settings_NetworkAdapterAutoSelect_Title),
+            _localization.GetString(ResourcesKeys.Settings_NetworkAdapterAutoSelect_Failed)); // Temporary message dialog
     }
 
     private async Task LoadNetworkAdaptersAsync()
@@ -723,6 +753,13 @@ public partial class SettingsViewModel : BaseViewModel
                 ApplyThemeImmediately(config.Theme);
             }
         }
+        else if (e.PropertyName == nameof(AppConfig.ClassColorTemplate))
+        {
+            if (_isLoaded)
+            {
+                ApplyClassColorTemplateImmediately(config.ClassColorTemplate);
+            }
+        }
         else if (e.PropertyName is nameof(AppConfig.PlayerInfoFormatString) or nameof(AppConfig.UseCustomFormat))
         {
             // Update format string preview only (no real-time application to actual config)
@@ -751,10 +788,7 @@ public partial class SettingsViewModel : BaseViewModel
         }
     }
 
-    private void ApplyThemeImmediately(
-        string? theme,
-        bool overwriteManualClassColors = true,
-        IDictionary<Classes, string>? restoreCustomColors = null)
+    private void ApplyThemeImmediately(string? theme)
     {
         if (Application.Current == null)
             return;
@@ -782,6 +816,34 @@ public partial class SettingsViewModel : BaseViewModel
         mergedDictionaries.Insert(0, new ThemesDictionary
         {
             Theme = parsedTheme
+        });
+    }
+
+    private void ApplyClassColorTemplateImmediately(
+        ClassColorTemplate template,
+        bool overwriteManualClassColors = true,
+        IDictionary<Classes, string>? restoreCustomColors = null)
+    {
+        if (Application.Current == null)
+            return;
+
+        _configManager.CurrentConfig.ClassColorTemplate = template;
+
+        var mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+
+        for (var i = mergedDictionaries.Count - 1; i >= 0; i--)
+        {
+            if (mergedDictionaries[i] is ClassColorsDictionary)
+            {
+                mergedDictionaries.RemoveAt(i);
+                break;
+            }
+        }
+
+        var insertIndex = Math.Min(1, mergedDictionaries.Count);
+        mergedDictionaries.Insert(insertIndex, new ClassColorsDictionary
+        {
+            Template = template
         });
 
         ClassColorCache.InitDefaultColors();
@@ -858,6 +920,7 @@ public partial class SettingsViewModel : BaseViewModel
     {
         _configManager.CurrentConfig.BackgroundImageOpacity = opacity;
     }
+
     /// <summary>
     /// ✅ Immediately apply theme color change to the running application config for real-time preview
     /// </summary>
@@ -1154,14 +1217,18 @@ public partial class SettingsViewModel : BaseViewModel
         _configManager.CurrentConfig.ShowDps = _originalConfig.ShowDps;
         _configManager.CurrentConfig.ShowPercentage = _originalConfig.ShowPercentage;
         _configManager.CurrentConfig.Opacity = _originalConfig.Opacity;
+        _configManager.CurrentConfig.ItemOpacity = _originalConfig.ItemOpacity;
         _configManager.CurrentConfig.CenterBackgroundOpacity = _originalConfig.CenterBackgroundOpacity;
         _configManager.CurrentConfig.BackgroundImageOpacity = _originalConfig.BackgroundImageOpacity;
         _configManager.CurrentConfig.ThemeColor = _originalConfig.ThemeColor;
         _configManager.CurrentConfig.CenterBackgroundColor = _originalConfig.CenterBackgroundColor;
         _configManager.CurrentConfig.BackgroundImagePath = _originalConfig.BackgroundImagePath;
         _configManager.CurrentConfig.BackgroundImageFitMode = _originalConfig.BackgroundImageFitMode;
+        _configManager.CurrentConfig.Theme = _originalConfig.Theme;
+        _configManager.CurrentConfig.ClassColorTemplate = _originalConfig.ClassColorTemplate;
 
-        ApplyThemeImmediately(_originalConfig.Theme, false, _originalConfig.CustomClassColors);
+        ApplyThemeImmediately(_originalConfig.Theme);
+        ApplyClassColorTemplateImmediately(_originalConfig.ClassColorTemplate, false, _originalConfig.CustomClassColors);
 
         // Restore player info format settings
         _configManager.CurrentConfig.UseCustomFormat = _originalConfig.UseCustomFormat;
@@ -1174,8 +1241,8 @@ public partial class SettingsViewModel : BaseViewModel
         RebuildAvailableFormatFields();
         RebuildBackgroundImageFitModes();
         RebuildAvailableThemes();
-        SyncBackgroundImageFitModeOption();
-        SyncThemeOption();
+        RebuildAvailableClassColorTemplates();
+        SyncOptions();
         OnPropertyChanged(nameof(FormatPreview));
     }
 
@@ -1226,8 +1293,11 @@ public partial class SettingsViewModel
 
     private void SyncNumberDisplayModeOption()
     {
-        var (ret, opt) = SyncOption(SelectedNumberDisplayMode, AvailableNumberDisplayModes,
+        var (ret, opt) = SyncOption(
+            SelectedNumberDisplayMode,
+            AvailableNumberDisplayModes,
             AppConfig.DamageDisplayType);
+
         if (ret) SelectedNumberDisplayMode = opt!;
     }
 
@@ -1251,16 +1321,26 @@ public partial class SettingsViewModel
         if (ret) SelectedTheme = opt!;
     }
 
+    private void SyncClassColorTemplateOption()
+    {
+        var (ret, opt) = SyncOption(
+            SelectedClassColorTemplate,
+            AvailableClassColorTemplates,
+            AppConfig.ClassColorTemplate);
+
+        if (ret) SelectedClassColorTemplate = opt!;
+    }
+
     private void SyncOptions()
     {
         SyncLanguageOption();
         SyncNumberDisplayModeOption();
         SyncBackgroundImageFitModeOption();
         SyncThemeOption();
+        SyncClassColorTemplateOption();
     }
 
-    private static (bool result, Option<T>? opt) SyncOption<T>(Option<T>? option, List<Option<T>> availableList,
-        T origin)
+    private static (bool result, Option<T>? opt) SyncOption<T>(Option<T>? option, List<Option<T>> availableList, T origin)
     {
         if (Equal(option, origin)) return (false, null);
 
@@ -1268,7 +1348,7 @@ public partial class SettingsViewModel
         Debug.Assert(match != null);
         return (true, match);
 
-        bool Equal(Option<T>? o1, T o2)
+        static bool Equal(Option<T>? o1, T o2)
         {
             return o1?.Value?.Equals(o2) ?? false;
         }
@@ -1349,9 +1429,16 @@ public sealed class SettingsDesignTimeViewModel : SettingsViewModel
             new Option<string>("Dark", "Dark")
         };
 
+        AvailableClassColorTemplates = new List<Option<ClassColorTemplate>>
+        {
+            new Option<ClassColorTemplate>(ClassColorTemplate.Light, "Light"),
+            new Option<ClassColorTemplate>(ClassColorTemplate.Dark, "Dark")
+        };
+
         SelectedLanguage = AvailableLanguages[0];
         SelectedNumberDisplayMode = AvailableNumberDisplayModes[0];
         SelectedTheme = AvailableThemes[0];
+        SelectedClassColorTemplate = AvailableClassColorTemplates[0];
     }
 }
 

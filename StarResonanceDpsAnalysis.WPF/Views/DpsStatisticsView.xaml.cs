@@ -237,4 +237,12 @@ public partial class DpsStatisticsView : Window
     {
         WindowState = WindowState.Minimized;
     }
+
+    private void HeaderDrag_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ButtonState == MouseButtonState.Pressed)
+        {
+            DragMove();
+        }
+    }
 }

@@ -121,7 +121,7 @@
     <value>设置</value>
   </data>
   <data name="Menu_StatisticBoss" xml:space="preserve">
-    <value>统计NPC</value>
+    <value>记录友方NPC</value>
   </data>
   <data name="Menu_ShowTotal" xml:space="preserve">
     <value>显示总伤</value>

@@ -38,6 +38,12 @@ public enum BackgroundImageFitMode
     FitToWindow = 1 // 画面のサイズに合わせる
 }
 
+public enum ClassColorTemplate
+{
+    Light = 0,
+    Dark = 1
+}
+
 /// <summary>
 /// 应用配置类
 /// 集成了配置管理器功能，支持INI文件持久化和属性变更通知
@@ -106,7 +112,7 @@ public partial class AppConfig : ObservableObject
     /// 默认值：30
     /// </summary>
     [ObservableProperty]
-    private double _centerBackgroundOpacity = 30;
+    private double _centerBackgroundOpacity = 65;
 
     /// <summary>
     /// 背景图片透明度 (0-100)
@@ -141,6 +147,9 @@ public partial class AppConfig : ObservableObject
     /// </summary>
     [ObservableProperty]
     private string _theme = "Light";
+
+    [ObservableProperty]
+    private ClassColorTemplate _classColorTemplate = ClassColorTemplate.Light;
 
     /// <summary>
     /// 自定义职业颜色

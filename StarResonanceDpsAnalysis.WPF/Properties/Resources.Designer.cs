@@ -1759,7 +1759,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Track Boss Only に類似しているローカライズされた文字列を検索します。
+        ///   Record allied NPCs に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Menu_StatisticBoss {
             get {

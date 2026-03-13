@@ -10,6 +10,7 @@
             <!-- <lex:ResxLocalizationProvider.DefaultDictionary Value="Properties.Resources" /> -->
             <ResourceDictionary.MergedDictionaries>
                 <themes:ThemesDictionary Theme="Light" />
+                <themes:ClassColorsDictionary Template="Light" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/BaseStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/ButtonStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/MenuStyles.xaml" />

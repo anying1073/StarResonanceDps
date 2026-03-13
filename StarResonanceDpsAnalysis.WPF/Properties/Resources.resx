@@ -121,7 +121,7 @@
     <value>Settings</value>
   </data>
   <data name="Menu_StatisticBoss" xml:space="preserve">
-    <value>Track Boss Only</value>
+    <value>Record allied NPCs</value>
   </data>
   <data name="Menu_ShowTotal" xml:space="preserve">
     <value>Show Total Damage</value>

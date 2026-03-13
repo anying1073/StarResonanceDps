@@ -1646,11 +1646,11 @@
 
                                             <ComboBox
                                                 Grid.Column="2"
-                                                ItemsSource="{Binding AvailableThemes}"
-                                                SelectedItem="{Binding SelectedTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                DisplayMemberPath="Display"
-                                                SelectedValuePath="Value"
-                                                Style="{StaticResource FieldComboBox}" VerticalAlignment="Bottom" />
+                                                ItemTemplate="{StaticResource LocalizedEnumTextBlockDataTemplate}"
+                                                ItemsSource="{Binding AvailableClassColorTemplates}"
+                                                SelectedItem="{Binding SelectedClassColorTemplate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource FieldComboBox}"
+                                                VerticalAlignment="Bottom" />
                                         </Grid>
                                     </Border>
 
