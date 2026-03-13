@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StarResonanceDpsAnalysis.Core.Analyze;
+using StarResonanceDpsAnalysis.Core.Analyze.V1;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Statistics;
 using StarResonanceDpsAnalysis.WPF.Config;
@@ -45,7 +46,6 @@ public sealed class ApplicationStartup : IApplicationStartup
         _configManager.ConfigurationUpdated += ConfigManagerOnConfigurationUpdated;
         _appConfig = _configManager.CurrentConfig;
         _appConfig.MouseThroughEnabled = false;
-        MessageAnalyzer.Logger = logger;
         ConfigManagerOnConfigurationUpdated(_configManager, _configManager.CurrentConfig);
     }
 

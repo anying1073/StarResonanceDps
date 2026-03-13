@@ -1,48 +1,70 @@
-using System;
+#define NEW_MESSAGE_HANDLER
+
 using System.Diagnostics;
-using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text;
 using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using StarResonanceDpsAnalysis.Core.Analyze.Models;
 using StarResonanceDpsAnalysis.Core.Analyze.V2.Processors.WorldNtf;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Extends.BlueProto;
+using StarResonanceDpsAnalysis.Core.Extends.Data;
 using StarResonanceDpsAnalysis.Core.Extends.System;
 using StarResonanceDpsAnalysis.Core.Tools;
 using Zproto;
-using ZstdNet;
 
-// 0472 -> 针对可控类型与 null 的比较, 由于使用了 Protobuf 的固定类型, 本页禁用该警告
-#pragma warning disable 0472
-
-namespace StarResonanceDpsAnalysis.Core.Analyze
+namespace StarResonanceDpsAnalysis.Core.Analyze.V1
 {
     /// <summary>
     /// 消息解析器
     /// 负责处理从游戏抓包获得的TCP数据，包括解压缩、Protobuf解析、数据同步、伤害统计等。
     /// </summary>
-    internal class MessageAnalyzer
+    public class MessageAnalyzer : IMessageAnalyzer
     {
+        private readonly ILogger<MessageAnalyzer>? _logger;
+
+        /// <summary>
+        /// 消息解析器
+        /// 负责处理从游戏抓包获得的TCP数据，包括解压缩、Protobuf解析、数据同步、伤害统计等。
+        /// </summary>
+        public MessageAnalyzer(IDataStorage dataStorage, ILogger<MessageAnalyzer>? logger = null)
+        {
+            _logger = logger;
+            _processMethods = new Dictionary<WorldNtfMessageId, Action<byte[]>>
+            {
+                { WorldNtfMessageId.SyncNearEntities, ProcessSyncNearEntities },        // 同步周边玩家实体
+                { WorldNtfMessageId.SyncContainerData, ProcessSyncContainerData },       // 同步自身完整容器数据
+                { WorldNtfMessageId.SyncContainerDirtyData, ProcessSyncContainerDirtyData },  // 同步自身部分更新（脏数据）
+                { WorldNtfMessageId.SyncToMeDeltaInfo, ProcessSyncToMeDeltaInfo },       // 同步自己受到的增量伤害
+                { WorldNtfMessageId.SyncNearDeltaInfo, ProcessSyncNearDeltaInfo }        // 同步周边增量伤害
+            };
+            _processSyncNearEntitiesMethods = new Dictionary<EEntityType, Action<long, RepeatedField<Attr>, byte[]>?>
+            {
+                { EEntityType.EntMonster,ProcessEnemyAttrs },// EEntityType.EntMonster(1)
+                { EEntityType.EntChar,ProcessPlayerAttrs } // EEntityType.EntChar(10)
+            };
+            _messageHandlerMap = new Dictionary<MessageType, Action<ByteReader, bool>>
+            {
+                { MessageType.Notify, ProcessNotifyMsg },
+                { MessageType.FrameDown, ProcessFrameDown }
+            };
+            _messageHandlerReg = new WorldNtfMessageHandlerRegistry(dataStorage, logger);
+        }
+
         /// <summary>
         /// 顶层消息类型处理器
         /// Key = 消息类型ID (低15位)
         /// Value = 对应的解析方法
         /// </summary>
-        private static readonly Dictionary<MessageType, Action<ByteReader, bool, ILogger?>> MessageHandlerMap = new()
-        {
-            { MessageType.Notify, ProcessNotifyMsg },
-            { MessageType.FrameDown, ProcessFrameDown }
-        };
+        private readonly Dictionary<MessageType, Action<ByteReader, bool>> _messageHandlerMap;
+        private readonly Dictionary<WorldNtfMessageId, Action<byte[]>> _processMethods;
+        private readonly WorldNtfMessageHandlerRegistry _messageHandlerReg;
 
         /// <summary>
         /// 主入口：处理一批TCP数据包
         /// </summary>
-        public static void Process(byte[] packets, ILogger? logger = null)
+        public void Process(byte[] packets)
         {
             var packetsReader = new ByteReader(packets);
             while (packetsReader.Remaining > 0)
@@ -62,29 +84,15 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 var isZstdCompressed = (packetType & 0x8000) != 0;
                 var msgTypeId = packetType & 0x7FFF;
 
-                if (!MessageHandlerMap.TryGetValue((MessageType)msgTypeId, out var handler)) continue;
-                handler?.Invoke(packetReader, isZstdCompressed, logger);
+                if (!_messageHandlerMap.TryGetValue((MessageType)msgTypeId, out var handler)) continue;
+                handler.Invoke(packetReader, isZstdCompressed);
             }
         }
 
         /// <summary>
-        /// Notify 消息内部方法表
-        /// Key = methodId
-        /// Value = 对应的处理方法
-        /// </summary>
-        private static readonly Dictionary<WorldNtfMessageId, Action<byte[], bool, ILogger?>> ProcessMethods = new()
-        {
-            { WorldNtfMessageId.SyncNearEntities, ProcessSyncNearEntities },        // 同步周边玩家实体
-            { WorldNtfMessageId.SyncContainerData, ProcessSyncContainerData },       // 同步自身完整容器数据
-            { WorldNtfMessageId.SyncContainerDirtyData, ProcessSyncContainerDirtyData },  // 同步自身部分更新（脏数据）
-            { WorldNtfMessageId.SyncToMeDeltaInfo, ProcessSyncToMeDeltaInfo },       // 同步自己受到的增量伤害
-            { WorldNtfMessageId.SyncNearDeltaInfo, ProcessSyncNearDeltaInfo }        // 同步周边增量伤害
-        };
-
-        /// <summary>
         /// 处理 Notify 消息（带 serviceUuid 和 methodId 的 RPC）
         /// </summary>
-        public static void ProcessNotifyMsg(ByteReader packet, bool isZstdCompressed, ILogger? logger = null)
+        private void ProcessNotifyMsg(ByteReader packet, bool isZstdCompressed)
         {
             var serviceUuid = (ServiceIds)packet.ReadUInt64BE();
             //Debug.Assert(Enum.IsDefined(serviceUuid));
@@ -95,75 +103,36 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             if (serviceUuid != ServiceIds.WorldNtf) return;
 
             byte[] msgPayload = packet.ReadRemaining();
-            if (isZstdCompressed) msgPayload = DecompressZstdIfNeeded(msgPayload);
+            if (isZstdCompressed) msgPayload = msgPayload.DecompressZstdIfNeeded();
 
-            if (!ProcessMethods.TryGetValue(methodId, out var processMethod)) return;
-            processMethod(msgPayload, isZstdCompressed, logger);
+#if NEW_MESSAGE_HANDLER
+            if (!_messageHandlerReg.TryGetProcessor(methodId, out var processor)) return;
+            processor.Process(msgPayload);
+#else
+            if (!_processMethods.TryGetValue(methodId, out var processMethod)) return;
+            processMethod(msgPayload);
+#endif
         }
-
-        #region Zstd 解压逻辑
-        private static readonly uint ZSTD_MAGIC = 0xFD2FB528;
-        private static readonly uint SKIPPABLE_MAGIC_MIN = 0x184D2A50;
-        private static readonly uint SKIPPABLE_MAGIC_MAX = 0x184D2A5F;
 
         /// <summary>
-        /// 如果数据包含Zstd帧则解压缩，否则原样返回
+        /// 处理 FrameDown 消息（嵌套内部数据包）
         /// </summary>
-        private static byte[] DecompressZstdIfNeeded(byte[] buffer)
+        private void ProcessFrameDown(ByteReader reader, bool isZstdCompressed)
         {
-            if (buffer == null || buffer.Length < 4) return [];
+            _ = reader.ReadUInt32BE();
+            if (reader.Remaining == 0) return;
 
-            int off = 0;
-            while (off + 4 <= buffer.Length)
-            {
-                uint magic = BitConverter.ToUInt32(buffer, off);
-                if (magic == ZSTD_MAGIC) break;
-                if (magic >= SKIPPABLE_MAGIC_MIN && magic <= SKIPPABLE_MAGIC_MAX)
-                {
-                    if (off + 8 > buffer.Length) throw new InvalidDataException("不完整的skippable帧头");
-
-                    uint size = BitConverter.ToUInt32(buffer, off + 4);
-                    if (off + 8 + size > buffer.Length) throw new InvalidDataException("不完整的skippable帧数据");
-
-                    off += 8 + (int)size;
-                    continue;
-                }
-
-                off++;
-            }
-            if (off + 4 > buffer.Length) return buffer;
-
-            using var input = new MemoryStream(buffer, off, buffer.Length - off, writable: false);
-            using var decoder = new DecompressionStream(input);
-            using var output = new MemoryStream();
-
-            const long MAX_OUT = 32L * 1024 * 1024;
-            var temp = new byte[8192];
-            long total = 0;
-            int read;
-            while ((read = decoder.Read(temp, 0, temp.Length)) > 0)
-            {
-                total += read;
-
-                if (total > MAX_OUT) throw new InvalidDataException("解压结果超过32MB限制");
-
-                output.Write(temp, 0, read);
-            }
-
-            return output.ToArray();
+            var nestedPacket = reader.ReadRemaining();
+            if (isZstdCompressed) nestedPacket = nestedPacket.DecompressZstdIfNeeded();
+            Process(nestedPacket);
         }
-        #endregion
 
-        private static readonly Dictionary<EEntityType, Action<long, RepeatedField<Attr>, byte[]>?> ProcessSyncNearEntitiesMethods = new()
-        {
-            { EEntityType.EntMonster,ProcessEnemyAttrs },// EEntityType.EntMonster(1)
-            { EEntityType.EntChar,ProcessPlayerAttrs } // EEntityType.EntChar(10)
-        };
+        private readonly Dictionary<EEntityType, Action<long, RepeatedField<Attr>, byte[]>?> _processSyncNearEntitiesMethods;
 
         /// <summary>
         /// 同步周边实体 怪物和玩家
         /// </summary>
-        public static void ProcessSyncNearEntities(byte[] payloadBuffer, bool b, ILogger? logger = null)
+        private void ProcessSyncNearEntities(byte[] payloadBuffer)
         {
             var syncNearEntities = WorldNtf.Types.SyncNearEntities.Parser.ParseFrom(payloadBuffer);
             if (syncNearEntities.Appear == null || syncNearEntities.Appear.Count == 0) return;
@@ -171,7 +140,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             foreach (var entity in syncNearEntities.Appear)
             {
                 // プレイヤーもモンスターも、対応ハンドラがあるなら処理する
-                var ret = ProcessSyncNearEntitiesMethods.TryGetValue(entity.EntType, out var processMethod);
+                var ret = _processSyncNearEntitiesMethods.TryGetValue(entity.EntType, out var processMethod);
                 if (!ret) continue;
                 if (processMethod == null) continue;
 
@@ -186,15 +155,11 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             }
         }
 
-        public static byte[] ModulePayloadBuffer { get; set; } = [];
-
         /// <summary>
         /// 同步自身完整容器数据（基础属性、昵称、职业、战力）
         /// </summary>
-        public static void ProcessSyncContainerData(byte[] payloadBuffer, bool b, ILogger? logger = null)
+        private void ProcessSyncContainerData(byte[] payloadBuffer)
         {
-            ModulePayloadBuffer = payloadBuffer;
-
             var syncContainerData = Zproto.WorldNtf.Types.SyncContainerData.Parser.ParseFrom(payloadBuffer);
             if (syncContainerData?.VData == null) return;
             var vData = syncContainerData.VData;
@@ -253,7 +218,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 同步自身部分更新（脏数据） //增量更新，有数据就更新
         /// </summary>
-        public static void ProcessSyncContainerDirtyData(byte[] payloadBuffer, bool b, ILogger? logger = null)
+        private void ProcessSyncContainerDirtyData(byte[] payloadBuffer)
         {
             try
             {
@@ -348,7 +313,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 判断数据流是否还有标识符
         /// </summary>
-        private static bool DoesStreamHaveIdentifier(BinaryReader br)
+        private bool DoesStreamHaveIdentifier(BinaryReader br)
         {
             var s = br.BaseStream;
 
@@ -373,7 +338,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 同步自身增量伤害
         /// </summary>
-        public static void ProcessSyncToMeDeltaInfo(byte[] payloadBuffer, bool b, ILogger? logger = null)
+        public void ProcessSyncToMeDeltaInfo(byte[] payloadBuffer)
         {
             var syncToMeDeltaInfo = WorldNtf.Types.SyncToMeDeltaInfo.Parser.ParseFrom(payloadBuffer);
             var aoiSyncToMeDelta = syncToMeDeltaInfo.DeltaInfo;
@@ -393,7 +358,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// <summary>
         /// 同步周边增量伤害（范围内其他角色的技能/伤害）
         /// </summary>
-        public static void ProcessSyncNearDeltaInfo(byte[] payloadBuffer, bool b, ILogger? logger = null)
+        public void ProcessSyncNearDeltaInfo(byte[] payloadBuffer)
         {
             try
             {
@@ -404,14 +369,14 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             }
             catch (InvalidProtocolBufferException ex)
             {
-                logger?.LogWarning(ex, "Failed to parse SyncNearDeltaInfo payload");
+                _logger?.LogWarning(ex, "Failed to parse SyncNearDeltaInfo payload");
             }
         }
 
         /// <summary>
         /// 处理一条技能伤害/治疗记录
         /// </summary>
-        public static void ProcessAoiSyncDelta(WorldNtf.Types.AoiSyncDelta delta)
+        private void ProcessAoiSyncDelta(WorldNtf.Types.AoiSyncDelta? delta)
         {
             if (delta == null) return;
 
@@ -438,6 +403,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
 
             foreach (var d in skillEffect.Damages)
             {
+                Debug.Assert(d != null);
                 var skillId = d.OwnerId;
                 if (skillId == 0) continue;
 
@@ -449,19 +415,18 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
                 var damageSigned = d.HasValue ? d.Value : (d.HasLuckyValue ? d.LuckyValue : 0L);
                 if (damageSigned == 0) continue;
 
-                var isCrit = d.TypeFlag != null && ((d.TypeFlag & 1) == 1);
+                var isCrit = (d.TypeFlag & 1) == 1;
                 var isHeal = d.Type == EDamageType.Heal;
-                var luckyValue = d.LuckyValue;
-                var isLucky = luckyValue != null && luckyValue != 0;
+                var isLucky = d.LuckyValue != 0;
 
-                var isMiss = d.HasIsMiss && d.IsMiss;
-                var isDead = d.HasIsDead && d.IsDead;
+                var isMiss = d is { HasIsMiss: true, IsMiss: true };
+                var isDead = d is { HasIsDead: true, IsDead: true };
 
                 var damageEleType = (int)d.Property;
-                int damageSource = (int)(d.HasDamageSource ? d.DamageSource : 0);
+                var damageSource = (int)(d.HasDamageSource ? d.DamageSource : 0);
 
-                (var id, var ticks) = IDGenerator.Next();
-                DataStorage.Instance.AddBattleLog(new()
+                var (id, ticks) = IDGenerator.Next();
+                DataStorage.Instance.AddBattleLog(new BattleLog
                 {
                     PacketID = id,
                     TimeTicks = ticks,
@@ -483,24 +448,9 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         }
 
         /// <summary>
-        /// 处理 FrameDown 消息（嵌套内部数据包）
-        /// </summary>
-        public static void ProcessFrameDown(ByteReader reader, bool isZstdCompressed, ILogger? logger = null)
-        {
-            _ = reader.ReadUInt32BE();
-            if (reader.Remaining == 0) return;
-
-            var nestedPacket = reader.ReadRemaining();
-            if (isZstdCompressed) nestedPacket = DecompressZstdIfNeeded(nestedPacket);
-            Process(nestedPacket, logger);
-        }
-
-        public static ILogger Logger { get; set; } = NullLogger.Instance;
-
-        /// <summary>
         /// 同步周边实体，玩家数据
         /// </summary>
-        public static void ProcessPlayerAttrs(long playerUid, RepeatedField<Attr> attrs, byte[] payload)
+        public void ProcessPlayerAttrs(long playerUid, RepeatedField<Attr> attrs, byte[] payload)
         {
             DataStorage.Instance.EnsurePlayer(playerUid);
 
@@ -588,7 +538,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
             }
         }
 
-        public static void ProcessEnemyAttrs(long enemyUid, RepeatedField<Attr> attrs, byte[] arg3)
+        public void ProcessEnemyAttrs(long enemyUid, RepeatedField<Attr> attrs, byte[] arg3)
         {
             if (attrs.Count == 0) return;
 
@@ -643,14 +593,14 @@ namespace StarResonanceDpsAnalysis.Core.Analyze
         /// </summary>
         private static string StreamReadString(BinaryReader br)
         {
-            uint length = br.ReadUInt32();
+            var length = br.ReadUInt32();
             _ = br.ReadInt32();
 
-            byte[] bytes = length > 0 ? br.ReadBytes((int)length) : Array.Empty<byte>();
+            var bytes = length > 0 ? br.ReadBytes((int)length) : null;
 
             _ = br.ReadInt32();
 
-            return bytes.Length == 0 ? string.Empty : Encoding.UTF8.GetString(bytes);
+            return bytes?.Length != 0 ? Encoding.UTF8.GetString(bytes!) : string.Empty;
         }
     }
 }

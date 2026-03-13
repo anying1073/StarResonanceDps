@@ -4,12 +4,13 @@ using SharpPcap.LibPcap;
 using StarResonanceDpsAnalysis.Core.Analyze;
 using System.Collections.Concurrent;
 using System.Threading;
+using StarResonanceDpsAnalysis.Core.Analyze.V1;
 
 namespace StarResonanceDpsAnalysis.Core.Data;
 
 public static class PcapReplay
 {
-    /// <inheritdoc cref="ReplayFileAsync(string,StarResonanceDpsAnalysis.Core.Analyze.PacketAnalyzer,bool,double,System.Threading.CancellationToken)"/>
+    /// <inheritdoc cref="ReplayFileAsync(string,PacketAnalyzer,bool,double,System.Threading.CancellationToken)"/>
     public static Task ReplayFileAsync(this IPacketAnalyzer analyzer, string filePath, bool realtime = true,
         double speed = 1.0, CancellationToken token = default)
     {
@@ -186,14 +187,14 @@ public static class PcapReplay
         }
     }
 
-    /// <inheritdoc cref="ReplayFileEventDrivenAsync(string,StarResonanceDpsAnalysis.Core.Analyze.PacketAnalyzer,System.Threading.CancellationToken)"/>
+    /// <inheritdoc cref="ReplayFileEventDrivenAsync(string,PacketAnalyzer,System.Threading.CancellationToken)"/>
     public static Task ReplayFileEventDrivenAsync(this PacketAnalyzer analyzer, string filePath,
         CancellationToken token = default)
     {
         return ReplayFileEventDrivenAsync(filePath, analyzer, token);
     }
 
-    /// <inheritdoc cref="ReplayFileEventDrivenAsync(string,StarResonanceDpsAnalysis.Core.Analyze.PacketAnalyzer,System.Threading.CancellationToken)"/>
+    /// <inheritdoc cref="ReplayFileEventDrivenAsync(string,PacketAnalyzer,System.Threading.CancellationToken)"/>
     public static Task ReplayFileEventDrivenAsync(this PacketAnalyzerV2 analyzer, string filePath,
         CancellationToken token = default)
     {

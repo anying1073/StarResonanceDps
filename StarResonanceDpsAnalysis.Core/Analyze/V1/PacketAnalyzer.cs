@@ -9,9 +9,9 @@ using StarResonanceDpsAnalysis.Core.Extends.System;
 using StarResonanceDpsAnalysis.Core.Logging;
 using ZstdNet;
 
-namespace StarResonanceDpsAnalysis.Core.Analyze;
+namespace StarResonanceDpsAnalysis.Core.Analyze.V1;
 
-public class PacketAnalyzer(ILogger<PacketAnalyzer>? logger = null) : IPacketAnalyzer
+public class PacketAnalyzer(IMessageAnalyzer messageProcessor,ILogger<PacketAnalyzer>? logger = null) : IPacketAnalyzer
 {
     public void Start()
     {
@@ -418,7 +418,7 @@ public class PacketAnalyzer(ILogger<PacketAnalyzer>? logger = null) : IPacketAna
 
                     try
                     {
-                        MessageAnalyzer.Process(messagePacket, logger);
+                        messageProcessor.Process(messagePacket);
                     }
                     catch (ZstdException e)
                     {

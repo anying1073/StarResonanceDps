@@ -10,6 +10,7 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging.Abstractions;
+using StarResonanceDpsAnalysis.Core.Analyze.V1;
 using Zproto;
 
 BenchmarkSwitcher.FromAssembly(typeof(BenchmarkMarker).Assembly).Run(args);
@@ -99,6 +100,7 @@ public class MessageParsingBenchmarks
 {
     private DataStorageV2 _storageV2 = null!;
     private MessageAnalyzerV2 _analyzerV2 = null!;
+    private MessageAnalyzer _analyzerV1 = null!;
     private byte[] _notifyEnvelope = Array.Empty<byte>();
     private readonly long _playerUid = 778899L;
 
@@ -107,6 +109,7 @@ public class MessageParsingBenchmarks
     {
         _storageV2 = new DataStorageV2(NullLogger<DataStorageV2>.Instance);
         _analyzerV2 = new MessageAnalyzerV2(_storageV2);
+        _analyzerV1 = new MessageAnalyzer(DataStorage.Instance);
         _notifyEnvelope = BuildNotifyEnvelope(0x00000006U, BuildSyncNearEntitiesPayload(_playerUid, "Benchmark Hero", 55));
     }
 
@@ -122,9 +125,9 @@ public class MessageParsingBenchmarks
     }
 
     [Benchmark]
-    public void StaticMessageAnalyzer_Process()
+    public void MessageAnalyzerV1_Process()
     {
-        MessageAnalyzer.Process(_notifyEnvelope);
+        _analyzerV1.Process(_notifyEnvelope);
     }
 
     [Benchmark]

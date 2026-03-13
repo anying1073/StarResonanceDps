@@ -14,7 +14,7 @@ namespace StarResonanceDpsAnalysis.Core.Analyze;
 /// <summary>
 /// Orchestrates message analysis by dispatching packets to registered processors.
 /// </summary>
-public sealed class MessageAnalyzerV2
+public sealed class MessageAnalyzerV2 : IMessageAnalyzer
 {
     private readonly ILogger<MessageAnalyzerV2>? _logger;
     private readonly Dictionary<MessageType, Action<ByteReader, bool>> _messageHandlerMap;
