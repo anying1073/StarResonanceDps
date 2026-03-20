@@ -175,16 +175,16 @@
     <value>기록 모드 종료</value>
   </data>
   <data name="DpsStatistics_History_ViewFull_Title" xml:space="preserve">
-    <value>전체 스냅샷 보기</value>
+    <value>전체 기록 보기</value>
   </data>
   <data name="DpsStatistics_History_ViewFull_EmptyMessage" xml:space="preserve">
-    <value>사용 가능한 전체 스냅샷 데이터가 없습니다.</value>
+    <value>전체 기록 데이터 없음</value>
   </data>
   <data name="DpsStatistics_History_ViewCurrent_Title" xml:space="preserve">
-    <value>전투 스냅샷 보기</value>
+    <value>전투 기록 보기</value>
   </data>
   <data name="DpsStatistics_History_ViewCurrent_EmptyMessage" xml:space="preserve">
-    <value>사용 가능한 전투 스냅샷 데이터가 없습니다.</value>
+    <value>전투 기록 데이터 없음</value>
   </data>
   <data name="DpsStatistics_History_Label" xml:space="preserve">
     <value>스냅샷</value>
@@ -201,9 +201,8 @@
   <data name="DpsStatistics_TeamLabel_TakenDamage" xml:space="preserve">
     <value>파티 DTPS</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="DpsStatistics_TeamLabel_NpcTakenDamage" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="DpsStatistics_TeamLabel_NpcTakenDamage" xml:space="preserve">
+    <value>모든 NPC DTPS</value>
   </data>
   <data name="PlayerInfo_Guild_Unknown" xml:space="preserve">
     <value>알 수 없음</value>
@@ -248,7 +247,7 @@
     <value>기본 설정</value>
   </data>
   <data name="Settings_Section_Basic_Sub" xml:space="preserve">
-    <value>자동 감지에 실패할 경우 수동으로 조정하세요</value>
+    <value>자동으로 감지하지 못할 경우 수동으로 조정하세요</value>
   </data>
   <data name="Settings_Section_Shortcut_Title" xml:space="preserve">
     <value>단축키 설정</value>
@@ -278,10 +277,10 @@
     <value>전투 설정</value>
   </data>
   <data name="Settings_Section_Combat_Sub" xml:space="preserve">
-    <value>전투 종료 시 초기화는 현재 전투만 초기화하며, 전체 통계는 유지됩니다.</value>
+    <value>전투 종료 시 초기화는 현재 전투만 초기화하며, 전체 통계는 유지됩니다</value>
   </data>
   <data name="Settings_NetworkAdapter_Label" xml:space="preserve">
-    <value>캡처 어댑터</value>
+    <value>네트워크 어댑터</value>
   </data>
   <data name="Settings_Combat_ClearAfterBattle" xml:space="preserve">
     <value>전투 종료 시 초기화</value>
@@ -314,22 +313,22 @@
     <value>플레이어 이름이 표시 영역을 초과하면 자동 스크롤을 활성화합니다.</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Default_Tooltip" xml:space="preserve">
-    <value>플레이어 이름 - 얼창 (25000-8)</value>
+    <value>플레이어 이름 - 프로스트 메이지 (25000-8)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Simple_Tooltip" xml:space="preserve">
     <value>플레이어 이름 (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Preset_Detailed_Tooltip" xml:space="preserve">
-    <value>플레이어 이름 - 얼창 [S8 Lv50] (25000)</value>
+    <value>플레이어 이름 - 프로스트 메이지 [S8 Lv50] (25000)</value>
   </data>
   <data name="Settings_PlayerInfo_Name" xml:space="preserve">
     <value>플레이어 이름</value>
   </data>
-  <data name="Settings_PlayerInfo_Tip" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Settings_PlayerInfo_Tip" xml:space="preserve">
+    <value>예:</value>
   </data>
-  <data name="Settings_PlayerInfo_ClassSpec" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Settings_PlayerInfo_ClassSpec" xml:space="preserve">
+    <value>클래스</value>
   </data>
   <data name="Settings_PlayerInfo_Separator_Space" xml:space="preserve">
     <value>공백</value>
@@ -362,7 +361,9 @@
     <value>그래프 데이터 포인트 수</value>
   </data>
   <data name="Settings_Display_TimeSeriesCapacity_Tooltip" xml:space="preserve">
-    <value>DPS/HPS/DTPS 추세 차트에 저장할 데이터 포인트 최대값입니다. 값이 클수록 더 많은 기록을 표시하지만 메모리 사용량이 증가합니다. 범위: 50-1000 샘플.</value>
+    <value>DPS/HPS/DTPS 추세 그래프에 저장할 데이터 포인트 최대값입니다.
+값이 클수록 더 많은 기록을 표시하지만 메모리 사용량이 증가합니다.
+범위: 50-1000 샘플.</value>
   </data>
   <data name="Settings_Common_Samples" xml:space="preserve">
     <value>샘플</value>
@@ -467,7 +468,7 @@
     <value>여러 플레이어의 제보를 바탕으로 각 채널 월드 보스 생존 정보를 제공합니다</value>
   </data>
   <data name="MainView_Plugin_PigTracker_Title" xml:space="preserve">
-    <value>우리보・나보 상태 보기</value>
+    <value>우리보・나뽀 상태 보기</value>
   </data>
   <data name="MainView_Plugin_PigTracker_Description" xml:space="preserve">
     <value>커뮤니티 제보를 통해 우리보 나보의 동선과 위치를 공유합니다</value>
@@ -566,16 +567,16 @@
     <value>여기에 깎은선 그래프가 있다고 상상해보세요</value>
   </data>
   <data name="SkillBreakdown_Card_ShareChart" xml:space="preserve">
-    <value>스킬 비율 차트</value>
+    <value>스킬 비율 그래프</value>
   </data>
   <data name="SkillBreakdown_Placeholder_PieChart" xml:space="preserve">
-    <value>여기에 원형 차트가 있다고 상상해보세요</value>
+    <value>여기에 원형 그래프가 있다고 상상해보세요</value>
   </data>
   <data name="SkillBreakdown_Card_DamageDistribution" xml:space="preserve">
     <value>대미지 분포</value>
   </data>
   <data name="SkillBreakdown_Placeholder_BarChart" xml:space="preserve">
-    <value>여기에 막대 차트가 있다고 상상해보세요</value>
+    <value>여기에 막대 그래프가 있다고 상상해보세요</value>
   </data>
   <data name="SkillBreakdown_Section_DamageInfo" xml:space="preserve">
     <value>대미지 정보</value>
@@ -599,7 +600,7 @@
     <value>치명타 횟수</value>
   </data>
   <data name="SkillBreakdown_Label_NormalDamage" xml:space="preserve">
-    <value>일반 대미지</value>
+    <value>일반 확률</value>
   </data>
   <data name="SkillBreakdown_Label_CritDamage" xml:space="preserve">
     <value>치명타 대미지</value>
@@ -786,7 +787,7 @@
     <value>훈련 모드</value>
   </data>
   <data name="MainView_Plugin_Training_Description" xml:space="preserve">
-    <value>훈련 모드, 스킬 대미지 분포 분석 및 직업별 랭킹 기능을 제공합니다</value>
+    <value>훈련 모드, 스킬 대미지 분포 분석 및 클래스별 랭킹 기능을 제공합니다</value>
   </data>
   <data name="Settings_Shortcut_ToggleDps" xml:space="preserve">
     <value>DPS 창 토글</value>
@@ -829,7 +830,7 @@
     <value>평균 DPS</value>
   </data>
   <data name="SkillBreakdown_Label_TotalHits" xml:space="preserve">
-    <value>총 적중</value>
+    <value>총 적중 수</value>
   </data>
   <data name="SkillBreakdown_Section_DamageSkillsAnalysis" xml:space="preserve">
     <value>공격 스킬 분석</value>
@@ -913,7 +914,7 @@
     <value>정보 필드 추가</value>
   </data>
   <data name="Settings_PlayerInfo_AddSeparators" xml:space="preserve">
-    <value>구분자 추가</value>
+    <value>구분 기호 추가</value>
   </data>
   <data name="Settings_PlayerInfo_FormatString" xml:space="preserve">
     <value>사용자 지정 형식 문자열</value>
@@ -929,6 +930,13 @@
   </data>
   <data name="Settings_PlayerInfo_Preview" xml:space="preserve">
     <value>실시간 미리보기</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SkillBreakdown_Suffix_Progress" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SkillBreakdown_Suffix_Casts" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SkillBreakdown_Suffix_Crits" xml:space="preserve">
     <value>치명타 횟수</value>
@@ -961,7 +969,7 @@
     <value>치명타 횟수</value>
   </data>
   <data name="SkillLog_Popup_LuckyHit" xml:space="preserve">
-    <value>행운 타격</value>
+    <value>행운 횟수</value>
   </data>
   <data name="SkillLog_Label_Damage" xml:space="preserve">
     <value>대미지</value>
@@ -1111,10 +1119,10 @@
     <value>대미지 참고표</value>
   </data>
   <data name="DamageReference_NoData" xml:space="preserve">
-    <value>표시할 데이터가 없습니다</value>
+    <value>데이터 없음</value>
   </data>
   <data name="DamageReference_Disclaimer" xml:space="preserve">
-    <value>이 데이터는 오로지 참고와 즐거움을 위한 것입니다. 전투력 차별 등 커뮤니티를 해치는 행동에 사용을 금지하며, 위반 시 해당 기능 사용 권한이 영구 박탈될 수 있습니다.</value>
+    <value>이 데이터는 오직 재미와 참고용으로만 사용해 주십시오. 전투력 차별 등 커뮤니티를 해치는 행위는 엄격히 금지하며, 위반 시 즉시 해당 기능의 사용 권한이 영구 박탈될 수 있습니다.</value>
   </data>
   <data name="Debug_LoadPcap" xml:space="preserve">
     <value>PCAP 불러오기</value>
@@ -1186,7 +1194,7 @@
     <value>설정 창</value>
   </data>
   <data name="Debug_Button_About" xml:space="preserve">
-    <value>정보 창</value>
+    <value>창 정보</value>
   </data>
   <data name="Debug_Group_Title" xml:space="preserve">
     <value>디버그 도구</value>
@@ -1287,13 +1295,13 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
     <value>적용</value>
   </data>
   <data name="Common_HitType_Lucky" xml:space="preserve">
-    <value>행운</value>
+    <value>행운 대미지</value>
   </data>
   <data name="Common_HitType_Critical" xml:space="preserve">
-    <value>치명타</value>
+    <value>치명타 대미지</value>
   </data>
   <data name="Common_HitType_Normal" xml:space="preserve">
-    <value>일반</value>
+    <value>일반 대미지</value>
   </data>
   <data name="App_RestartAsAdmin_Message" xml:space="preserve">
     <value>일부 기능은 관리자 권한이 필요할 수 있습니다.
@@ -1321,11 +1329,20 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   <data name="About_Founder" xml:space="preserve">
     <value>프로젝트 개시자</value>
   </data>
+  <data name="Menu_Select_Training_Dummy" xml:space="preserve">
+    <value>더미 선택</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Enemy" xml:space="preserve">
+    <value>엘리트 적군 더미</value>
+  </data>
+  <data name="Menu_Training_Dummy_Elite_Tank" xml:space="preserve">
+    <value>엘리트 수호 더미</value>
+  </data>
   <data name="DpsDetail_Popup_TotalDamage" xml:space="preserve">
     <value>총 대미지：</value>
   </data>
   <data name="DpsDetail_Popup_HitCount" xml:space="preserve">
-    <value>타수：</value>
+    <value>적중：</value>
   </data>
   <data name="DpsDetail_Popup_Critical" xml:space="preserve">
     <value>  치명타：</value>
@@ -1334,7 +1351,7 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
     <value>  평균：</value>
   </data>
   <data name="Common_HitType_CriticalLucky" xml:space="preserve">
-    <value>치명타 행운 대미지</value>
+    <value>치명타 행운 횟수</value>
   </data>
   <data name="SkillBreakdown_Suffix_CritLucky" xml:space="preserve">
     <value>치명타 행운 횟수</value>
@@ -1345,16 +1362,28 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
 UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value>
   </data>
   <data name="Settings_PlayerUid_Get" xml:space="preserve">
-    <value>얻다</value>
+    <value>가져오기</value>
+  </data>
+  <data name="SkillBreakdown_Label_AverageHealing" xml:space="preserve">
+    <value>평군 치류량</value>
+  </data>
+  <data name="SkillBreakdown_Label_AverageTaken" xml:space="preserve">
+    <value>평균 받은 대미지</value>
+  </data>
+  <data name="SkillBreakdown_Chart_TakenTypeDistribution" xml:space="preserve">
+    <value>피격 횟수 내역</value>
   </data>
   <data name="Common_HitType_CriticalHeal" xml:space="preserve">
-    <value>치명타</value>
+    <value>치명타 치료</value>
   </data>
   <data name="Common_HitType_LuckyHeal" xml:space="preserve">
-    <value>행운</value>
+    <value>행운 치료</value>
   </data>
   <data name="Common_HitType_NormalHeal" xml:space="preserve">
-    <value>일반</value>
+    <value>일반 치료</value>
+  </data>
+  <data name="SkillBreakdown_Label_NormalCount" xml:space="preserve">
+    <value>일반 횟수</value>
   </data>
   <data name="SkillBreakdown_Label_TotalHitsTaken" xml:space="preserve">
     <value>총 피격 횟수</value>
@@ -1378,15 +1407,103 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
     <value>치명타</value>
   </data>
   <data name="SkillLog_Label_LuckyHeal" xml:space="preserve">
-    <value>행운</value>
+    <value>행운 치료</value>
   </data>
-  <data name="DpsStatistics_NPC_Label" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Update_Available_Title" xml:space="preserve">
+    <value>업데이트 확인</value>
   </data>
-  <data name="Settings_PlayerInfo_PlayerUID" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Update_Available_Message" xml:space="preserve">
+    <value>현재 버전 : {0}
+최신 버전 : {1}
+
+지금 다운로드 페이지를 열겠습니까?</value>
+  </data>
+  <data name="Update_Available_Notes" xml:space="preserve">
+    <value>업데이트 내용</value>
+  </data>
+  <data name="Update_NoUpdate_Title" xml:space="preserve">
+    <value>업데이트 확인</value>
+  </data>
+  <data name="Update_NoUpdate_Message" xml:space="preserve">
+    <value>현재 버전이 최신 버전입니다.</value>
+  </data>
+  <data name="Settings_Section_Update_Title" xml:space="preserve">
+    <value>업데이트</value>
+  </data>
+  <data name="Settings_Section_Update_Sub" xml:space="preserve">
+    <value>새 버전이 있는지 수동으로 확인합니다</value>
+  </data>
+  <data name="Settings_Update_Check_Button" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="Settings_Update_Check_Message" xml:space="preserve">
+    <value>업데이트 확인</value>
+  </data>
+  <data name="Settings_Update_Check_Tooltip" xml:space="preserve">
+    <value>GitHub 또는 별도의 업데이트 소스에서 최신 버전을 확인합니다</value>
+  </data>
+  <data name="DpsStatistics_NPC_Label" xml:space="preserve">
+    <value>모든 NPC</value>
+  </data>
+  <data name="Settings_UID_Setting_Title" xml:space="preserve">
+    <value>플레이어 UID 설정</value>
+  </data>
+  <data name="Settings_UID_Setting_Message1" xml:space="preserve">
+    <value>현재 플레이어의 UID를 가져올 수 없습니다. 맵을 이동한 뒤 다시 시도해 주세요.</value>
+  </data>
+  <data name="Settings_UID_Setting_Message2" xml:space="preserve">
+    <value>현재 플레이어의 UID를 설정 중입니다. 해당 정보는 정확하지 않을 수 있으니 직접 확인해 주세요.</value>
+  </data>
+  <data name="Settings_NetworkAdapterAutoSelect_Title" xml:space="preserve">
+    <value>네트워크 어댑터 설정</value>
+  </data>
+  <data name="Settings_Theme_BackgroundImage_Filter" xml:space="preserve">
+    <value>PNG이미지 (*.png)|*.png</value>
+  </data>
+  <data name="Settings_PlayerInfo_PlayerUID" xml:space="preserve">
+    <value>플레이어 UID</value>
+  </data>
+  <data name="Settings_PlayerInfo_GuildName" xml:space="preserve">
+    <value>길드 이름</value>
+  </data>
+  <data name="Settings_PlayerInfo_MyGuild" xml:space="preserve">
+    <value>내 길드</value>
+  </data>
+  <data name="Settings_CustomFormat_Message" xml:space="preserve">
+    <value>사용자 지정 형식이 비활성화 되었습니다.
+기본 표시 설정을 사용합니다.</value>
+  </data>
+  <data name="Settings_Theme_BackgroundColor" xml:space="preserve">
+    <value>배경색</value>
+  </data>
+  <data name="Settings_Background_Opacity" xml:space="preserve">
+    <value>배경 투명도</value>
+  </data>
+  <data name="Settings_BackgroundImage_Opacity" xml:space="preserve">
+    <value>배경 이미지 투명도</value>
+  </data>
+  <data name="Settings_BackgroundImageFitMode_FitWidth" xml:space="preserve">
+    <value>창 채우기</value>
+  </data>
+  <data name="Settings_BackgroundImageFit" xml:space="preserve">
+    <value>배경 이미지 맞추기</value>
+  </data>
+  <data name="Settings_BackgroundImageFitMode_FitToWindow" xml:space="preserve">
+    <value>창에 맞춤</value>
   </data>
   <data name="Classes_Unknown" xml:space="preserve">
     <value>알 수 없음</value>
+  </data>
+  <data name="Settings_Theme_Light" xml:space="preserve">
+    <value>라이트</value>
+  </data>
+  <data name="Settings_Theme_Dark" xml:space="preserve">
+    <value>다크</value>
+  </data>
+  <data name="Settings_HideTab" xml:space="preserve">
+    <value>탭 숨기기</value>
+  </data>
+  <data name="Settings_ClassColors_Opacity" xml:space="preserve">
+    <value>클래스 색상 투명도</value>
   </data>
 </root>
