@@ -1804,7 +1804,7 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Crowd dumy.
+        ///   Looks up a localized string similar to Crowd dummy.
         /// </summary>
         public static string Menu_Training_Dummy_Crowd {
             get {
@@ -4157,6 +4157,15 @@ namespace StarResonanceDpsAnalysis.WPF.Properties {
         public static string Update_NoUpdate_Title {
             get {
                 return ResourceManager.GetString("Update_NoUpdate_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version:{0}.
+        /// </summary>
+        public static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
             }
         }
         

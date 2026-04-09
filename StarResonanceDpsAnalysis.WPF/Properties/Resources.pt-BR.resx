@@ -1351,4 +1351,7 @@ Como obter o UID: no jogo, o número do jogador no canto inferior esquerdo é o 
   <data name="Settings_Shortcut_ToggleMinimize_Tooltip" xml:space="preserve">
     <value>Foque aqui e pressione a tecla de atalho (ex.: F10). Pressione Delete para limpar.</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versão:{0}</value>
+  </data>
 </root>

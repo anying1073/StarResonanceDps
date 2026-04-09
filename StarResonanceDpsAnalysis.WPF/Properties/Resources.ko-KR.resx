@@ -1512,4 +1512,7 @@ UID 확인: 게임 내 왼쪽 아래 플레이어 번호가 UID입니다.</value
   <data name="Settings_Shortcut_ToggleMinimize_Tooltip" xml:space="preserve">
     <value>여기에 포커스하고 단축키를 누르세요(예: F10). Delete 키를 누르면 지워집니다.</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>버전:{0}</value>
+  </data>
 </root>

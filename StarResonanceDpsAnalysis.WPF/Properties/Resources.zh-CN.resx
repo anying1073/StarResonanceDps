@@ -1520,4 +1520,7 @@
   <data name="Menu_Training_Dummy_Crowd" xml:space="preserve">
     <value>群桩</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>版本:{0}</value>
+  </data>
 </root>

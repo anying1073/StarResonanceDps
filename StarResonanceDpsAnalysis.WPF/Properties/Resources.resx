@@ -1543,6 +1543,9 @@ Open download page now?</value>
     <value>Focus here and press a shortcut key (e.g., F10). Press Delete to clear.</value>
   </data>
   <data name="Menu_Training_Dummy_Crowd" xml:space="preserve">
-    <value>Crowd dumy</value>
+    <value>Crowd dummy</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version:{0}</value>
   </data>
 </root>
