@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using StarResonanceDpsAnalysis.Core.Data;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.Core.Statistics;
@@ -30,7 +31,6 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine.DataSou
         private bool _enable;
         private bool _isTimedOut;
         private DateTime? _startedAt;
-
         public TimeSpan BattleDuration => GetElapsedTime();
 
         public bool Enable
@@ -48,7 +48,7 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine.DataSou
             set
             {
                 field = value;
-                _damageCalculator.TargetDummyUid = GetDummyUidByTarget(value);
+                _damageCalculator.TargetDummyUids = GetDummyUidHashSetByTarget(value);
             }
         } = DummyTargetType.Center;
 
@@ -112,17 +112,10 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine.DataSou
 
                 if (enable)
                 {
-                    _damageCalculator.TargetDummyUid = GetDummyUidByTarget(DummyTarget);
+                    _damageCalculator.TargetDummyUids = GetDummyUidHashSetByTarget(DummyTarget);
                 }
             }
         }
-
-        private static int GetDummyUidByTarget(DummyTargetType target) => target switch
-        {
-            DummyTargetType.Center => 75,
-            DummyTargetType.TDummy => 179,
-            _ => -1
-        };
 
         private void Calculate(BattleLog log)
         {
@@ -199,12 +192,22 @@ namespace StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine.DataSou
         }
         private bool ShouldCountNpcDamage(long targetNpcId)
         {
-            return DummyTarget switch
-            {
-                DummyTargetType.Center => targetNpcId == 75,
-                DummyTargetType.TDummy => targetNpcId == 179,
-                _ => true
-            };
+            var set = GetDummyUidHashSetByTarget(DummyTarget);
+            return set.Contains(targetNpcId);
         }
+
+        private static HashSet<long> GetDummyUidHashSetByTarget(DummyTargetType target)
+        {
+            return DummyTargetDictionary.TryGetValue(target, out var set)
+                ? set
+                : [];
+        }
+
+        private static readonly Dictionary<DummyTargetType, HashSet<long>> DummyTargetDictionary = new()
+        {
+            { DummyTargetType.Center, [75]},
+            { DummyTargetType.TDummy, [179]},
+            { DummyTargetType.AoeDummy,[70,71,72,73,76]}
+        };
     }
 }

@@ -153,48 +153,6 @@ public partial class DpsStatisticsView : Window
     }
 
     /// <summary>
-    /// 训练模式选择
-    /// </summary>
-    private void TrainingMenuItem_Click(object sender, RoutedEventArgs e)
-    {
-        var me = (MenuItem)sender;
-        var owner = ItemsControl.ItemsControlFromItemContainer(me);
-
-        if (me.IsChecked)
-        {
-            // 这次点击后变成 true：把其它都关掉
-            foreach (var obj in owner.Items)
-            {
-                if (owner.ItemContainerGenerator.ContainerFromItem(obj) is MenuItem mi && !ReferenceEquals(mi, me))
-                    mi.IsChecked = false;
-            }
-        }
-
-        e.Handled = true;
-    }
-
-    /// <summary>
-    /// 测伤模式
-    /// </summary>
-    private void AxisMenuItem_Click(object sender, RoutedEventArgs e)
-    {
-        var me = (MenuItem)sender;
-        var owner = ItemsControl.ItemsControlFromItemContainer(me);
-
-        if (me.IsChecked)
-        {
-            // 这次点击后变成 true：把其它都关掉
-            foreach (var obj in owner.Items)
-            {
-                if (owner.ItemContainerGenerator.ContainerFromItem(obj) is MenuItem mi && !ReferenceEquals(mi, me))
-                    mi.IsChecked = false;
-            }
-        }
-
-        e.Handled = true;
-    }
-
-    /// <summary>
     /// 记录设置选择(互斥单选)
     /// </summary>
     private void RecordSettingsMenuItem_Click(object sender, RoutedEventArgs e)

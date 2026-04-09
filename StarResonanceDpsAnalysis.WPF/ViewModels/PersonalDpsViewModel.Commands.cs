@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using StarResonanceDpsAnalysis.Core.Data.Models;
 using StarResonanceDpsAnalysis.WPF.Models;
+using StarResonanceDpsAnalysis.WPF.ViewModels.DpsStatisticDataEngine;
 
 namespace StarResonanceDpsAnalysis.WPF.ViewModels;
 
@@ -91,5 +92,58 @@ public partial class PersonalDpsViewModel
     private void ToggleTopmost()
     {
         AppConfig.TopmostEnabled = !AppConfig.TopmostEnabled;
+    }
+
+    [RelayCommand]
+    private void Loaded()
+    {
+        if (_isLoaded)
+        {
+            return;
+        }
+
+        _isLoaded = true;
+
+        // 订阅配置更新事件以响应主题颜色变化
+        _configManager.ConfigurationUpdated += OnConfigurationUpdated;
+        _engine.ProcessedDataReady += EngineOnProcessedDataReady;
+
+        // ⭐ 从配置加载上次选择的木桩类型
+        var savedDummyTarget = _configManager.CurrentConfig.DefaultDummyTarget;
+        if (Enum.IsDefined(typeof(DummyTargetType), savedDummyTarget))
+        {
+            SelectedDummyTarget = savedDummyTarget;
+            _logger?.LogInformation("从配置加载木桩类型: {Type}", SelectedDummyTarget);
+        }
+
+        _engine.Configure(new DataSourceEngineParam()
+        {
+            Mode = DataSourceMode.DummyTraining,
+            DummyTarget = SelectedDummyTarget,
+            PlayerUid = _configManager.CurrentConfig.Uid > 0 ? _configManager.CurrentConfig.Uid : -1,
+        });
+
+        StartTimer();
+        _engine.CurrentSource.Refresh();
+    }
+
+    [RelayCommand]
+    private void UnLoaded()
+    {
+        if (!_isLoaded)
+        {
+            return;
+        }
+
+        _isLoaded = false;
+
+        _configManager.ConfigurationUpdated -= OnConfigurationUpdated;
+        _engine.ProcessedDataReady -= EngineOnProcessedDataReady;
+        _engine.Configure(new DataSourceEngineParam()
+        {
+            Mode = AppConfig.DpsUpdateMode.ToDataSourceMode(),
+            ActiveUpdateInterval = AppConfig.DpsUpdateInterval,
+        });
+        StopTimer();
     }
 }

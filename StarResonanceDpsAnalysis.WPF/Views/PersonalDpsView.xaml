@@ -19,6 +19,7 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         WindowState="Normal"
+        Topmost="{Binding AppConfig.TopmostEnabled, Mode=OneWay}"
         d:DataContext="{d:DesignInstance Type=vms:PersonalDpsDesignTimeViewModel,
                                      IsDesignTimeCreatable=True}">
 
@@ -208,6 +209,12 @@
                                         IsCheckable="True"
                                         IsChecked="{Binding SelectedDummyTarget, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=TDummy}"
                                         StaysOpenOnClick="True" />
+                                     <MenuItem
+                                        Header="{lex:Loc Key={x:Static loc:ResourcesKeys.Menu_Training_Dummy_Crowd}}"
+                                        IsCheckable="True"
+                                        IsChecked="{Binding SelectedDummyTarget, Mode=TwoWay, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=AoeDummy}"
+                                        StaysOpenOnClick="True" />
+
                                 </MenuItem>
 
                                 <MenuItem

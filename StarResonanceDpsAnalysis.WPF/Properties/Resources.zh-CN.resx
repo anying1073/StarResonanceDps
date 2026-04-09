@@ -1517,4 +1517,7 @@
   <data name="Settings_Shortcut_ToggleMinimize_Tooltip" xml:space="preserve">
     <value>在此聚焦并按下快捷键（例如 F10）。按 Delete 清除。</value>
   </data>
+  <data name="Menu_Training_Dummy_Crowd" xml:space="preserve">
+    <value>群桩</value>
+  </data>
 </root>

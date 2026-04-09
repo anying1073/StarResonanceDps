@@ -1542,4 +1542,7 @@ Open download page now?</value>
   <data name="Settings_Shortcut_ToggleMinimize_Tooltip" xml:space="preserve">
     <value>Focus here and press a shortcut key (e.g., F10). Press Delete to clear.</value>
   </data>
+  <data name="Menu_Training_Dummy_Crowd" xml:space="preserve">
+    <value>Crowd dumy</value>
+  </data>
 </root>
